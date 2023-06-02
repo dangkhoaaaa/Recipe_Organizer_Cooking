@@ -1,0 +1,28 @@
+﻿
+.max-width-set {
+    max-width: 100%;
+}
+
+/* Mobile Devices (up to 576px) */
+@media only screen and (max-width: 576px) {
+    /* Styles for mobile devices go here */
+    .listing-search .listing-form.first {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+}
+
+/* Tablet Devices (between 577px and 768px) */
+@media only screen and (min-width: 577px) and (max-width: 768px) {
+    /* Styles for tablet devices go here */
+}
+
+/* iPad Devices (between 769px and 1024px) */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+    /* Styles for iPad devices go here */
+}
+
+/* Desktop Devices (above 1024px) */
+@media only screen and (min-width: 1025px) {
+    /* Styles for desktop devices go here */
+}
