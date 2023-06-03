@@ -10,8 +10,8 @@ namespace RecipeOrganizer.Data
             : base(options)
         {
         }
-        public DbSet<Test> Tests { get; set; }
-        public DbSet<Role> Roles { get; set; }
+       // public DbSet<Test> Tests { get; set; }
+        //public DbSet<Role> Roles { get; set; }
         /*
         public DbSet<User> Users { get; set; }
         public DbSet<User_Like_Recipe> User_Like_Recipes { get; set; }
