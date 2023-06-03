@@ -7,7 +7,7 @@ namespace RecipeOrganizer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -23,17 +23,15 @@ namespace RecipeOrganizer.Controllers
         [HttpGet]
         public ActionResult Register()
         {
-            ViewBag.Message = "Register page.";
-
-            return View();
+            return RedirectToAction("Register", "User");
         }
 
         //HTTP get /Home/Register
         //[HttpPost]
         //public ActionResult Register(User user)
         //{
-        //    user.status = true;
-        //    user.role_id = 2;
+        //    user.Status = true;
+        //    user.Role = "Admin";
         //    db.Users.Add(user);
         //    db.SaveChanges();
         //    return RedirectToAction("Login");
@@ -49,7 +47,7 @@ namespace RecipeOrganizer.Controllers
             //    return View("Index");
             //}
 
-            return View();
+            return RedirectToAction("Login", "User");
         }
 
         /*
