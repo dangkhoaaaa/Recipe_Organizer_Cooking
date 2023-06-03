@@ -25,6 +25,7 @@ namespace RecipeOrganizer.Models
         public virtual DbSet<MealPlanning> MealPlannings { get; set; } = null!;
         public virtual DbSet<Media> Media { get; set; } = null!;
         public virtual DbSet<Metadata> MetaData { get; set; } = null!;
+        public virtual DbSet<ParentCategory> ParentCategories { get; set; } = null!;
         public virtual DbSet<Recipe> Recipes { get; set; } = null!;
         public virtual DbSet<RecipeHasCategory> RecipeHasCategories { get; set; } = null!;
         public virtual DbSet<RecipeHasDirection> RecipeHasDirections { get; set; } = null!;
@@ -32,7 +33,6 @@ namespace RecipeOrganizer.Models
         public virtual DbSet<RecipeHasTag> RecipeHasTags { get; set; } = null!;
         public virtual DbSet<Session> Sessions { get; set; } = null!;
         public virtual DbSet<SessionHasRecipe> SessionHasRecipes { get; set; } = null!;
-        public virtual DbSet<SubCategory> SubCategories { get; set; } = null!;
         public virtual DbSet<Tag> Tags { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
@@ -40,7 +40,7 @@ namespace RecipeOrganizer.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Recipe_Organizer;User ID=sa;Password=12345");
+                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Recipe_Organizer;Integrated Security=True");
             }
         }
 
@@ -57,10 +57,18 @@ namespace RecipeOrganizer.Models
                     .IsUnicode(false)
                     .HasColumnName("description");
 
+                entity.Property(e => e.ParentId).HasColumnName("parent_id");
+
                 entity.Property(e => e.Title)
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("title");
+
+                entity.HasOne(d => d.Parent)
+                    .WithMany(p => p.Categories)
+                    .HasForeignKey(d => d.ParentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Category_Parent_Category");
             });
 
             modelBuilder.Entity<Collection>(entity =>
@@ -230,6 +238,26 @@ namespace RecipeOrganizer.Models
                     .HasConstraintName("FK_MetaData_User");
             });
 
+            modelBuilder.Entity<ParentCategory>(entity =>
+            {
+                entity.HasKey(e => e.ParentId)
+                    .HasName("PK_Sub_Category");
+
+                entity.ToTable("Parent_Category");
+
+                entity.Property(e => e.ParentId).HasColumnName("parent_id");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(1000)
+                    .IsUnicode(false)
+                    .HasColumnName("description");
+
+                entity.Property(e => e.Title)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("title");
+            });
+
             modelBuilder.Entity<Recipe>(entity =>
             {
                 entity.ToTable("Recipe");
@@ -391,31 +419,6 @@ namespace RecipeOrganizer.Models
                     .HasForeignKey(d => d.SessionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Session_has_Recipe_Session");
-            });
-
-            modelBuilder.Entity<SubCategory>(entity =>
-            {
-                entity.ToTable("Sub_Category");
-
-                entity.Property(e => e.SubcategoryId).HasColumnName("subcategory_id");
-
-                entity.Property(e => e.CategoryId).HasColumnName("category_id");
-
-                entity.Property(e => e.Description)
-                    .HasMaxLength(1000)
-                    .IsUnicode(false)
-                    .HasColumnName("description");
-
-                entity.Property(e => e.Title)
-                    .HasMaxLength(100)
-                    .IsUnicode(false)
-                    .HasColumnName("title");
-
-                entity.HasOne(d => d.Category)
-                    .WithMany(p => p.SubCategories)
-                    .HasForeignKey(d => d.CategoryId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Sub_Category_Category");
             });
 
             modelBuilder.Entity<Tag>(entity =>

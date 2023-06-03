@@ -3,13 +3,17 @@ using System.Collections.Generic;
 
 namespace RecipeOrganizer.Models
 {
-    public partial class Category
+    public partial class ParentCategory
     {
-        public int CategoryId { get; set; }
+        public ParentCategory()
+        {
+            Categories = new HashSet<Category>();
+        }
+
         public int ParentId { get; set; }
         public string Title { get; set; } = null!;
         public string? Description { get; set; }
 
-        public virtual ParentCategory Parent { get; set; } = null!;
+        public virtual ICollection<Category> Categories { get; set; }
     }
 }
