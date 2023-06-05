@@ -28,8 +28,6 @@ namespace RecipeOrganizer.Models
         public virtual DbSet<ParentCategory> ParentCategories { get; set; } = null!;
         public virtual DbSet<Recipe> Recipes { get; set; } = null!;
         public virtual DbSet<RecipeHasCategory> RecipeHasCategories { get; set; } = null!;
-        public virtual DbSet<RecipeHasDirection> RecipeHasDirections { get; set; } = null!;
-        public virtual DbSet<RecipeHasIngredient> RecipeHasIngredients { get; set; } = null!;
         public virtual DbSet<RecipeHasTag> RecipeHasTags { get; set; } = null!;
         public virtual DbSet<Session> Sessions { get; set; } = null!;
         public virtual DbSet<SessionHasRecipe> SessionHasRecipes { get; set; } = null!;
@@ -40,7 +38,6 @@ namespace RecipeOrganizer.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Recipe_Organizer;Integrated Security=True");
             }
         }
@@ -91,6 +88,7 @@ namespace RecipeOrganizer.Models
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Collections)
                     .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Collection_User");
             });
 
@@ -124,6 +122,16 @@ namespace RecipeOrganizer.Models
                     .HasMaxLength(1000)
                     .IsUnicode(false)
                     .HasColumnName("direction");
+
+                entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
+
+                entity.Property(e => e.Step).HasColumnName("step");
+
+                entity.HasOne(d => d.Recipe)
+                    .WithMany(p => p.Directions)
+                    .HasForeignKey(d => d.RecipeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Direction_Recipe");
             });
 
             modelBuilder.Entity<Feedback>(entity =>
@@ -146,7 +154,7 @@ namespace RecipeOrganizer.Models
                 entity.Property(e => e.Status).HasColumnName("status");
 
                 entity.Property(e => e.Title)
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("title");
             });
@@ -161,6 +169,14 @@ namespace RecipeOrganizer.Models
                     .HasMaxLength(300)
                     .IsUnicode(false)
                     .HasColumnName("ingredient_name");
+
+                entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
+
+                entity.HasOne(d => d.Recipe)
+                    .WithMany(p => p.Ingredients)
+                    .HasForeignKey(d => d.RecipeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Ingredient_Recipe");
             });
 
             modelBuilder.Entity<MealPlanning>(entity =>
@@ -195,7 +211,7 @@ namespace RecipeOrganizer.Models
                     .HasColumnName("date");
 
                 entity.Property(e => e.Filelocation)
-                    .HasMaxLength(50)
+                    .HasMaxLength(300)
                     .IsUnicode(false)
                     .HasColumnName("filelocation");
             });
@@ -217,25 +233,21 @@ namespace RecipeOrganizer.Models
                 entity.HasOne(d => d.Feedback)
                     .WithMany(p => p.MetaData)
                     .HasForeignKey(d => d.FeedbackId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MetaData_Feedback");
 
                 entity.HasOne(d => d.Media)
                     .WithMany(p => p.MetaData)
                     .HasForeignKey(d => d.MediaId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MetaData_Media");
 
                 entity.HasOne(d => d.Recipe)
                     .WithMany(p => p.MetaData)
                     .HasForeignKey(d => d.RecipeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MetaData_Recipe");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.MetaData)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MetaData_User");
             });
 
@@ -282,7 +294,7 @@ namespace RecipeOrganizer.Models
                     .HasColumnName("status");
 
                 entity.Property(e => e.Title)
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("title");
             });
@@ -308,52 +320,6 @@ namespace RecipeOrganizer.Models
                     .HasForeignKey(d => d.RecipeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Recipe_has_Category_Recipe");
-            });
-
-            modelBuilder.Entity<RecipeHasDirection>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("Recipe_has_Direction");
-
-                entity.Property(e => e.DirectionId).HasColumnName("direction_id");
-
-                entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
-
-                entity.HasOne(d => d.Direction)
-                    .WithMany()
-                    .HasForeignKey(d => d.DirectionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Recipe_has_Direction_Direction");
-
-                entity.HasOne(d => d.Recipe)
-                    .WithMany()
-                    .HasForeignKey(d => d.RecipeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Recipe_has_Direction_Recipe");
-            });
-
-            modelBuilder.Entity<RecipeHasIngredient>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("Recipe_has_Ingredients");
-
-                entity.Property(e => e.IngredientId).HasColumnName("ingredient_id");
-
-                entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
-
-                entity.HasOne(d => d.Ingredient)
-                    .WithMany()
-                    .HasForeignKey(d => d.IngredientId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Recipe_has_Ingredients_Ingredient");
-
-                entity.HasOne(d => d.Recipe)
-                    .WithMany()
-                    .HasForeignKey(d => d.RecipeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Recipe_has_Ingredients_Recipe");
             });
 
             modelBuilder.Entity<RecipeHasTag>(entity =>
