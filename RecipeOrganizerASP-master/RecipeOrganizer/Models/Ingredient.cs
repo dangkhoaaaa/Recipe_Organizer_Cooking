@@ -7,5 +7,8 @@ namespace RecipeOrganizer.Models
     {
         public int IngredientId { get; set; }
         public string IngredientName { get; set; } = null!;
+        public int RecipeId { get; set; }
+
+        public virtual Recipe Recipe { get; set; } = null!;
     }
 }

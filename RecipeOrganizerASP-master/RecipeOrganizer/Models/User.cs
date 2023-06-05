@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace RecipeOrganizer.Models
 {
@@ -13,8 +14,13 @@ namespace RecipeOrganizer.Models
         }
 
         public int UserId { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "User Required")]
+        [StringLength(25, ErrorMessage = "Username cannot exceed {1} characters.")]
         public string Username { get; set; } = null!;
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Password Required")]
+        [StringLength(25, ErrorMessage = "Password cannot exceed {1} characters.")]
         public string Password { get; set; } = null!;
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Email Required")]
         public string Email { get; set; } = null!;
         public string? FirstName { get; set; }
         public string? LastName { get; set; }

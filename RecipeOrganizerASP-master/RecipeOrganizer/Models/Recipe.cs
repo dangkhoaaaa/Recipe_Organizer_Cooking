@@ -8,6 +8,8 @@ namespace RecipeOrganizer.Models
         public Recipe()
         {
             Collections = new HashSet<Collection>();
+            Directions = new HashSet<Direction>();
+            Ingredients = new HashSet<Ingredient>();
             MetaData = new HashSet<Metadata>();
         }
 
@@ -19,6 +21,8 @@ namespace RecipeOrganizer.Models
         public string Status { get; set; } = null!;
 
         public virtual ICollection<Collection> Collections { get; set; }
+        public virtual ICollection<Direction> Directions { get; set; }
+        public virtual ICollection<Ingredient> Ingredients { get; set; }
         public virtual ICollection<Metadata> MetaData { get; set; }
     }
 }

@@ -78,19 +78,18 @@ namespace RecipeOrganizer.Controllers
         [HttpPost]
         public ActionResult Login(User user)
         {
-            
             var username = user.Username;
             var password = user.Password;
             var userCheck = _context.Users.SingleOrDefault(x => x.Username.Equals(username)
                                                     && x.Password.Equals(password));
             if (userCheck != null)
             {
-                //Session["User"] = userCheck;
+               // Session["User"] = userCheck;
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                ViewBag.LoginFail = "Login fail, not valid username or password";
+                ViewBag.LoginFail = "Login fail. Invalid username or password";
                 return View("Login");
             }
         }
