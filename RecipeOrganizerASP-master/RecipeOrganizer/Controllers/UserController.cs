@@ -48,6 +48,7 @@ namespace RecipeOrganizer.Controllers
         [HttpGet]
         public ActionResult Register()
         {
+            //kojijijiji
             return View();
         }
 
