@@ -3,11 +3,10 @@
     "",
     "\\RecipeOrganizerASP-master",
     "\\RecipeOrganizerASP-master\\RecipeOrganizer",
-    "\\RecipeOrganizerASP-master\\RecipeOrganizer\\Models",
+    "\\RecipeOrganizerASP-master\\RecipeOrganizer\\Controllers",
     "\\RecipeOrganizerASP-master\\RecipeOrganizer\\Views",
-    "\\RecipeOrganizerASP-master\\RecipeOrganizer\\Views\\Home",
-    "\\RecipeOrganizerASP-master\\RecipeOrganizer\\Views\\Shared"
+    "\\RecipeOrganizerASP-master\\RecipeOrganizer\\Views\\User"
   ],
-  "SelectedNode": "\\RecipeOrganizerASP-master\\RecipeOrganizer\\Views\\Home\\Index.cshtml",
+  "SelectedNode": "\\RecipeOrganizerASP-master\\RecipeOrganizer.sln",
   "PreviewInSolutionExplorer": false
 }
