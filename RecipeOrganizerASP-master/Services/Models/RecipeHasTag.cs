@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RecipeOrganizer.Models
+namespace Services.Models
 {
     public partial class RecipeHasTag
     {
