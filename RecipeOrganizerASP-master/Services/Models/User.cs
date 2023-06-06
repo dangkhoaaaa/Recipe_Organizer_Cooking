@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace RecipeOrganizer.Models
+namespace Services.Models
 {
     public partial class User
     {

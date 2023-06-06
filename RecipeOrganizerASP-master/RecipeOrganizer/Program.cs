@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RecipeOrganizer.Data;
-using RecipeOrganizer.Models;
+using Services.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

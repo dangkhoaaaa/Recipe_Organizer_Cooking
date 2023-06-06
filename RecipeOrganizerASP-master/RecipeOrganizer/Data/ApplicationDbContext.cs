@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using RecipeOrganizer.Models;
 
 namespace RecipeOrganizer.Data
 {

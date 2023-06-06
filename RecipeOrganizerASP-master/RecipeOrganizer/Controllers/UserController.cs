@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using RecipeOrganizer.Models;
+using Services.Models;
 
 namespace RecipeOrganizer.Controllers
 {
@@ -57,6 +57,7 @@ namespace RecipeOrganizer.Controllers
         {
             user.Status = true;
             user.Role = "Admin";
+            user.Email = "test";
             _context.Users.Add(user);
             _context.SaveChanges();
             return RedirectToAction("Login");
