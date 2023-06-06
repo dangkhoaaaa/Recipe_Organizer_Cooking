@@ -1,0 +1,174 @@
+﻿@model RecipeOrganizer.Models.Recipe
+
+@{
+	ViewBag.Title = "Add new recipe";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+
+
+	@using (Html.BeginForm("AddNewRecipe", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
+	{
+		@Html.LabelFor(m => m.Title)
+		@Html.TextBoxFor(m => m.Title, new { required = "required" })
+		@Html.ValidationMessageFor(m => m.Title)
+
+		<br />
+
+		@Html.LabelFor(m => m.Description)
+		@Html.TextAreaFor(m => m.Description, new { required = "required" })
+		@Html.ValidationMessageFor(m => m.Description)
+
+		<br />
+
+		@Html.LabelFor(m => m.Ingredients)
+		@Html.TextAreaFor(m => m.Ingredients, new { required = "required" })
+		@Html.ValidationMessageFor(m => m.Ingredients)
+
+		<br />
+
+		@Html.LabelFor(m => m.Directions)
+		@Html.TextAreaFor(m => m.Directions, new { required = "required" })
+		@Html.ValidationMessageFor(m => m.Directions)
+
+		<br />
+
+		<input type="submit" value="Add Recipe" />
+	}
+
+
+
+	<div id="page-title" class="padding-tb-30px gradient-white">
+		<div class="container">
+			<ol class="breadcrumb opacity-5">
+				<li><a href="#">Home</a></li>
+				<li><a href="#">Add Recipe</a></li>
+			</ol>
+			<h1 class="font-weight-300">Add Recipe</h1>
+		</div>
+	</div>
+	<form>
+		<div class="container">
+			<div class="margin-tb-20px full-width">
+				<h4 class="padding-lr-10px padding-tb-10px background-white box-shadow border-radius-10">
+					<i class="far fa-list-alt margin-right-10px text-main-color"></i>Basic Informations
+				</h4>
+				<div class="padding-10px padding-bottom-10px background-white border-radius-10">
+
+					<div class="row">
+						<div class="col-md-8">
+							<div class="form-group margin-bottom-10px">
+								<label><i class="far fa-list-alt margin-right-10px"></i> Recipe Title</label>
+								<input type="text" class="form-control form-control-sm" id="ListingTitle"
+									   placeholder="Give your recipe a title">
+							</div>
+							<div class="margin-bottom-10px">
+								<label><i class="far fa-list-alt margin-right-10px"></i> Description</label>
+								<textarea class="form-control"
+										  placeholder="Share the story behind your recipe and what makes it special."
+										  id="exampleTextarea" rows="8"></textarea>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="formLayout__uploadContent form-group margin-bottom-10px">
+								<div class="formLayoutPhotoUpload">
+									<div class="formLayout__uploadLabel">
+										<label>
+											<i class="far fa-list-alt margin-right-10px"></i> Photo
+											(optional)
+										</label><br>
+									</div>
+									<input id="imageURL" class="formLayoutPhotoUpload__uniqueId js--uploadedPhotoId"
+										   name="imageURL" type="hidden">
+									<div class="formLayoutPhotoUpload__uploadedImage js--uploadedImage">
+									</div>
+									<input aria-labelledby="photoUploadFileAdd photoUploadFileMain"
+										   aria-describedby="uploadSectionDescription" type="file" id="photoUploadFile"
+										   class="formLayoutPhotoUpload__uploadInput js--fileInput" accept="image/*">
+								</div>
+							</div>
+
+							<div class="margin-top-40px form-group margin-bottom-10px">
+								<p>
+									Use JPEG or PNG. Must be at least 960 x 960.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="margin-bottom-20px full-width">
+				<h4 class="padding-lr-10px padding-tb-10px background-white box-shadow border-radius-10">
+					<i class="far fa-list-alt margin-right-10px text-main-color"></i>Ingredients
+				</h4>
+				<div class="padding-10px padding-bottom-10px background-white border-radius-10">
+					<div class="margin-bottom-10px">
+						<label><i class="far fa-flag margin-right-10px"></i> Add multiple ingredients</label><br>
+						<p>
+							Paste your ingredient list here. Add one ingredient per line. Include the quantity (i.e.
+							cups,
+							tablespoons) and any special preparation (i.e. sifted, softened, chopped).
+						</p>
+						<textarea class="form-control" placeholder="Example:
+2 cups of flour, sifted
+1 cup sugar
+2 tablespoons butter, softened" id="exampleTextarea" rows="8"></textarea>
+					</div>
+
+					<img src="">
+				</div>
+			</div>
+			<div class="margin-bottom-20px full-width">
+				<h4 class="padding-lr-10px padding-tb-10px background-white box-shadow border-radius-10">
+					<i class="far fa-list-alt margin-right-10px text-main-color"></i>Directions
+				</h4>
+				<div class="padding-10px padding-bottom-10px background-white border-radius-10">
+					<div class="margin-bottom-10px">
+						<label><i class="far fa-flag margin-right-10px"></i> Add multiple steps</label><br>
+						<p>
+							Explain how to make your recipe, including oven temperatures, baking or cooking times, and
+							pan
+							sizes, etc. Use optional headers to organize the different parts of the recipe (i.e. Prep,
+							Bake,
+							Decorate).
+						</p>
+						<p>
+							Enter your direction steps here. Add one step per line. Press ‘enter’ or ‘return’ to start a
+							new
+							step line. Include oven temperatures, baking or cooking times, and pan sizes, etc.
+						</p>
+						<textarea class="form-control" placeholder="Example:
+Combine all dry ingredients in a large bowl. Set aside.
+Combine all wet ingredients in a small bowl. Fold gently in with the dry ingredients" id="exampleTextarea"
+								  rows="8"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="form-group margin-bottom-20px">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group margin-bottom-20px">
+							<label><i class="far fa-flag margin-right-10px"></i> Tags</label>
+							<input type="text" class="form-control form-control-sm" id="ListingKeywords"
+								   placeholder="Enter a comma after each tag">
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="text-center">
+				<a href="#"
+				   class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">
+					Save
+					draft
+				</a>
+				<a href="#"
+				   class="btn btn-lg border-2  ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">Public</a>
+			</div>
+
+		</div>
+	</form>
+
+</body>
