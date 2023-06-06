@@ -51,7 +51,7 @@ namespace RecipeOrganizer.Controllers
             return RedirectToAction("Login", "User");
         }
 
-        /*
+		/*
         [HttpPost]
         public ActionResult Login(User user)
         {
@@ -81,7 +81,15 @@ namespace RecipeOrganizer.Controllers
             return RedirectToAction("Login", "Home");
         }
         */
-        public IActionResult Privacy()
+
+        // Add new Recipe
+		[HttpGet]
+		public ActionResult AddNewRecipe()
+		{
+			return RedirectToAction("AddNewRecipe", "Recipe");
+		}
+
+		public IActionResult Privacy()
         {
             return View();
         }
