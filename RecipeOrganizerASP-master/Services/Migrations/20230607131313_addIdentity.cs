@@ -124,27 +124,6 @@ namespace Services.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    user_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    username = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    password = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    email = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
-                    first_name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    last_name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    birthday = table.Column<DateTime>(type: "datetime", nullable: true),
-                    avatar = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
-                    role = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
-                    status = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.user_id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -251,6 +230,25 @@ namespace Services.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MealPlanning",
+                columns: table => new
+                {
+                    plan_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    user_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    week_start_date = table.Column<DateTime>(type: "datetime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MealPlanning", x => x.plan_id);
+                    table.ForeignKey(
+                        name: "FK_MealPlanning_User",
+                        column: x => x.user_id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Category",
                 columns: table => new
                 {
@@ -268,6 +266,30 @@ namespace Services.Migrations
                         column: x => x.parent_id,
                         principalTable: "Parent_Category",
                         principalColumn: "parent_id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Collection",
+                columns: table => new
+                {
+                    collection_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    user_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    recipe_id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Collection", x => x.collection_id);
+                    table.ForeignKey(
+                        name: "FK_Collection_Recipe1",
+                        column: x => x.recipe_id,
+                        principalTable: "Recipe",
+                        principalColumn: "recipe_id");
+                    table.ForeignKey(
+                        name: "FK_Collection_User",
+                        column: x => x.user_id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -310,76 +332,12 @@ namespace Services.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Recipe_has_Tags",
-                columns: table => new
-                {
-                    recipe_id = table.Column<int>(type: "int", nullable: false),
-                    tag_id = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.ForeignKey(
-                        name: "FK_Recipe_has_Tags_Recipe",
-                        column: x => x.recipe_id,
-                        principalTable: "Recipe",
-                        principalColumn: "recipe_id");
-                    table.ForeignKey(
-                        name: "FK_Recipe_has_Tags_Tag",
-                        column: x => x.tag_id,
-                        principalTable: "Tag",
-                        principalColumn: "tag_id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Collection",
-                columns: table => new
-                {
-                    collection_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    user_id = table.Column<int>(type: "int", nullable: false),
-                    recipe_id = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Collection", x => x.collection_id);
-                    table.ForeignKey(
-                        name: "FK_Collection_Recipe1",
-                        column: x => x.recipe_id,
-                        principalTable: "Recipe",
-                        principalColumn: "recipe_id");
-                    table.ForeignKey(
-                        name: "FK_Collection_User",
-                        column: x => x.user_id,
-                        principalTable: "User",
-                        principalColumn: "user_id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MealPlanning",
-                columns: table => new
-                {
-                    plan_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    user_id = table.Column<int>(type: "int", nullable: false),
-                    week_start_date = table.Column<DateTime>(type: "datetime", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MealPlanning", x => x.plan_id);
-                    table.ForeignKey(
-                        name: "FK_MealPlanning_User",
-                        column: x => x.user_id,
-                        principalTable: "User",
-                        principalColumn: "user_id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MetaData",
                 columns: table => new
                 {
                     metadata_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    user_id = table.Column<int>(type: "int", nullable: true),
+                    user_id = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     recipe_id = table.Column<int>(type: "int", nullable: true),
                     media_id = table.Column<int>(type: "int", nullable: true),
                     feedback_id = table.Column<int>(type: "int", nullable: true)
@@ -405,8 +363,48 @@ namespace Services.Migrations
                     table.ForeignKey(
                         name: "FK_MetaData_User",
                         column: x => x.user_id,
-                        principalTable: "User",
-                        principalColumn: "user_id");
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Recipe_has_Tags",
+                columns: table => new
+                {
+                    recipe_id = table.Column<int>(type: "int", nullable: false),
+                    tag_id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.ForeignKey(
+                        name: "FK_Recipe_has_Tags_Recipe",
+                        column: x => x.recipe_id,
+                        principalTable: "Recipe",
+                        principalColumn: "recipe_id");
+                    table.ForeignKey(
+                        name: "FK_Recipe_has_Tags_Tag",
+                        column: x => x.tag_id,
+                        principalTable: "Tag",
+                        principalColumn: "tag_id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Day",
+                columns: table => new
+                {
+                    day_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    plan_id = table.Column<int>(type: "int", nullable: false),
+                    day_of_week = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Day", x => x.day_id);
+                    table.ForeignKey(
+                        name: "FK_Day_MealPlanning",
+                        column: x => x.plan_id,
+                        principalTable: "MealPlanning",
+                        principalColumn: "plan_id");
                 });
 
             migrationBuilder.CreateTable(
@@ -428,25 +426,6 @@ namespace Services.Migrations
                         column: x => x.recipe_id,
                         principalTable: "Recipe",
                         principalColumn: "recipe_id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Day",
-                columns: table => new
-                {
-                    day_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    plan_id = table.Column<int>(type: "int", nullable: false),
-                    day_of_week = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Day", x => x.day_id);
-                    table.ForeignKey(
-                        name: "FK_Day_MealPlanning",
-                        column: x => x.plan_id,
-                        principalTable: "MealPlanning",
-                        principalColumn: "plan_id");
                 });
 
             migrationBuilder.CreateTable(
@@ -661,9 +640,6 @@ namespace Services.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Feedback");
 
             migrationBuilder.DropTable(
@@ -691,7 +667,7 @@ namespace Services.Migrations
                 name: "MealPlanning");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "AspNetUsers");
         }
     }
 }

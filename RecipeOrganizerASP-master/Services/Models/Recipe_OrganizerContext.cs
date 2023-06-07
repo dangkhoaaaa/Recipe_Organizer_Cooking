@@ -9,7 +9,7 @@ using Services.Models.Authentication;
 namespace Services.Models
     //Services.Models.Recipe_OrganizerContext
 {
-	public partial class Recipe_OrganizerContext : IdentityDbContext<IdentityUser>
+	public partial class Recipe_OrganizerContext : IdentityDbContext<AppUser>
     {
         public Recipe_OrganizerContext()
         {
@@ -36,7 +36,7 @@ namespace Services.Models
         public virtual DbSet<Session> Sessions { get; set; } = null!;
         public virtual DbSet<SessionHasRecipe> SessionHasRecipes { get; set; } = null!;
         public virtual DbSet<Tag> Tags { get; set; } = null!;
-        public virtual DbSet<User> Users { get; set; } = null!;
+        //public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -406,53 +406,53 @@ namespace Services.Models
                     .IsFixedLength();
             });
 
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.ToTable("User");
+            //modelBuilder.Entity<User>(entity =>
+            //{
+            //    entity.ToTable("User");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
+            //    entity.Property(e => e.UserId).HasColumnName("user_id");
 
-                entity.Property(e => e.Avatar)
-                    .HasMaxLength(200)
-                    .IsUnicode(false)
-                    .HasColumnName("avatar");
+            //    entity.Property(e => e.Avatar)
+            //        .HasMaxLength(200)
+            //        .IsUnicode(false)
+            //        .HasColumnName("avatar");
 
-                entity.Property(e => e.Birthday)
-                    .HasColumnType("datetime")
-                    .HasColumnName("birthday");
+            //    entity.Property(e => e.Birthday)
+            //        .HasColumnType("datetime")
+            //        .HasColumnName("birthday");
 
-                entity.Property(e => e.Email)
-                    .HasMaxLength(100)
-                    .IsUnicode(false)
-                    .HasColumnName("email");
+            //    entity.Property(e => e.Email)
+            //        .HasMaxLength(100)
+            //        .IsUnicode(false)
+            //        .HasColumnName("email");
 
-                entity.Property(e => e.FirstName)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("first_name");
+            //    entity.Property(e => e.FirstName)
+            //        .HasMaxLength(50)
+            //        .IsUnicode(false)
+            //        .HasColumnName("first_name");
 
-                entity.Property(e => e.LastName)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("last_name");
+            //    entity.Property(e => e.LastName)
+            //        .HasMaxLength(50)
+            //        .IsUnicode(false)
+            //        .HasColumnName("last_name");
 
-                entity.Property(e => e.Password)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("password");
+            //    entity.Property(e => e.Password)
+            //        .HasMaxLength(50)
+            //        .IsUnicode(false)
+            //        .HasColumnName("password");
 
-                entity.Property(e => e.Role)
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("role");
+            //    entity.Property(e => e.Role)
+            //        .HasMaxLength(20)
+            //        .IsUnicode(false)
+            //        .HasColumnName("role");
 
-                entity.Property(e => e.Status).HasColumnName("status");
+            //    entity.Property(e => e.Status).HasColumnName("status");
 
-                entity.Property(e => e.Username)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("username");
-            });
+            //    entity.Property(e => e.Username)
+            //        .HasMaxLength(50)
+            //        .IsUnicode(false)
+            //        .HasColumnName("username");
+            //});
 
 
             OnModelCreatingPartial(modelBuilder);

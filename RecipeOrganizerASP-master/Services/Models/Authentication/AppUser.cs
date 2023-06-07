@@ -9,6 +9,8 @@ namespace Services.Models.Authentication
 {
     public class AppUser : IdentityUser
     {
-        public bool Status { get; set; }
+        public virtual ICollection<Collection> Collections { get; set; }
+        public virtual ICollection<MealPlanning> MealPlannings { get; set; }
+        public virtual ICollection<Metadata> MetaData { get; set; }
     }
 }

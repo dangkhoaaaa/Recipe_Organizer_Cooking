@@ -74,71 +74,6 @@ namespace Services.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -220,6 +155,71 @@ namespace Services.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Services.Models.Authentication.AppUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
             modelBuilder.Entity("Services.Models.Category", b =>
                 {
                     b.Property<int>("CategoryId")
@@ -266,8 +266,9 @@ namespace Services.Migrations
                         .HasColumnType("int")
                         .HasColumnName("recipe_id");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("user_id");
 
                     b.HasKey("CollectionId");
@@ -413,8 +414,9 @@ namespace Services.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlanId"), 1L, 1);
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("user_id");
 
                     b.Property<DateTime>("WeekStartDate")
@@ -474,8 +476,8 @@ namespace Services.Migrations
                         .HasColumnType("int")
                         .HasColumnName("recipe_id");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int")
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("user_id");
 
                     b.HasKey("MetadataId");
@@ -661,74 +663,6 @@ namespace Services.Migrations
                     b.ToTable("Tag", (string)null);
                 });
 
-            modelBuilder.Entity("Services.Models.User", b =>
-                {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
-
-                    b.Property<string>("Avatar")
-                        .HasMaxLength(200)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(200)")
-                        .HasColumnName("avatar");
-
-                    b.Property<DateTime?>("Birthday")
-                        .HasColumnType("datetime")
-                        .HasColumnName("birthday");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("email");
-
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("first_name");
-
-                    b.Property<string>("LastName")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("last_name");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("password");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("role");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit")
-                        .HasColumnName("status");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("username");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("User", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -740,7 +674,7 @@ namespace Services.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Services.Models.Authentication.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -749,7 +683,7 @@ namespace Services.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Services.Models.Authentication.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -764,7 +698,7 @@ namespace Services.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Services.Models.Authentication.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -773,7 +707,7 @@ namespace Services.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Services.Models.Authentication.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -799,7 +733,7 @@ namespace Services.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Collection_Recipe1");
 
-                    b.HasOne("Services.Models.User", "User")
+                    b.HasOne("Services.Models.Authentication.AppUser", "User")
                         .WithMany("Collections")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -845,7 +779,7 @@ namespace Services.Migrations
 
             modelBuilder.Entity("Services.Models.MealPlanning", b =>
                 {
-                    b.HasOne("Services.Models.User", "User")
+                    b.HasOne("Services.Models.Authentication.AppUser", "User")
                         .WithMany("MealPlannings")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -871,7 +805,7 @@ namespace Services.Migrations
                         .HasForeignKey("RecipeId")
                         .HasConstraintName("FK_MetaData_Recipe");
 
-                    b.HasOne("Services.Models.User", "User")
+                    b.HasOne("Services.Models.Authentication.AppUser", "User")
                         .WithMany("MetaData")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK_MetaData_User");
@@ -953,6 +887,15 @@ namespace Services.Migrations
                     b.Navigation("Session");
                 });
 
+            modelBuilder.Entity("Services.Models.Authentication.AppUser", b =>
+                {
+                    b.Navigation("Collections");
+
+                    b.Navigation("MealPlannings");
+
+                    b.Navigation("MetaData");
+                });
+
             modelBuilder.Entity("Services.Models.Day", b =>
                 {
                     b.Navigation("Sessions");
@@ -985,15 +928,6 @@ namespace Services.Migrations
                     b.Navigation("Directions");
 
                     b.Navigation("Ingredients");
-
-                    b.Navigation("MetaData");
-                });
-
-            modelBuilder.Entity("Services.Models.User", b =>
-                {
-                    b.Navigation("Collections");
-
-                    b.Navigation("MealPlannings");
 
                     b.Navigation("MetaData");
                 });
