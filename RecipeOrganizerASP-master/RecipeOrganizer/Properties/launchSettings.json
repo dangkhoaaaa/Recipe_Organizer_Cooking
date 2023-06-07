@@ -24,12 +24,6 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
-  },
-  "MailSettings": {
-    "Mail": "recipeorganizert3@gmail.com",
-    "DisplayName": "RECIPE_ORGANIZER",
-    "Password": "recipeorganizer",
-    "Host": "smtp.gmail.com",
-    "Port": 587
   }
+  
 }

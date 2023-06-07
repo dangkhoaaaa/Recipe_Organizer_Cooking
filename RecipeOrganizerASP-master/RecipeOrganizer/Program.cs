@@ -34,7 +34,6 @@ builder.Services.AddOptions();                                        // Kích h
 var mailsettings = builder.Configuration.GetSection("MailSettings");  // đọc config
 builder.Services.Configure<MailSettings>(mailsettings);               // đăng ký để Inject
 builder.Services.AddTransient<IEmailSender, SendMailService>();        // Đăng ký dịch vụ Mail
-
 //identity
 builder.Services.Configure<IdentityOptions>(options =>
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -8,7 +9,7 @@ using Services.Models.Authentication;
 namespace Services.Models
     //Services.Models.Recipe_OrganizerContext
 {
-	public partial class Recipe_OrganizerContext : IdentityDbContext<AppUser>
+	public partial class Recipe_OrganizerContext : IdentityDbContext<IdentityUser>
     {
         public Recipe_OrganizerContext()
         {
@@ -458,14 +459,7 @@ namespace Services.Models
             // Bỏ tiền tố AspNet của các bảng: mặc định các bảng trong IdentityDbContext có
             // tên với tiền tố AspNet như: AspNetUserRoles, AspNetUser ...
             // Đoạn mã sau chạy khi khởi tạo DbContext, tạo database sẽ loại bỏ tiền tố đó
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-            {
-                var tableName = entityType.GetTableName();
-                if (tableName.StartsWith("AspNet"))
-                {
-                    entityType.SetTableName(tableName.Substring(6));
-                }
-            }
+            
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
