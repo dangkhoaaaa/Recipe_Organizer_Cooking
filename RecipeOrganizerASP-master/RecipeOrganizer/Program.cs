@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using RecipeOrganizer.Data;
 using Services.Models;
+using Services.Models.Authentication;
 using Services.Services;
 using System.Configuration;
 
@@ -14,9 +15,13 @@ builder.Services.AddDbContext<Recipe_OrganizerContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-												.AddEntityFrameworkStores<Recipe_OrganizerContext>()
-												.AddDefaultTokenProviders();
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                                                .AddEntityFrameworkStores<Recipe_OrganizerContext>()
+                                                .AddDefaultTokenProviders();
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+//												.AddEntityFrameworkStores<Recipe_OrganizerContext>()
+//												.AddDefaultTokenProviders();
 
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //                                                .AddEntityFrameworkStores<Recipe_OrganizerContext>()
@@ -62,8 +67,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 	options.Cookie.HttpOnly = true;
 	options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-	options.LoginPath = "/Identity/Account/Login";
-	options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+	options.LoginPath = "/login";
+    options.LogoutPath = "/logout";
+	options.AccessDeniedPath = "/access-denied";
 	options.SlidingExpiration = true;
 });
 

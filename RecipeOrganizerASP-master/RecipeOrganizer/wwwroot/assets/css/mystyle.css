@@ -2,6 +2,9 @@
 .max-width-set {
     max-width: 100%;
 }
+.header ul.white-link > li > a {
+    opacity: 1;
+}
 
 /* Mobile Devices (up to 576px) */
 @media only screen and (max-width: 576px) {
