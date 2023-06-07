@@ -12,7 +12,7 @@ using Services.Models;
 namespace Services.Migrations
 {
     [DbContext(typeof(Recipe_OrganizerContext))]
-    [Migration("20230606142408_addIdentity")]
+    [Migration("20230607131313_addIdentity")]
     partial class addIdentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,7 +48,7 @@ namespace Services.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -73,7 +73,7 @@ namespace Services.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaims", (string)null);
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -98,18 +98,16 @@ namespace Services.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserClaims", (string)null);
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -122,7 +120,7 @@ namespace Services.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserLogins", (string)null);
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -137,7 +135,7 @@ namespace Services.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles", (string)null);
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -146,19 +144,17 @@ namespace Services.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("UserTokens", (string)null);
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("Services.Models.Authentication.AppUser", b =>
@@ -206,9 +202,6 @@ namespace Services.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -226,7 +219,7 @@ namespace Services.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Services.Models.Category", b =>
@@ -275,8 +268,9 @@ namespace Services.Migrations
                         .HasColumnType("int")
                         .HasColumnName("recipe_id");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("user_id");
 
                     b.HasKey("CollectionId");
@@ -422,8 +416,9 @@ namespace Services.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlanId"), 1L, 1);
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("user_id");
 
                     b.Property<DateTime>("WeekStartDate")
@@ -483,8 +478,8 @@ namespace Services.Migrations
                         .HasColumnType("int")
                         .HasColumnName("recipe_id");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int")
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("user_id");
 
                     b.HasKey("MetadataId");
@@ -670,74 +665,6 @@ namespace Services.Migrations
                     b.ToTable("Tag", (string)null);
                 });
 
-            modelBuilder.Entity("Services.Models.User", b =>
-                {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
-
-                    b.Property<string>("Avatar")
-                        .HasMaxLength(200)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(200)")
-                        .HasColumnName("avatar");
-
-                    b.Property<DateTime?>("Birthday")
-                        .HasColumnType("datetime")
-                        .HasColumnName("birthday");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("email");
-
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("first_name");
-
-                    b.Property<string>("LastName")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("last_name");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("password");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("role");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit")
-                        .HasColumnName("status");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("username");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("User", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -808,7 +735,7 @@ namespace Services.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Collection_Recipe1");
 
-                    b.HasOne("Services.Models.User", "User")
+                    b.HasOne("Services.Models.Authentication.AppUser", "User")
                         .WithMany("Collections")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -854,7 +781,7 @@ namespace Services.Migrations
 
             modelBuilder.Entity("Services.Models.MealPlanning", b =>
                 {
-                    b.HasOne("Services.Models.User", "User")
+                    b.HasOne("Services.Models.Authentication.AppUser", "User")
                         .WithMany("MealPlannings")
                         .HasForeignKey("UserId")
                         .IsRequired()
@@ -880,7 +807,7 @@ namespace Services.Migrations
                         .HasForeignKey("RecipeId")
                         .HasConstraintName("FK_MetaData_Recipe");
 
-                    b.HasOne("Services.Models.User", "User")
+                    b.HasOne("Services.Models.Authentication.AppUser", "User")
                         .WithMany("MetaData")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK_MetaData_User");
@@ -962,6 +889,15 @@ namespace Services.Migrations
                     b.Navigation("Session");
                 });
 
+            modelBuilder.Entity("Services.Models.Authentication.AppUser", b =>
+                {
+                    b.Navigation("Collections");
+
+                    b.Navigation("MealPlannings");
+
+                    b.Navigation("MetaData");
+                });
+
             modelBuilder.Entity("Services.Models.Day", b =>
                 {
                     b.Navigation("Sessions");
@@ -994,15 +930,6 @@ namespace Services.Migrations
                     b.Navigation("Directions");
 
                     b.Navigation("Ingredients");
-
-                    b.Navigation("MetaData");
-                });
-
-            modelBuilder.Entity("Services.Models.User", b =>
-                {
-                    b.Navigation("Collections");
-
-                    b.Navigation("MealPlannings");
 
                     b.Navigation("MetaData");
                 });
