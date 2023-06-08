@@ -133,7 +133,7 @@ namespace RecipeOrganizer.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        $"You have been register in Recipe Organizer app. <br> Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

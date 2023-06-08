@@ -7,21 +7,23 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Services.Models.Authentication;
 
 namespace RecipeOrganizer.Areas.Identity.Pages.Account
 {
     public class ForgotPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IEmailSender _emailSender;
 
-        public ForgotPasswordModel(UserManager<IdentityUser> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<AppUser> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
@@ -48,6 +50,12 @@ namespace RecipeOrganizer.Areas.Identity.Pages.Account
             [EmailAddress]
             public string Email { get; set; }
         }
+
+        //public async Task<IActionResult> OnGetAsync()
+        //{
+           
+        //    return Page();
+        //}
 
         public async Task<IActionResult> OnPostAsync()
         {
