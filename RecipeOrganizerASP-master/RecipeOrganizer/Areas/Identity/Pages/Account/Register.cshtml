@@ -5,7 +5,7 @@
 }
 
 
-<div id="page-title" class="padding-tb-30px gradient-white text-center">
+    <div id="page-title" class="padding-tb-30px gradient-white text-center">
         <div class="container">
             <ol class="breadcrumb opacity-5">
                 <li><a href=@Url.Action("Index", "Home")>Home</a></li>
@@ -39,13 +39,19 @@
                     </div>
                     <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
                 </form>
-
-
-                    <div class="or"></div>
-
-                    <a href="#" class="btn btn-md bg-facebook full-width btn-icon-left"><i class="fab fa-facebook margin-right-8px" aria-hidden="true"></i> Register with Facebook</a>
-
-                    <a href="#" class="btn btn-md border-grey-2 full-width btn-icon-left margin-top-8px margin-bottom-10px"><i class="fab fa-google margin-right-8px" aria-hidden="true"></i> Register with Google</a>
+                <div class="or"></div>
+                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                    <div>
+                        <p>
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Register using your @provider.DisplayName account">Register with @provider.DisplayName</button>
+                            }
+                        </p>
+                    </div>
+                </form>
+                <a href="#" class="btn btn-md bg-facebook full-width btn-icon-left"><i class="fab fa-facebook margin-right-8px" aria-hidden="true"></i> Register with Facebook</a>
+                <a href="#" class="btn btn-md border-grey-2 full-width btn-icon-left margin-top-8px margin-bottom-10px"><i class="fab fa-google margin-right-8px" aria-hidden="true"></i> Register with Google</a>
             </div>
         </div>
     </div>
