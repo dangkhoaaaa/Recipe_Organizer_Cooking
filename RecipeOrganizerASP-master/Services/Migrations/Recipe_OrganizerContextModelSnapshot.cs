@@ -255,13 +255,6 @@ namespace Services.Migrations
 
             modelBuilder.Entity("Services.Models.Collection", b =>
                 {
-                    b.Property<int>("CollectionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("collection_id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CollectionId"), 1L, 1);
-
                     b.Property<int>("RecipeId")
                         .HasColumnType("int")
                         .HasColumnName("recipe_id");
@@ -270,8 +263,6 @@ namespace Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("user_id");
-
-                    b.HasKey("CollectionId");
 
                     b.HasIndex("RecipeId");
 
@@ -728,13 +719,13 @@ namespace Services.Migrations
             modelBuilder.Entity("Services.Models.Collection", b =>
                 {
                     b.HasOne("Services.Models.Recipe", "Recipe")
-                        .WithMany("Collections")
+                        .WithMany()
                         .HasForeignKey("RecipeId")
                         .IsRequired()
                         .HasConstraintName("FK_Collection_Recipe1");
 
                     b.HasOne("Services.Models.Authentication.AppUser", "User")
-                        .WithMany("Collections")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .IsRequired()
                         .HasConstraintName("FK_Collection_User");
@@ -889,8 +880,6 @@ namespace Services.Migrations
 
             modelBuilder.Entity("Services.Models.Authentication.AppUser", b =>
                 {
-                    b.Navigation("Collections");
-
                     b.Navigation("MealPlannings");
 
                     b.Navigation("MetaData");
@@ -923,8 +912,6 @@ namespace Services.Migrations
 
             modelBuilder.Entity("Services.Models.Recipe", b =>
                 {
-                    b.Navigation("Collections");
-
                     b.Navigation("Directions");
 
                     b.Navigation("Ingredients");

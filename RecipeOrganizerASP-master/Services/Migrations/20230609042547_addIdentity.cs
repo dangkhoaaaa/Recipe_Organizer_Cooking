@@ -272,14 +272,11 @@ namespace Services.Migrations
                 name: "Collection",
                 columns: table => new
                 {
-                    collection_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     user_id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     recipe_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Collection", x => x.collection_id);
                     table.ForeignKey(
                         name: "FK_Collection_Recipe1",
                         column: x => x.recipe_id,

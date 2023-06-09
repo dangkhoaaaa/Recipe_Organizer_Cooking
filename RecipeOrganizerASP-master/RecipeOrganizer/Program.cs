@@ -58,21 +58,45 @@ builder.Services.Configure<IdentityOptions>(options =>
     // Cấu hình đăng nhập.
     options.SignIn.RequireConfirmedEmail = true;            // Cấu hình xác thực địa chỉ email (email phải tồn tại)
     options.SignIn.RequireConfirmedPhoneNumber = false;     // Xác thực số điện thoại
-    options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedAccount = true;
 });
 
-//builder.Services.ConfigureApplicationCookie(options =>
-//{
-//	// Cookie settings
-//	options.Cookie.HttpOnly = true;
-//	options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-//	options.LoginPath = "/login";
-//    options.LogoutPath = "/logout";
-//	options.AccessDeniedPath = "/access-denied";
-//	options.SlidingExpiration = true;
-//});
+    options.LoginPath = "/login";
+    options.LogoutPath = "/logout";
+    options.AccessDeniedPath = "/access-denied";
+    options.SlidingExpiration = true;
+});
 
+////cấu hình login google, facebook
+builder.Services.AddAuthentication()
+//.AddMicrosoftAccount(microsoftOptions => { ... })   // thêm provider Microsoft và cấu hình
+.AddGoogle(googleOptions =>
+{
+    // Đọc thông tin Authentication:Google từ appsettings.json
+    IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
+
+    // Thiết lập ClientID và ClientSecret để truy cập API google
+    googleOptions.ClientId = googleAuthNSection["ClientId"];
+    googleOptions.ClientSecret = googleAuthNSection["ClientSecret"];
+    // Cấu hình Url callback lại từ Google (không thiết lập thì mặc định là /signin-google)
+    googleOptions.CallbackPath = "/signin-google";
+
+}).AddFacebook(facebookOptions => {
+    // Đọc cấu hình
+    IConfigurationSection facebookAuthNSection = builder.Configuration.GetSection("Authentication:Facebook");
+    facebookOptions.AppId = facebookAuthNSection["AppId"];
+    facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
+    // Thiết lập đường dẫn Facebook chuyển hướng đến
+    facebookOptions.CallbackPath = "/signin-facebook";
+}) ;                // thêm provider Google và cấu hình
+//	//.AddTwitter(twitterOptions => { ... })              // thêm provider Twitter và cấu hình
+//	.AddFacebook(facebookOptions => { ... });           // thêm provider Facebook và cấu hình
 
 
 //app build

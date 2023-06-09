@@ -77,22 +77,22 @@ namespace Services.Models
 
             modelBuilder.Entity<Collection>(entity =>
             {
-                entity.ToTable("Collection");
+                entity.HasNoKey();
 
-                entity.Property(e => e.CollectionId).HasColumnName("collection_id");
+                entity.ToTable("Collection");
 
                 entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.HasOne(d => d.Recipe)
-                    .WithMany(p => p.Collections)
+                    .WithMany()
                     .HasForeignKey(d => d.RecipeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Collection_Recipe1");
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.Collections)
+                    .WithMany()
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Collection_User");

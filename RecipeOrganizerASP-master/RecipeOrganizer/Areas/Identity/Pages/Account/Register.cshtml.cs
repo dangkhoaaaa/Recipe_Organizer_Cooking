@@ -3,6 +3,7 @@
 #nullable disable
 
 using System;
+using System.Web;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -30,9 +31,12 @@ namespace RecipeOrganizer.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<AppUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+		private readonly IWebHostEnvironment _environment;
 
-        public RegisterModel(
-            UserManager<AppUser> userManager,
+
+		public RegisterModel (
+            IWebHostEnvironment environment,
+			UserManager<AppUser> userManager,
             IUserStore<AppUser> userStore,
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
@@ -44,7 +48,8 @@ namespace RecipeOrganizer.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-        }
+			_environment = environment;
+		}
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -132,9 +137,16 @@ namespace RecipeOrganizer.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"You have been register in Recipe Organizer app. <br> Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"You have been register in Recipe Organizer app. <br> Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"\r\n<tr>\r\n  <td align='center' bgcolor='#e9ecef'>\r\n\r\n    <table border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width: 600px;'>\r\n      <tr>\r\n        <td align='left' bgcolor='#ffffff' style='padding: 36px 24px 0; font-family: Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;'>\r\n          <h1 style='margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;'>Welcome to Recipe Organizer App!</h1>\r\n        </td>\r\n      </tr>\r\n    </table>\r\n\r\n  </td>\r\n</tr>\r\n\r\n<tr>\r\n  <td align='center' bgcolor='#e9ecef'>\r\n\r\n    <table border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width: 600px;'>\r\n\r\n\r\n      <tr>\r\n        <td align='left' bgcolor='#ffffff' style='padding: 24px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;'>\r\n          <p style='margin: 0;'>You have been registered in the Recipe Organizer app. Please confirm your account by clicking the button below:\r\n        </td>\r\n      </tr>\r\n\r\n\r\n      <tr>\r\n        <td align='left' bgcolor='#ffffff'>\r\n          <table border='0' cellpadding='0' cellspacing='0' width='100%'>\r\n            <tr>\r\n              <td align='center' bgcolor='#ffffff' style='padding: 12px;'>\r\n                <table border='0' cellpadding='0' cellspacing='0'>\r\n                  <tr>\r\n                    <td align='center' bgcolor='#1a82e2' style='border-radius: 6px;'>\r\n                      <a href='{HtmlEncoder.Default.Encode(callbackUrl)}' class='btn btn-primary' style='padding: 16px 36px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px; background-color: #ff472f; border-color: #ffffff; font-weight: bold;'>\r\n                        Click here\r\n                      </a>\r\n                    </td>\r\n                  </tr>\r\n                </table>\r\n              </td>\r\n            </tr>\r\n          </table>\r\n        </td>\r\n      </tr>\r\n\r\n      <tr>\r\n        <td align='left' bgcolor='#ffffff' style='padding: 24px; font-family:Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;'>\r\n          <p style='margin: 0;'>If that doesn't work, contact to our: <a href='https://sendgrid.com' target='_blank'>Contact</a></p> \r\n        </td>\r\n      </tr>\r\n\r\n      <tr>\r\n        <td align='left' bgcolor='#ffffff' style='padding: 12px 24px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-bottom: 3px solid #d4dadf'>\r\n          <p style='margin: 0;'>Cheers,<br>Recipe Organizer</p>\r\n        </td>\r\n      </tr>\r\n  \r\n\r\n    </table>\r\n\r\n  </td>\r\n</tr>\r\n\r\n<tr>\r\n  <td align='center' bgcolor='#e9ecef' style='padding: 12px 24px;'>\r\n\r\n    <table border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width: 600px;'>\r\n\r\n\r\n      <tr>\r\n        <td align='center' bgcolor='#e9ecef' style='padding: 12px 24px; font-family:  Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;'>\r\n          <p style='margin: 0;'>You received this email because we received a request for verify for your account. If you didn't request registered you can safely delete this email.</p>\r\n        </td>\r\n      </tr>\r\n\r\n      <tr>\r\n        <td align='center' bgcolor='#e9ecef' style='padding: 12px 24px; font-family:  Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;'>\r\n          <p style='margin: 0;'>Thu Duc city, Ho Chi Minh city</p>\r\n        </td>\r\n      </tr>\r\n\r\n    </table>\r\n\r\n  </td>\r\n</tr>\r\n\r\n\r\n</table>\r\n\r\n\r\n</body>\r\n</html>");
+
+                    //string absolutePath = Path.Combine(_environment.ContentRootPath, @"File/confirm-email.txt");
+                    //string text = System.IO.File.ReadAllText(@absolutePath);
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //													@text);
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
