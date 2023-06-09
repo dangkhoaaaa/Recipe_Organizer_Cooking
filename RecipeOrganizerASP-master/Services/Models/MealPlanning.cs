@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using Services.Models.Authentication;
+using System;
 using System.Collections.Generic;
 
 namespace Services.Models
@@ -11,10 +13,10 @@ namespace Services.Models
         }
 
         public int PlanId { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public DateTime WeekStartDate { get; set; }
 
-        public virtual User User { get; set; } = null!;
+        public virtual AppUser User { get; set; } = null!;
         public virtual ICollection<Day> Days { get; set; }
     }
 }

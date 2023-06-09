@@ -1,7 +1,11 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using RecipeOrganizer.Data;
 using Services.Models;
+using Services.Models.Authentication;
+using Services.Services;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,10 +15,67 @@ builder.Services.AddDbContext<Recipe_OrganizerContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<Recipe_OrganizerContext>();
-builder.Services.AddControllersWithViews();
 
+builder.Services.AddIdentity<AppUser, IdentityRole>()
+                                                .AddEntityFrameworkStores<Recipe_OrganizerContext>()
+                                                .AddDefaultTokenProviders();
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+//												.AddEntityFrameworkStores<Recipe_OrganizerContext>()
+//												.AddDefaultTokenProviders();
+
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//                                                .AddEntityFrameworkStores<Recipe_OrganizerContext>()
+//                                                .AddDefaultTokenProviders();
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
+//add mail
+builder.Services.AddOptions();                                        // Kích hoạt Options
+var mailsettings = builder.Configuration.GetSection("MailSettings");  // đọc config
+builder.Services.Configure<MailSettings>(mailsettings);               // đăng ký để Inject
+builder.Services.AddTransient<IEmailSender, SendMailService>();        // Đăng ký dịch vụ Mail
+//identity
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Thiết lập về Password
+    options.Password.RequireDigit = false; // Không bắt phải có số
+    options.Password.RequireLowercase = false; // Không bắt phải có chữ thường
+    options.Password.RequireNonAlphanumeric = false; // Không bắt ký tự đặc biệt
+    options.Password.RequireUppercase = false; // Không bắt buộc chữ in
+    options.Password.RequiredLength = 3; // Số ký tự tối thiểu của password
+    options.Password.RequiredUniqueChars = 1; // Số ký tự riêng biệt
+
+    // Cấu hình Lockout - khóa user
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // Khóa 5 phút
+    options.Lockout.MaxFailedAccessAttempts = 5; // Thất bại 5 lầ thì khóa
+    options.Lockout.AllowedForNewUsers = true;
+
+    // Cấu hình về User.
+    options.User.AllowedUserNameCharacters = // các ký tự đặt tên user
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+    options.User.RequireUniqueEmail = true;  // Email là duy nhất
+
+    // Cấu hình đăng nhập.
+    options.SignIn.RequireConfirmedEmail = true;            // Cấu hình xác thực địa chỉ email (email phải tồn tại)
+    options.SignIn.RequireConfirmedPhoneNumber = false;     // Xác thực số điện thoại
+    options.SignIn.RequireConfirmedAccount = false;
+});
+
+//builder.Services.ConfigureApplicationCookie(options =>
+//{
+//	// Cookie settings
+//	options.Cookie.HttpOnly = true;
+//	options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+//	options.LoginPath = "/login";
+//    options.LogoutPath = "/logout";
+//	options.AccessDeniedPath = "/access-denied";
+//	options.SlidingExpiration = true;
+//});
+
+
+
+//app build
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -12,7 +12,7 @@
     <meta name="keywords" content="recipes food, recipes , chinese food, italian food">
     <meta name="description" content="Recipe Organizer - Food & Recipes Food">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/sass/mystyle.css" />
+    <link rel="stylesheet" href="~/assets/css/mystyle.css" />
     <!-- google fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,800%7CPoppins:100,200,300i,300,400,700,400i,500%7CDancing+Script:700" rel="stylesheet">
     <!-- animate -->
@@ -46,10 +46,10 @@
                     <div class="row">
                         <div class="col-lg-2 col-md-12">
                             <a id="logo" href=@Url.Action("Index", "Home") class="navbar-brand recipe-logo"><img src="~/assets/img/logo-color-01-01.png" alt="Recipe Organizer"></a>
-                            <a class="mobile-toggle padding-13px background-main-color" href="#"><i class="fas fa-bars"></i></a>
+                            <a class="mobile-toggle padding-10px background-main-color" href="#"><i class="fas fa-bars"></i></a>
 
                         </div>
-                        <div class="col-lg-8 col-md-12 position-inherit">
+                        <div class="col-lg-7 col-md-12 position-inherit">
                             <ul id="menu-main" class="white-link dropdown-dark text-lg-center nav-menu link-padding-tb-25px">
                                 <li class="">
                                     @Html.ActionLink("HOME", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
@@ -90,10 +90,8 @@
                                 <li><a href="page-contact-us.html">CONTACT US</a></li>
                             </ul>
                         </div>
-                        <div class="col-lg-2 col-md-12 d-none d-lg-block">
-                            <hr class="margin-bottom-0px d-block d-sm-none">
-                            <a href="add-recipe.html" class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-22px text-extra-large"><i class="fas fa-plus"></i></a>
-                            <a href="@Url.Action("Login", "Home")" class="text-white ba-1 box-shadow float-right padding-lr-27px padding-tb-22px text-extra-large"><i class="far fa-user"></i></a>
+                        <div class="col-lg-3 col-md-12 d-none d-lg-block">
+                            @await Html.PartialAsync("_LoginPartial")
                         </div>
                     </div>
 
