@@ -6,6 +6,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var notice = TempData["ErrorMessage"];
+    var googleLogin = Model.ExternalLogins.FirstOrDefault(login => login.Name == "Google").Name;
+    var facebookLogin = Model.ExternalLogins.FirstOrDefault(login => login.Name == "Facebook").Name;
+    //string googleLogin = Model.ExternalLogins[0].Name;
+    //string facebookLogin = Model.ExternalLogins[1].Name;
+
 }
 
 
@@ -18,6 +23,7 @@
         <div class="container">
             <ol class="breadcrumb opacity-5">
                 <li><a href=@Url.Action("Index", "Home")>Home</a></li>
+                <span>>></span>
                 <li class="active">Login Page</li>
             </ol>
             <h1 class="font-weight-300">Login Page</h1>
@@ -31,14 +37,14 @@
             <div class="form-output">
                 <form id="account" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-floating mb-3">
+                    <label asp-for="Input.Email" class="form-label"></label>
+                    <div class="mb-3">
                         <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                        <label asp-for="Input.Email" class="form-label"></label>
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
-                    <div class="form-floating mb-3">
+                    <label asp-for="Input.Password" class="form-label"></label>
+                    <div class="mb-3">
                         <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
-                        <label asp-for="Input.Password" class="form-label"></label>
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
                     
@@ -53,10 +59,10 @@
                         </div>
 
                         <button type="submit" class="btn btn-md btn-primary full-width" style="margin-top:12px;padding: 10px;">Login</button>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                        <a id="resend-confirm-email" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
                 </form>
                 <div class="or text-center" style="margin-top:0px; margin-bottom:0px;">or</div>
-                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                @*<form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
                     <div>
                         <p>
                             @foreach (var provider in Model.ExternalLogins!)
@@ -65,12 +71,37 @@
                             }
                         </p>
                     </div>
+                </form>*@
+                <style>
+                    .google-login-button:hover {
+                        background-color: #c53d32; /* Background color on hover */
+                    }
+
+                    .facebook-login-button:hover {
+                        background-color: #324e86; /* Background color on hover */
+                    }
+                </style>
+                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+
+                    @if(!string.IsNullOrEmpty(googleLogin))
+                    {
+                        <button type="submit" class="google-login-button btn btn-md bg-google full-width btn-icon-left" name="provider" value="@googleLogin" title="Log in using your @googleLogin account" style="background-color: #db4437;color: #ffffff; margin-top:20px; margin-bottom:6px;">
+                            <i class="fab fa-google margin-right-8px" aria-hidden="true"></i>Login with @googleLogin
+                        </button>
+                    }
+
+                    @if (!string.IsNullOrEmpty(googleLogin))
+                    {
+                        <button type="submit" class="facebook-login-button btn btn-md bg-facebook full-width btn-icon-left" name="provider" value="@facebookLogin" title="Log in using your @facebookLogin account" style="margin-top:6px; margin-bottom:10px;">
+                            <i class="fab fa-facebook margin-right-8px" aria-hidden="true"></i>Login with @facebookLogin
+                        </button>
+                    }
                 </form>
-                <a href="#" class="btn btn-md bg-facebook full-width btn-icon-left"><i class="fab fa-facebook margin-right-8px" aria-hidden="true"></i> Login with Facebook</a>
-                <a href="#" class="btn btn-md border-grey-2 full-width btn-icon-left margin-top-8px margin-bottom-10px"><i class="fab fa-google margin-right-8px" aria-hidden="true"></i> Login with Google</a>
+                @*<a href="#" class="btn btn-md bg-facebook full-width btn-icon-left"><i class="fab fa-facebook margin-right-8px" aria-hidden="true"></i> Login with Facebook</a>
+                <a href="#" class="btn btn-md border-grey-2 full-width btn-icon-left margin-top-8px margin-bottom-10px"><i class="fab fa-google margin-right-8px" aria-hidden="true"></i> Login with Google</a>*@
                 <p>Don't you have an account?  <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register now!</a> </p>
             </div>
         </div>
-        </div>
+    </div>
 </body>
 

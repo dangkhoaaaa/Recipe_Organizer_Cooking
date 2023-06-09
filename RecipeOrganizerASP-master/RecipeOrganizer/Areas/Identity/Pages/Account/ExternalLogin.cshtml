@@ -28,7 +28,8 @@
 <div id="page-title" class="padding-tb-30px gradient-white text-center">
 	<div class="container">
 		<ol class="breadcrumb opacity-5">
-			<li><a href=@Url.Action("Index", "Home")>Home</a></li>
+            <li><a href=@Url.Action("Index", "Home")>Home</a></li>
+            <span>>></span>
 			<li class="active">Register</li>
 		</ol>
 		<h1 class="font-weight-300">Associate your @Model.ProviderDisplayName account.</h1>
@@ -47,9 +48,8 @@
             <form asp-page-handler ="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <label asp-for="Input.Email" class="form-label"></label>
-                <div class="form-floating">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="email" style="padding-top: 1.625rem;
-                                                                                                    padding-bottom: 1.625rem;" />
+                <div class="g">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="email" style="" />
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
                 <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
