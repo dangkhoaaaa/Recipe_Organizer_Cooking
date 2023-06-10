@@ -12,7 +12,7 @@ namespace RecipeOrganizer.Controllers
 
         public SearchController(RecipeRepository context)
        {
-            _recipeRepository = context;
+            _recipeRepository = context;  
         }
 
         // GET: Search/SearchKeyWord
