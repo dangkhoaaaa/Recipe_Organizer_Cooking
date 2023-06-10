@@ -9,5 +9,9 @@ namespace Services.Repository
 {
 	public class TagRepository : RepositoryBase<Tag>
 	{
+		public Tag? GetByName(string tagName)
+		{
+			return _dbSet.FirstOrDefault(t => t.TagName == tagName);
+		}
 	}
 }

@@ -5,13 +5,6 @@ namespace Services.Models
 {
     public partial class Recipe
     {
-        public Recipe()
-        {
-            Directions = new HashSet<Direction>();
-            Ingredients = new HashSet<Ingredient>();
-            MetaData = new HashSet<Metadata>();
-        }
-
         public int RecipeId { get; set; }
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;

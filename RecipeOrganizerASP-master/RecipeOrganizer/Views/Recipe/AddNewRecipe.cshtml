@@ -1,5 +1,4 @@
-﻿@model Services.Models.Recipe
-
+﻿@model Services.Data.RecipeData
 
 @{
 	ViewBag.Title = "Add new recipe";
@@ -7,39 +6,6 @@
 }
 
 <body>
-
-
-	@using (Html.BeginForm("AddNewRecipe", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
-	{
-		@Html.LabelFor(m => m.Title)
-		@Html.TextBoxFor(m => m.Title, new { required = "required" })
-		@Html.ValidationMessageFor(m => m.Title)
-
-		<br />
-
-		@Html.LabelFor(m => m.Description)
-		@Html.TextAreaFor(m => m.Description, new { required = "required" })
-		@Html.ValidationMessageFor(m => m.Description)
-
-		<br />
-
-		@Html.LabelFor(m => m.Ingredients)
-		@Html.TextAreaFor(m => m.Ingredients, new { required = "required" })
-		@Html.ValidationMessageFor(m => m.Ingredients)
-
-		<br />
-
-		@Html.LabelFor(m => m.Directions)
-		@Html.TextAreaFor(m => m.Directions, new { required = "required" })
-		@Html.ValidationMessageFor(m => m.Directions)
-
-		<br />
-
-		<input type="submit" value="Add Recipe" />
-	}
-
-
-
 	<div id="page-title" class="padding-tb-30px gradient-white">
 		<div class="container">
 			<ol class="breadcrumb opacity-5">
@@ -49,7 +15,8 @@
 			<h1 class="font-weight-300">Add Recipe</h1>
 		</div>
 	</div>
-	<form>
+	@using (Html.BeginForm("AddNewRecipe", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
+	{
 		<div class="container">
 			<div class="margin-tb-20px full-width">
 				<h4 class="padding-lr-10px padding-tb-10px background-white box-shadow border-radius-10">
@@ -61,14 +28,13 @@
 						<div class="col-md-8">
 							<div class="form-group margin-bottom-10px">
 								<label><i class="far fa-list-alt margin-right-10px"></i> Recipe Title</label>
-								<input type="text" class="form-control form-control-sm" id="ListingTitle"
-									   placeholder="Give your recipe a title">
+								@Html.TextBoxFor(m => m.Title, new { @class="form-control form-control-sm", placeholder="Give your recipe a title", required = "required" })
+								@Html.ValidationMessageFor(m => m.Title)
 							</div>
 							<div class="margin-bottom-10px">
 								<label><i class="far fa-list-alt margin-right-10px"></i> Description</label>
-								<textarea class="form-control"
-										  placeholder="Share the story behind your recipe and what makes it special."
-										  id="exampleTextarea" rows="8"></textarea>
+								@Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Share the story behind your recipe and what makes it special.", @rows = "8" })
+
 							</div>
 						</div>
 						<div class="col-md-4">
@@ -80,6 +46,24 @@
 											(optional)
 										</label><br>
 									</div>
+									<div class="formLayoutPhotoUpload">
+										<div class="formLayout__uploadLabel">
+											<label>
+												<i class="far fa-list-alt margin-right-10px"></i> Photo (optional)
+											</label><br>
+										</div>
+										<div class="formLayoutPhotoUpload__uploadedImage js--uploadedImage">
+											@*@if (Model.FilePath != null)
+											{
+												<img src="@Model.FilePath" alt="Uploaded Image">
+											}*@
+										</div>
+										<input type="hidden" asp-for="FilePath" class="form-control" />
+										@*<input type="file" asp-for="ImageFile" class="formLayoutPhotoUpload__uploadInput js--fileInput" accept="image/*">*@
+									</div>
+
+
+
 									<input id="imageURL" class="formLayoutPhotoUpload__uniqueId js--uploadedPhotoId"
 										   name="imageURL" type="hidden">
 									<div class="formLayoutPhotoUpload__uploadedImage js--uploadedImage">
@@ -112,10 +96,8 @@
 							cups,
 							tablespoons) and any special preparation (i.e. sifted, softened, chopped).
 						</p>
-						<textarea class="form-control" placeholder="Example:
-2 cups of flour, sifted
-1 cup sugar
-2 tablespoons butter, softened" id="exampleTextarea" rows="8"></textarea>
+						@Html.TextAreaFor(m => m.IngredientsInput, new { @class = "form-control", placeholder = "Example:\r\n2 cups of flour, sifted\r\n1 cup sugar\r\n2 tablespoons butter, softened", @rows = "8" })
+
 					</div>
 
 					<img src="">
@@ -140,10 +122,8 @@
 							new
 							step line. Include oven temperatures, baking or cooking times, and pan sizes, etc.
 						</p>
-						<textarea class="form-control" placeholder="Example:
-Combine all dry ingredients in a large bowl. Set aside.
-Combine all wet ingredients in a small bowl. Fold gently in with the dry ingredients" id="exampleTextarea"
-								  rows="8"></textarea>
+						@Html.TextAreaFor(m => m.DirectionsInput, new { @class = "form-control", placeholder = "Example:\r\nCombine all dry ingredients in a large bowl. Set aside.\r\nCombine all wet ingredients in a small bowl.\r\nFold gently in with the dry ingredients.", @rows = "8" })
+
 					</div>
 				</div>
 			</div>
@@ -152,24 +132,24 @@ Combine all wet ingredients in a small bowl. Fold gently in with the dry ingredi
 					<div class="col-md-6">
 						<div class="form-group margin-bottom-20px">
 							<label><i class="far fa-flag margin-right-10px"></i> Tags</label>
-							<input type="text" class="form-control form-control-sm" id="ListingKeywords"
-								   placeholder="Enter a comma after each tag">
+							@Html.TextBoxFor(m => m.TagsInput, new { @class = "form-control", placeholder="Enter a comma after each tag" })
+
 						</div>
 					</div>
 
 				</div>
 			</div>
 			<div class="text-center">
-				<a href="#"
-				   class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">
-					Save
-					draft
-				</a>
-				<a href="#"
-				   class="btn btn-lg border-2  ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">Public</a>
-			</div>
+				<button type="submit" name="Status" value="Draft" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">
+					Save draft
+				</button>
+				<button type="submit" name="Status" value="Public" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">
+					Public
+				</button>
 
+				<a href="@Url.Action("Index", "Recipe")" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">Cancel</a>
+			</div>
 		</div>
-	</form>
+	}
 
 </body>

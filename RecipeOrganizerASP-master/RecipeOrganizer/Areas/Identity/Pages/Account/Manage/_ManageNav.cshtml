@@ -1,8 +1,8 @@
-@inject SignInManager<IdentityUser> SignInManager
+@inject SignInManager<AppUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
-<ul class="nav nav-pills flex-column">
+@*<ul class="nav nav-pills flex-column">
     <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
@@ -12,4 +12,32 @@
     }
     <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
-</ul>
+</ul>*@
+        <style>
+            .nav-item {
+                padding-top:16px;
+                padding-bottom:16px;
+                font-size:16px;
+            }
+        </style>
+        <div class="padding-30px padding-bottom-30px background-white border-radius-10">
+            <ul>
+                <li style="padding-top:16px; padding-bottom:16px; font-size:16px;"><a href="user-profile.html" class="nav-link active">Personal Info</a></li>
+        <li style="padding-top:16px; padding-bottom:16px; font-size:16px;"><a href="user-change-password.html" class="nav-link">Change Password </a></li>
+        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a href="user-collections.html" class="nav-link">Saved Recipes & Collections</a></li>
+        <li style="padding-top:16px;padding-bottom:16px; font-size:16px;"><a href="user-noRecipes.html" class="nav-link">All Personal Recipes </a></li>
+        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a href="user-reviews.html" class="nav-link">Reviews</a></li>
+
+                <li>tách ra</li>
+
+                <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
+                <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
+                <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
+                @if (hasExternalLogins)
+                {
+                    <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
+                }
+                <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
+                <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
+            </ul>                   
+        </div>

@@ -1,11 +1,10 @@
-﻿@page
+﻿@page "resend-confirm-email"
 @model ResendEmailConfirmationModel
 @{
     ViewData["Title"] = "Resend email confirmation";
 }
 
-<h1>@ViewData["Title"]</h1>
-<h2>Enter your email.</h2>
+@*<h2>Enter your email.</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -20,7 +19,34 @@
         </form>
     </div>
 </div>
+*@
+<div id="page-title" class="padding-tb-30px gradient-white text-center">
+	<div class="container">
+		<ol class="breadcrumb opacity-5">
+			<li><a href=@Url.Action("Index", "Home")>Home</a></li><span>>></span>
+			<li class="active">@ViewData["Title"]</li>
+		</ol>
+		<h1 class="font-weight-300">@ViewData["Title"]</h1>
+	</div>
+</div>
 
+<div class="container margin-bottom-100px">
+	<div id="log-in" class="site-form log-in-form box-shadow border-radius-10">
+
+		<div class="form-output">
+            <form method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <label asp-for="Input.Email" class="form-label"></label>
+
+                <div class="">
+                    <input asp-for="Input.Email" class="form-control" aria-required="true" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Resend</button>
+            </form>
+		</div>
+	</div>
+</div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
