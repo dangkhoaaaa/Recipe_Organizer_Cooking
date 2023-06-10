@@ -12,7 +12,7 @@ namespace Services
     public class RepositoryBase<T> where T : class
     {
         Recipe_OrganizerContext _context;
-        DbSet<T> _dbSet;
+		protected DbSet<T> _dbSet;
 
         public RepositoryBase()
         {
