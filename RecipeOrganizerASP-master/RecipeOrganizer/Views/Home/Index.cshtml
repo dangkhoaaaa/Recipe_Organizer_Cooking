@@ -4,7 +4,7 @@
 
 <main>
     <div class="banner padding-tb-20px background-overlay" style="background-image: url('https://images.hdqwalls.com/download/raspberry-good-fruit-plant-4k-um-1600x900.jpg'); ">
-        >
+        
         <div class="container">
 
             <div class="padding-tb-120px z-index-2 position-relative">
@@ -16,15 +16,15 @@
                     <div class="row justify-content-center margin-tb-60px">
                         <div class="col-lg-8">
                             <div class="listing-search">
-                                <form class="row no-gutters">
+                                <form asp-action="/Search/SearchKeyWord" class="row no-gutters"  method="get">
                                     <div class="col-md-8">
                                         <div class="keywords">
-                                            <input class="listing-form first max-width-set" type="text" placeholder="Keywords..." value="">
+                                            <input class="listing-form first max-width-set" type="text" placeholder="Keywords...." value="" name="keyword">
                                         </div>
                                     </div>
 
                                     <div class="col-md-4">
-                                        <a class="listing-bottom background-second-color box-shadow" href="#">Search Now</a>
+                                        <button class="listing-bottom background-second-color box-shadow" >Search Now</button>
                                     </div>
                                 </form>
                             </div>

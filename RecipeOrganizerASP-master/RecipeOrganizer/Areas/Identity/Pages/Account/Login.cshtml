@@ -1,0 +1,76 @@
+﻿@page "/login"
+@model LoginModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var notice = TempData["ErrorMessage"];
+}
+
+
+<body>
+    @if(TempData.ContainsKey("ErrorMessage"))
+    {
+        <partial name="/Areas/Identity/Pages/Account/_StatusMessage.cshtml" model="notice"/>
+    }
+    <div id="page-title" class="padding-tb-30px gradient-white text-center">
+        <div class="container">
+            <ol class="breadcrumb opacity-5">
+                <li><a href=@Url.Action("Index", "Home")>Home</a></li>
+                <li class="active">Login Page</li>
+            </ol>
+            <h1 class="font-weight-300">Login Page</h1>
+        </div>
+    </div>
+
+
+    <div class="container margin-bottom-100px">
+        <!--======= log_in_page =======-->
+        <div id="log-in" class="site-form log-in-form box-shadow border-radius-10">
+            <div class="form-output">
+                <form id="account" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                        <label asp-for="Input.Email" class="form-label"></label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
+                        <label asp-for="Input.Password" class="form-label"></label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                    
+                        <div class="remember">
+                            <div class="checkbox ml-4">
+                                <label asp-for="Input.RememberMe" class="form-label">
+                                    <input class="form-check-input" asp-for="Input.RememberMe" />
+                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                </label>
+                            </div>
+                            <a class="forgot" id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-md btn-primary full-width" style="margin-top:12px;padding: 10px;">Login</button>
+                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                </form>
+                <div class="or text-center" style="margin-top:0px; margin-bottom:0px;">or</div>
+                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                    <div>
+                        <p>
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">Login with @provider.DisplayName</button>
+                            }
+                        </p>
+                    </div>
+                </form>
+                <a href="#" class="btn btn-md bg-facebook full-width btn-icon-left"><i class="fab fa-facebook margin-right-8px" aria-hidden="true"></i> Login with Facebook</a>
+                <a href="#" class="btn btn-md border-grey-2 full-width btn-icon-left margin-top-8px margin-bottom-10px"><i class="fab fa-google margin-right-8px" aria-hidden="true"></i> Login with Google</a>
+                <p>Don't you have an account?  <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register now!</a> </p>
+            </div>
+        </div>
+        </div>
+</body>
+

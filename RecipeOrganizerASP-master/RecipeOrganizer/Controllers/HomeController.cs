@@ -27,17 +27,21 @@ namespace RecipeOrganizer.Controllers
             return RedirectToAction("Register", "User");
         }
 
-        //HTTP get /Home/Register
-        //[HttpPost]
-        //public ActionResult Register(User user)
-        //{
-        //    user.Status = true;
-        //    user.Role = "Admin";
-        //    db.Users.Add(user);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Login");
-        //}
-
+		//HTTP get /Home/Register
+		//[HttpPost]
+		//public ActionResult Register(User user)
+		//{
+		//    user.Status = true;
+		//    user.Role = "Admin";
+		//    db.Users.Add(user);
+		//    db.SaveChanges();
+		//    return RedirectToAction("Login");
+		//}
+		[HttpGet]
+		public ActionResult Search()
+        {
+            return RedirectToAction("SearchKeyWord", "Search");
+        }
 
         //HTTP post /Home/Login
         [HttpGet]
@@ -51,7 +55,7 @@ namespace RecipeOrganizer.Controllers
             return RedirectToAction("Login", "User");
         }
 
-        /*
+		/*
         [HttpPost]
         public ActionResult Login(User user)
         {
@@ -81,7 +85,15 @@ namespace RecipeOrganizer.Controllers
             return RedirectToAction("Login", "Home");
         }
         */
-        public IActionResult Privacy()
+
+        // Add new Recipe
+		[HttpGet]
+		public ActionResult AddNewRecipe()
+		{
+			return RedirectToAction("AddNewRecipe", "Recipe");
+		}
+
+		public IActionResult Privacy()
         {
             return View();
         }

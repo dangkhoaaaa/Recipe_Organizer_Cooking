@@ -1,13 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\RecipeOrganizerASP-master",
-    "\\RecipeOrganizerASP-master\\RecipeOrganizer",
-    "\\RecipeOrganizerASP-master\\RecipeOrganizer\\Models",
-    "\\RecipeOrganizerASP-master\\RecipeOrganizer\\Views",
-    "\\RecipeOrganizerASP-master\\RecipeOrganizer\\Views\\Home",
-    "\\RecipeOrganizerASP-master\\RecipeOrganizer\\Views\\Shared"
+    ""
   ],
-  "SelectedNode": "\\RecipeOrganizerASP-master\\RecipeOrganizer\\Views\\Home\\Index.cshtml",
+  "SelectedNode": "\\RecipeOrganizer.sln",
   "PreviewInSolutionExplorer": false
 }
