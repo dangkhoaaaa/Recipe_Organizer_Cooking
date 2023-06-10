@@ -29,6 +29,7 @@
         </a>
         <div class="dropdown-menu"  style="position: absolute;transform: translate3d(100px, 76px, 0px);top: 0px;left: 0px;will-change: transform;">
             <a class="dropdown-item"  id="manage" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">User Profile</a>
+            <a class="dropdown-item" href="#">Meal planning</a>
             <a class="dropdown-item" href="#">Settings</a>
             <div class="dropdown-divider"></div>
             <form class=" form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
