@@ -16,15 +16,15 @@
                     <div class="row justify-content-center margin-tb-60px">
                         <div class="col-lg-8">
                             <div class="listing-search">
-                                <form asp-action="/Search/SearchKeyWord" class="row no-gutters"  method="get">
+                                <form action="Search/SearchKeyWord" class="row no-gutters"  >
                                     <div class="col-md-8">
-                                        <div class="keywords">
-                                            <input class="listing-form first max-width-set" type="text" placeholder="Keywords...." value="" name="keyword">
-                                        </div>
+                                       
+                                            <input class="listing-form first max-width-set" type="text" placeholder="Keywords...." name="keyword" value="">
+                                       
                                     </div>
 
                                     <div class="col-md-4">
-                                        <button class="listing-bottom background-second-color box-shadow" >Search Now</button>
+                                        <button type="submit" class="listing-bottom background-second-color box-shadow" >Search Now</button>
                                     </div>
                                 </form>
                             </div>
