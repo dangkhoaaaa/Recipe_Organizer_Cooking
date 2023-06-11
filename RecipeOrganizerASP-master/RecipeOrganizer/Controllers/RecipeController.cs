@@ -123,7 +123,7 @@ namespace RecipeOrganizer.Controllers
 
 								RecipeHasTag recipeHasTag = new RecipeHasTag
 								{
-									RecipeId = recipe.RecipeId,
+									RecipeId = data.RecipeId,
 									TagId = newTag.TagId
 								};
 								_recipeHasTagRepository.Add(recipeHasTag);
