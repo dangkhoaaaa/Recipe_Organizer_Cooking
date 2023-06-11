@@ -94,6 +94,7 @@ builder.Services.AddAuthentication()
     facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
     // Thiết lập đường dẫn Facebook chuyển hướng đến
     facebookOptions.CallbackPath = "/signin-facebook";
+    facebookOptions.AccessDeniedPath = "/access-denied";
 }) ;                // thêm provider Google và cấu hình
 //	//.AddTwitter(twitterOptions => { ... })              // thêm provider Twitter và cấu hình
 //	.AddFacebook(facebookOptions => { ... });           // thêm provider Facebook và cấu hình
