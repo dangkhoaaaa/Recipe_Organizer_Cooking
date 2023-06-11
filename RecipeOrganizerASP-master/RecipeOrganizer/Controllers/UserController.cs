@@ -3,30 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Services.Models;
+//using Microsoft.AspNetCore.Mvc.Rendering;
+//using Microsoft.EntityFrameworkCore;
+//using Services.Models;
 
-namespace RecipeOrganizer.Controllers
-{
-    public class UserController : Controller
-    {
-        private readonly Recipe_OrganizerContext _context;
+//namespace RecipeOrganizer.Controllers
+//{
+//    public class UserController : Controller
+//    {
+//        private readonly Recipe_OrganizerContext _context;
 
-        public UserController(Recipe_OrganizerContext context)
-        {
-            _context = context;
-        }
+//        public UserController(Recipe_OrganizerContext context)
+//        {
+//            _context = context;
+//        }
 
-        public async Task<IActionResult> Index()
-        {
-            return _context.Users != null ?
-                        View(await _context.Users.ToListAsync()) :
-                        Problem("Entity set 'Recipe_OrganizerContext.Users'  is null.");
+//        public async Task<IActionResult> Index()
+//        {
+//            return _context.Users != null ?
+//                        View(await _context.Users.ToListAsync()) :
+//                        Problem("Entity set 'Recipe_OrganizerContext.Users'  is null.");
             
-        }
-    }
-}
+//        }
+//    }
+//}
 
 //        // GET: User
 //        public async Task<IActionResult> Index()
