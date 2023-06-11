@@ -1,0 +1,89 @@
+﻿@{
+	ViewBag.Title = "Search";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<Recipe>
+
+<div id="page-title" class="padding-tb-30px gradient-white text-center">
+
+		<h1 class="font-weight-300">Search Results for: @ViewBag.keyword</h1>
+	
+</div>
+
+
+<div class="container">
+	<div class="margin-bottom-60px">
+		<div class="listing-search box-shadow">
+			<form class="row no-gutters" action="/Search/SearchKeyWord">
+				<div class="col-md-4">
+					<div class="keywords">
+						<input class="listing-form first" type="text" placeholder="Keywords..." value="" name="keyword">
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="categories dropdown">
+						<a class="listing-form d-block text-nowrap" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Categories</a>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+							<button class="dropdown-item text-up-small" type="button">Fish</button>
+							<button class="dropdown-item text-up-small" type="button">Cocktails</button>
+							<button class="dropdown-item text-up-small" type="button">Salads</button>
+							<button class="dropdown-item text-up-small" type="button">Asian</button>
+							<button class="dropdown-item text-up-small" type="button">Fish</button>
+							<button class="dropdown-item text-up-small" type="button">Cocktails</button>
+							<button class="dropdown-item text-up-small" type="button">Salads</button>
+							<button class="dropdown-item text-up-small" type="button">Asian</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<button class="listing-bottom background-second-color box-shadow" type="submit" >Search Now</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<div class="container">
+	<!-- item -->
+	@foreach (var item in Model)
+	{
+
+		<div class="margin-bottom-30px">
+			<div class="background-white thum-hover box-shadow hvr-float full-width">
+				<div class="float-md-left margin-30px thum-xs">
+					<img class="width-150px" src="http://placehold.it/420x335" alt="">
+				</div>
+
+				<div class="padding-25px">
+					<div class="rating">
+						<ul>
+							<li class="active"></li>
+							<li class="active"></li>
+							<li class="active"></li>
+							<li class="active"></li>
+							<li></li>
+						</ul>
+					</div>
+					<h3><a href="#" class="d-block text-dark text-capitalize text-medium margin-tb-15px">@item.Description</a></h3>
+					<hr>
+					<div class="row no-gutters">
+						<div class="col-4 text-left"><a href="#" class="text-red"><i class="far fa-heart"></i> @item.Title</a></div>
+						<div class="col-8 text-right"><a href="#" class="text-grey-2"><i class="fas fa-users"></i> @item.NumberShare</a></div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	}
+	<!-- // item -->
+
+
+
+	<div class="text-center">
+		<a href="#" class="btn box-shadow margin-bottom-80px padding-tb-10px btn-sm border-2 border-radius-30 btn-inline-block width-210px background-dark text-white">Loading more</a>
+	</div>
+
+
+
+</div>
