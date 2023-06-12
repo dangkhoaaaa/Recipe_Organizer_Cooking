@@ -455,6 +455,16 @@ namespace Services.Models
             //});
 
 
+            //foreach (var entityType in builder.Model.GetEntityTypes())
+            //{
+            //    var tableName = entityType.GetTableName();
+            //    if (tableName.StartsWith("AspNet"))
+            //    {
+            //        entityType.SetTableName(tableName.Substring(6));
+            //    }
+            //}
+
+
             OnModelCreatingPartial(modelBuilder);
 
             
