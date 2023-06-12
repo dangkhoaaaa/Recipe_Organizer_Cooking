@@ -12,6 +12,16 @@
         will-change: transform;
     }
 
+    .btn-login:hover {
+        background-color: #645171;
+    }
+
+    .btn-register:hover {
+        background-color: #8e768e;
+    }
+
+
+
 </style>
 
 
@@ -29,6 +39,7 @@
         </a>
         <div class="dropdown-menu"  style="position: absolute;transform: translate3d(100px, 76px, 0px);top: 0px;left: 0px;will-change: transform;">
             <a class="dropdown-item"  id="manage" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">User Profile</a>
+            <a class="dropdown-item" href="#">Meal planning</a>
             <a class="dropdown-item" href="#">Settings</a>
             <div class="dropdown-divider"></div>
             <form class=" form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
@@ -40,6 +51,8 @@
 else
 {
     <hr class="margin-bottom-0px d-block d-sm-none">
-    <a href="/login" class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large" style="font-size:15px;">Login</a>
-    <a href="/register" class="text-white ba-1 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large" style="font-size:15px;">Register</a>
+    <a href="/register" class="text-white ba-1 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large btn-login" style="font-size:15px;">Signup</a>
+    <a href="/login" class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large btn-register" style="font-size:15px;">Login</a>
+
 }
+

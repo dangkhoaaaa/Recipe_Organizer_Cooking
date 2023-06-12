@@ -65,6 +65,15 @@ namespace  RecipeOrganizer.Areas.Identity.Pages.Account.Manage
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
+        /// Recipe luu o dau thi string o do
+        public static string RecipeCollection => "RecipeCollection";
+        public static string PersonalRecipe => "PersonalRecipe";
+        public static string PersonalReview => "PersonalReview";
+
+        public static string RecipeCollectionNavClass(ViewContext viewContext) => PageNavClass(viewContext, RecipeCollection);
+        public static string PersonalRecipeNavClass(ViewContext viewContext) => PageNavClass(viewContext, PersonalRecipe);
+        public static string ReviewNavClass(ViewContext viewContext) => PageNavClass(viewContext, PersonalReview);
+
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         /// <summary>
