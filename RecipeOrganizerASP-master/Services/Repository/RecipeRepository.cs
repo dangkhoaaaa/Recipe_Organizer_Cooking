@@ -37,7 +37,21 @@ namespace Services.Repository
 			return listRecipe;
 		}
 
-        public List<Recipe> getAllRecipe()
+		public List<Recipe> getRecipeByKeywordWitPaging(string keyword,int productPage , int PageSize,List<Recipe> recipeAllSearch)
+		{
+			//var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
+			List<Recipe> listRecipe = new List<Recipe>();
+			int i = 1;
+			foreach (Recipe recipe in recipeAllSearch)
+			{
+				if (recipe.Title.Contains(keyword + "")&& i > ((productPage - 1) * PageSize) && i <= ((productPage - 1) * PageSize) + PageSize) { listRecipe.Add(recipe); }
+				i++;
+			}
+			// return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
+			return listRecipe;
+		}
+
+		public List<Recipe> getAllRecipe()
         {
             //var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
             List<Recipe> listRecipe = new List<Recipe>();
