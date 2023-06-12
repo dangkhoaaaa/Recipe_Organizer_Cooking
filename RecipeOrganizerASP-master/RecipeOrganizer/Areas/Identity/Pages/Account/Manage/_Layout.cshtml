@@ -87,7 +87,7 @@
 
                         </div>
                         <div class="col-lg-7 col-md-12 position-inherit">
-                            <ul id="menu-main" class="white-link dropdown-dark text-lg-center nav-menu link-padding-tb-25px">
+                            <ul id="menu-main" class="white-link dropdown-dark text-lg-center nav-menu link-padding-tb-25px" style="color:white;">
                                 <li class="">
                                     @Html.ActionLink("HOME", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
                                 </li>
@@ -155,7 +155,15 @@
                 <div class="widget widget_categories">
                     <div class="margin-bottom-30px">
                         <h4 class="padding-lr-30px padding-tb-20px background-white box-shadow border-radius-10">
-                            <i class="far fa-user margin-right-10px text-main-color"></i> Hi, @UserManager.GetUserName(User)!
+                            <i class="far fa-user margin-right-10px text-main-color"></i> 
+                            Hi, @if (@UserManager.GetUserName(User).Contains("@gmail.com"))
+                            {
+                                string username = @UserManager.GetUserName(User).Split("@")[0];
+                                <span>@username</span>
+                            } else
+                            {
+                                <span>@UserManager.GetUserName(User)</span>
+                            }
                         </h4>
                         <partial name="_ManageNav" />
                     </div>
