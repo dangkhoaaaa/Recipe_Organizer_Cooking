@@ -27,12 +27,15 @@
         </style>
         <div class="padding-25px padding-bottom-30px background-white border-radius-10">
         <ul class="nav nav-pills flex-column" style="padding-left: 0px">
-                <li style="padding-top:16px; padding-bottom:16px; font-size:16px;"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Personal Info</a></li>
-                <li style="padding-top:16px; padding-bottom:16px; font-size:16px;"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Change Password </a></li>
+                <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Personal Info</a></li>
+                <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Change Password </a></li>
                 <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a  class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Change email</a></li>
                 <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link @ManageNavPages.RecipeCollectionNavClass(ViewContext)">Saved Recipes & Collections</a></li>
-                <li style="padding-top:16px;padding-bottom:16px; font-size:16px;"><a class="nav-link @ManageNavPages.PersonalRecipeNavClass(ViewContext)">All Personal Recipes </a></li>
+                <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link @ManageNavPages.PersonalRecipeNavClass(ViewContext)">All Personal Recipes </a></li>
                 <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link @ManageNavPages.ReviewNavClass(ViewContext)">Reviews</a></li>
+                <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" href="/personal-data">Personal data</a></li>
+               @* <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>*@
+
 
                 @*<li>tách ra</li>
 
