@@ -66,10 +66,10 @@
             <div class="form-output">
                 <form id="account" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <label asp-for="Input.Email" class="form-label"></label>
+                    <label asp-for="Input.UserNameOrEmail" class="form-label"></label>
                     <div class="mb-3">
-                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        <input asp-for="Input.UserNameOrEmail" class="form-control" autocomplete="username" aria-required="true" />
+                        <span asp-validation-for="Input.UserNameOrEmail" class="text-danger"></span>
                     </div>
                     <label asp-for="Input.Password" class="form-label"></label>
                     <div class="mb-3">
