@@ -11,6 +11,7 @@ namespace RecipeOrganizer.Controllers
 {
     public class SearchController : Controller
     {
+		public int PageSize = 8;
 
 		//      private readonly recipe_organizercontext _reciperepository;
 		//private readonly reciperepository _reciperepository1;
@@ -47,20 +48,62 @@ namespace RecipeOrganizer.Controllers
             return View();
         }
 
-        // GET: Search/SearchKeyWord
-        
-        public IActionResult SearchKeyWord(string keyword)
-        {
+		// GET: Search/SearchKeyWord
+
+		//     public IActionResult SearchKeyWord(string keyword, int productPage)
+		//     {
+		//ViewBag.Keyword = keyword;
+		//         List<Recipe> results = null;
+
+		//List<Recipe> recipes = _recipeRepository.getAllRecipe();
+
+		//List<Recipe> resultsend = _recipeRepository.getPaingRecipe(productPage, PageSize);
+
+		//if (keyword != null)
+		//{
+		//             results = _recipeRepository.getRecipeByKeyword(keyword);
+		//}
+
+
+		//         return View(results);
+		//     }
+
+		public IActionResult SearchKeyWord(string keyword, int productPage=1)
+		{
 			ViewBag.Keyword = keyword;
-            List<Recipe> results = _recipeRepository.getRecipeByKeyword(keyword);
-            return View(results);
-        }
+			List<Recipe> results = null;
+
+			List<Recipe> recipesSearchAll = _recipeRepository.getRecipeByKeyword(keyword);
+
+		
+
+			if (keyword != null&& recipesSearchAll.Count()>0)
+			{
+				results = _recipeRepository.getRecipeByKeywordWitPaging(keyword,productPage,PageSize, recipesSearchAll);
+			}
+			else
+			{
+				ViewBag.notfound = "Not Found Recipe";
+			}
+
+
+			return View(new RecipeListDisplayWithPaging
+			{
+				Recipes = results
+					,
+				PagingInfo = new PagingInfo
+				{
+					ItemsPerPage = PageSize,
+					CurrentPage = productPage,
+					TotalItems = recipesSearchAll.Count()
+
+				}
+			});
+		}
 
 
 
-
-
-        [HttpPost]
+		[HttpPost]
         public async Task<IActionResult> SearchKeyWord1()
         {
             //var results = _recipeRepository.getRecipeByKeyword(keyword);
