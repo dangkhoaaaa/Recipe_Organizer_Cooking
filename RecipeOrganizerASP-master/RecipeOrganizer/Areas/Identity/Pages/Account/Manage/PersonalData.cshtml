@@ -1,11 +1,11 @@
-﻿@page
+﻿@page "/personal-data"
 @model PersonalDataModel
 @{
     ViewData["Title"] = "Personal Data";
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-<h3>@ViewData["Title"]</h3>
+@*<h3>@ViewData["Title"]</h3>
 
 <div class="row">
     <div class="col-md-6">
@@ -19,6 +19,26 @@
         <p>
             <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Delete</a>
         </p>
+    </div>
+</div>*@
+
+<div class="row">
+    <div class="col-lg-10 margin-bottom-40px">
+        <div class="box-shadow border-radius-10 overflow-hidden">
+            <div class="padding-30px background-white">
+                <h2>@ViewData["Title"]</h2>
+                <p>Your account contains personal data that you have given us. This page allows you to download data.</p>
+                @*<p>
+                    <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+                </p>*@
+                <form id="download-data" asp-page="DownloadPersonalData" method="post">
+                    <button class="btn btn-primary" type="submit">Download</button>
+                </form>
+                @*<p>
+                    <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Delete</a>
+                </p>*@
+            </div>
+        </div>
     </div>
 </div>
 
