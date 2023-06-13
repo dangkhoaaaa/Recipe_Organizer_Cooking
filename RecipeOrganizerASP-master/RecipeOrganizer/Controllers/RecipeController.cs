@@ -66,36 +66,36 @@ namespace RecipeOrganizer.Controllers
 				// Ingredients
 				if (!string.IsNullOrEmpty(recipe.IngredientsInput))
 				{
-					string[] ingredients = recipe.IngredientsInput.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-					foreach (var ingredientName in ingredients)
-					{
-						Ingredient ingredient = new Ingredient
-						{
-							RecipeId = data.RecipeId,
-							IngredientName = ingredientName
-						};
-						_ingredientRepository.Add(ingredient);
-					}
+					//string[] ingredients = recipe.IngredientsInput.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+					//foreach (var ingredientName in ingredients)
+					//{
+					//	Ingredient ingredient = new Ingredient
+					//	{
+					//		RecipeId = data.RecipeId,
+					//		IngredientName = ingredientName
+					//	};
+					//	_ingredientRepository.Add(ingredient);
+					//}
 
-					//_ingredientRepository.addIngredient(recipe.IngredientsInput, data.RecipeId);
+					_ingredientRepository.addIngredient(recipe.IngredientsInput, data.RecipeId);
 				}
 
 				// Directions
 				if (!string.IsNullOrEmpty(recipe.DirectionsInput))
 				{
-					string[] steps = recipe.DirectionsInput.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-					for (int i = 0; i < steps.Length; i++)
-					{
-						Direction direction = new Direction
-						{
-							RecipeId = data.RecipeId,
-							Step = i + 1,
-							Direction1 = steps[i]
-						};
-						_directionRepository.Add(direction);
-					}
+					//string[] steps = recipe.DirectionsInput.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+					//for (int i = 0; i < steps.Length; i++)
+					//{
+					//	Direction direction = new Direction
+					//	{
+					//		RecipeId = data.RecipeId,
+					//		Step = i + 1,
+					//		Direction1 = steps[i]
+					//	};
+					//	_directionRepository.Add(direction);
+					//}
 
-					//_directionRepository.addDirection(recipe.DirectionsInput, data.RecipeId);
+					_directionRepository.addDirection(recipe.DirectionsInput, data.RecipeId);
 				}
 
 				// Media
