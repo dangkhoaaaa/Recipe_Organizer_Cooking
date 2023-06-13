@@ -9,22 +9,21 @@ namespace Services.Data
 {
 	public class RecipeData
 	{
-	
 		public int RecipeId { get; set; }
 		public string Title { get; set; } = null!;
 		public string Description { get; set; } = null!;
+		public DateTime Date { get; set; }
 		public int NumberShare { get; set; }
 		public string Status { get; set; } = null!;
-
 		public string IngredientsInput { get; set; }
-
+		public List<Ingredient> Ingredients { get; set; }
 		public string DirectionsInput { get; set; }
+		public List<Direction> Directions { get; set; }
 		public string TagsInput { get; set; }
-
+		public List<Tag> Tags { get; set; }
 		public virtual Media FilePath { get; set; }
-
-
-
+		public List<Media> medias { get; set; }
+		public List<Category> categories { get; set; }
 
 	}
 }

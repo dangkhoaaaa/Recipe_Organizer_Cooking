@@ -9,5 +9,25 @@ namespace Services.Repository
 {
 	public class DirectionRepository : RepositoryBase<Direction>
 	{
+		public void addDirection(string directions, int recipeId)
+		{
+			string[] steps = directions.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+			for (int i = 0; i < steps.Length; i++)
+			{
+				Direction direction = new Direction
+				{
+					RecipeId = recipeId,
+					Step = i + 1,
+					Direction1 = steps[i]
+				};
+				_dbSet.Add(direction);
+			}
+		}
+
+		public List<Direction> GetByRecipeId(int recipeId)
+		{
+			return _dbSet.Where(d => d.RecipeId == recipeId).ToList();
+		}
+
 	}
 }
