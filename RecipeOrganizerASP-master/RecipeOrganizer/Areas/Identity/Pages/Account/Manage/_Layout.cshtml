@@ -156,7 +156,7 @@
                     <div class="margin-bottom-30px">
                         <h4 class="padding-lr-30px padding-tb-20px background-white box-shadow border-radius-10">
                             <i class="far fa-user margin-right-10px text-main-color"></i> 
-                            Hi, @if (@UserManager.GetUserName(User).Contains("@gmail.com"))
+                            Hi, @if (@UserManager.GetUserName(User).Contains("@"))
                             {
                                 string username = @UserManager.GetUserName(User).Split("@")[0];
                                 <span>@username</span>
