@@ -30,14 +30,14 @@ namespace RecipeOrganizer.Components
 			_metadataRepository = new MetadataRepository();
 			_mediaRepository = new MediaRepository();
 			_categoryRepository = new CategoryRepository();
-			_userManager = userManager;
+		
 		}
 		public IViewComponentResult Invoke(int productPage = 1)
 		{
 			// lay tat ca list recipe de dem so luong
-		//	List<Category> category = _categoryRepository.GetAll();
-			
-			return View();
+			//List<Category> category21 = _categoryRepository.getListCategoryById(productPage);
+			var categorys = _categoryRepository.getListCategoryById(1);
+			return View(categorys);
 		}
 	}
 }

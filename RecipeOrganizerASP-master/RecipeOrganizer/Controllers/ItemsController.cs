@@ -57,5 +57,76 @@ namespace RecipeOrganizer.Controllers
 
                 );
         }
+
+        public async Task<IActionResult> DisplayCategoryIngredient(int categoryId, int productPage = 1)
+        {
+            // lay tat ca list recipe de dem so luong
+            List<Recipe> recipes = _recipeHasCategoryRepository.getRecipeByCategoryID(categoryId);
+
+            List<Recipe> results = _recipeRepository.getRecipeByCategoryWitPaging(productPage, PageSize, recipes);
+            return View("DisplayRecipe",
+            new RecipeListDisplayWithPaging
+            {
+                Recipes = results
+                    ,
+                PagingInfo = new PagingInfo
+                {
+                    ItemsPerPage = PageSize,
+                    CurrentPage = productPage,
+                    TotalItems = recipes.Count()
+
+                }
+            }
+
+                );
+        }
+
+        public async Task<IActionResult> DisplayCategoryMeal(int categoryId, int productPage = 1)
+        {
+            // lay tat ca list recipe de dem so luong
+            List<Recipe> recipes = _recipeHasCategoryRepository.getRecipeByCategoryID(categoryId);
+
+            List<Recipe> results = _recipeRepository.getRecipeByCategoryWitPaging(productPage, PageSize, recipes);
+            return View("DisplayRecipe",
+            new RecipeListDisplayWithPaging
+            {
+                Recipes = results
+                    ,
+                PagingInfo = new PagingInfo
+                {
+                    ItemsPerPage = PageSize,
+                    CurrentPage = productPage,
+                    TotalItems = recipes.Count()
+
+                }
+            }
+
+                );
+        }
+
+        public async Task<IActionResult> DisplayCategoryOccatision(int categoryId, int productPage = 1)
+        {
+            // lay tat ca list recipe de dem so luong
+            List<Recipe> recipes = _recipeHasCategoryRepository.getRecipeByCategoryID(categoryId);
+
+            List<Recipe> results = _recipeRepository.getRecipeByCategoryWitPaging(productPage, PageSize, recipes);
+            return View("DisplayRecipe",
+            new RecipeListDisplayWithPaging
+            {
+                Recipes = results
+                    ,
+                PagingInfo = new PagingInfo
+                {
+                    ItemsPerPage = PageSize,
+                    CurrentPage = productPage,
+                    TotalItems = recipes.Count()
+
+                }
+            }
+
+                );
+        }
+
+
     }
 }
