@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Services.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Repository
 {
@@ -16,6 +11,12 @@ namespace Services.Repository
 			var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
 			return list;
 		}
+
+		public Recipe GetById(int id)
+		{
+			return _dbSet.Where(r => r.RecipeId == id).FirstOrDefault();
+		}
+
 	}
-	
+
 }
