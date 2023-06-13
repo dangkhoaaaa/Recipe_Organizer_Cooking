@@ -34,7 +34,7 @@ namespace RecipeOrganizer.Controllers
 
 		public IActionResult Index()
 		{
-			return View();
+			return View("Index", "Home");
 		}
 
 		[HttpGet]
@@ -76,6 +76,8 @@ namespace RecipeOrganizer.Controllers
 						};
 						_ingredientRepository.Add(ingredient);
 					}
+
+					//_ingredientRepository.addIngredient(recipe.IngredientsInput, data.RecipeId);
 				}
 
 				// Directions
@@ -92,6 +94,8 @@ namespace RecipeOrganizer.Controllers
 						};
 						_directionRepository.Add(direction);
 					}
+
+					//_directionRepository.addDirection(recipe.DirectionsInput, data.RecipeId);
 				}
 
 				// Media
@@ -113,6 +117,7 @@ namespace RecipeOrganizer.Controllers
 						Filelocation = filePath,
 						Date = DateTime.Now
 					};
+
 					// Save the Media object to the database
 					_mediaRepository.Add(media);
 
@@ -123,6 +128,7 @@ namespace RecipeOrganizer.Controllers
 						MediaId = media.MediaId,
 						UserId = user.Id
 					};
+
 					// Save the Metadata object to the database
 					_metadataRepository.Add(metadata);
 				}
@@ -138,44 +144,33 @@ namespace RecipeOrganizer.Controllers
 				}
 
 				// Tags
-				if (!string.IsNullOrEmpty(recipe.TagsInput))
-				{
-					string[] tags = recipe.TagsInput.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					foreach (string tagName in tags)
-					{
-						// Check if the tag already exists in the Tag table
-						Tag existingTag = _tagRepository.GetByName(tagName.Trim());
-						if (existingTag == null)
-						{
-							// Tag already exists, add a record to RecipeHasTags table
-							RecipeHasTag recipeHasTag = new RecipeHasTag
-							{
-								RecipeId = data.RecipeId,
-								TagId = existingTag.TagId
-							};
-							_recipeHasTagRepository.Add(recipeHasTag);
-						}
-						else
-						{
-							// Tag does not exist, create a new tag and add a record to RecipeHasTags table
-							Tag newTag = new Tag
-							{
-								TagName = tagName.Trim()
-							};
-							_tagRepository.Add(newTag);
 
-							RecipeHasTag recipeHasTag = new RecipeHasTag
-							{
-								RecipeId = data.RecipeId,
-								TagId = newTag.TagId
-							};
-							_recipeHasTagRepository.Add(recipeHasTag);
-						}
-					}
-				}
+				//}
 			}
-			//}
 			return View(recipe);
+		}
+		public ActionResult RecipeDetail(int id)
+		{
+
+			Recipe recipe = _recipeRepository.GetById(id);
+			if (recipe != null)
+			{
+				RecipeData data = new RecipeData();
+				data.Title = recipe.Title;
+				data.Description = recipe.Description;
+				data.Status = recipe.Status;
+				data.Date = recipe.Date;
+				List<Ingredient> ingredient = _ingredientRepository.GetByRecipeId(recipe.RecipeId);
+				data.Ingredients = ingredient;
+				List<Direction> direction = _directionRepository.GetByRecipeId(recipe.RecipeId);
+				data.Directions = direction;
+
+				return View(data);
+			}
+			else
+			{
+				return RedirectToAction("Recipe", "Recipe");
+			}
 		}
 
 		public async Task<IActionResult> EditRecipe(int id)
@@ -183,11 +178,11 @@ namespace RecipeOrganizer.Controllers
 			Recipe recipe = _recipeRepository.GetById(id);
 			if (recipe != null)
 			{
-				return View(recipe);
+				return RedirectToAction("EditRecipe", "Recipe");
 			}
 			else
 			{
-				return RedirectToAction("EditRecipe", "Recipe");
+				return RedirectToAction("Index", "Home");
 			}
 		}
 
@@ -205,12 +200,6 @@ namespace RecipeOrganizer.Controllers
 			}
 		}
 
-		[HttpGet]
-		public ActionResult RecipeDetail(int recipeId)
-		{
 
-
-			return View();
-		}
 	}
 }
