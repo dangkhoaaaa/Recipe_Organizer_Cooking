@@ -26,7 +26,9 @@ namespace Services.Repository
 		}
 
 
+
 		public  ICollection<Recipe> Products { get; set; } = new List<Recipe>();
+
 
 		public List<Recipe> getRecipeByKeyword(string keyword)
 		{
@@ -102,44 +104,5 @@ namespace Services.Repository
 		}
 
 	}
-}
-
-
-		public List<Recipe> getAllRecipe()
-        {
-            //var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
-            List<Recipe> listRecipe = new List<Recipe>();
-            foreach (Recipe recipe in _dbSet)
-            {
-                 listRecipe.Add(recipe);
-
-            }
-            // return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
-            return listRecipe;
-        }
-
-        public List<Recipe> getPaingRecipe(int productPage , int PageSize)
-        {
-           
-            //var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
-            List<Recipe> listRecipe = new List<Recipe>();
-
-            
-            int i = 1;
-            foreach (Recipe recipe in _dbSet)
-            {
-                if (i > ((productPage - 1) * PageSize) && i <= ((productPage - 1) * PageSize)+ PageSize) 
-                {
-                    listRecipe.Add(recipe);
-                    
-                }
-                i++;
-            }
-            // return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
-            return listRecipe;
-        }
-
-    }
-	
 }
 

@@ -21,8 +21,9 @@ namespace RecipeOrganizer.Components
         private readonly MetadataRepository _metadataRepository;
         private readonly MediaRepository _mediaRepository;
         private readonly UserManager<AppUser> _userManager;
+		private readonly CategoryRepository _categoryRepository;
 
-        public Items(UserManager<AppUser> userManager)
+		public Items(UserManager<AppUser> userManager)
         {
             _recipeRepository = new RecipeRepository();
             _ingredientRepository = new IngredientRepository();
@@ -32,13 +33,14 @@ namespace RecipeOrganizer.Components
             _recipeHasCategoryRepository = new RecipeHasCategoryRepository();
             _metadataRepository = new MetadataRepository();
             _mediaRepository = new MediaRepository();
-            _userManager = userManager;
+			_categoryRepository = new CategoryRepository();
+			_userManager = userManager;
         }
         public IViewComponentResult Invoke(int productPage = 1)
         {
             // lay tat ca list recipe de dem so luong
             List<Recipe> recipes = _recipeRepository.getAllRecipe();
-
+           
             List<Recipe> results = _recipeRepository.getPaingRecipe(productPage, PageSize);
             return View(
             new RecipeListDisplayWithPaging
