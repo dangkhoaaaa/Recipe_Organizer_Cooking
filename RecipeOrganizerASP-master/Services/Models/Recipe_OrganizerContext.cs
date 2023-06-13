@@ -196,8 +196,9 @@ namespace Services.Models
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.Property(e => e.WeekStartDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("week_start_date");
+					.HasMaxLength(10)
+					.IsUnicode(false)
+					.HasColumnName("week_start_date");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.MealPlannings)

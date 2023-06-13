@@ -2,7 +2,46 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
+    var notice = TempData["ErrorMessage"];
+    var googleLogin = Model.ExternalLogins.FirstOrDefault(login => login.Name == "Google").Name;
+    var facebookLogin = Model.ExternalLogins.FirstOrDefault(login => login.Name == "Facebook").Name;
+    //string googleLogin = Model.ExternalLogins[0].Name;
+    //string facebookLogin = Model.ExternalLogins[1].Name;
 }
+<style>
+    .register-button {
+    }
+
+    .register-button:hover {
+            background-color: #777777;
+     }
+
+    .google-login-button {
+        background-color: #db4437;
+        color: #ffffff;
+        margin-top: 20px;
+        margin-bottom: 6px;
+    }
+    
+    .google-login-button:hover {
+            background-color: #ffffff; /* Background color on hover */
+            color: #db4437;
+            border: 1px solid #db4437;
+    }
+
+    .facebook-login-button {
+        background-color: #244c9d;
+        color: #ffffff;
+        margin-top: 10px;
+        margin-bottom: 6px;
+    }
+
+    .facebook-login-button:hover {
+        background-color: #ffffff; /* Background color on hover */
+        color: #000810;
+        border: 1px solid #000810;
+    }
+</style>
 
 
     <div id="page-title" class="padding-tb-30px gradient-white text-center">
@@ -47,7 +86,7 @@
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                     </div>
 
-                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                <button id="registerSubmit" type="submit" class="register-button btn btn-md btn-primary full-width">Register</button>
                 </form>
                 @*<div class="or"></div>
                 <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
@@ -62,6 +101,34 @@
                 </form>
                 <a href="#" class="btn btn-md bg-facebook full-width btn-icon-left"><i class="fab fa-facebook margin-right-8px" aria-hidden="true"></i> Register with Facebook</a>
                 <a href="#" class="btn btn-md border-grey-2 full-width btn-icon-left margin-top-8px margin-bottom-10px"><i class="fab fa-google margin-right-8px" aria-hidden="true"></i> Register with Google</a>*@
+            <div class="or text-center" style="margin-top:0px; margin-bottom:0px;">or</div>
+            @*<form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+            <div>
+            <p>
+            @foreach (var provider in Model.ExternalLogins!)
+            {
+            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">Login with @provider.DisplayName</button>
+            }
+            </p>
+            </div>
+            </form>*@
+
+            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+
+                @if (!string.IsNullOrEmpty(googleLogin))
+                {
+                    <button type="submit" class="google-login-button btn btn-md bg-google full-width btn-icon-left" name="provider" value="@googleLogin" title="Log in using your @googleLogin account" style="">
+                        <i class="fab fa-google margin-right-8px" aria-hidden="true"></i>Sign up with @googleLogin
+                    </button>
+                }
+
+                @if (!string.IsNullOrEmpty(googleLogin))
+                {
+                    <button type="submit" class="facebook-login-button btn btn-md  full-width btn-icon-left" name="provider" value="@facebookLogin" title="Log in using your @facebookLogin account" style="">
+                        <i class="fab fa-facebook margin-right-8px" aria-hidden="true"></i>Sign up with @facebookLogin
+                    </button>
+                }
+            </form>
             </div>
         </div>
     </div>

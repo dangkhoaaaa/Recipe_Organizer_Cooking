@@ -28,18 +28,23 @@
         margin-top: 20px;
         margin-bottom: 6px;
     }
-    
+
     .google-login-button:hover {
-        background-color: #e51000; /* Background color on hover */
+        background-color: #ffffff; /* Background color on hover */
+        color: #db4437;
+        border: 1px solid #db4437;
     }
 
     .facebook-login-button {
-        margin-top: 6px;
-        margin-bottom: 10px;
+        background-color: #244c9d;
+        color: #ffffff;
+        margin-bottom: 6px;
     }
 
         .facebook-login-button:hover {
-            background-color: #324e86; /* Background color on hover */
+            background-color: #ffffff; /* Background color on hover */
+            color: #000810;
+            border: 1px solid #000810;
         }
 </style>
 
@@ -87,8 +92,7 @@
                             <a class="forgot" id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
                         </div>
 
-                    <button type="submit" class="login-button btn btn-md btn-primary full-width" style="margin-top: 12px;padding: 10px;">Login
-                    </button>
+                    <button type="submit" class="login-button btn btn-md btn-primary full-width" style="margin-top: 12px;padding: 10px;">Login</button>
                         <a id="resend-confirm-email" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
                 </form>
                 <div class="or text-center" style="margin-top:0px; margin-bottom:0px;">or</div>
@@ -114,7 +118,7 @@
 
                     @if (!string.IsNullOrEmpty(googleLogin))
                     {
-                        <button type="submit" class="facebook-login-button btn btn-md bg-facebook full-width btn-icon-left" name="provider" value="@facebookLogin" title="Log in using your @facebookLogin account" style="">
+                        <button type="submit" class="facebook-login-button btn btn-md  full-width btn-icon-left" name="provider" value="@facebookLogin" title="Log in using your @facebookLogin account" style="">
                             <i class="fab fa-facebook margin-right-8px" aria-hidden="true"></i>Login with @facebookLogin
                         </button>
                     }
