@@ -9,5 +9,24 @@ namespace Services.Repository
 {
 	public class IngredientRepository : RepositoryBase<Ingredient>
 	{
+		public void addIngredient(string IngredientsInput, int recipeId)
+		{
+			string[] ingredients = IngredientsInput.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+			foreach (var ingredientName in ingredients)
+			{
+				Ingredient ingredient = new Ingredient
+				{
+					RecipeId = recipeId,
+					IngredientName = ingredientName
+				};
+				_dbSet.Add(ingredient);
+			}
+		}
+
+		public List<Ingredient> GetByRecipeId(int recipeId)
+		{
+			return _dbSet.Where(i => i.RecipeId == recipeId).ToList();
+		}
+
 	}
 }

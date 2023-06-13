@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\RecipeOrganizerASP-master",
+    "\\RecipeOrganizerASP-master\\RecipeOrganizer",
+    "\\RecipeOrganizerASP-master\\RecipeOrganizer\\Controllers"
   ],
-  "SelectedNode": "\\RecipeOrganizer.sln",
+  "SelectedNode": "\\RecipeOrganizerASP-master\\RecipeOrganizer\\Controllers\\RecipeController.cs",
   "PreviewInSolutionExplorer": false
 }
