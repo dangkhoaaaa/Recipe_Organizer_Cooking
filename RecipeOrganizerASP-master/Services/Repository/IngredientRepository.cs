@@ -20,6 +20,7 @@ namespace Services.Repository
 					IngredientName = ingredientName
 				};
 				_dbSet.Add(ingredient);
+				_context.SaveChanges();
 			}
 		}
 
