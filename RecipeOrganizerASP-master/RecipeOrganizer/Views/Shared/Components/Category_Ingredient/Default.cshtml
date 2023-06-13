@@ -1,11 +1,14 @@
-﻿<li class="has-dropdown">
+﻿@model List<Category>
+
+
+
+<li class="has-dropdown">
     <a href="#">INGREDIENTS</a>
     <ul class="sub-menu text-left">
-        <li><a href="recipes-grid-layout.html">Chicken </a></li>
-        <li><a href="recipes-list-layout.html">Pork</a></li>
-        <li><a href="authors-layout-1.html">Beef</a></li>
-        <li><a href="authors-layout-2.html">Seafood</a></li>
-        <li><a href="single-recipe.html">Noodle</a></li>
-        <li><a href="single-recipe.html">Vegetable</a></li>
+        @foreach( var item in Model){
+            <li><a href="/Items/DisplayCategoryIngredient/?categoryId=@item.CategoryId"> @item.Title </a></li>
+            
+        }
+        
     </ul>
 </li>

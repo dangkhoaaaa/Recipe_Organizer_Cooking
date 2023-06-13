@@ -1,10 +1,11 @@
-﻿
+﻿@model List<Category>
 <li class="has-dropdown">
     <a href="#">OCCASIONS</a>
     <ul class="sub-menu text-left">
-        <li><a href="blog-grid.html">Birthday</a></li>
-        <li><a href="blog-list.html">Christmas</a></li>
-        <li><a href="blog-classic.html">Tet</a></li>
-        <li><a href="blog-single.html">Mid-Autumn</a></li>
+        @foreach (var item in Model)
+        {
+            <li><a href="/Items/DisplayCategoryMeal/?categoryId=@item.CategoryId"> @item.Title </a></li>
+
+        }
     </ul>
 </li>
