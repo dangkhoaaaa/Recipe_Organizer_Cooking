@@ -9,15 +9,15 @@
 <section class="padding-tb-100px">
     <div class="container">
         <div class="title text-center">
-            <h2 class="font-weight-700 text-main-color"> RECIPE OVER LOADDDINGGGGGGG </h2>
+            <h2 class="font-weight-700 text-main-color">@ViewBag.Category.Title</h2>
             <div class="row justify-content-center margin-bottom-45px">
                 <div class="col-md-7">
-                    <p class="text-grey-2"> HE LO BAN NHO GIUA TROI DONG CO DON LONG DAU DON NHU DON DAU DANH</p>
+                    <p class="text-grey-2"> @ViewBag.Category.Description</p>
                 </div>
             </div>
         </div>
-        
-  
+
+
 
         <div class="recipes-masonry">
 
@@ -68,7 +68,7 @@
 
                     @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
                     {
-                        <li class="page-item"><a class="page-link" href="/Items/Display/?productPage=@i">@i</a></li>
+                        <li class="page-item"><a class="page-link" href="/Items/DisplayCategoryIngredient/?productPage=@i&categoryId=@ViewBag.Category.CategoryId">@i</a></li>
 
                     }
 

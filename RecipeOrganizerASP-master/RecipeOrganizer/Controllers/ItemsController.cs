@@ -4,6 +4,7 @@ using Services.Models.Authentication;
 using Services.Models;
 using Services.Repository;
 
+
 namespace RecipeOrganizer.Controllers
 {
     public class ItemsController : Controller
@@ -17,6 +18,7 @@ namespace RecipeOrganizer.Controllers
         private readonly RecipeHasCategoryRepository _recipeHasCategoryRepository;
         private readonly MetadataRepository _metadataRepository;
         private readonly MediaRepository _mediaRepository;
+        private readonly CategoryRepository _categoryRepository;
         private readonly UserManager<AppUser> _userManager;
 
         public ItemsController(UserManager<AppUser> userManager)
@@ -29,13 +31,14 @@ namespace RecipeOrganizer.Controllers
             _recipeHasCategoryRepository = new RecipeHasCategoryRepository();
             _metadataRepository = new MetadataRepository();
             _mediaRepository = new MediaRepository();
+            _categoryRepository = new CategoryRepository();
             _userManager = userManager;
         }
         public IActionResult Index()
         {
             return View();
         }
-        public async Task<IActionResult> Display(int productPage)
+        public async Task<IActionResult> Display(int productPage=1)
         {
             // lay tat ca list recipe de dem so luong
             List<Recipe> recipes = _recipeRepository.getAllRecipe();
@@ -60,11 +63,15 @@ namespace RecipeOrganizer.Controllers
 
         public async Task<IActionResult> DisplayCategoryIngredient(int categoryId, int productPage = 1)
         {
+            Category category = _categoryRepository.getInfCategory(categoryId);
+
+
+            ViewBag.Category = category;
             // lay tat ca list recipe de dem so luong
             List<Recipe> recipes = _recipeHasCategoryRepository.getRecipeByCategoryID(categoryId);
 
             List<Recipe> results = _recipeRepository.getRecipeByCategoryWitPaging(productPage, PageSize, recipes);
-            return View("DisplayRecipe",
+            return View("DisplayCategoryIngredient",
             new RecipeListDisplayWithPaging
             {
                 Recipes = results
@@ -83,11 +90,18 @@ namespace RecipeOrganizer.Controllers
 
         public async Task<IActionResult> DisplayCategoryMeal(int categoryId, int productPage = 1)
         {
+             ViewBag.categoryId = categoryId;
+
+            Category category = _categoryRepository.getInfCategory(categoryId);
+
+
+            ViewBag.Category = category;
+
             // lay tat ca list recipe de dem so luong
             List<Recipe> recipes = _recipeHasCategoryRepository.getRecipeByCategoryID(categoryId);
 
             List<Recipe> results = _recipeRepository.getRecipeByCategoryWitPaging(productPage, PageSize, recipes);
-            return View("DisplayRecipe",
+            return View("DisplayCategoryMeal",
             new RecipeListDisplayWithPaging
             {
                 Recipes = results
@@ -106,11 +120,16 @@ namespace RecipeOrganizer.Controllers
 
         public async Task<IActionResult> DisplayCategoryOccatision(int categoryId, int productPage = 1)
         {
+            
             // lay tat ca list recipe de dem so luong
+            Category category = _categoryRepository.getInfCategory(categoryId);
+            ViewBag.categoryId = categoryId;
+
+            ViewBag.Category = category;
             List<Recipe> recipes = _recipeHasCategoryRepository.getRecipeByCategoryID(categoryId);
 
             List<Recipe> results = _recipeRepository.getRecipeByCategoryWitPaging(productPage, PageSize, recipes);
-            return View("DisplayRecipe",
+            return View("DisplayCategoryOccatision",
             new RecipeListDisplayWithPaging
             {
                 Recipes = results
