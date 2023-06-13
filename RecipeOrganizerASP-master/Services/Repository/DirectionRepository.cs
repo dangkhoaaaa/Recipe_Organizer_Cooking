@@ -21,6 +21,7 @@ namespace Services.Repository
 					Direction1 = steps[i]
 				};
 				_dbSet.Add(direction);
+				_context.SaveChanges();
 			}
 		}
 

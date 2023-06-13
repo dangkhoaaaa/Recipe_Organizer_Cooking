@@ -4,9 +4,11 @@ using Services.Models;
 using Services.Models.Authentication;
 using Services.Repository;
 using Services.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RecipeOrganizer.Controllers
 {
+	[Authorize]
 	public class RecipeController : Controller
 	{
 		private readonly RecipeRepository _recipeRepository;
@@ -149,6 +151,8 @@ namespace RecipeOrganizer.Controllers
 			}
 			return View(recipe);
 		}
+
+		[AllowAnonymous]
 		public ActionResult RecipeDetail(int id)
 		{
 
