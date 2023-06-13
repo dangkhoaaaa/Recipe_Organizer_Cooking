@@ -61,7 +61,7 @@
 
 					<div class="form-group label-floating">
 						<label asp-for="Input.Birthday" class="control-label"></label>
-						<input asp-for="Input.Birthday" class="form-control" />
+						<input asp-for="Input.Birthday" class="form-control" type="date" pattern="\d{1,2}/\d{1,2}/\d{4}" placeholder="mm/dd/yyyy" />
 						<span asp-validation-for="Input.Birthday" class="text-danger"></span>
 					</div>
 
