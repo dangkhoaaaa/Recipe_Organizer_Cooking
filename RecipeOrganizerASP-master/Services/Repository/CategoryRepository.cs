@@ -12,23 +12,23 @@ namespace Services.Repository
 	{
 
 	
-		Recipe_OrganizerContext _context;
-		DbSet<Category> _dbSet;
+			Recipe_OrganizerContext _context;
+		protected DbSet<Category> _dbSet1;
 		public CategoryRepository()
 		{
 			_context = new Recipe_OrganizerContext();
-			_dbSet = _context.Set<Category>();
+			_dbSet1 = _context.Set<Category>();
 		}
 
-		
+		public ICollection<Category> Products { get; set; } = new List<Category>();
 
 		public List<Category> getListCategoryById(int categoryID)
 		{
 			//var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
 			List<Category> listRecipe = new List<Category>();
-			foreach (Category category in _dbSet)
+			foreach (Category category in _dbSet1)
 			{
-				if (category.CategoryId==categoryID) { listRecipe.Add(category); }
+				if (category.ParentId==categoryID) { listRecipe.Add(category); }
 
 			}
 			// return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
