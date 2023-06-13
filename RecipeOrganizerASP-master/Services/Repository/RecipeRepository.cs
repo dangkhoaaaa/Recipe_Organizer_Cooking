@@ -25,9 +25,13 @@ namespace Services.Repository
 			_dbSet = _context.Set<Recipe>();
 		}
 
+<<<<<<< HEAD
+	//	public  ICollection<Recipe> Products { get; set; } = new List<Recipe>();
+=======
 
 		public  ICollection<Recipe> Products { get; set; } = new List<Recipe>();
 
+>>>>>>> main
 		public List<Recipe> getRecipeByKeyword(string keyword)
 		{
 			//var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
