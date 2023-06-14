@@ -18,7 +18,7 @@
 							<div class="listing-search">
 								<form action="Search/SearchKeyWord" class="row no-gutters">
 									<div class="col-md-8">
-										<input class="listing-form first max-width-set" type="text" placeholder="Keywords...." name="keyword" value="">
+										<input class="listing-form first max-width-set" aria-label="" aria-describedby="basic-addon1" type="text" placeholder="Keywords...." name="keyword" value="" id="postTitle">
 									</div>
 
 									<div class="col-md-4">
@@ -29,54 +29,15 @@
 						</div>
 					</div>
 				</div>
+
+				
 			</div>
 		</div>
 		<!-- //container  -->
 	</div>
 
-	<div class="pull-top-85px">
-		<div class="container">
-			<div class="row">
-				<div class="col-xl-2 col-lg-3 col-md-4 col-6 sm-mb-25px">
-					<a href="#" class="d-block box-shadow background-main-color text-white hvr-float">
-						<div class="thum"><img src="http://placehold.it/450x250" alt=""></div>
-						<h4 class="text-center padding-15px">Fish</h4>
-					</a>
-				</div>
-				<div class="col-xl-2 col-lg-3 col-md-4 col-6 sm-mb-25px">
-					<a href="#" class="d-block box-shadow background-main-color text-white hvr-float">
-						<div class="thum"><img src="http://placehold.it/450x250" alt=""></div>
-						<h4 class="text-center padding-15px">Meats</h4>
-					</a>
-				</div>
-				<div class="col-xl-2 col-lg-3 col-md-4 col-6 sm-mb-25px">
-					<a href="#" class="d-block box-shadow background-main-color text-white hvr-float">
-						<div class="thum"><img src="http://placehold.it/450x250" alt=""></div>
-						<h4 class="text-center padding-15px">Eggs</h4>
-					</a>
-				</div>
-				<div class="col-xl-2 col-lg-3 col-md-4 col-6 sm-mb-25px">
-					<a href="#" class="d-block box-shadow background-main-color text-white hvr-float">
-						<div class="thum"><img src="http://placehold.it/450x250" alt=""></div>
-						<h4 class="text-center padding-15px">Salads</h4>
-					</a>
-				</div>
-				<div class="col-xl-2 col-lg-3 col-md-4 col-6 sm-mb-25px">
-					<a href="#" class="d-block box-shadow background-main-color text-white hvr-float">
-						<div class="thum"><img src="http://placehold.it/450x250" alt=""></div>
-						<h4 class="text-center padding-15px">Rice</h4>
-					</a>
-				</div>
-				<div class="col-xl-2 col-lg-3 col-md-4 col-6 sm-mb-25px">
-					<a href="#" class="d-block box-shadow background-main-color text-white hvr-float">
-						<div class="thum"><img src="http://placehold.it/450x250" alt=""></div>
-						<h4 class="text-center padding-15px">Noddle</h4>
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
 
+	@await Component.InvokeAsync("Category")
 	@await Component.InvokeAsync("Items")
 
 
@@ -102,4 +63,21 @@
 			</div>
 		</div>
 	</div>
+	@section Scripts {
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script>
+			
+			(function ($) {
+				$(document).ready(function () {
+					$("#postTitle").autocomplete({
+						source: 'api/postapi/search'
+
+					});
+
+				});
+			})(jQuery);
+		</script>
+	}
 </main>
+
