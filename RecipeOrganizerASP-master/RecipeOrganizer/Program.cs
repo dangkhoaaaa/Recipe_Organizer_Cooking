@@ -17,8 +17,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
 builder.Services.AddIdentity<AppUser, IdentityRole>()
-                                                .AddEntityFrameworkStores<Recipe_OrganizerContext>()
-                                                .AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<Recipe_OrganizerContext>()
+    .AddDefaultTokenProviders();
 //builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
 //												.AddEntityFrameworkStores<Recipe_OrganizerContext>()
 //												.AddDefaultTokenProviders();
