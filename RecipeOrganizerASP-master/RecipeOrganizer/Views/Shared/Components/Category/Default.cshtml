@@ -1,33 +1,24 @@
-﻿<li class="has-dropdown">
-    <a href="#">INGREDIENTS</a>
-    <ul class="sub-menu text-left">
-        <li><a href="recipes-grid-layout.html">Chicken </a></li>
-        <li><a href="recipes-list-layout.html">Pork</a></li>
-        <li><a href="authors-layout-1.html">Beef</a></li>
-        <li><a href="authors-layout-2.html">Seafood</a></li>
-        <li><a href="single-recipe.html">Noodle</a></li>
-        <li><a href="single-recipe.html">Vegetable</a></li>
-    </ul>
-</li>
-<li class="has-dropdown">
-    <a href="#">OCCASIONS</a>
-    <ul class="sub-menu text-left">
-        <li><a href="blog-grid.html">Birthday</a></li>
-        <li><a href="blog-list.html">Christmas</a></li>
-        <li><a href="blog-classic.html">Tet</a></li>
-        <li><a href="blog-single.html">Mid-Autumn</a></li>
-    </ul>
-</li>
-<li class="has-dropdown">
-    <a href="#">MEALS</a>
-    <ul class="sub-menu text-left">
-        <li><a href="page-about.html">Breakfast</a></li>
-        <li><a href="add-recipe.html">Lunch</a></li>
-        @*<li>@Html.ActionLink("Login", "Login", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-        <li>@Html.ActionLink("Register", "Register", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
-        <li><a href="search-page.html">Dinner</a></li>
-        <li><a href="page-contact-us.html">Salads</a></li>
-        <li><a href="page-404.html">Desserts</a></li>
-        <li><a href="page-404.html">Soups</a></li>
-    </ul>
-</li>
+﻿@model List<Category>
+
+
+<div class="pull-top-85px">
+	<div class="container">
+		<div class="row">
+
+			@foreach( var item in Model){
+
+			<div class="col-xl-2 col-lg-3 col-md-4 col-6 sm-mb-25px">
+					<a href="/Items/DisplayCategoryIngredient/?categoryId=@item.CategoryId" class="d-block box-shadow background-main-color text-white hvr-float">
+					<div class="thum"><img src="http://placehold.it/450x250" alt=""></div>
+					<h4 class="text-center padding-15px"> @item.Title</h4>
+				</a>
+			</div>
+			
+			}
+
+
+		</div>
+	</div>
+</div>
+
+

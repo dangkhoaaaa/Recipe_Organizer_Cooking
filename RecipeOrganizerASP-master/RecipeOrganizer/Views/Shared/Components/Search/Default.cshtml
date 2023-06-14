@@ -1,0 +1,32 @@
+﻿<div class="margin-top-45px">
+	<div class="row justify-content-center margin-tb-60px">
+		<div class="col-lg-8">
+			<div class="listing-search">
+				<form action="Search/SearchKeyWord" class="row no-gutters">
+					<div class="col-md-8">
+						<input class="listing-form first max-width-set" aria-label="" aria-describedby="basic-addon1" type="text" placeholder="Keywords...." name="keyword" value="" id="postTitle">
+					</div>
+
+					<div class="col-md-4">
+						<button type="submit" class="listing-bottom background-second-color box-shadow">Search Now</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script src="https://code.jquery.com/jquery-1.12.4.js" ></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script type="text/javascript" >
+		$(document).ready(function (){
+			$("postTitle").autocomplete({
+				source: 'api/postapi/search'
+				
+			});
+
+		});
+
+	</script>
+}

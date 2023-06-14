@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Services.Models.Authentication;
-using Services.Models;
 using Services.Repository;
-using System.Drawing.Printing;
 
-namespace RecipeOrganizer.Components
+namespace RecipeOrganizer.Controllers
 {
-	public class Category : ViewComponent
+	[Route("api/[controller]")]
+	[ApiController]
+	public class PostApiController : ControllerBase
 	{
-
 		private readonly RecipeRepository _recipeRepository;
 		private readonly IngredientRepository _ingredientRepository;
 		private readonly DirectionRepository _directionRepository;
@@ -19,9 +19,8 @@ namespace RecipeOrganizer.Components
 		private readonly MetadataRepository _metadataRepository;
 		private readonly MediaRepository _mediaRepository;
 		private readonly UserManager<AppUser> _userManager;
-		private readonly CategoryRepository _categoryRepository;
 
-		public Category(UserManager<AppUser> userManager)
+		public PostApiController(UserManager<AppUser> userManager)
 		{
 			_recipeRepository = new RecipeRepository();
 			_ingredientRepository = new IngredientRepository();
@@ -31,16 +30,35 @@ namespace RecipeOrganizer.Components
 			_recipeHasCategoryRepository = new RecipeHasCategoryRepository();
 			_metadataRepository = new MetadataRepository();
 			_mediaRepository = new MediaRepository();
-			_categoryRepository = new CategoryRepository();
-
+			_userManager = userManager;
 		}
-		public IViewComponentResult Invoke(int productPage = 1)
+
+
+		[Produces("application/json")]
+		[HttpGet("search")]
+		public async Task<IActionResult> Search()
 		{
-			// lay tat ca list recipe de dem so luong
-			var categorys = _categoryRepository.getListCategoryById(1);
-			return View(categorys);
-			
-		}
 
+			try
+			{
+
+				string term = HttpContext.Request.Query["term"].ToString();
+				var postTitle = _recipeRepository.getListTitleRecipeByKeyword(term);
+			   //  var postTitle = new string[] { "Iphone", "Samsung", "Nokia" };
+
+
+				return Ok(postTitle);
+				
+			}
+			catch
+			{
+
+				return BadRequest();
+			}
+
+
+			
+		
+		}
 	}
 }

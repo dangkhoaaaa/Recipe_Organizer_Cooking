@@ -50,6 +50,26 @@ namespace Services.Repository
 			return listRecipe;
 		}
 
+		public List<String> getListTitleRecipeByKeyword(string keyword)
+		{
+			List<String> listRecipe = new List<String>();
+			if (keyword != null && keyword.Length > 0 && keyword.Trim() != "")
+			{
+				
+				//var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
+
+				foreach (Recipe recipe in _dbSet)
+				{
+
+					if (recipe.Title.ToUpper().Contains(keyword.ToUpper())) { listRecipe.Add(recipe.Title); }
+
+
+				}
+			}
+			// return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
+			return listRecipe;
+		}
+
 
 		public Recipe GetById(int id)
 		{

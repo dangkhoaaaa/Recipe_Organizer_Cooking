@@ -9,6 +9,7 @@ using Services.Repository;
 
 namespace RecipeOrganizer.Controllers
 {
+
     public class SearchController : Controller
     {
 		public int PageSize = 8;
@@ -102,13 +103,7 @@ namespace RecipeOrganizer.Controllers
 		}
 
 
-
-		[HttpPost]
-        public async Task<IActionResult> SearchKeyWord1()
-        {
-            //var results = _recipeRepository.getRecipeByKeyword(keyword);
-            return View();
-        }
+		
          
 	}
 }
