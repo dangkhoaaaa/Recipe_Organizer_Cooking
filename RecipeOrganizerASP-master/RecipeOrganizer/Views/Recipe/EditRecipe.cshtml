@@ -1,7 +1,7 @@
 ﻿@model Services.Data.RecipeData
 
 @{
-	ViewBag.Title = "Edit recipe recipe";
+	ViewBag.Title = "Edit recipe " + Model.Title;
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,7 +10,7 @@
 		<div class="container">
 			<ol class="breadcrumb opacity-5">
 				<li><a href="@Url.Action("Index", "Home")">Home</a></li>
-				<li><a href="@Url.Action("AddNewRecipe", "Recipe")">Add Recipe</a></li>
+				<li><a href="@Url.Action("AddNewRecipe", "Recipe")">Edit Recipe</a></li>
 			</ol>
 			<h1 class="font-weight-300">Edit Recipe</h1>
 		</div>

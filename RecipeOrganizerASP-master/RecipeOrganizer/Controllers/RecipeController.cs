@@ -148,8 +148,9 @@ namespace RecipeOrganizer.Controllers
 				// Tags
 
 				//}
+				return RedirectToAction("EditRecipe", "Recipe", new { id = data.RecipeId });
 			}
-			return View(recipe);
+			return View();
 		}
 
 		[AllowAnonymous]
