@@ -46,7 +46,7 @@
             <i class="far fa-user"></i>
         </a>
         <div class="dropdown-menu"  style="position: absolute;transform: translate3d(100px, 76px, 0px);top: 0px;left: 0px;will-change: transform;">
-            <a class="dropdown-item"  id="manage" href="/user/profile" title="Manage">User Profile</a>
+            <a class="dropdown-item"  id="manage" href="/user/profile" title="Manage">User profile</a>
             @*<a class="dropdown-item" id="manage" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">User Profile</a>*@
             <a class="dropdown-item" href="/Plan/ViewPlan">Meal planning</a>
             <a class="dropdown-item" href="#">Settings</a>
@@ -56,6 +56,18 @@
             </form>
         </div>
     </div>
+    <div class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large">
+        <span>Hi,</span>
+        @if (@UserManager.GetUserName(User).Contains("@"))
+        {
+        string username = @UserManager.GetUserName(User).Split("@")[0];
+        <span>@username</span>
+        } else
+        {
+        <span>@UserManager.GetUserName(User)</span>
+        }
+    </div>
+    
 }
 else
 {

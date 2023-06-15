@@ -35,6 +35,11 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="~/assets/css/fontawesome-all.min.css">
     @RenderSection("Css", required:false)
+    <style>
+        .recipe-logo:hover {
+            opacity:0.8;
+        }
+    </style>
 </head>
 <body>
 
@@ -47,7 +52,7 @@
                             <a id="logo" href=@Url.Action("Index", "Home") class="navbar-brand recipe-logo"><img src="~/assets/img/logo-color-01-01.png" alt="Recipe Organizer"></a>
                             <a class="mobile-toggle padding-10px background-main-color" href="#"><i class="fas fa-bars"></i></a>
                         </div>
-                        <div class="col-lg-7 col-md-12 position-inherit">
+                        <div class="col-lg-6 col-md-12 position-inherit">
                             <ul id="menu-main" class="white-link dropdown-dark text-lg-center nav-menu link-padding-tb-25px">
                                 <li class="">
                                     @Html.ActionLink("HOME", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
@@ -62,7 +67,7 @@
                                 <li><a href="@Url.Action("SendContact", "Contact")">CONTACT US</a></li>
                             </ul>
                         </div>
-                        <div class="col-lg-3 col-md-12 d-none d-lg-block">
+                        <div class="col-lg-4 col-md-12 d-none d-lg-block">
                             @await Html.PartialAsync("_LoginPartial")
                         </div>
                     </div>
