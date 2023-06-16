@@ -61,6 +61,40 @@ namespace RecipeOrganizer.Controllers
                 );
         }
 
+        public IActionResult SearchKeyWordFitler(string keyword, string filter, int productPage = 1)
+        {
+            ViewBag.Keyword = keyword;
+            ViewBag.filter = filter;
+            List<Recipe> results = null;
+
+            List<Recipe> recipesSearchAll = _recipeRepository.SearchAllTitleWithFilter(filter, keyword);
+
+
+
+            if (keyword != null && recipesSearchAll.Count() > 0)
+            {
+                results = _recipeRepository.getRecipeByKeywordWitPaging(keyword, productPage, PageSize, recipesSearchAll);
+            }
+            else
+            {
+                ViewBag.notfound = "Not Found Recipe";
+            }
+
+
+            return View("DisplayRecipe", new RecipeListDisplayWithPaging
+            {
+                Recipes = results
+                    ,
+                PagingInfo = new PagingInfo
+                {
+                    ItemsPerPage = PageSize,
+                    CurrentPage = productPage,
+                    TotalItems = recipesSearchAll.Count()
+
+                }
+            });
+        }
+
         public async Task<IActionResult> DisplayCategoryIngredient(int categoryId, int productPage = 1)
         {
             Category category = _categoryRepository.getInfCategory(categoryId);
