@@ -91,7 +91,7 @@
                             <a class="mobile-toggle padding-10px background-main-color" href="#"><i class="fas fa-bars"></i></a>
 
                         </div>
-                        <div class="col-lg-7 col-md-12 position-inherit">
+                        <div class="col-lg-5 col-md-12 position-inherit">
                             <ul id="menu-main" class="white-link dropdown-dark text-lg-center nav-menu link-padding-tb-25px" style="color:white;">
                                 <li class="">
                                     @Html.ActionLink("HOME", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
@@ -132,7 +132,7 @@
                                 <li><a href="@Url.Action("SendContact", "Contact")">CONTACT US</a></li>
                             </ul>
                         </div>
-                        <div class="col-lg-3 col-md-12 d-none d-lg-block">
+                        <div class="col-lg-5 col-md-12 d-none d-lg-block">
                             @await Html.PartialAsync("_LoginPartial")
                         </div>
                     </div>
@@ -178,7 +178,7 @@
                             }
 
                         </h4>
-                        @Html.Partial("_ManageNav", ManageNav)
+                         @Html.Partial("_ManageNav", ManageNav)
                        @* @if(ViewData["Nav"].Equals("UserNav")){
                             @Html.Partial("_ManageNav", ManageNav)
                         } 

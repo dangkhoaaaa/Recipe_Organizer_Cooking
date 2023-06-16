@@ -31,7 +31,15 @@
 
 
 </style>
-
+@{
+    var user = await UserManager.GetUserAsync(User);
+    ManageNavViewModel ManageNav = new ManageNavViewModel();
+    if (user != null)
+    {
+        ManageNav.FirstName = user.FirstName;
+    }
+    
+}
 
 @if (SignInManager.IsSignedIn(User))
 {
@@ -58,14 +66,31 @@
     </div>
     <div class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large">
         <span>Hi,</span>
-        @if (@UserManager.GetUserName(User).Contains("@"))
+        @if (string.IsNullOrEmpty(ManageNav.FirstName))
+        {
+            if (@UserManager.GetUserName(User).Contains("@"))
+            {
+                string username = @UserManager.GetUserName(User).Split("@")[0];
+                <span>@username</span>
+            }
+            else
+            {
+
+                <span>@UserManager.GetUserName(User)</span>
+            }
+        }
+        else
+        {
+            <span>@ManageNav.FirstName</span>
+        }
+       @* @if (@UserManager.GetUserName(User).Contains("@"))
         {
         string username = @UserManager.GetUserName(User).Split("@")[0];
         <span>@username</span>
         } else
         {
         <span>@UserManager.GetUserName(User)</span>
-        }
+        }*@
     </div>
     
 }
