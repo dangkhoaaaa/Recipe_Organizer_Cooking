@@ -1,4 +1,46 @@
-﻿<!DOCTYPE html>
+﻿@*@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+
+<h1>Manage your account</h1>
+
+<div>
+    <h2>Change your account settings</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <partial name="_ManageNav" />
+        </div>
+        <div class="col-md-9">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
+*@
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+    ManageNavViewModel ManageNav = new ManageNavViewModel();
+    ManageNav.FirstName = user.FirstName;
+    ManageNav.HasPassword = await UserManager.HasPasswordAsync(await UserManager.GetUserAsync(User));
+    ManageNav.LastName = user.LastName;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,9 +66,6 @@
     <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
     <!-- hover anmation -->
     <link rel="stylesheet" href="~/assets/css/hover-min.css">
-    <!-- slick slider -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- flag icon -->
     <link rel="stylesheet" href="~/assets/css/flag-icon.min.css">
     <!-- main style -->
@@ -37,15 +76,7 @@
     <link rel="stylesheet" href="~/assets/css/elegant_icon.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="~/assets/css/fontawesome-all.min.css">
-    <!-- Jquery-->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
     @RenderSection("Css", required:false)
-    <style>
-        .recipe-logo:hover {
-            opacity:0.8;
-        }
-    </style>
 </head>
 <body>
 
@@ -53,27 +84,55 @@
         <div class="container">
             <div class="header-output">
                 <div class="header-in">
+
                     <div class="row">
                         <div class="col-lg-2 col-md-12">
                             <a id="logo" href=@Url.Action("Index", "Home") class="navbar-brand recipe-logo"><img src="~/assets/img/logo-color-01-01.png" alt="Recipe Organizer"></a>
                             <a class="mobile-toggle padding-10px background-main-color" href="#"><i class="fas fa-bars"></i></a>
+
                         </div>
-                        <div class="col-lg-6 col-md-12 position-inherit">
-                            <ul id="menu-main" class="white-link dropdown-dark text-lg-center nav-menu link-padding-tb-25px">
+                        <div class="col-lg-5 col-md-12 position-inherit">
+                            <ul id="menu-main" class="white-link dropdown-dark text-lg-center nav-menu link-padding-tb-25px" style="color:white;">
                                 <li class="">
                                     @Html.ActionLink("HOME", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
                                 </li>
-
-
-
-                                @await Component.InvokeAsync("Category_Ingredient")
-                                @await Component.InvokeAsync("Category_Meal")
-                                @await Component.InvokeAsync("Category_Occatision")
-
+                                <li class="has-dropdown">
+                                    <a href="#">INGREDIENTS</a>
+                                    <ul class="sub-menu text-left">
+                                        <li><a href="recipes-grid-layout.html">Chicken </a></li>
+                                        <li><a href="recipes-list-layout.html">Pork</a></li>
+                                        <li><a href="authors-layout-1.html">Beef</a></li>
+                                        <li><a href="authors-layout-2.html">Seafood</a></li>
+                                        <li><a href="single-recipe.html">Noodle</a></li>
+                                        <li><a href="single-recipe.html">Vegetable</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-dropdown">
+                                    <a href="#">OCCASIONS</a>
+                                    <ul class="sub-menu text-left">
+                                        <li><a href="blog-grid.html">Birthday</a></li>
+                                        <li><a href="blog-list.html">Christmas</a></li>
+                                        <li><a href="blog-classic.html">Tet</a></li>
+                                        <li><a href="blog-single.html">Mid-Autumn</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-dropdown">
+                                    <a href="#">MEALS</a>
+                                    <ul class="sub-menu text-left">
+                                        <li><a href="page-about.html">Breakfast</a></li>
+                                        <li><a href="add-recipe.html">Lunch</a></li>
+                                        @*<li>@Html.ActionLink("Login", "Login", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                                        <li>@Html.ActionLink("Register", "Register", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
+                                        <li><a href="search-page.html">Dinner</a></li>
+                                        <li><a href="page-contact-us.html">Salads</a></li>
+                                        <li><a href="page-404.html">Desserts</a></li>
+                                        <li><a href="page-404.html">Soups</a></li>
+                                    </ul>
+                                </li>
                                 <li><a href="@Url.Action("SendContact", "Contact")">CONTACT US</a></li>
                             </ul>
                         </div>
-                        <div class="col-lg-4 col-md-12 d-none d-lg-block">
+                        <div class="col-lg-5 col-md-12 d-none d-lg-block">
                             @await Html.PartialAsync("_LoginPartial")
                         </div>
                     </div>
@@ -84,9 +143,60 @@
     </header>
 
 
-    <main>
-        @RenderBody()
-    </main>
+    <div id="page-title" class="padding-tb-30px gradient-white">
+        <div class="container text-left">
+            <ol class="breadcrumb opacity-5">
+                <li><a href="@Url.ActionLink("Index", "Home")">Home</a></li> <span>>></span>
+                <li class="active">@ViewData["Title"]</li>
+            </ol>
+            <h1 class="font-weight-300">@ViewData["Title"]</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="widget widget_categories">
+                    <div class="margin-bottom-30px">
+                        <h4 class="padding-lr-30px padding-tb-20px background-white box-shadow border-radius-10">
+                            <i class="far fa-user margin-right-10px text-main-color"></i> 
+                            Hi, @if (string.IsNullOrEmpty(ManageNav.FirstName))
+                            {
+                                if (@UserManager.GetUserName(User).Contains("@"))
+                                {
+                                    string username = @UserManager.GetUserName(User).Split("@")[0];
+                                    <span>@username</span>
+                                }
+                                else
+                                {
+
+                                    <span>@UserManager.GetUserName(User)</span>
+                                }
+                            } else
+                            {
+                                <span>@ManageNav.FirstName</span>
+                            }
+
+                        </h4>
+                         @Html.Partial("_ManageNav", ManageNav)
+                       @* @if(ViewData["Nav"].Equals("UserNav")){
+                            @Html.Partial("_ManageNav", ManageNav)
+                        } 
+                         else if (ViewData["Nav"].Equals("AccountNav"))
+                        {
+                            @Html.Partial("_AccountNav", ManageNav)
+                        }*@
+                        
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="col-lg-8">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
 
 
     <footer class="padding-top-100px padding-bottom-70px background-dark">
@@ -115,7 +225,7 @@
                         <li class="col-6  padding-tb-5px"><a href="#" class="text-grey-2">Team</a></li>
                         <li class="col-6  padding-tb-5px"><a href="#" class="text-grey-2">Maintenance</a></li>
                         <li class="col-6  padding-tb-5px"><a href="#" class="text-grey-2">Get a Quote</a></li>
-                        <li class="col-6  padding-tb-5px"><a href="#" class="text-grey-2">Contact Us</a></li>
+                        <li class="col-6  padding-tb-5px"><a href="#" class="text-grey-2">Manage is here</a></li>
                     </ul>
                 </div>
 
@@ -142,7 +252,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="text-white margin-tb-15px text-center text-lg-left">
-                        Recipe Organizer | 2023 All copy rights reserved
+                        Recipe Organizer | 2023 All copy rights reserved 
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -174,16 +284,5 @@
     <script src="~/assets/js/custom.js"></script>
     <script src="~/assets/js/popper.min.js"></script>
     <script src="~/assets/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js" integrity="sha512-eP8DK17a+MOcKHXC5Yrqzd8WI5WKh6F1TIk5QZ/8Lbv+8ssblcz7oGC8ZmQ/ZSAPa7ZmsCU4e/hcovqR8jfJqA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script type="text/javascript">
-        $('.autoplayHeader').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            autoplay: true,
-            autoplaySpeed: 1000,
-        });
-    </script>
 </body>
 </html>

@@ -1,0 +1,73 @@
+﻿@model ManageLoginsViewModel
+@using Microsoft.AspNetCore.Authentication
+@{
+    ViewData["Title"] = "Link account";
+    Layout = "_ProfileLayout";
+}
+
+
+
+@if (ViewData["StatusMessage"] != null)
+{
+    <div class="alert alert-success">
+        @ViewData["StatusMessage"]
+    </div>
+}
+
+
+<div class="row">
+    <div class="col-lg-10 margin-bottom-40px" style="font-size: 15px;">
+        <div class="box-shadow border-radius-10 overflow-hidden">
+            <div class="padding-30px background-white">
+
+                @if (Model.CurrentLogins.Count > 0)
+                {
+                    <h2>Linked accounts</h2>
+                    <table class="table">
+                        <tbody>
+                            @for (var index = 0; index < Model.CurrentLogins.Count; index++)
+                            {
+                                <tr>
+                                    <td style="font-size: 18px;">@Model.CurrentLogins[index].ProviderDisplayName</td>
+                                    <td>
+                                        @if ((bool)ViewData["ShowRemoveButton"])
+                                        {
+                                            <form asp-controller="Manage" asp-action="RemoveLogin" method="post" class="form-horizontal" role="form">
+                                                <div>
+                                                    <input asp-for="@Model.CurrentLogins[index].LoginProvider" name="LoginProvider" type="hidden" />
+                                                    <input asp-for="@Model.CurrentLogins[index].ProviderKey" name="ProviderKey" type="hidden" />
+                                                    <input type="submit" class="btn btn-primary" value="Remove" title="Remove this @Model.CurrentLogins[index].ProviderDisplayName login from your account" />
+                                                </div>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            @: &nbsp;
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                @if (Model.OtherLogins.Count > 0)
+                {
+                    <h4>Add a link to an external account.</h4>
+                    <hr />
+                    <form asp-controller="Manage" asp-action="LinkLogin" method="post" class="form-horizontal" role="form">
+                        <div id="socialLoginList">
+                            <p>
+                                @foreach (var provider in Model.OtherLogins)
+                                {
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.Name account">@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+                
+            </div>
+        </div>
+    </div>
+
+</div>
