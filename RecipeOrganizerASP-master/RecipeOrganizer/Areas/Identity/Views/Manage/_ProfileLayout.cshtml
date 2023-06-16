@@ -32,8 +32,13 @@
 
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
+
 @{
-    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+    var user = await UserManager.GetUserAsync(User);
+    ManageNavViewModel ManageNav = new ManageNavViewModel();
+    ManageNav.FirstName = user.FirstName;
+    ManageNav.HasPassword = await UserManager.HasPasswordAsync(await UserManager.GetUserAsync(User));
+    ManageNav.LastName = user.LastName;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -148,7 +153,6 @@
         </div>
     </div>
 
-
     <div class="container">
         <div class="row">
             <div class="col-lg-4">
@@ -156,16 +160,33 @@
                     <div class="margin-bottom-30px">
                         <h4 class="padding-lr-30px padding-tb-20px background-white box-shadow border-radius-10">
                             <i class="far fa-user margin-right-10px text-main-color"></i> 
-                            Hi, @if (@UserManager.GetUserName(User).Contains("@"))
+                            Hi, @if (string.IsNullOrEmpty(ManageNav.FirstName))
                             {
-                                string username = @UserManager.GetUserName(User).Split("@")[0];
-                                <span>@username</span>
+                                if (@UserManager.GetUserName(User).Contains("@"))
+                                {
+                                    string username = @UserManager.GetUserName(User).Split("@")[0];
+                                    <span>@username</span>
+                                }
+                                else
+                                {
+
+                                    <span>@UserManager.GetUserName(User)</span>
+                                }
                             } else
                             {
-                                <span>@UserManager.GetUserName(User)</span>
+                                <span>@ManageNav.FirstName</span>
                             }
+
                         </h4>
-                        <partial name="_ManageNav" />
+                        @Html.Partial("_ManageNav", ManageNav)
+                       @* @if(ViewData["Nav"].Equals("UserNav")){
+                            @Html.Partial("_ManageNav", ManageNav)
+                        } 
+                         else if (ViewData["Nav"].Equals("AccountNav"))
+                        {
+                            @Html.Partial("_AccountNav", ManageNav)
+                        }*@
+                        
                     </div>
                 </div>
 
@@ -204,7 +225,7 @@
                         <li class="col-6  padding-tb-5px"><a href="#" class="text-grey-2">Team</a></li>
                         <li class="col-6  padding-tb-5px"><a href="#" class="text-grey-2">Maintenance</a></li>
                         <li class="col-6  padding-tb-5px"><a href="#" class="text-grey-2">Get a Quote</a></li>
-                        <li class="col-6  padding-tb-5px"><a href="#" class="text-grey-2">Contact Us</a></li>
+                        <li class="col-6  padding-tb-5px"><a href="#" class="text-grey-2">Manage is here</a></li>
                     </ul>
                 </div>
 
@@ -231,7 +252,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="text-white margin-tb-15px text-center text-lg-left">
-                        Recipe Organizer | 2023 All copy rights reserved
+                        Recipe Organizer | 2023 All copy rights reserved 
                     </div>
                 </div>
                 <div class="col-md-6">

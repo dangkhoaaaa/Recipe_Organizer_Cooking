@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Services.Models.Authentication;
+using RecipeOrganizer.Areas.Identity.Models;
 
 namespace RecipeOrganizer.Areas.Identity.Controllers
 {
@@ -24,6 +25,9 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ManageController> _logger;
+
+        private readonly string USER_NAV = "UserNav";
+        private readonly string ACCOUNT_NAV = "AccountNav";
 
         public ManageController(
         UserManager<AppUser> userManager,
@@ -39,16 +43,16 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
 
         //
         // GET: /Manage/Index
-        [HttpGet]
+        [HttpGet("/user-profile/")]
         public async Task<IActionResult> Index(ManageMessageId? message = null)
         {
             ViewData["StatusMessage"] =
-                message == ManageMessageId.ChangePasswordSuccess ? "Đã thay đổi mật khẩu."
-                : message == ManageMessageId.SetPasswordSuccess ? "Đã đặt lại mật khẩu."
+                message == ManageMessageId.ChangePasswordSuccess ? "Password has change"
+                : message == ManageMessageId.SetPasswordSuccess ? "Password has reset"
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "Có lỗi."
-                : message == ManageMessageId.AddPhoneSuccess ? "Đã thêm số điện thoại."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Đã bỏ số điện thoại."
+                : message == ManageMessageId.Error ? "Error"
+                : message == ManageMessageId.AddPhoneSuccess ? "Phone number has added."
+                : message == ManageMessageId.RemovePhoneSuccess ? "Phone number has removed."
                 : "";
 
             var user = await GetCurrentUserAsync();
@@ -62,12 +66,14 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                 AuthenticatorKey = await _userManager.GetAuthenticatorKeyAsync(user),
                 profile = new EditExtraProfileModel()
                 {
-                    BirthDay = user.Birthday,
-                    UserName = user.UserName,
-                    UserEmail = user.Email,
+                    Username = user.UserName,
+                    Birthday = user.Birthday,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
                     PhoneNumber = user.PhoneNumber,
                 }
             };
+            ViewData["Nav"] = USER_NAV;
             return View(model);
         }
         public enum ManageMessageId
@@ -110,9 +116,14 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                 var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    //_logger.LogInformation(3, "User changed their password successfully.");
+                    //return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangePasswordSuccess });
                     _logger.LogInformation(3, "User changed their password successfully.");
-                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangePasswordSuccess });
+                    await _signInManager.SignOutAsync();
+                    _logger.LogInformation("User logged out");
+                    @TempData["ChangePasswordSuccess"] = "Change password success. You must login again!";
+                    return Redirect("/login/");
                 }
                 ModelState.AddModelError(result);
                 return View(model);
@@ -158,9 +169,9 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         public async Task<IActionResult> ManageLogins(ManageMessageId? message = null)
         {
             ViewData["StatusMessage"] =
-                message == ManageMessageId.RemoveLoginSuccess ? "Đã loại bỏ liên kết tài khoản."
-                : message == ManageMessageId.AddLoginSuccess ? "Đã thêm liên kết tài khoản"
-                : message == ManageMessageId.Error ? "Có lỗi."
+                message == ManageMessageId.RemoveLoginSuccess ? "Removed account link"
+                : message == ManageMessageId.AddLoginSuccess ? "Added account link"
+                : message == ManageMessageId.Error ? "Error!"
                 : "";
             var user = await GetCurrentUserAsync();
             if (user == null)
@@ -171,10 +182,11 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             var schemes = await _signInManager.GetExternalAuthenticationSchemesAsync();
             var otherLogins = schemes.Where(auth => userLogins.All(ul => auth.Name != ul.LoginProvider)).ToList();
             ViewData["ShowRemoveButton"] = user.PasswordHash != null || userLogins.Count > 1;
+            ViewData["Nav"] = ACCOUNT_NAV;
             return View(new ManageLoginsViewModel
             {
                 CurrentLogins = userLogins,
-                OtherLogins = otherLogins
+                OtherLogins = otherLogins   
             });
         }
 
@@ -231,6 +243,17 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             }
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
+        //GET: /Manage/ManagePhoneNumber
+        public async Task<IActionResult> ManagePhoneNumber()
+        {
+            var user = await GetCurrentUserAsync();
+            ManagePhoneNumberViewModel model = new ManagePhoneNumberViewModel
+            {
+                PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
+                PhoneNumberConfirm = await _userManager.IsPhoneNumberConfirmedAsync(user)
+            };
+            return View(model);
+        }
         //
         // GET: /Manage/AddPhoneNumber
         public IActionResult AddPhoneNumber()
@@ -251,7 +274,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             // Generate the token and send it
             var user = await GetCurrentUserAsync();
             var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, model.PhoneNumber);
-            await _emailSender.SendSmsAsync(model.PhoneNumber, "Mã xác thực là: " + code);
+            await _emailSender.SendSmsAsync(model.PhoneNumber, "Verify code is: " + code);
             return RedirectToAction(nameof(VerifyPhoneNumber), new { PhoneNumber = model.PhoneNumber });
         }
         //
@@ -285,7 +308,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                 }
             }
             // If we got this far, something failed, redisplay the form
-            ModelState.AddModelError(string.Empty, "Lỗi thêm số điện thoại");
+            ModelState.AddModelError(string.Empty, "Error when added Phonenumber");
             return View(model);
         }
         //
@@ -376,22 +399,25 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             
             var model = new EditExtraProfileModel()
             {
-                BirthDay = user.Birthday,
-                UserName = user.UserName,
-                UserEmail = user.Email,
+                Birthday = user.Birthday,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 PhoneNumber = user.PhoneNumber,
             };
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> EditProfileAsync(EditExtraProfileModel model)
+        public async Task<IActionResult> EditProfileAsync(IndexViewModel model)
         {
             var user = await GetCurrentUserAsync();
 
-            user.Birthday = model.BirthDay;
+            user.Birthday = model.profile.Birthday;
+            user.FirstName = model.profile.FirstName;
+            user.LastName = model.profile.LastName;
             await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
+            TempData["EditSuccess"] = "Update " + user.UserName + " successful";
             return RedirectToAction(nameof(Index), "Manage");
 
         }

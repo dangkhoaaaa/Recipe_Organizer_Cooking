@@ -3,12 +3,15 @@
 
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
+using Services.Models.Authentication;
 
 namespace RecipeOrganizer.Areas.Identity.Models.ManageViewModels
 {
     public class IndexViewModel
     {
-        public EditExtraProfileModel profile { get; set; }
+
+		
+		public EditExtraProfileModel profile { get; set; }
         public bool HasPassword { get; set; }
 
         public IList<UserLoginInfo> Logins { get; set; }

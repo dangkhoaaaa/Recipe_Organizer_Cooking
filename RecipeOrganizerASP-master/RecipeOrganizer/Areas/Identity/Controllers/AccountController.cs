@@ -102,7 +102,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         // POST: /Account/LogOut
         [HttpPost("/logout/")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogOff()
+        public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out");

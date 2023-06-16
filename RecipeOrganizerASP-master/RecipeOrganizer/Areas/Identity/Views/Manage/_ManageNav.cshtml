@@ -1,8 +1,10 @@
+﻿@*
 @inject SignInManager<AppUser> SignInManager
+@inject ManageNavViewModel ManageNavPages
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
-@*<ul class="nav nav-pills flex-column">
+<ul class="nav nav-pills flex-column">
     <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
@@ -13,6 +15,8 @@
     <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
 </ul>*@
+@model ManageNavViewModel
+
         <style>
             .nav-item {
                 padding-top:16px;
@@ -26,17 +30,45 @@
         </style>
         <div class="padding-25px padding-bottom-30px background-white border-radius-10">
         <ul class="nav nav-pills flex-column" style="padding-left: 0px">
-                <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Personal Info</a></li>
-                <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Change Password </a></li>
-                <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a  class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Change email</a></li>
-                <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link @ManageNavPages.RecipeCollectionNavClass(ViewContext)">Saved Recipes & Collections</a></li>
-                <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link @ManageNavPages.PersonalRecipeNavClass(ViewContext)">All Personal Recipes </a></li>
-                <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link @ManageNavPages.ReviewNavClass(ViewContext)">Reviews</a></li>
-                <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" href="/personal-data">Personal data</a></li>
+        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+            <a class="nav-link " id="profile" asp-area="Identity" asp-controller="Manage" asp-action="Index">Personal Info</a>
+        </li>
+
+        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+            @if (Model.HasPassword)
+            {
+                <a class="nav-link " id="change-password" asp-controller="Manage" asp-action="ChangePassword">Change password</a>
+            }
+            else
+            {
+                <a class="nav-link " id="change-password" asp-controller="Manage" asp-action="SetPassword">Create password</a>
+            }
+        </li>
+
+   @*     <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+            <a class="nav-link " id="email" asp-area="Identity" asp-controller="Manage" asp-action="ManagePhoneNumber">Phone number</a>
+        </li>*@
+
+        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+            <a class="nav-link " id="email" asp-area="Identity" asp-controller="Manage" asp-action="ManageLogins">Manage external login</a>
+        </li>
+
+        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+            <a class="nav-link " asp-area="Identity" asp-controller="Manage" asp-action="Index">Saved Recipes & Collections</a>
+        </li>
+
+        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+            <a class="nav-link " asp-area="Identity" asp-controller="Manage" asp-action="Index">All Personal Recipes </a>
+        </li>
+
+        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+            <a class="nav-link " asp-area="Identity" asp-controller="Manage" asp-action="Index">Reviews</a>
+        </li>
+        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link " id="personal-data" href="/personal-data">Personal data</a></li>
                @* <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>*@
 
 
-                @*<li>t�ch ra</li>
+                @*<li>tách ra</li>
 
                 <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
                 <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>

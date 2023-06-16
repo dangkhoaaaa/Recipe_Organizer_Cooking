@@ -1,68 +1,72 @@
 ﻿@model IndexViewModel
 @{
-    ViewData["Title"] = "Quản lý tài khoản của bạn";
+    ViewData["Title"] = "Personal profile";
+    Layout = "_ProfileLayout";
 }
 
-<h1>@ViewData["Title"].</h1>
-<p class="text-success">@ViewData["StatusMessage"]</p>
+@if (TempData["EditSuccess"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["EditSuccess"]
+    </div>
+}
 
 <div>
+    <div class="row">
+        <div class="col-lg-10 margin-bottom-40px">
+            <div class="box-shadow border-radius-10 overflow-hidden">
+                <div class="padding-30px background-white">
+                    
+                    <h2>@ViewData["Title"]</h2>
+                    <form id="profile-form" asp-controller="Manage" asp-action="EditProfile" method="post">
+                        <div class="form-group label-floating">
+                            <img src="http://placehold.it/100x100"> <br>
+                            <a href="#" style="font-size:14px;">Change your avatar</a>
+
+                        </div>
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group label-floating">
+                            <label asp-for="profile.Username" class="control-label"></label>
+                            <input asp-for="profile.Username" class="form-control" disabled />
+                        </div>
+
+                        @*<div class="form-group label-floating">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" disabled />
+                        </div>*@
+
+                        <div class="form-group label-floating">
+                            <label asp-for="profile.FirstName" class="control-label"></label>
+                            <input asp-for="profile.FirstName" class="form-control" />
+                            <span asp-validation-for="profile.FirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group label-floating">
+                            <label asp-for="profile.LastName" class="control-label"></label>
+                            <input asp-for="profile.LastName" class="form-control" />
+                            <span asp-validation-for="profile.LastName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group label-floating">
+                            <label asp-for="profile.Birthday" class="control-label"></label>
+                            <input asp-for="profile.Birthday" class="form-control" type="date" pattern="\d{1,2}/\d{1,2}/\d{4}" placeholder="mm/dd/yyyy" />
+                            <span asp-validation-for="profile.Birthday" class="text-danger"></span>
+                        </div>
+
+                        <button id="update-profile-button" type="submit" class="btn full-width background-main-color text-white">Save Changes</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     <h4>Cập nhật thông tin tài khoản</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-4">Thông tin cơ bản:</dt>
-        <dd class="col-sm-6"> 
-            <dl class="row">
-                 <dt class = "col-sm-6">
-                    @Html.DisplayNameFor(m => Model.profile.UserName)
-                 </dt>   
-                 <dd class = "col-sm-6">
-                    @Html.DisplayFor(m => Model.profile.UserName)
-                 </dd>
-            </dl>
-             <dl class="row">
-                 <dt class = "col-sm-6">
-                    @Html.DisplayNameFor(m => Model.profile.UserEmail)
-                 </dt>   
-                 <dd class = "col-sm-6">
-                    @Html.DisplayFor(m => Model.profile.UserEmail)
-                 </dd>
-            </dl>
-              <dl class="row">
-                 <dt class = "col-sm-6">
-                    @Html.DisplayNameFor(m => Model.profile.PhoneNumber)
-                 </dt>   
-                 <dd class = "col-sm-6">
-                    @Html.DisplayFor(m => Model.profile.PhoneNumber)
-                 </dd>
-            </dl>
-               <dl class="row">
-                 <dt class = "col-sm-6">
-                    @Html.DisplayNameFor(m => Model.profile.HomeAdress)
-                 </dt>   
-                 <dd class = "col-sm-6">
-                    @Html.DisplayFor(m => Model.profile.HomeAdress)
-                 </dd>
-              
-            <a asp-action="EditProfile" class="btn btn-primary btn-sm">Sửa</a>
- 
-        </dd>
 
-        <dt class="col-sm-4">Mật khẩu:</dt>
-        <dd class="col-sm-6">
-            @if (Model.HasPassword)
-            {
-                <a asp-controller="Manage" asp-action="ChangePassword">Đổi mật khẩu</a>
-            }
-            else
-            {
-                <a asp-controller="Manage" asp-action="SetPassword">Tạo mật khẩu</a>
-            }
-        </dd>
-        <dt class = "col-sm-4">Liên kết tài khoản ngoài:</dt>
-        <dd class = "col-sm-6">
-            Có @Model.Logins.Count liên kết. <a asp-controller="Manage" asp-action="ManageLogins">Quản lý liên kết ngoài</a>
-        </dd>
 
         <dt class="col-sm-4">Số điện thoại:</dt>
         <dd class = "col-sm-6">
