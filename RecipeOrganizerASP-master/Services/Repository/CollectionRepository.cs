@@ -23,8 +23,12 @@ namespace Services.Repository
 
 			return collections;
 		}
+		public bool IsRecipeSaved(int recipeId, int userId)
+		{
+			return _dbSet.Any(c => c.RecipeId == recipeId && c.UserId == userId.ToString());
+		}
 
-		public int CountCollection(int recipeId)
+		public int CountRecipeCollection(int recipeId)
 		{
 			List<Collection> collections = GetCollections();
 			Recipe recipe = _recipeRepository.GetById(recipeId);
@@ -36,27 +40,25 @@ namespace Services.Repository
 			return 0;
 		}
 
-		public void AddCollection(int recipeId, int userId)
+		public void ToggleCollection(int recipeId, int userId)
 		{
-			Collection collection = new Collection
-			{
-				RecipeId = recipeId,
-				UserId = userId.ToString()
-			};
-
-			_dbSet.Add(collection);
-			_context.SaveChanges();
-		}
-
-		public void RemoveCollection(int recipeId, int userId)
-		{
-			Collection collection = _dbSet.FirstOrDefault(c => c.RecipeId == recipeId && c.UserId == userId.ToString());
+			Collection? collection = _dbSet.FirstOrDefault(c => c.RecipeId == recipeId && c.UserId == userId.ToString());
 
 			if (collection != null)
 			{
 				_dbSet.Remove(collection);
-				_context.SaveChanges();
 			}
+			else
+			{
+				collection = new Collection
+				{
+					RecipeId = recipeId,
+					UserId = userId.ToString()
+				};
+				_dbSet.Add(collection);
+			}
+
+			_context.SaveChanges();
 		}
 
 	}

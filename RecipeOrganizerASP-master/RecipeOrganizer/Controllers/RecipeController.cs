@@ -19,6 +19,7 @@ namespace RecipeOrganizer.Controllers
 		private readonly RecipeHasCategoryRepository _recipeHasCategoryRepository;
 		private readonly MetadataRepository _metadataRepository;
 		private readonly MediaRepository _mediaRepository;
+		private readonly CollectionRepository _collectionRepository;
 		private readonly UserManager<AppUser> _userManager;
 
 		public RecipeController(UserManager<AppUser> userManager)
@@ -31,15 +32,15 @@ namespace RecipeOrganizer.Controllers
 			_recipeHasCategoryRepository = new RecipeHasCategoryRepository();
 			_metadataRepository = new MetadataRepository();
 			_mediaRepository = new MediaRepository();
+			_collectionRepository = new CollectionRepository();
 			_userManager = userManager;
 		}
 
 		public IActionResult Index()
 		{
-			return View("Index", "Home");
+			return RedirectToAction("Index", "Home");
 		}
 
-		[HttpGet]
 		public IActionResult AddNewRecipe()
 		{
 			return View();
@@ -87,35 +88,12 @@ namespace RecipeOrganizer.Controllers
 				// Ingredients
 				if (!string.IsNullOrEmpty(recipe.IngredientsInput))
 				{
-					//string[] ingredients = recipe.IngredientsInput.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-					//foreach (var ingredientName in ingredients)
-					//{
-					//	Ingredient ingredient = new Ingredient
-					//	{
-					//		RecipeId = data.RecipeId,
-					//		IngredientName = ingredientName
-					//	};
-					//	_ingredientRepository.Add(ingredient);
-					//}
-
 					_ingredientRepository.addIngredient(recipe.IngredientsInput, data.RecipeId);
 				}
 
 				// Directions
 				if (!string.IsNullOrEmpty(recipe.DirectionsInput))
 				{
-					//string[] steps = recipe.DirectionsInput.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-					//for (int i = 0; i < steps.Length; i++)
-					//{
-					//	Direction direction = new Direction
-					//	{
-					//		RecipeId = data.RecipeId,
-					//		Step = i + 1,
-					//		Direction1 = steps[i]
-					//	};
-					//	_directionRepository.Add(direction);
-					//}
-
 					_directionRepository.addDirection(recipe.DirectionsInput, data.RecipeId);
 				}
 
@@ -209,7 +187,6 @@ namespace RecipeOrganizer.Controllers
 		[AllowAnonymous]
 		public ActionResult RecipeDetail(int id)
 		{
-
 			Recipe recipe = _recipeRepository.GetById(id);
 			if (recipe != null)
 			{
@@ -223,12 +200,11 @@ namespace RecipeOrganizer.Controllers
 				List<Direction> direction = _directionRepository.GetByRecipeId(recipe.RecipeId);
 				data.Directions = direction;
 
+				ViewBag.CollectionRepository = _collectionRepository;
+
 				return View(data);
 			}
-			else
-			{
-				return RedirectToAction("Recipe", "Recipe");
-			}
+			return RedirectToAction("Index", "Home");
 		}
 
 		public IActionResult EditRecipe(int id)
@@ -280,6 +256,16 @@ namespace RecipeOrganizer.Controllers
 
 			return data;
 		}
+
+		[HttpPost]
+		public IActionResult ToggleCollection(int recipeId, int userId)
+		{
+			_collectionRepository.ToggleCollection(recipeId, userId);
+
+			return RedirectToAction("RecipeDetail", "Recipe", new { recipeId = recipeId });
+		}
+
+
 
 	}
 }

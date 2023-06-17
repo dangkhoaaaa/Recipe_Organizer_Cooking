@@ -38,6 +38,10 @@
     background-size: cover;
 }
 
+.recipe-textbox {
+    white-space: pre-line;
+}
+
 @media (min-width: 768px) {
     .formLayoutPhotoUpload {
         width: 224px;
