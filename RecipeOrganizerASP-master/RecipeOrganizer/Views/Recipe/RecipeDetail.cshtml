@@ -64,32 +64,35 @@
 				<div class="margin-bottom-40px card border-0 box-shadow">
 					<div class="card-img-top"><a href="#"><img src="http://placehold.it/1600x800" alt=""></a></div>
 					<div class="padding-lr-30px padding-tb-20px">
-
-						<h3>Ingredients</h3>
-						<ul>
-							@foreach (var item in Model.Ingredients)
-							{
-								<li>@item.IngredientName</li>
-							}
-						</ul>
-
-
-						<h3>Directions</h3>
-						<ol>
-							@foreach (var item in Model.Directions)
-							{
-								<li>@item.Direction1</li>
-							}
-						</ol>
-						<hr>
-						<div class="row no-gutters">
-							<div class="col-4 text-left">
-								<a href="#" class="text-red">
-									<i class="far fa-heart"></i>
-									Save
-								</a>
+						<div class="padding-tb-10px">
+							<h3>Ingredients</h3>
+							<ul>
+								@foreach (var item in Model.Ingredients)
+								{
+									<li>@item.IngredientName</li>
+								}
+							</ul>
+						</div>
+						<div class="padding-tb-10px">
+							<h3>Directions</h3>
+							<div class="padding-lr-20px">
+								@foreach (var item in Model.Directions)
+								{
+									<p><b>Step @item.Step</b> - <span>@item.Direction1</span></p>
+								}
 							</div>
 						</div>
+						<div class="row no-gutters padding-tb-20px">
+							<div class="col-12 text-center">
+								<button class="btn box-shadow padding-lr-30px padding-tb-10px btn-sm border-2 border-radius-10 btn-inline-block background-main-color text-white margin-right-20px margin-tb-12px ">
+									I MADE IT <i class="fas fa-utensil-spoon"></i>
+								</button>
+								<button class="btn box-shadow padding-lr-30px padding-tb-10px btn-sm border-2 border-radius-10 btn-inline-block border-main-color text-main-color margin-right-20px margin-tb-12px ">
+									PRINT <i class="fas fa-print"></i>
+								</button>
+							</div>
+						</div>
+
 					</div>
 				</div>
 
@@ -223,13 +226,13 @@
 
 			<div class="col-lg-4">
 				<div class="listing-search box-shadow background-main-color padding-30px margin-bottom-30px">
-					<form action="Search/SearchKeyWord" class="row no-gutters">
-						<div class="col-md-12">
+					<form action="../../Search/SearchKeyWord" class="row no-gutters">
+						<div class="col-md-12 margin-bottom-20px">
 							<div class="keywords">
-								<input class="listing-form first max-width-set" type="text" placeholder="Keywords...." name="keyword" value="">
+								<input class="listing-form first max-width-set" type="text" placeholder="Keywords...." name="keyword" id="postTitle" value="">
 							</div>
 						</div>
-						<div class="col-md-12">
+						<div class="col-md-12 margin-tb-10px">
 							<button type="submit" class="listing-bottom background-second-color box-shadow">Search Now</button>
 						</div>
 					</form>
