@@ -172,7 +172,7 @@ namespace RecipeOrganizer.Controllers
 					{
 						// Check if the tag already exists in the Tag table
 						Tag existingTag = _tagRepository.GetByName(tagName.Trim());
-						if (existingTag == null)
+						if (existingTag != null)
 						{
 							// Tag already exists, add a record to RecipeHasTags table
 							RecipeHasTag recipeHasTag = new RecipeHasTag
@@ -231,12 +231,13 @@ namespace RecipeOrganizer.Controllers
 			}
 		}
 
-		public async Task<IActionResult> EditRecipe(int id)
+		public IActionResult EditRecipe(int id)
 		{
 			Recipe recipe = _recipeRepository.GetById(id);
 			if (recipe != null)
 			{
-				return RedirectToAction("EditRecipe", "Recipe");
+				RecipeData recipeData = ConvertToRecipeData(recipe);
+				return View(recipeData);
 			}
 			else
 			{
@@ -258,6 +259,27 @@ namespace RecipeOrganizer.Controllers
 			}
 		}
 
+		private RecipeData ConvertToRecipeData(Recipe recipe)
+		{
+			RecipeData data = new RecipeData();
+			data.RecipeId = recipe.RecipeId;
+			data.Title = recipe.Title;
+			data.Description = recipe.Description;
+			List<Ingredient> ingredients = _ingredientRepository.GetByRecipeId(recipe.RecipeId);
+			List<Direction> directions = _directionRepository.GetByRecipeId(recipe.RecipeId);
+
+			if (ingredients != null)
+			{
+				data.Ingredients = ingredients.ToList();
+			}
+
+			if (directions != null)
+			{
+				data.Directions = directions.ToList();
+			}
+
+			return data;
+		}
 
 	}
 }

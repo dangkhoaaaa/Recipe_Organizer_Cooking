@@ -6,44 +6,47 @@
 }
 
 <body>
-	<div id="page-title" class="padding-tb-30px gradient-white">
-		<div class="container text-left margin-bottom-10px">
+	<div id="page-title" class="padding-top-30px padding-bottom-10px gradient-white">
+		<div class="container text-left">
 			<ol class="breadcrumb opacity-5">
 				<li><a href="@Url.Action("Index", "Home")">Home</a></li>
 				<li class="active">Recipe</li>
 			</ol>
-			<h1 class="font-weight-400 margin-bottom-20px">@Model.Title</h1>
-			<div class="row">
-				<div class="rating col-2">
-					<ul>
-						<li class="active"></li>
-						<li class="active"></li>
-						<li class="active"></li>
-						<li class="active"></li>
-						<li></li>
-						<a href="#">4.1 (99)</a>
-					</ul>
-				</div>
-				|
-				<div class="col-4">
-					<a href="#">89 reviews</a>
-					<span class="margin-left-5px margin-right-5px">|</span>
-					<a href="#">55 photos</a>
-				</div>
-			</div>
+		</div>
+	</div>
 
-			<div class="row">
-				<div class="col-lg-8 margin-top-10px margin-bottom-10px">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				<h1 class="font-weight-500 margin-bottom-20px">@Model.Title</h1>
+				<div class="row">
+					<div class="rating col-3">
+						<ul>
+							<li class="active"></li>
+							<li class="active"></li>
+							<li class="active"></li>
+							<li class="active"></li>
+							<li></li>
+							<a href="#">4.1 (99)</a>
+						</ul>
+					</div>
+					|
+					<div class="col-5">
+						<a href="#">89 reviews</a>
+						<span class="margin-lr-5px">|</span>
+						<a href="#">55 photos</a>
+					</div>
+				</div>
+
+				<div class="margin-tb-10px">
 					@Model.Description
 				</div>
-			</div>
-			<div class="margin-bottom-10px">
-				Recipe by Cook
-				<span class="margin-left-5px margin-right-5px">|</span>
-				Updated on @Model.Date
-			</div>
-			<div class="row">
-				<div class="">
+				<div class="margin-bottom-10px">
+					Recipe by Cook
+					<span class="margin-lr-5px">|</span>
+					Updated on @Model.Date
+				</div>
+				<div class="margin-bottom-20px">
 					<a href="#" class="text-red border-0">
 						<i class="far fa-heart"></i> Save
 					</a>
@@ -54,13 +57,7 @@
 					<span class="margin-left-5px margin-right-5px">|</span>
 					<a href="#"><i class="fas fa-share"></i> Share</a>
 				</div>
-			</div>
-		</div>
-	</div>
 
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-8">
 				<div class="margin-bottom-40px card border-0 box-shadow">
 					<div class="card-img-top"><a href="#"><img src="http://placehold.it/1600x800" alt=""></a></div>
 					<div class="padding-lr-30px padding-tb-20px">
@@ -95,7 +92,6 @@
 
 					</div>
 				</div>
-
 
 				<div class="margin-bottom-40px box-shadow">
 					<div class="padding-30px background-white">
@@ -233,7 +229,7 @@
 							</div>
 						</div>
 						<div class="col-md-12 margin-tb-10px">
-							<button type="submit" class="listing-bottom background-second-color box-shadow">Search Now</button>
+							<button type="submit" class="listing-bottom border-radius-10 background-second-color box-shadow">Search Now</button>
 						</div>
 					</form>
 				</div>
