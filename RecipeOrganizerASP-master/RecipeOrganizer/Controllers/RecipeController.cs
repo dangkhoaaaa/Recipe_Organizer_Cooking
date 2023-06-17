@@ -58,8 +58,27 @@ namespace RecipeOrganizer.Controllers
 				recipe.NumberShare = 0;
 
 				Recipe data = new Recipe();
-				data.Title = recipe.Title;
-				data.Description = recipe.Description;
+
+				// Title
+				if (string.IsNullOrEmpty(recipe.Title))
+				{
+					data.Title = "null";
+				}
+				else
+				{
+					data.Title = recipe.Title;
+				}
+
+				// Description
+				if (string.IsNullOrEmpty(recipe.Description))
+				{
+					data.Description = "Wishing you a delicious and satisfying meal!";
+				}
+				else
+				{
+					data.Description = recipe.Description;
+				}
+
 				data.Date = DateTime.Now;
 				data.NumberShare = recipe.NumberShare;
 				data.Status = recipe.Status;
@@ -146,7 +165,41 @@ namespace RecipeOrganizer.Controllers
 				}
 
 				// Tags
+				if (!string.IsNullOrEmpty(recipe.TagsInput))
+				{
+					string[] tags = recipe.TagsInput.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+					foreach (string tagName in tags)
+					{
+						// Check if the tag already exists in the Tag table
+						Tag existingTag = _tagRepository.GetByName(tagName.Trim());
+						if (existingTag == null)
+						{
+							// Tag already exists, add a record to RecipeHasTags table
+							RecipeHasTag recipeHasTag = new RecipeHasTag
+							{
+								RecipeId = data.RecipeId,
+								TagId = existingTag.TagId
+							};
+							_recipeHasTagRepository.Add(recipeHasTag);
+						}
+						else
+						{
+							// Tag does not exist, create a new tag and add a record to RecipeHasTags table
+							Tag newTag = new Tag
+							{
+								TagName = tagName.Trim()
+							};
+							_tagRepository.Add(newTag);
 
+							RecipeHasTag recipeHasTag = new RecipeHasTag
+							{
+								RecipeId = data.RecipeId,
+								TagId = newTag.TagId
+							};
+							_recipeHasTagRepository.Add(recipeHasTag);
+						}
+					}
+				}
 				//}
 				return RedirectToAction("EditRecipe", "Recipe", new { id = data.RecipeId });
 			}
