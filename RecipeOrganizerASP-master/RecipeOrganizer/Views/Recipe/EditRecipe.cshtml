@@ -5,12 +5,45 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script>
+	$(function () {
+		$("#sortable-container").sortable({
+			handle: ".handle",
+			update: function (event, ui) {
+				// Lấy danh sách các bước sau khi sắp xếp
+				var steps = [];
+				$(".step").each(function () {
+					var stepId = $(this).find("textarea").attr("id");
+					var direction = $(this).find("textarea").val();
+					steps.push({
+						stepId: stepId,
+						direction: direction
+					});
+				});
+
+				// Gửi danh sách các bước đến máy chủ để cập nhật
+				$.ajax({
+					url: "/update-directions",
+					method: "POST",
+					data: { steps: JSON.stringify(steps) },
+					success: function (response) {
+						// Xử lý phản hồi từ máy chủ (nếu cần)
+					},
+					error: function (xhr, status, error) {
+						// Xử lý lỗi (nếu cần)
+					}
+				});
+			}
+		}).disableSelection();
+	});
+</script>
+
 <body>
 	<div id="page-title" class="padding-tb-30px gradient-white">
 		<div class="container">
 			<ol class="breadcrumb opacity-5">
 				<li><a href="@Url.Action("Index", "Home")">Home</a></li>
-				<li><a href="@Url.Action("AddNewRecipe", "Recipe")">Edit Recipe</a></li>
+				<li><a href="@Url.Action("AddNewRecipe", "Recipe")">Add new Recipe</a></li>
 			</ol>
 			<h1 class="font-weight-300">Edit Recipe</h1>
 		</div>
@@ -46,24 +79,6 @@
 											(optional)
 										</label><br>
 									</div>
-									<div class="formLayoutPhotoUpload">
-										<div class="formLayout__uploadLabel">
-											<label>
-												<i class="far fa-list-alt margin-right-10px"></i> Photo (optional)
-											</label><br>
-										</div>
-										<div class="formLayoutPhotoUpload__uploadedImage js--uploadedImage">
-											@*@if (Model.FilePath != null)
-										{
-										<img src="@Model.FilePath" alt="Uploaded Image">
-										}*@
-										</div>
-										<input type="hidden" asp-for="FilePath" class="form-control" />
-										@*<input type="file" asp-for="ImageFile" class="formLayoutPhotoUpload__uploadInput js--fileInput" accept="image/*">*@
-									</div>
-
-
-
 									<input id="imageURL" class="formLayoutPhotoUpload__uniqueId js--uploadedPhotoId"
 										   name="imageURL" type="hidden">
 									<div class="formLayoutPhotoUpload__uploadedImage js--uploadedImage">
@@ -73,7 +88,6 @@
 										   class="formLayoutPhotoUpload__uploadInput js--fileInput" accept="image/*">
 								</div>
 							</div>
-
 							<div class="margin-top-40px form-group margin-bottom-10px">
 								<p>
 									Use JPEG or PNG. Must be at least 960 x 960.
@@ -90,17 +104,19 @@
 				</h4>
 				<div class="padding-10px padding-bottom-10px background-white border-radius-10">
 					<div class="margin-bottom-10px">
-						<label><i class="far fa-flag margin-right-10px"></i> Add multiple ingredients</label><br>
+						<label><i class="far fa-flag margin-right-10px"></i> Edit multiple ingredients</label><br>
 						<p>
-							Paste your ingredient list here. Add one ingredient per line. Include the quantity (i.e.
-							cups,
+							Paste your ingredient list here. Add one ingredient per line. Include the quantity (i.e. cups,
 							tablespoons) and any special preparation (i.e. sifted, softened, chopped).
 						</p>
-						@Html.TextAreaFor(m => m.IngredientsInput, new { @class = "form-control", placeholder = "Example:\r\n2 cups of flour, sifted\r\n1 cup sugar\r\n2 tablespoons butter, softened", @rows = "8" })
-
+						<textarea id="ingredients" name="IngredientsInput" class="form-control" rows="8">
+							@foreach (var ingredient in Model.Ingredients)
+							{
+								@ingredient.IngredientName
+								@Html.Raw(Environment.NewLine)
+							}
+								</textarea>
 					</div>
-
-					<img src="">
 				</div>
 			</div>
 			<div class="margin-bottom-20px full-width">
@@ -109,21 +125,26 @@
 				</h4>
 				<div class="padding-10px padding-bottom-10px background-white border-radius-10">
 					<div class="margin-bottom-10px">
-						<label><i class="far fa-flag margin-right-10px"></i> Add multiple steps</label><br>
+						<label><i class="far fa-flag margin-right-10px"></i> Edit multiple steps</label><br>
 						<p>
 							Explain how to make your recipe, including oven temperatures, baking or cooking times, and
-							pan
-							sizes, etc. Use optional headers to organize the different parts of the recipe (i.e. Prep,
+							pan sizes, etc. Use optional headers to organize the different parts of the recipe (i.e. Prep,
 							Bake,
 							Decorate).
 						</p>
-						<p>
-							Enter your direction steps here. Add one step per line. Press ‘enter’ or ‘return’ to start a
-							new
-							step line. Include oven temperatures, baking or cooking times, and pan sizes, etc.
-						</p>
-						@Html.TextAreaFor(m => m.DirectionsInput, new { @class = "form-control", placeholder = "Example:\r\nCombine all dry ingredients in a large bowl. Set aside.\r\nCombine all wet ingredients in a small bowl.\r\nFold gently in with the dry ingredients.", @rows = "8" })
-
+						<div id="sortable-container" class="row">
+							@{
+								int step = 1;
+							}
+							@foreach (var direction in Model.Directions)
+							{
+								<div class="col-12 step">
+									<div class="handle">Step @step:</div>
+									<textarea id="@direction.DirectionId" name="@direction.DirectionId" class="form-control" rows="2">@direction.Direction1</textarea>
+								</div>
+								step++;
+							}
+						</div>
 					</div>
 				</div>
 			</div>

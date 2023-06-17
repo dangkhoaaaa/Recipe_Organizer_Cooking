@@ -60,3 +60,14 @@
 .invalid {
     border-color: red !important;
 }
+
+.step {
+    margin-bottom: 10px;
+}
+
+.handle {
+    cursor: move;
+    padding: 5px;
+    background-color: #ccc;
+    color: #000;
+}
