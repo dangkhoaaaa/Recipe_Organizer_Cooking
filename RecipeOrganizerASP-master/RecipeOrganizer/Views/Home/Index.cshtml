@@ -47,7 +47,7 @@
 <main>
 	<div class="autoplayBanner">
 	
-		<div class="banner padding-tb-20px background-overlay" style="background-image: url('https://www.eatingwell.com/thmb/088YHsNmHkUQ7iNGP4375MiAXOY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/article_7866255_foods-you-should-eat-every-week-to-lose-weight_-04-d58e9c481bce4a29b47295baade4072d.jpg'); ">
+		<div class="banner padding-tb-20px background-overlay" style="background-image: url('https://wallpapershome.com/images/pages/pic_h/17815.jpg'); ">
 
 		@await Component.InvokeAsync("Banner")
 		<!-- //container  -->
@@ -62,17 +62,17 @@
 		@await Component.InvokeAsync("Banner")
 		<!-- //container  -->
 	</div>
-	<div class="banner padding-tb-20px background-overlay" style="background-image: url('https://img.freepik.com/premium-photo/sexy-blonde-woman-hot-wear-sits-by-table-eats-fast-food-indoors-cafe_146671-30088.jpg'); ">
+	<div class="banner padding-tb-20px background-overlay" style="background-image: url('https://wallpapershome.com/images/pages/ico_h/15363.jpg'); ">
 
 		@await Component.InvokeAsync("Banner")
 		<!-- //container  -->
 	</div>
-	<div class="banner padding-tb-20px background-overlay" style="background-image: url('https://img.freepik.com/premium-photo/spanish-tapa-copy-space-mockup-overhead_643825-4118.jpg?w=2000'); ">
+	<div class="banner padding-tb-20px background-overlay" style="background-image: url('https://wallpapershome.com/images/pages/pic_h/16060.jpg'); ">
 
 		@await Component.InvokeAsync("Banner")
 		<!-- //container  -->
 	</div>
-	<div class="banner padding-tb-20px background-overlay" style="background-image: url('https://images.hdqwalls.com/download/raspberry-good-fruit-plant-4k-um-1600x900.jpg'); ">
+	<div class="banner padding-tb-20px background-overlay" style="background-image: url('https://wallpapershome.com/images/pages/pic_h/17816.jpg'); ">
 
 		@await Component.InvokeAsync("Banner")
 		<!-- //container  -->
@@ -89,24 +89,24 @@
 	@await Component.InvokeAsync("Items")
 
 
-	<div class="instgram-feed">
-		<div class="row no-gutters">
-			<div class="col-md-2 col-6">
+	<div class="instgram-feed ">
+		<div class=" no-gutters autoplayFoot">
+			<div class="col-md-12 col-16">
+				<a href="#"><img src="https://wallpapershome.com/images/pages/pic_h/17426.jpg" alt=""></a>
+			</div>
+			<div class="col-md-12 col-16">
+				<a href="#"><img src="https://wallpapershome.com/images/pages/pic_h/1009.jpg" alt=""></a>
+			</div>
+			<div class="col-md-12 col-16">
+				<a href="#"><img src="https://wallpapershome.com/images/pages/pic_h/14761.jpg" alt=""></a>
+			</div>
+			<div class="col-md-12 col-16">
 				<a href="#"><img src="http://placehold.it/600x600" alt=""></a>
 			</div>
-			<div class="col-md-2 col-6">
+			<div class="col-md-12 col-16">
 				<a href="#"><img src="http://placehold.it/600x600" alt=""></a>
 			</div>
-			<div class="col-md-2 col-6">
-				<a href="#"><img src="http://placehold.it/600x600" alt=""></a>
-			</div>
-			<div class="col-md-2 col-6">
-				<a href="#"><img src="http://placehold.it/600x600" alt=""></a>
-			</div>
-			<div class="col-md-2 col-6">
-				<a href="#"><img src="http://placehold.it/600x600" alt=""></a>
-			</div>
-			<div class="col-md-2 col-6">
+			<div class="col-md-12 col-16">
 				<a href="#"><img src="http://placehold.it/600x600" alt=""></a>
 			</div>
 		</div>
@@ -136,13 +136,38 @@
 			slidesToShow: 1,
 			slidesToScroll: 1,
 			autoplay: true,
-			autoplaySpeed: 1000,
+			autoplaySpeed: 3000,
 			  dots: true,
   infinite: true,
   speed: 500,
   fade: true,
   cssEase: 'linear',
   arrows: false
+		});
+	</script>
+
+	<script type="text/javascript">
+		$('.autoplayFoot').slick({
+			slidesToShow: 5,
+			slidesToScroll: 1,
+			autoplay: true,
+			autoplaySpeed: 2000,
+			 
+  arrows: false,
+   responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2, arrows: false
+        }
+      },
+      {
+        breakpoint: 576,
+        settings: {
+          slidesToShow: 1, arrows: false
+        }
+      }
+    ]
 		});
 	</script>
 </main>
