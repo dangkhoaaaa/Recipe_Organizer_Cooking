@@ -9,6 +9,7 @@ using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace Services.Repository
@@ -18,11 +19,13 @@ namespace Services.Repository
 		Recipe_OrganizerContext _context;
 
 		protected DbSet<Recipe> _dbSet;
+		protected DbSet<RecipeHasCategory> _dbSet1;
 
 		public RecipeRepository()
 		{
 			_context = new Recipe_OrganizerContext();
 			_dbSet = _context.Set<Recipe>();
+			_dbSet1 = _context.Set<RecipeHasCategory>();
 		}
 
 
@@ -76,6 +79,50 @@ namespace Services.Repository
 			return _dbSet.Where(r => r.RecipeId == id).FirstOrDefault();
 		}
 
+		public List<Recipe> SearchAllTitleWithFilter(string filter,string title)
+		{
+			switch (filter) 
+			{
+				case "1":
+					return _dbSet.Where(r => r.Title.Contains(title)).OrderByDescending(r => r.NumberShare).ToList();
+				case "2":
+					return _dbSet.Where(r => r.Title.Contains(title)).OrderBy(r => r.Date).ToList();
+				case "3":
+					return _dbSet.Where(r => r.Title.Contains(title)).OrderBy(r => r.Title).ToList();
+				case "4":
+					return _dbSet.Where(r => r.Title.Contains(title)).OrderBy(r => r.RecipeId).ToList();
+				default:
+					return _dbSet.Where(r => r.Title.Contains(title)).OrderBy(r => r.Title).ToList();
+
+			}
+		
+		}
+
+		public List<Recipe> SearchAllTitleWithFilterandCategory(string filter, string title, int categoryID)
+		{
+			List<Recipe> listmapCategory = new List<Recipe>();
+				 var query = from rc in _dbSet1
+							 join r in _dbSet on rc.RecipeId equals r.RecipeId
+							 where rc.CategoryId == categoryID
+							 select r;
+
+			listmapCategory = query.ToList();
+			switch (filter)
+			{
+				case "1":
+					return listmapCategory.Where(r => r.Title.Contains(title)).OrderBy(r => r.NumberShare).ToList();
+				case "2":
+					return listmapCategory.Where(r => r.Title.Contains(title)).OrderBy(r => r.Date).ToList();
+				case "3":
+					return listmapCategory.Where(r => r.Title.Contains(title)).OrderBy(r => r.Title).ToList();
+				case "4":
+					return listmapCategory.Where(r => r.Title.Contains(title)).OrderBy(r => r.Ingredients).ToList();
+				default:
+					return listmapCategory.Where(r => r.Title.Contains(title)).OrderBy(r => r.Title).ToList();
+
+			}
+
+		}
 
 		public List<Recipe> getRecipeByKeywordWitPaging(string keyword,int productPage , int PageSize,List<Recipe> recipeAllSearch)
 

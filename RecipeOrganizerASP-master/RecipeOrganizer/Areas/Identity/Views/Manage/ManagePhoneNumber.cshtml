@@ -1,0 +1,106 @@
+﻿@model ManagePhoneNumberViewModel
+@using Microsoft.AspNetCore.Authentication
+@{
+    ViewData["Title"] = "Manage phone numer";
+    Layout = "_ProfileLayout";
+}
+
+
+
+@if (ViewData["StatusMessage"] != null)
+{
+    <div class="alert alert-success">
+        @ViewData["StatusMessage"]
+    </div>
+}
+<style>
+    .btn:hover {
+        opacity: 0.9;
+    }
+
+    .phone-number-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .phone-number {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .actions {
+        display: flex;
+    }
+
+    .btn-change,
+    .btn-remove {
+        padding: 5px 10px;
+        margin-right: 5px;
+        background-color: #f5f5f5;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    .authentication-status {
+        margin-top: 10px;
+    }
+
+    .status {
+        font-style: italic;
+        color: #888;
+    }
+
+    .fa-check-circle {
+        color: green;
+        margin-right: 5px;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-lg-10 margin-bottom-40px" style="font-size: 15px;">
+        <div class="box-shadow border-radius-10 overflow-hidden">
+            <div class="padding-30px background-white">
+
+                @if (Model.PhoneNumber != null)
+                {
+                    <h2>Phone number</h2>
+                    <div class="phone-number-container">
+                        <span class="phone-number">+1234567890</span>
+                        <div class="actions">
+                            <button class="btn-change"><a asp-controller="Manage" asp-action="AddPhoneNumber">Change</a></button>
+                            <form asp-controller="Manage" asp-action="RemovePhoneNumber" method="post" role="form">
+                                <button class="btn-remove"><a asp-controller="Manage" asp-action="RemovePhoneNumber">Remove</a></button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="authentication-status">
+                        @if(Model.PhoneNumberConfirm)
+                        {
+                            <span class="status">
+                                <i class="fa-solid fa-circle-check" style="color: #17b061;"></i> Phone number has been confirmed
+                            </span>
+                        } else
+                        {
+                            <span class="status">
+                                <i class="fa-regular fa-circle-exclamation" style="color: #e60000;"></i> Phone number has not been confirmed
+                            </span>
+                        }
+
+                    </div>
+                } else
+                {
+                    <h3>You have not added a phone number to your account</h3>
+                    <div class="actions">
+                        <a class="btn btn-primary" asp-controller="Manage" asp-action="AddPhoneNumber">Add now</a>
+                    </div>
+
+
+                }
+
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -31,7 +31,15 @@
 
 
 </style>
-
+@{
+    var user = await UserManager.GetUserAsync(User);
+    ManageNavViewModel ManageNav = new ManageNavViewModel();
+    if (user != null)
+    {
+        ManageNav.FirstName = user.FirstName;
+    }
+    
+}
 
 @if (SignInManager.IsSignedIn(User))
 {
@@ -46,16 +54,45 @@
             <i class="far fa-user"></i>
         </a>
         <div class="dropdown-menu"  style="position: absolute;transform: translate3d(100px, 76px, 0px);top: 0px;left: 0px;will-change: transform;">
-            <a class="dropdown-item"  id="manage" href="/user/profile" title="Manage">User Profile</a>
+            <a class="dropdown-item" id="manage" asp-area="Identity" asp-controller="Manage" asp-action="Index" title="Manage">User profile</a>
             @*<a class="dropdown-item" id="manage" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">User Profile</a>*@
-            <a class="dropdown-item" href="/Plan/ViewPlan">Meal planning</a>
+            <a class="dropdown-item" href=@Url.Action("ViewPlan","Plan")>Meal planning</a>
             <a class="dropdown-item" href="#">Settings</a>
             <div class="dropdown-divider"></div>
-            <form class=" form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+            <form class=" form-inline" asp-area="Identity" asp-controller="Account" asp-action="Logout" method="post">
                 <button type="submit" class="dropdown-item nav-link btn btn-link text-dark">Logout</button>
             </form>
         </div>
     </div>
+    <div class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large">
+        <span>Hi,</span>
+        @if (string.IsNullOrEmpty(ManageNav.FirstName))
+        {
+            if (@UserManager.GetUserName(User).Contains("@"))
+            {
+                string username = @UserManager.GetUserName(User).Split("@")[0];
+                <span>@username</span>
+            }
+            else
+            {
+
+                <span>@UserManager.GetUserName(User)</span>
+            }
+        }
+        else
+        {
+            <span>@ManageNav.FirstName</span>
+        }
+       @* @if (@UserManager.GetUserName(User).Contains("@"))
+        {
+        string username = @UserManager.GetUserName(User).Split("@")[0];
+        <span>@username</span>
+        } else
+        {
+        <span>@UserManager.GetUserName(User)</span>
+        }*@
+    </div>
+    
 }
 else
 {
