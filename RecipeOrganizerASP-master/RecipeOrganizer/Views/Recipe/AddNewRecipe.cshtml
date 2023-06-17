@@ -4,6 +4,24 @@
 	ViewBag.Title = "Add new recipe";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script>
+	function validateForm(event) {
+		var titleInput = document.getElementById('Title');
+		var isValid = true;
+
+		// Kiểm tra điều kiện cho trường Title
+		if (titleInput.value.trim() === '') {
+			titleInput.classList.add('invalid');
+			isValid = false;
+		}
+
+		if (!isValid) {
+			event.preventDefault(); // Ngăn chặn sự kiện submit
+			alert('Please fill in all required fields.'); // Hiển thị thông báo lỗi
+		}
+	}
+</script>
+
 
 <body>
 	<div id="page-title" class="padding-tb-30px gradient-white">
@@ -15,7 +33,7 @@
 			<h1 class="font-weight-300">Add Recipe</h1>
 		</div>
 	</div>
-	@using (Html.BeginForm("AddNewRecipe", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
+	@using (Html.BeginForm("AddNewRecipe", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "validateForm(event)" }))
 	{
 		<div class="container">
 			<div class="margin-tb-20px full-width">
@@ -28,7 +46,7 @@
 						<div class="col-md-8">
 							<div class="form-group margin-bottom-10px">
 								<label><i class="far fa-list-alt margin-right-10px"></i> Recipe Title</label>
-								@Html.TextBoxFor(m => m.Title, new { @class="form-control form-control-sm", placeholder="Give your recipe a title", required = "required" })
+								@Html.TextBoxFor(m => m.Title, new { @class="form-control form-control-sm", placeholder="Give your recipe a title", required = "required", onblur = "validateTitle()" })
 								@Html.ValidationMessageFor(m => m.Title)
 							</div>
 							<div class="margin-bottom-10px">
@@ -46,24 +64,6 @@
 											(optional)
 										</label><br>
 									</div>
-									<div class="formLayoutPhotoUpload">
-										<div class="formLayout__uploadLabel">
-											<label>
-												<i class="far fa-list-alt margin-right-10px"></i> Photo (optional)
-											</label><br>
-										</div>
-										<div class="formLayoutPhotoUpload__uploadedImage js--uploadedImage">
-											@*@if (Model.FilePath != null)
-											{
-												<img src="@Model.FilePath" alt="Uploaded Image">
-											}*@
-										</div>
-										<input type="hidden" asp-for="FilePath" class="form-control" />
-										@*<input type="file" asp-for="ImageFile" class="formLayoutPhotoUpload__uploadInput js--fileInput" accept="image/*">*@
-									</div>
-
-
-
 									<input id="imageURL" class="formLayoutPhotoUpload__uniqueId js--uploadedPhotoId"
 										   name="imageURL" type="hidden">
 									<div class="formLayoutPhotoUpload__uploadedImage js--uploadedImage">
@@ -73,7 +73,6 @@
 										   class="formLayoutPhotoUpload__uploadInput js--fileInput" accept="image/*">
 								</div>
 							</div>
-
 							<div class="margin-top-40px form-group margin-bottom-10px">
 								<p>
 									Use JPEG or PNG. Must be at least 960 x 960.
@@ -140,10 +139,13 @@
 				</div>
 			</div>
 			<div class="text-center">
-				<button type="submit" name="Status" value="Draft" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">
+				<button type="submit" name="Status" value="Draft" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow"
+						onclick="return validateForm()">
 					Save draft
 				</button>
-				<button type="submit" name="Status" value="Public" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">
+
+				<button type="submit" name="Status" value="Public" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow"
+						onclick="return validateForm()">
 					Public
 				</button>
 
