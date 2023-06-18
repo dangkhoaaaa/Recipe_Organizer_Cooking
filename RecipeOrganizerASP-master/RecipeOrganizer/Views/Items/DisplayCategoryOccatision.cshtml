@@ -43,7 +43,7 @@
                             </script>
                         </div>
                         <div class="col-md-4">
-                            <button class="listing-bottom background-second-color box-shadow" type="submit">Search Now</button>
+                            <button class="listing-bottom background-second-color box-shadow hvr-bounce-to-right" type="submit">Search Now</button>
                         </div>
                     </form>
                 </div>
@@ -55,11 +55,11 @@
             @foreach (var item in Model.Recipes)
             {
                 <!-- Recipe Item -->
-                <div class="col-xl-3 col-lg-4 col-md-6 recipe-item margin-bottom-40px">
+                <div class="col-xl-3 col-lg-4 col-md-6 recipe-item margin-bottom-40px hvr-buzz">
                     <div class="card border-0 box-shadow">
                         <div class="card-img-top"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img src="http://placehold.it/420x335" alt=""></a></div>
                         <div class="padding-lr-30px padding-tb-20px">
-                            <h5 class="margin-bottom-20px margin-top-10px"><a class="text-dark" href="#">@item.Title</a></h5>
+                            <h5 class="margin-bottom-20px margin-top-10px"><a class="text-dark" href="/Recipe/RecipeDetail/?id=@item.RecipeId">@item.Title</a></h5>
                             <div class="rating">
                                 <ul>
                                     <li class="active"></li>
@@ -72,7 +72,7 @@
                             <hr>
                             <div class="row no-gutters">
                                 <div class="col-4 text-left"><a href="#" class="text-red"><i class="far fa-heart"></i> Save</a></div>
-                                <div class="col-8 text-right"><a href="#" class="text-grey-2"><i class="fas fa-users"></i> @item.NumberShare</a></div>
+                                <div class="col-8 text-right"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="text-grey-2"><i class="fas fa-users"></i> @item.NumberShare</a></div>
                             </div>
                         </div>
                         <div class="background-light-grey border-top-1 border-grey padding-lr-30px padding-tb-20px">
