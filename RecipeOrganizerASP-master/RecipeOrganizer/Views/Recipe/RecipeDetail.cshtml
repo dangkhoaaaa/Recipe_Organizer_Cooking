@@ -47,9 +47,28 @@
 					Updated on @Model.Date
 				</div>
 				<div class="margin-bottom-20px">
-					<a href="#" class="text-red border-0">
+					@*<form method="post" action="/Recipe/ToggleCollection?userId=@(ViewBag.UserId ?? "")&recipeId=@Model.RecipeId">
+						<input type="hidden" name="recipeId" value="@Model.RecipeId" />
+						@{
+							var collectionRepository = ViewBag.CollectionRepository as CollectionRepository;
+							bool isSaved = collectionRepository?.IsRecipeSaved(Model.RecipeId, ViewBag.UserId?.ToString()) ?? false;
+						}
+						@if (isSaved)
+						{
+							<button type="submit" class="text-red border-0" id="saveButton">
+								<i class="icon_heart"></i> Unsave
+							</button>
+						}
+						else
+						{
+							<button type="submit" class="text-red border-0" id="saveButton">
+								<i class="far fa-heart"></i> Save
+							</button>
+						}
+					</form>*@
+					<button type="submit" class="text-red border-0 bg-transparent" id="saveButton">
 						<i class="far fa-heart"></i> Save
-					</a>
+					</button>
 					<span class="margin-left-5px margin-right-5px">|</span>
 					<a href="#"><i class="far fa-star"></i> Rate</a>
 					<span class="margin-left-5px margin-right-5px">|</span>

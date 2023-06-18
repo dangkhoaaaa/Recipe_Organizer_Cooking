@@ -8,20 +8,21 @@
 	function validateForm(event) {
 		var titleInput = document.getElementById('Title');
 		var isValid = true;
-
-		// Kiểm tra điều kiện cho trường Title
+		// Check condition for Title field
 		if (titleInput.value.trim() === '') {
 			titleInput.classList.add('invalid');
 			isValid = false;
 		}
-
 		if (!isValid) {
-			event.preventDefault(); // Ngăn chặn sự kiện submit
-			alert('Please fill in all required fields.'); // Hiển thị thông báo lỗi
+			event.preventDefault(); // Prevent submit event
+			alert('Please fill in all required fields.'); // Show error message
 		}
 	}
+	function replaceLineBreaks() {
+		var description = document.getElementById('Description');
+		description.value = description.value.replace(/\r?\n/g, '\n');
+	}
 </script>
-
 
 <body>
 	<div id="page-title" class="padding-tb-30px gradient-white">
@@ -51,8 +52,7 @@
 							</div>
 							<div class="margin-bottom-10px">
 								<label><i class="far fa-list-alt margin-right-10px"></i> Description</label>
-								@Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Share the story behind your recipe and what makes it special.", @rows = "8" })
-
+								@Html.TextAreaFor(m => m.Description, new { @class = "form-control recipe-textbox", placeholder = "Share the story behind your recipe and what makes it special.", @rows = "8", onblur = "replaceLineBreaks()" })
 							</div>
 						</div>
 						<div class="col-md-4">
@@ -96,10 +96,7 @@
 							tablespoons) and any special preparation (i.e. sifted, softened, chopped).
 						</p>
 						@Html.TextAreaFor(m => m.IngredientsInput, new { @class = "form-control", placeholder = "Example:\r\n2 cups of flour, sifted\r\n1 cup sugar\r\n2 tablespoons butter, softened", @rows = "8" })
-
 					</div>
-
-					<img src="">
 				</div>
 			</div>
 			<div class="margin-bottom-20px full-width">
@@ -132,10 +129,8 @@
 						<div class="form-group margin-bottom-20px">
 							<label><i class="far fa-flag margin-right-10px"></i> Tags</label>
 							@Html.TextBoxFor(m => m.TagsInput, new { @class = "form-control", placeholder="Enter a comma after each tag" })
-
 						</div>
 					</div>
-
 				</div>
 			</div>
 			<div class="text-center">
@@ -143,13 +138,11 @@
 						onclick="return validateForm()">
 					Save draft
 				</button>
-
 				<button type="submit" name="Status" value="Public" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow"
 						onclick="return validateForm()">
 					Public
 				</button>
-
-				<a href="@Url.Action("Index", "Recipe")" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">Cancel</a>
+				<a href="@Url.Action("Index", "Home")" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">Cancel</a>
 			</div>
 		</div>
 	}

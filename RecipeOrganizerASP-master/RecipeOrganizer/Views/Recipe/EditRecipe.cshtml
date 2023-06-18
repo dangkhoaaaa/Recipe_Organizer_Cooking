@@ -6,11 +6,29 @@
 }
 
 <script>
+	function validateForm(event) {
+		var titleInput = document.getElementById('Title');
+		var isValid = true;
+		// Check condition for Title field
+		if (titleInput.value.trim() === '') {
+			titleInput.classList.add('invalid');
+			isValid = false;
+		}
+		if (!isValid) {
+			event.preventDefault(); // Prevent submit event
+			alert('Please fill in all required fields.'); // Show error message
+		}
+	}
+	function replaceLineBreaks() {
+		var description = document.getElementById('Description');
+		description.value = description.value.replace(/\r?\n/g, '\n');
+	}
+
 	$(function () {
 		$("#sortable-container").sortable({
 			handle: ".handle",
 			update: function (event, ui) {
-				// Lấy danh sách các bước sau khi sắp xếp
+				// Get the list of steps after sorting
 				var steps = [];
 				$(".step").each(function () {
 					var stepId = $(this).find("textarea").attr("id");
@@ -21,21 +39,24 @@
 					});
 				});
 
-				// Gửi danh sách các bước đến máy chủ để cập nhật
+				// Send the list of steps to the server for update
 				$.ajax({
 					url: "/update-directions",
 					method: "POST",
 					data: { steps: JSON.stringify(steps) },
 					success: function (response) {
-						// Xử lý phản hồi từ máy chủ (nếu cần)
+						// Code to handle the response from the server
+						console.log(response);
 					},
 					error: function (xhr, status, error) {
-						// Xử lý lỗi (nếu cần)
+						// Error handling
+						console.log(error);
 					}
 				});
 			}
 		}).disableSelection();
 	});
+
 </script>
 
 <body>
@@ -48,8 +69,7 @@
 			<h1 class="font-weight-300">Edit Recipe</h1>
 		</div>
 	</div>
-	@using (Html.BeginForm("EditRecipe", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
-	{
+	<form method="post" action="/Recipe/EditRecipe?@Model.RecipeId" enctype="multipart/form-data">
 		<div class="container">
 			<div class="margin-tb-20px full-width">
 				<h4 class="padding-lr-10px padding-tb-10px background-white box-shadow border-radius-10">
@@ -66,7 +86,7 @@
 							</div>
 							<div class="margin-bottom-10px">
 								<label><i class="far fa-list-alt margin-right-10px"></i> Description</label>
-								@Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Share the story behind your recipe and what makes it special.", @rows = "8" })
+								@Html.TextAreaFor(m => m.Description, new { @class = "form-control recipe-textbox", placeholder = "Share the story behind your recipe and what makes it special.", @rows = "8", onblur = "replaceLineBreaks()" })
 
 							</div>
 						</div>
@@ -115,7 +135,7 @@
 								@ingredient.IngredientName
 								@Html.Raw(Environment.NewLine)
 							}
-								</textarea>
+						</textarea>
 					</div>
 				</div>
 			</div>
@@ -132,19 +152,26 @@
 							Bake,
 							Decorate).
 						</p>
-						<div id="sortable-container" class="row">
-							@{
-								int step = 1;
-							}
+						@*<div id="sortable-container" class="row">
+					@{
+					int step = 1;
+					}
+					@foreach (var direction in Model.Directions)
+					{
+					<div class="col-12 step">
+					<div class="handle">Step @step:</div>
+					<textarea id="@direction.DirectionId" name="@direction.DirectionId" class="form-control" rows="2">@direction.Direction1</textarea>
+					</div>
+					step++;
+					}
+					</div>*@
+						<textarea id="directions" name="Directions" class="form-control" rows="8">
 							@foreach (var direction in Model.Directions)
 							{
-								<div class="col-12 step">
-									<div class="handle">Step @step:</div>
-									<textarea id="@direction.DirectionId" name="@direction.DirectionId" class="form-control" rows="2">@direction.Direction1</textarea>
-								</div>
-								step++;
+								@direction.Direction1
+								@Html.Raw(Environment.NewLine)
 							}
-						</div>
+						</textarea>
 					</div>
 				</div>
 			</div>
@@ -158,19 +185,28 @@
 						</div>
 					</div>
 
+					<div class="col-md-6">
+						<div class="form-group margin-bottom-20px">
+							<label><i class="far fa-list-alt margin-right-10px"></i>Status</label>
+							<select name="Status" class="form-control">
+								<option value="Public" selected="@(Model.Status == "Public" ? "selected" : "")">Public</option>
+								<option value="Draft" selected="@(Model.Status == "Draft" ? "selected" : "")">Draft</option>
+							</select>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="text-center">
-				<button type="submit" name="Status" value="Draft" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">
-					Save draft
+				<button type="submit" name="Action" value="save" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">
+					Save
 				</button>
-				<button type="submit" name="Status" value="Public" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">
-					Public
+				<button type="submit" name="Action" value="trash" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">
+					Trash
 				</button>
 
-				<a href="@Url.Action("Index", "Recipe")" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">Cancel</a>
+				<a href="@Url.Action("Index", "Home")" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">Cancel</a>
 			</div>
 		</div>
-	}
+	</form>
 
 </body>
