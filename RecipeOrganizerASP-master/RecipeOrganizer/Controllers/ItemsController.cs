@@ -43,7 +43,7 @@ namespace RecipeOrganizer.Controllers
             // lay tat ca list recipe de dem so luong
             List<Recipe> recipes = _recipeRepository.getAllRecipe();
 
-            List<Recipe> results = _recipeRepository.getPaingRecipe(productPage, PageSize);
+            List<Recipe> results = _recipeRepository.getPaingRecipe(productPage, PageSize, recipes);
             return View("DisplayRecipe",
             new RecipeListDisplayWithPaging
             {

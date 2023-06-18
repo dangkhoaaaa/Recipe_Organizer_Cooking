@@ -44,7 +44,7 @@ namespace Services.Repository
 				foreach (Recipe recipe in _dbSet)
 				{
 
-					if (recipe.Title.ToUpper().Contains(keyword.ToUpper())) { listRecipe.Add(recipe); }
+					if (recipe.Title.ToUpper().Contains(keyword.ToUpper())&&recipe.Status.Equals("1")) { listRecipe.Add(recipe); }
 
 
 				}
@@ -64,7 +64,7 @@ namespace Services.Repository
 				foreach (Recipe recipe in _dbSet)
 				{
 
-					if (recipe.Title.ToUpper().Contains(keyword.ToUpper())) { listRecipe.Add(recipe.Title); }
+					if (recipe.Title.ToUpper().Contains(keyword.ToUpper()) && recipe.Status.Equals("1")) { listRecipe.Add(recipe.Title); }
 
 
 				}
@@ -76,7 +76,7 @@ namespace Services.Repository
 
 		public Recipe GetById(int id)
 		{
-			return _dbSet.Where(r => r.RecipeId == id).FirstOrDefault();
+			return _dbSet.Where(r => r.RecipeId == id && r.Status.Equals("1")).FirstOrDefault();
 		}
 
 		public List<Recipe> SearchAllTitleWithFilter(string filter,string title)
@@ -84,15 +84,15 @@ namespace Services.Repository
 			switch (filter) 
 			{
 				case "1":
-					return _dbSet.Where(r => r.Title.Contains(title)).OrderByDescending(r => r.NumberShare).ToList();
+					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("1")).OrderByDescending(r => r.NumberShare).ToList();
 				case "2":
-					return _dbSet.Where(r => r.Title.Contains(title)).OrderBy(r => r.Date).ToList();
+					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("1")).OrderBy(r => r.Date).ToList();
 				case "3":
-					return _dbSet.Where(r => r.Title.Contains(title)).OrderBy(r => r.Title).ToList();
+					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("1")).OrderBy(r => r.Title).ToList();
 				case "4":
-					return _dbSet.Where(r => r.Title.Contains(title)).OrderBy(r => r.RecipeId).ToList();
+					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("1")).OrderBy(r => r.RecipeId).ToList();
 				default:
-					return _dbSet.Where(r => r.Title.Contains(title)).OrderBy(r => r.Title).ToList();
+					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("1")).OrderBy(r => r.Title).ToList();
 
 			}
 		
@@ -103,7 +103,7 @@ namespace Services.Repository
 			List<Recipe> listmapCategory = new List<Recipe>();
 				 var query = from rc in _dbSet1
 							 join r in _dbSet on rc.RecipeId equals r.RecipeId
-							 where rc.CategoryId == categoryID
+							 where rc.CategoryId == categoryID && r.Status == "1"
 							 select r;
 
 			listmapCategory = query.ToList();
@@ -133,7 +133,7 @@ namespace Services.Repository
 			foreach (Recipe recipe in recipeAllSearch)
 			{
 
-				if (recipe.Title.ToUpper().Contains(keyword.ToUpper()) && i > ((productPage - 1) * PageSize) && i <= ((productPage - 1) * PageSize) + PageSize) { listRecipe.Add(recipe); }
+				if (recipe.Title.ToUpper().Contains(keyword.ToUpper()) && recipe.Status.Equals("1") && i > ((productPage - 1) * PageSize) && i <= ((productPage - 1) * PageSize) + PageSize) { listRecipe.Add(recipe); }
 				i++;
 			}
 			// return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
@@ -149,7 +149,7 @@ namespace Services.Repository
             foreach (Recipe recipe in recipeAllSearch)
             {
 
-                if ( i > ((productPage - 1) * PageSize) && i <= ((productPage - 1) * PageSize) + PageSize) { listRecipe.Add(recipe); }
+                if (recipe.Status.Equals("1") && ( i > ((productPage - 1) * PageSize)) && i <= ((productPage - 1) * PageSize) + PageSize) { listRecipe.Add(recipe); }
                 i++;
             }
             // return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
@@ -163,6 +163,7 @@ namespace Services.Repository
 			List<Recipe> listRecipe = new List<Recipe>();
 			foreach (Recipe recipe in _dbSet)
 			{
+				if(recipe.Status.Equals("1"))
 				listRecipe.Add(recipe);
 
 			}
@@ -170,7 +171,7 @@ namespace Services.Repository
 			return listRecipe;
 		}
 
-		public List<Recipe> getPaingRecipe(int productPage, int PageSize)
+		public List<Recipe> getPaingRecipe(int productPage, int PageSize, List<Recipe> list)
 		{
 
 			//var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
@@ -178,9 +179,9 @@ namespace Services.Repository
 
 
 			int i = 1;
-			foreach (Recipe recipe in _dbSet)
+			foreach (Recipe recipe in list)
 			{
-				if (i > ((productPage - 1) * PageSize) && i <= ((productPage - 1) * PageSize) + PageSize)
+				if ( recipe.Status.Equals("1")&&i > ((productPage - 1) * PageSize) && i <= ((productPage - 1) * PageSize) + PageSize)
 				{
 					listRecipe.Add(recipe);
 

@@ -42,6 +42,8 @@
     <!-- Jquery-->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
+	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
 </head>
 
 <main>
@@ -81,9 +83,18 @@
 
 	@await Component.InvokeAsync("Category")
 
+	 <div data-aos="flip-left" class="col-md-7">
+                    <p class="text-grey-2 ">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                </div>
 
-
-
+	 <div data-aos="flip-left" class="title text-center ">
+            <h2 class="font-weight-700 text-main-color">Popular Recipes</h2>
+            <div class="row justify-content-center margin-bottom-45px">
+                <div class="col-md-7">
+                    <p class="text-grey-2 ">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                </div>
+            </div>
+        </div>
 
 
 	@await Component.InvokeAsync("Items")
@@ -91,22 +102,22 @@
 
 	<div class="instgram-feed ">
 		<div class=" no-gutters autoplayFoot">
-			<div class="col-md-12 col-16">
+			<div class="col-md-12 col-16 hvr-float">
 				<a href="#"><img src="https://wallpapershome.com/images/pages/pic_h/17426.jpg" alt=""></a>
 			</div>
-			<div class="col-md-12 col-16">
+			<div class="col-md-12 col-16 hvr-float">
 				<a href="#"><img src="https://wallpapershome.com/images/pages/pic_h/1009.jpg" alt=""></a>
 			</div>
-			<div class="col-md-12 col-16">
+			<div class="col-md-12 col-16 hvr-float">
 				<a href="#"><img src="https://wallpapershome.com/images/pages/pic_h/14761.jpg" alt=""></a>
 			</div>
-			<div class="col-md-12 col-16">
+			<div class="col-md-12 col-16 hvr-float">
 				<a href="#"><img src="http://placehold.it/600x600" alt=""></a>
 			</div>
-			<div class="col-md-12 col-16">
+			<div class="col-md-12 col-16 hvr-float">
 				<a href="#"><img src="http://placehold.it/600x600" alt=""></a>
 			</div>
-			<div class="col-md-12 col-16">
+			<div class="col-md-12 col-16 hvr-float">
 				<a href="#"><img src="http://placehold.it/600x600" alt=""></a>
 			</div>
 		</div>
@@ -170,5 +181,6 @@
     ]
 		});
 	</script>
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </main>
 
