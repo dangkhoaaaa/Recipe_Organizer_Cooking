@@ -70,6 +70,7 @@
 		</div>
 	</div>
 	<form method="post" action="/Recipe/EditRecipe?@Model.RecipeId" enctype="multipart/form-data">
+		@Html.HiddenFor(m => m.RecipeId, new { value=Model.RecipeId })
 		<div class="container">
 			<div class="margin-tb-20px full-width">
 				<h4 class="padding-lr-10px padding-tb-10px background-white box-shadow border-radius-10">
@@ -133,7 +134,7 @@
 							@foreach (var ingredient in Model.Ingredients)
 							{
 								@ingredient.IngredientName
-								@Html.Raw(Environment.NewLine)
+								@Html.Raw("\n")
 							}
 						</textarea>
 					</div>
@@ -153,23 +154,23 @@
 							Decorate).
 						</p>
 						@*<div id="sortable-container" class="row">
-					@{
-					int step = 1;
-					}
-					@foreach (var direction in Model.Directions)
-					{
-					<div class="col-12 step">
-					<div class="handle">Step @step:</div>
-					<textarea id="@direction.DirectionId" name="@direction.DirectionId" class="form-control" rows="2">@direction.Direction1</textarea>
-					</div>
-					step++;
-					}
-					</div>*@
-						<textarea id="directions" name="Directions" class="form-control" rows="8">
+						@{
+						int step = 1;
+						}
+						@foreach (var direction in Model.Directions)
+						{
+						<div class="col-12 step">
+						<div class="handle">Step @step:</div>
+						<textarea id="@direction.DirectionId" name="@direction.DirectionId" class="form-control" rows="2">@direction.Direction1</textarea>
+						</div>
+						step++;
+						}
+						</div>*@
+						<textarea id="directions" name="DirectionsInput" class="form-control" rows="8">
 							@foreach (var direction in Model.Directions)
 							{
 								@direction.Direction1
-								@Html.Raw(Environment.NewLine)
+								@Html.Raw("\n")
 							}
 						</textarea>
 					</div>
