@@ -19,6 +19,7 @@ namespace RecipeOrganizer.Controllers
 		private readonly RecipeHasCategoryRepository _recipeHasCategoryRepository;
 		private readonly MetadataRepository _metadataRepository;
 		private readonly MediaRepository _mediaRepository;
+		private readonly CollectionRepository _collectionRepository;
 		private readonly UserManager<AppUser> _userManager;
 
 		public RecipeController(UserManager<AppUser> userManager)
@@ -31,15 +32,15 @@ namespace RecipeOrganizer.Controllers
 			_recipeHasCategoryRepository = new RecipeHasCategoryRepository();
 			_metadataRepository = new MetadataRepository();
 			_mediaRepository = new MediaRepository();
+			_collectionRepository = new CollectionRepository();
 			_userManager = userManager;
 		}
 
 		public IActionResult Index()
 		{
-			return View("Index", "Home");
+			return RedirectToAction("Index", "Home");
 		}
 
-		[HttpGet]
 		public IActionResult AddNewRecipe()
 		{
 			return View();
@@ -58,8 +59,27 @@ namespace RecipeOrganizer.Controllers
 				recipe.NumberShare = 0;
 
 				Recipe data = new Recipe();
-				data.Title = recipe.Title;
-				data.Description = recipe.Description;
+
+				// Title
+				if (string.IsNullOrEmpty(recipe.Title))
+				{
+					data.Title = "null";
+				}
+				else
+				{
+					data.Title = recipe.Title;
+				}
+
+				// Description
+				if (string.IsNullOrEmpty(recipe.Description))
+				{
+					data.Description = "Wishing you a delicious and satisfying meal!";
+				}
+				else
+				{
+					data.Description = recipe.Description;
+				}
+
 				data.Date = DateTime.Now;
 				data.NumberShare = recipe.NumberShare;
 				data.Status = recipe.Status;
@@ -68,35 +88,12 @@ namespace RecipeOrganizer.Controllers
 				// Ingredients
 				if (!string.IsNullOrEmpty(recipe.IngredientsInput))
 				{
-					//string[] ingredients = recipe.IngredientsInput.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-					//foreach (var ingredientName in ingredients)
-					//{
-					//	Ingredient ingredient = new Ingredient
-					//	{
-					//		RecipeId = data.RecipeId,
-					//		IngredientName = ingredientName
-					//	};
-					//	_ingredientRepository.Add(ingredient);
-					//}
-
 					_ingredientRepository.addIngredient(recipe.IngredientsInput, data.RecipeId);
 				}
 
 				// Directions
 				if (!string.IsNullOrEmpty(recipe.DirectionsInput))
 				{
-					//string[] steps = recipe.DirectionsInput.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-					//for (int i = 0; i < steps.Length; i++)
-					//{
-					//	Direction direction = new Direction
-					//	{
-					//		RecipeId = data.RecipeId,
-					//		Step = i + 1,
-					//		Direction1 = steps[i]
-					//	};
-					//	_directionRepository.Add(direction);
-					//}
-
 					_directionRepository.addDirection(recipe.DirectionsInput, data.RecipeId);
 				}
 
@@ -146,7 +143,41 @@ namespace RecipeOrganizer.Controllers
 				}
 
 				// Tags
+				if (!string.IsNullOrEmpty(recipe.TagsInput))
+				{
+					string[] tags = recipe.TagsInput.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+					foreach (string tagName in tags)
+					{
+						// Check if the tag already exists in the Tag table
+						Tag existingTag = _tagRepository.GetByName(tagName.Trim());
+						if (existingTag != null)
+						{
+							// Tag already exists, add a record to RecipeHasTags table
+							RecipeHasTag recipeHasTag = new RecipeHasTag
+							{
+								RecipeId = data.RecipeId,
+								TagId = existingTag.TagId
+							};
+							_recipeHasTagRepository.Add(recipeHasTag);
+						}
+						else
+						{
+							// Tag does not exist, create a new tag and add a record to RecipeHasTags table
+							Tag newTag = new Tag
+							{
+								TagName = tagName.Trim()
+							};
+							_tagRepository.Add(newTag);
 
+							RecipeHasTag recipeHasTag = new RecipeHasTag
+							{
+								RecipeId = data.RecipeId,
+								TagId = newTag.TagId
+							};
+							_recipeHasTagRepository.Add(recipeHasTag);
+						}
+					}
+				}
 				//}
 				return RedirectToAction("EditRecipe", "Recipe", new { id = data.RecipeId });
 			}
@@ -156,7 +187,6 @@ namespace RecipeOrganizer.Controllers
 		[AllowAnonymous]
 		public ActionResult RecipeDetail(int id)
 		{
-
 			Recipe recipe = _recipeRepository.GetById(id);
 			if (recipe != null)
 			{
@@ -170,20 +200,20 @@ namespace RecipeOrganizer.Controllers
 				List<Direction> direction = _directionRepository.GetByRecipeId(recipe.RecipeId);
 				data.Directions = direction;
 
+				ViewBag.CollectionRepository = _collectionRepository;
+
 				return View(data);
 			}
-			else
-			{
-				return RedirectToAction("Recipe", "Recipe");
-			}
+			return RedirectToAction("Index", "Home");
 		}
 
-		public async Task<IActionResult> EditRecipe(int id)
+		public IActionResult EditRecipe(int id)
 		{
 			Recipe recipe = _recipeRepository.GetById(id);
 			if (recipe != null)
 			{
-				return RedirectToAction("EditRecipe", "Recipe");
+				RecipeData recipeData = ConvertToRecipeData(recipe);
+				return View(recipeData);
 			}
 			else
 			{
@@ -204,6 +234,37 @@ namespace RecipeOrganizer.Controllers
 				return RedirectToAction("UserNotFound");
 			}
 		}
+
+		private RecipeData ConvertToRecipeData(Recipe recipe)
+		{
+			RecipeData data = new RecipeData();
+			data.RecipeId = recipe.RecipeId;
+			data.Title = recipe.Title;
+			data.Description = recipe.Description;
+			List<Ingredient> ingredients = _ingredientRepository.GetByRecipeId(recipe.RecipeId);
+			List<Direction> directions = _directionRepository.GetByRecipeId(recipe.RecipeId);
+
+			if (ingredients != null)
+			{
+				data.Ingredients = ingredients.ToList();
+			}
+
+			if (directions != null)
+			{
+				data.Directions = directions.ToList();
+			}
+
+			return data;
+		}
+
+		[HttpPost]
+		public IActionResult ToggleCollection(int recipeId, int userId)
+		{
+			_collectionRepository.ToggleCollection(recipeId, userId);
+
+			return RedirectToAction("RecipeDetail", "Recipe", new { recipeId = recipeId });
+		}
+
 
 
 	}
