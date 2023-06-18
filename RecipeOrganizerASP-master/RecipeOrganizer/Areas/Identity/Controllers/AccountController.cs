@@ -49,6 +49,11 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
+            //user already login
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -114,6 +119,11 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
+            //user already login
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             returnUrl ??= Url.Content("~/");
             ViewData["ReturnUrl"] = returnUrl;
             return View();
@@ -663,7 +673,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             }
         }
 
-        [Route("/khongduoctruycap.html")]
+        [Route("/access-denied")]
         [AllowAnonymous]
         public IActionResult AccessDenied()
         {
