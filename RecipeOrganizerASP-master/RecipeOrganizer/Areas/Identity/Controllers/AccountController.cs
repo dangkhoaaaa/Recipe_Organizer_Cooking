@@ -102,7 +102,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     ModelState.AddModelError("Invalid login attempt.");
                     return View(model);
                 }
-            return View(model);
+            //return View(model);
         }
 
         // POST: /Account/LogOut
