@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Services.Models.Authentication;
+using RecipeOrganizer.Areas.Data;
 
 namespace RecipeOrganizer.Areas.Identity.Controllers
 {
@@ -141,10 +142,11 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             {
                 var user = new AppUser { UserName = model.UserName, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
+                await _userManager.AddToRoleAsync(user, RoleName.Member);
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("Đã tạo user mới.");
+                    _logger.LogInformation("New user have been created.");
 
                     // Phát sinh token để xác nhận email
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

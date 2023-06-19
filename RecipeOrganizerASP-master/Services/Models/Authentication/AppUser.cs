@@ -25,6 +25,8 @@ namespace Services.Models.Authentication
         public string? LastName { get; set; }
         [DataType(DataType.Date)]
         public DateTime? Birthday { get; set; }
+
+        public bool Status { get; set; }
         public virtual ICollection<MealPlanning> MealPlannings { get; set; }
         public virtual ICollection<Metadata> MetaData { get; set; }
     }
