@@ -1,4 +1,12 @@
-﻿<!-- ============================================================== -->
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+<!-- ============================================================== -->
 <!-- Navbar scss in header.scss -->
 <!-- ============================================================== -->
 <nav style="background-color:#f44336;">
@@ -32,7 +40,24 @@
             <!-- ============================================================== -->
             <!-- Profile icon scss in header.scss -->
             <!-- ============================================================== -->
-            <li>Hello cong<li/>
+            <li>
+                @if (string.IsNullOrEmpty(user.FirstName))
+                {
+                    if (@UserManager.GetUserName(User).Contains("@"))
+                    {
+                        string username = @UserManager.GetUserName(User).Split("@")[0];
+                        <span>@username</span>
+                    }
+                    else
+                    {
+                        <span>@UserManager.GetUserName(User)</span>
+                    }
+                }
+                else
+                {
+                    <span>@user.FirstName</span>
+                }
+            <li/>
             <li>
                 <a class="dropdown-trigger" href="javascript: void(0);" data-target="user_dropdown"><img src="~/admin/assets/images/users/2.jpg" alt="user" class="circle profile-pic"></a>
                 <ul id="user_dropdown" class="mailbox dropdown-content dropdown-user">
@@ -40,8 +65,25 @@
                         <div class="dw-user-box">
                             <div class="u-img"><img src="~/admin/assets/images/users/2.jpg" alt="user"></div>
                             <div class="u-text">
-                                <h4>Steve Harvey</h4>
-                                <p>steve@gmail.com</p>
+                                <h4>
+                                    @if (string.IsNullOrEmpty(user.FirstName))
+                                    {
+                                        if (@UserManager.GetUserName(User).Contains("@"))
+                                        {
+                                            string username = @UserManager.GetUserName(User).Split("@")[0];
+                                            <span>@username</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@UserManager.GetUserName(User)</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span>@user.FirstName</span>
+                                    }
+                                </h4>
+                                <p>@user.Email</p>
                                 <a class="waves-effect waves-light btn-small red white-text">View Profile</a>
                             </div>
                         </div>
@@ -51,7 +93,11 @@
                     <li role="separator" class="divider"></li>
                     <li><a href="#"><i class="material-icons">settings</i> Account Setting</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#"><i class="material-icons">power_settings_new</i> Logout</a></li>
+                    <li>
+                        <form class="form-inline left-align" style="margin-top:10px" asp-area="Admin" asp-controller="Manage" asp-action="Logout" method="post">
+                            <button type="submit" class="dropdown-item nav-link btn btn-link text-dark">Logout</button>
+                        </form>
+                    </li>
                 </ul>
         </ul>
         <!-- ============================================================== -->

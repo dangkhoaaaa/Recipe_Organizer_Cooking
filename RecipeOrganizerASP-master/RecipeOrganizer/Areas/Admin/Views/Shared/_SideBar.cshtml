@@ -1,20 +1,15 @@
 ﻿<ul id="slide-out" class="sidenav">
     <li>
-        <div class="user-profile" style="background-image: url(~/admin/assets/images/user-bg.jpg);">
-            <div class="user-name dropdown-trigger" data-target='dropdownuser'>
-                <h6 class="white-text name"><i class="material-icons m-r-10">account_circle</i> <span class="hidden">Steve Harvey</span> <i class="material-icons ml-auto hidden">expand_more</i></h6>
-            </div>
-            <ul id='dropdownuser' class='dropdown-content'>
-                <li><a href="#"><i class="material-icons">account_circle</i> My Profile</a></li>
-                <li role="separator" class="divider m-t-0"></li>
-                <li><a href="#"><i class="material-icons">settings</i> Account Setting</a></li>
-                <li role="separator" class="divider m-t-0"></li>
-                <li><a href="#"><i class="material-icons">power_settings_new</i> Logout</a></li>
-            </ul>
+        <div class="user-profile" style="background-image: url('@Url.Content("~/admin/assets/images/user-bg.jpg")');">
         </div>
     </li>
     <li>
         <ul class="collapsible">
+            <li class="small-cap"><span class="hide-menu">Manage</span></li>
+            <li>
+                <a asp-area="Admin" asp-controller="Manage" asp-action="" class="collapsible-header"><i class="material-icons">assignment</i><span class="hide-menu"> Category </span></a>
+            </li>
+
             <li class="small-cap"><span class="hide-menu">PERSONAL</span></li>
             <li>
                 <a href="javascript: void(0);" class="collapsible-header has-arrow"><i class="material-icons">dashboard</i><span class="hide-menu"> Dashboard</span></a>
