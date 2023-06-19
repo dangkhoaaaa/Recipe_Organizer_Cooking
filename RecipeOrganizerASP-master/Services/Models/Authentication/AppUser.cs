@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -25,6 +26,9 @@ namespace Services.Models.Authentication
         public string? LastName { get; set; }
         [DataType(DataType.Date)]
         public DateTime? Birthday { get; set; }
+
+        [DefaultValue("true")]
+        public bool Status { get; set; }
         public virtual ICollection<MealPlanning> MealPlannings { get; set; }
         public virtual ICollection<Metadata> MetaData { get; set; }
     }

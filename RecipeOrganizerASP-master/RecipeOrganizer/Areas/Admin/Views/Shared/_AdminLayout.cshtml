@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/admin/assets/images/favicon.png">
+    <title>@ViewData["Title"] - RecipeOrganizer</title>
+    <link href="~/admin/dist/css/style.css" rel="stylesheet">
+    <!-- This page CSS -->
+    <link href="~/admin/assets/extra-libs/footable/css/footable.bootstrap.min.css" rel="stylesheet">
+    <link href="~/admin/dist/css/pages/footable-page.css" rel="stylesheet">
+</head>
+<body>
+    <div class="main-wrapper" id="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Preloader - style you can find in spinners.css -->
+        <!-- ============================================================== -->
+        <div class="preloader">
+            <div class="loader">
+                <div class="loader__figure"></div>
+                <p class="loader__label">@ViewData["Title"]</p>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- Preloader - style you can find in spinners.css -->
+        <!-- ============================================================== -->
+        <!--Login partial here -->
+        <header class="topbar">
+           @* @Html.Partial("_ManageNav", ManageNav)*@
+            @Html.Partial("_TopBar")
+        </header>
+        <aside class="left-sidebar">
+            @*@Html.Partial("_ManageNav", ManageNav)*@
+            @Html.Partial("_SideBar")
+        </aside>
+
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Title and breadcrumb -->
+            <!-- ============================================================== -->
+            <div class="page-titles">
+                <div class="d-flex align-items-center">
+                    <h5 class="font-medium m-b-0">@ViewData["Title"]</h5>
+                    <div class="custom-breadcrumb ml-auto">
+                        <a href=@Url.Action("Index", "Home") class="breadcrumb">Home</a>
+                        <a href="#!" class="breadcrumb">@ViewData["Title"]</a>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- Container fluid scss in scafholding.scss -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <!-- render body here!!!-->
+                                @RenderBody()
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="center-align m-b-30 m-l-15 m-r-15">Recipe Organizer</footer>
+        </div>
+        <!-- ============================================================== -->
+        <!-- Page wrapper scss in scafholding.scss -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right Sidebar -->
+        <!-- ============================================================== -->
+        <a href="#" data-target="right-slide-out" class="sidenav-trigger right-side-toggle btn-floating btn-large waves-effect waves-light red"><i class="material-icons">settings</i></a>
+        <aside class="right-sidebar">
+            <!-- Right Sidebar -->
+            <ul id="right-slide-out" class="sidenav right-sidenav p-t-10">
+                <li>
+                    <div class="row">
+                        <div class="col s12">
+                            <!-- Tabs -->
+                            <ul class="tabs">
+                                <li class="tab col s12"><a href="#settings" class="active"><span class="material-icons">build</span></a></li>
+                            </ul>
+                            <!-- Tabs -->
+                        </div>
+                        <!-- Setting -->
+                        <div id="settings" class="col s12">
+                            <div class="m-t-10 p-10 b-b">
+                                <h6 class="font-medium">Layout Settings</h6>
+                                <ul class="m-t-15">
+                                    <li class="m-b-10">
+                                        <label>
+                                            <input type="checkbox" name="theme-view" id="theme-view" />
+                                            <span>Dark Theme</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </aside>
+    </div>
+    <!-- ============================================================== -->
+    <!-- All Required js -->
+    <!-- ============================================================== -->
+    <script src="~/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/admin/dist/js/materialize.min.js"></script>
+    <script src="~/admin/assets/libs/perfect-scrollbar/dist/js/perfect-scrollbar.jquery.min.js"></script>
+    <!-- ============================================================== -->
+    <!-- Apps -->
+    <!-- ============================================================== -->
+    <script src="~/admin/dist/js/app.js"></script>
+    <script src="~/admin/dist/js/app.init.dark.js"></script>
+    <script src="~/admin/dist/js/app-style-switcher.js"></script>
+    <!-- ============================================================== -->
+    <!-- Custom js -->
+    <!-- ============================================================== -->
+    <script src="~/admin/dist/js/custom.min.js"></script>
+    <!-- ============================================================== -->
+    <!-- This page plugin js -->
+    <!-- ============================================================== -->
+    <!-- Footable -->
+    <script src="~/admin/assets/libs/moment/moment.js"></script>
+    <script src="~/admin/assets/extra-libs/footable/js/footable.min.js"></script>
+    <script src="~/admin/dist/js/pages/footable/footable-init.js"></script>
+</body>
+</html>
