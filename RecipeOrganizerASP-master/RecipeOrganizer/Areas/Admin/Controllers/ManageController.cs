@@ -18,7 +18,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 	{
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly RoleManager<AppUser> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ManageController> _logger;
@@ -30,11 +30,9 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         public ManageController(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
-        RoleManager<AppUser> roleManager,
+        RoleManager<IdentityRole> roleManager,
         IEmailSender emailSender,
-        ILogger<ManageController> logger,
-        RecipeRepository recipeRepository,
-        UserRepository userRepository
+        ILogger<ManageController> logger        
         )
         {
             _userManager = userManager;
@@ -42,8 +40,8 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             _roleManager = roleManager;
             _emailSender = emailSender;
             _logger = logger;
-            _recipeRepository = recipeRepository;
-            _userRepository = userRepository;
+            _recipeRepository = new RecipeRepository();
+            _userRepository = new UserRepository();
         }
 
         public enum ManageMessageId
@@ -80,15 +78,17 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 var model = new IndexViewModel
                 {
                     FirstName = user.FirstName,
+                    LastName = user.LastName,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
                     Role = role.ToList(),
                     TotalRecipe = 2, 
                     Status = true
                 };
+                list.Add(model);
             }
 			
-            return View(model);
+            return View(list);
         }
 
         private Task<AppUser> GetCurrentUserAsync()
@@ -97,53 +97,51 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         }
 
         public async Task<IActionResult> SeedDataAsync()
-		{
-			// Create Roles
-			var rolenames = typeof(RoleName).GetFields().ToList();
-			foreach (var r in rolenames)
-			{
-				var rolename = (string)r.GetRawConstantValue();
-				var rfound = await _roleManager.FindByNameAsync(rolename);
-				if (rfound == null)
-				{
-					await _roleManager.CreateAsync(new IdentityRole(rolename));
-				}
-			}
-			// admin, pass=admin123, admin@example.com
-			var useradmin = await _userManager.FindByEmailAsync("recipeorganizert3@gmail.com");
-			if (useradmin == null)
-			{
-				useradmin = new AppUser()
-				{
-					UserName = "admin",
-					Email = "recipeorganizert3@gmail.com",
-					EmailConfirmed = true,
-				};
-				await _userManager.CreateAsync(useradmin, "admin123");
-				await _userManager.AddToRoleAsync(useradmin, RoleName.Administrator);
-				await _signInManager.SignInAsync(useradmin, false);
+        {
+            // Create Roles
+            var rolenames = typeof(RoleName).GetFields().ToList();
+            foreach (var r in rolenames)
+            {
+                var rolename = (string)r.GetRawConstantValue();
+                var rfound = await _roleManager.FindByNameAsync(rolename);
+                if (rfound == null)
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(rolename));
+                }
+            }
+            // admin, pass=admin123, admin@example.com
+            var useradmin = await _userManager.FindByEmailAsync("recipeorganizert3@gmail.com");
+            if (useradmin == null)
+            {
+                useradmin = new AppUser()
+                {
+                    UserName = "admin",
+                    Email = "recipeorganizert3@gmail.com",
+                    EmailConfirmed = true,
+                };
+                await _userManager.CreateAsync(useradmin, "admin123");
+                await _userManager.AddToRoleAsync(useradmin, RoleName.Administrator);
+                await _signInManager.SignInAsync(useradmin, false);
 
-				return RedirectToAction("SeedData");
-			}
-			else
-			{
-				var user = await _userManager.GetUserAsync(this.User);
-				if (user == null) return this.Forbid();
-				var roles = await _userManager.GetRolesAsync(user);
+                return RedirectToAction("SeedData");
+            }
+            else
+            {
+                var user = await _userManager.GetUserAsync(this.User);
+                if (user == null) return this.Forbid();
+                var roles = await _userManager.GetRolesAsync(user);
 
-				if (!roles.Any(r => r == RoleName.Administrator))
-				{
-					return this.Forbid();
-				}
-			}
-			//SeedPostCategory();
-			//SeedProductCategory();
+                if (!roles.Any(r => r == RoleName.Administrator))
+                {
+                    return this.Forbid();
+                }
+            }
+            //SeedPostCategory();
+            //SeedProductCategory();
 
-			//StatusMessage = "Vừa seed Database";
-			return RedirectToAction("Index");
-
-
-		}
-	}
+            //StatusMessage = "Vừa seed Database";
+            return RedirectToAction("Index");
+        }
+    }
 
 }

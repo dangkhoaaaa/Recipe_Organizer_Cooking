@@ -66,27 +66,26 @@
                 <button type="submit" class="dropdown-item nav-link btn btn-link text-dark">Logout</button>
             </form>
         </div>
-    </div>
-    <div class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large">
-        <span>Hi,</span>
-        @if (string.IsNullOrEmpty(ManageNav.FirstName))
-        {
-            if (@UserManager.GetUserName(User).Contains("@"))
+        <div class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large">
+            <span>Hi,</span>
+            @if (string.IsNullOrEmpty(ManageNav.FirstName))
             {
-                string username = @UserManager.GetUserName(User).Split("@")[0];
-                <span>@username</span>
+                if (@UserManager.GetUserName(User).Contains("@"))
+                {
+                    string username = @UserManager.GetUserName(User).Split("@")[0];
+                    <span>@username</span>
+                }
+                else
+                {
+
+                    <span>@UserManager.GetUserName(User)</span>
+                }
             }
             else
             {
-
-                <span>@UserManager.GetUserName(User)</span>
+                <span>@ManageNav.FirstName</span>
             }
-        }
-        else
-        {
-            <span>@ManageNav.FirstName</span>
-        }
-       @* @if (@UserManager.GetUserName(User).Contains("@"))
+            @* @if (@UserManager.GetUserName(User).Contains("@"))
         {
         string username = @UserManager.GetUserName(User).Split("@")[0];
         <span>@username</span>
@@ -94,7 +93,9 @@
         {
         <span>@UserManager.GetUserName(User)</span>
         }*@
+        </div>
     </div>
+    
     
 }
 else
@@ -102,6 +103,6 @@ else
     <hr class="margin-bottom-0px d-block d-sm-none">
     <a href="/register" class="text-white ba-1 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large btn-login" style="font-size:15px;">Signup</a>
     <a href="/login" class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large btn-register" style="font-size:15px;">Login</a>
-
+    <a href=@Url.Action("Active", "Home") class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large btn-register" style="font-size:15px;" >Add role</a>
 }
 

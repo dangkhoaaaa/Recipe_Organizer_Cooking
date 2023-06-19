@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RecipeOrganizer.Areas.Data;
 using Services.Models;
 using System.Diagnostics;
 
@@ -8,9 +10,11 @@ namespace RecipeOrganizer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
         
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(RoleManager<IdentityRole> roleManager, ILogger<HomeController> logger)
         {
+            _roleManager = roleManager;
             _logger = logger;
         }
 
@@ -20,74 +24,34 @@ namespace RecipeOrganizer.Controllers
         }
 
 
-        //HTTP get /Home/Register
-        [HttpGet]
-        public ActionResult Register()
-        {
-            return RedirectToAction("Register", "User");
-        }
-
-		//HTTP get /Home/Register
-		//[HttpPost]
-		//public ActionResult Register(User user)
-		//{
-		//    user.Status = true;
-		//    user.Role = "Admin";
-		//    db.Users.Add(user);
-		//    db.SaveChanges();
-		//    return RedirectToAction("Login");
-		//}
 		[HttpGet]
 		public ActionResult Search()
         {
             return RedirectToAction("SearchKeyWord", "Search");
         }
 
-        //HTTP post /Home/Login
-        [HttpGet]
-        public ActionResult Login()
-        {
-            //if (Session["User"] != null)
-            //{
-            //    return View("Index");
-            //}
 
-            return RedirectToAction("Login", "User");
-        }
-
-		/*
-        [HttpPost]
-        public ActionResult Login(User user)
+        [AllowAnonymous]
+        [Route("/active")]
+        public async Task<IActionResult> Active()
         {
-            
-            var username = user.username;
-            var password = user.password;
-            var userCheck = db.Users.SingleOrDefault(x => x.username.Equals(username)
-                                                    && x.password.Equals(password));
-            if (userCheck != null)
+            // Create Roles
+            var rolenames = typeof(RoleName).GetFields().ToList();
+            foreach (var r in rolenames)
             {
-                Session["User"] = userCheck;
-                return RedirectToAction("Index", "Home");
+                var rolename = (string)r.GetRawConstantValue();
+                var rfound = await _roleManager.FindByNameAsync(rolename);
+                if (rfound == null)
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(rolename));
+                }
             }
-            else
-            {
-                ViewBag.LoginFail = "Login fail, not valid username or password";
-                return View("Login");
-            }
+            return RedirectToAction("Index");
         }
 
-
-
-        [HttpGet]
-        public ActionResult Logout()
-        {
-            Session["User"] = null;
-            return RedirectToAction("Login", "Home");
-        }
-        */
 
         // Add new Recipe
-		[HttpGet]
+        [HttpGet]
 		public ActionResult AddNewRecipe()
 		{
 			return RedirectToAction("AddNewRecipe", "Recipe");

@@ -5,6 +5,7 @@ namespace Services.Models
 {
     public partial class RecipeHasCategory
     {
+        public int RecipeHasCategoryId { get; set; }
         public int CategoryId { get; set; }
         public int RecipeId { get; set; }
 
