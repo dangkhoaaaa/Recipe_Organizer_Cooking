@@ -76,16 +76,15 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             foreach (var user in listUser)
             {
                 var userName = await _userManager.FindByIdAsync(user.Id);
+                var role = await _userManager.GetRolesAsync(userName);
                 var model = new IndexViewModel
                 {
                     FirstName = user.FirstName,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
-                    Role =  await _userManager.GetRolesAsync(userName),
-
-                TotalRecipe =
-
-                Status
+                    Role = role.ToList(),
+                    TotalRecipe = 2, 
+                    Status = true
                 };
             }
 			
