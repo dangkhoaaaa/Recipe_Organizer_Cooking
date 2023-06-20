@@ -14,7 +14,9 @@ namespace Services.Repository
 
         DbSet<Day> _dbSet;
 
-        public DayRepository()
+		
+
+		public DayRepository()
         {
             _context = new Recipe_OrganizerContext();
             _dbSet = _context.Set<Day>();
@@ -23,7 +25,10 @@ namespace Services.Repository
         public List<Day> getDayByPlan(MealPlanning meal)
         {
             var record = _dbSet.Where(d => d.PlanId == meal.PlanId).ToList();
+           
             return record;
         }
+
+        
     }
 }
