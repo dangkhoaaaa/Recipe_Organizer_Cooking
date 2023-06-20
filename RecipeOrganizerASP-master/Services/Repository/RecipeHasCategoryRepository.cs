@@ -31,7 +31,7 @@ namespace Services.Repository
         {
             var query = from rc in _dbSetRecipeHasCategory
                         join r in _dbSetRecipe on rc.RecipeId equals r.RecipeId
-                        where rc.CategoryId == categoryId && r.Status == "1"
+                        where rc.CategoryId == categoryId && r.Status.Equals("public")
                         select r;
 
             return query.ToList();
