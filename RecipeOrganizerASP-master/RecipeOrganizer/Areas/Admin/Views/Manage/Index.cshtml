@@ -1,0 +1,120 @@
+﻿@using System.Data
+@model List<IndexViewModel>
+
+@{
+    ViewData["Title"] = "Admin";
+    Layout = "_AdminLayout";
+}
+
+<!-- render body here -->
+<h4 class="card-title">User list</h4>
+<div class="table-responsive">
+    <table id="demo-foo-addrow" class="table m-t-10 highlight contact-list no-wrap" data-sorting="true" data-paging="true" data-paging-size="6">
+        <thead>
+            <tr style="font-weight:bold;">
+                <th>No</th>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone</th>
+                <th>Birthday</th>
+                <th>Role</th>
+                <th>No.Recipe</th>
+                <th>Status</th>
+                <th>Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int counter = 0;
+                foreach (var user in Model)
+                {
+                    counter += 1;
+                    <tr>
+                        <td>@counter</td>
+                        <td>@user.Email</td>
+                        <td>@user.FirstName</td>
+                        <td>@user.LastName</td>
+                        <td>@user.PhoneNumber</td>
+                        <td>@user.Birthday</td>
+                        <td>
+                                    @foreach (var role in @user.Role)
+                                    {
+                                <span class="label label-danger">@role</span>
+                                    }
+                        </td>
+                        <td>@user.TotalRecipe</td>
+                        <td>@user.Status</td>
+                        <td><button>Update ik ba</button></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    @*<a href="#add-contact" class="waves-effect waves-light btn modal-trigger m-t-20">Add New Contact</a>
+    <div id="add-contact" class="modal">
+        <div class="modal-content">
+            <form>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="name" type="text">
+                        <label for="name">Name</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="email" type="email">
+                        <label for="email">Email</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="phone" type="text">
+                        <label for="phone">Phone</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="designation" type="text">
+                        <label for="designation">Designation</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="age" type="text">
+                        <label for="age">Age</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="date" type="text" class="datepicker">
+                        <label for="date">Date</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="salary" type="text">
+                        <label for="salary">Salary</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="file-field input-field col s12">
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="btn modal-action modal-close waves-effect waves-light cyan">Save</a>
+            <a href="#!" class="btn modal-action modal-close waves-effect waves-light grey darken-4">Cancel</a>
+        </div>
+    </div>*@
+</div>
+<!-- render body here -->
+

@@ -6,47 +6,69 @@
 }
 
 <body>
-	<div id="page-title" class="padding-tb-30px gradient-white">
-		<div class="container text-left margin-bottom-10px">
+	<div id="page-title" class="padding-top-30px padding-bottom-10px gradient-white">
+		<div class="container text-left">
 			<ol class="breadcrumb opacity-5">
 				<li><a href="@Url.Action("Index", "Home")">Home</a></li>
 				<li class="active">Recipe</li>
 			</ol>
-			<h1 class="font-weight-400 margin-bottom-20px">@Model.Title</h1>
-			<div class="row">
-				<div class="rating col-2">
-					<ul>
-						<li class="active"></li>
-						<li class="active"></li>
-						<li class="active"></li>
-						<li class="active"></li>
-						<li></li>
-						<a href="#">4.1 (99)</a>
-					</ul>
-				</div>
-				|
-				<div class="col-4">
-					<a href="#">89 reviews</a>
-					<span class="margin-left-5px margin-right-5px">|</span>
-					<a href="#">55 photos</a>
-				</div>
-			</div>
+		</div>
+	</div>
 
-			<div class="row">
-				<div class="col-lg-8 margin-top-10px margin-bottom-10px">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				<h1 class="font-weight-500 margin-bottom-20px">@Model.Title</h1>
+				<div class="row">
+					<div class="rating col-3">
+						<ul>
+							<li class="active"></li>
+							<li class="active"></li>
+							<li class="active"></li>
+							<li class="active"></li>
+							<li></li>
+							<a href="#">4.1 (99)</a>
+						</ul>
+					</div>
+					|
+					<div class="col-5">
+						<a href="#">89 reviews</a>
+						<span class="margin-lr-5px">|</span>
+						<a href="#">55 photos</a>
+					</div>
+				</div>
+
+				<div class="margin-tb-10px">
 					@Model.Description
 				</div>
-			</div>
-			<div class="margin-bottom-10px">
-				Recipe by Cook
-				<span class="margin-left-5px margin-right-5px">|</span>
-				Updated on @Model.Date
-			</div>
-			<div class="row">
-				<div class="">
-					<a href="#" class="text-red border-0">
+				<div class="margin-bottom-10px">
+					Recipe by Cook
+					<span class="margin-lr-5px">|</span>
+					Updated on @Model.Date
+				</div>
+				<div class="margin-bottom-20px">
+					@*<form method="post" action="/Recipe/ToggleCollection?userId=@(ViewBag.UserId ?? "")&recipeId=@Model.RecipeId">
+						<input type="hidden" name="recipeId" value="@Model.RecipeId" />
+						@{
+							var collectionRepository = ViewBag.CollectionRepository as CollectionRepository;
+							bool isSaved = collectionRepository?.IsRecipeSaved(Model.RecipeId, ViewBag.UserId?.ToString()) ?? false;
+						}
+						@if (isSaved)
+						{
+							<button type="submit" class="text-red border-0" id="saveButton">
+								<i class="icon_heart"></i> Unsave
+							</button>
+						}
+						else
+						{
+							<button type="submit" class="text-red border-0" id="saveButton">
+								<i class="far fa-heart"></i> Save
+							</button>
+						}
+					</form>*@
+					<button type="submit" class="text-red border-0 bg-transparent" id="saveButton">
 						<i class="far fa-heart"></i> Save
-					</a>
+					</button>
 					<span class="margin-left-5px margin-right-5px">|</span>
 					<a href="#"><i class="far fa-star"></i> Rate</a>
 					<span class="margin-left-5px margin-right-5px">|</span>
@@ -54,46 +76,41 @@
 					<span class="margin-left-5px margin-right-5px">|</span>
 					<a href="#"><i class="fas fa-share"></i> Share</a>
 				</div>
-			</div>
-		</div>
-	</div>
 
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-8">
 				<div class="margin-bottom-40px card border-0 box-shadow">
 					<div class="card-img-top"><a href="#"><img src="http://placehold.it/1600x800" alt=""></a></div>
 					<div class="padding-lr-30px padding-tb-20px">
-
-						<h3>Ingredients</h3>
-						<ul>
-							@foreach (var item in Model.Ingredients)
-							{
-								<li>@item.IngredientName</li>
-							}
-						</ul>
-
-
-						<h3>Directions</h3>
-						<ol>
-							@foreach (var item in Model.Directions)
-							{
-								<li>@item.Direction1</li>
-							}
-						</ol>
-						<hr>
-						<div class="row no-gutters">
-							<div class="col-4 text-left">
-								<a href="#" class="text-red">
-									<i class="far fa-heart"></i>
-									Save
-								</a>
+						<div class="padding-tb-10px">
+							<h3>Ingredients</h3>
+							<ul>
+								@foreach (var item in Model.Ingredients)
+								{
+									<li>@item.IngredientName</li>
+								}
+							</ul>
+						</div>
+						<div class="padding-tb-10px">
+							<h3>Directions</h3>
+							<div class="padding-lr-20px">
+								@foreach (var item in Model.Directions)
+								{
+									<p><b>Step @item.Step</b> - <span>@item.Direction1</span></p>
+								}
 							</div>
 						</div>
+						<div class="row no-gutters padding-tb-20px">
+							<div class="col-12 text-center">
+								<button class="btn box-shadow padding-lr-30px padding-tb-10px btn-sm border-2 border-radius-10 btn-inline-block background-main-color text-white margin-right-20px margin-tb-12px ">
+									I MADE IT <i class="fas fa-utensil-spoon"></i>
+								</button>
+								<button class="btn box-shadow padding-lr-30px padding-tb-10px btn-sm border-2 border-radius-10 btn-inline-block border-main-color text-main-color margin-right-20px margin-tb-12px ">
+									PRINT <i class="fas fa-print"></i>
+								</button>
+							</div>
+						</div>
+
 					</div>
 				</div>
-
-
 
 				<div class="margin-bottom-40px box-shadow">
 					<div class="padding-30px background-white">
@@ -224,14 +241,14 @@
 
 			<div class="col-lg-4">
 				<div class="listing-search box-shadow background-main-color padding-30px margin-bottom-30px">
-					<form action="Search/SearchKeyWord" class="row no-gutters">
-						<div class="col-md-12">
+					<form action="../../Search/SearchKeyWord" class="row no-gutters">
+						<div class="col-md-12 margin-bottom-20px">
 							<div class="keywords">
-								<input class="listing-form first max-width-set" type="text" placeholder="Keywords...." name="keyword" value="">
+								<input class="listing-form first max-width-set" type="text" placeholder="Keywords...." name="keyword" id="postTitle" value="">
 							</div>
 						</div>
-						<div class="col-md-12">
-							<button type="submit" class="listing-bottom background-second-color box-shadow">Search Now</button>
+						<div class="col-md-12 margin-tb-10px">
+							<button type="submit" class="listing-bottom border-radius-10 background-second-color box-shadow">Search Now</button>
 						</div>
 					</form>
 				</div>

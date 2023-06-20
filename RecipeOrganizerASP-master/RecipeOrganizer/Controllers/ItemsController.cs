@@ -43,7 +43,7 @@ namespace RecipeOrganizer.Controllers
             // lay tat ca list recipe de dem so luong
             List<Recipe> recipes = _recipeRepository.getAllRecipe();
 
-            List<Recipe> results = _recipeRepository.getPaingRecipe(productPage, PageSize);
+            List<Recipe> results = _recipeRepository.getPaingRecipe(productPage, PageSize, recipes);
             return View("DisplayRecipe",
             new RecipeListDisplayWithPaging
             {
@@ -59,6 +59,40 @@ namespace RecipeOrganizer.Controllers
             }
 
                 );
+        }
+
+        public IActionResult SearchKeyWordFitler(string keyword, string filter, int productPage = 1)
+        {
+            ViewBag.Keyword = keyword;
+            ViewBag.filter = filter;
+            List<Recipe> results = null;
+
+            List<Recipe> recipesSearchAll = _recipeRepository.SearchAllTitleWithFilter(filter, keyword);
+
+
+
+            if (keyword != null && recipesSearchAll.Count() > 0)
+            {
+                results = _recipeRepository.getRecipeByKeywordWitPaging(keyword, productPage, PageSize, recipesSearchAll);
+            }
+            else
+            {
+                ViewBag.notfound = "Not Found Recipe";
+            }
+
+
+            return View("DisplayRecipe", new RecipeListDisplayWithPaging
+            {
+                Recipes = results
+                    ,
+                PagingInfo = new PagingInfo
+                {
+                    ItemsPerPage = PageSize,
+                    CurrentPage = productPage,
+                    TotalItems = recipesSearchAll.Count()
+
+                }
+            });
         }
 
         public async Task<IActionResult> DisplayCategoryIngredient(int categoryId, int productPage = 1)

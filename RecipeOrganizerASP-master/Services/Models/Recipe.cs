@@ -11,6 +11,7 @@ namespace Services.Models
         public DateTime Date { get; set; }
         public int NumberShare { get; set; }
         public string Status { get; set; } = null!;
+        public double? AvgRate { get; set; }
 
         public virtual ICollection<Direction> Directions { get; set; }
         public virtual ICollection<Ingredient> Ingredients { get; set; }

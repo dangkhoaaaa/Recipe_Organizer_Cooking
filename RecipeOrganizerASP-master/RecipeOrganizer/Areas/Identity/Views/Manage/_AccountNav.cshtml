@@ -1,0 +1,45 @@
+﻿@*
+@inject SignInManager<AppUser> SignInManager
+@inject ManageNavViewModel ManageNavPages
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+*@
+@model ManageNavViewModel
+
+<style>
+	.nav-item {
+		padding-top: 16px;
+		padding-bottom: 16px;
+		font-size: 16px;
+	}
+
+	.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+		background-color: #ee1000;
+	}
+</style>
+<div class="padding-25px padding-bottom-30px background-white border-radius-10">
+	<ul class="nav nav-pills flex-column" style="padding-left: 0px">
+
+
+		<li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+			@if (Model.HasPassword)
+			{
+				<a class="nav-link " id="change-password" asp-controller="Manage" asp-action="ChangePassword">Change password</a>
+			}
+			else
+			{
+				<a class="nav-link " id="change-password" asp-controller="Manage" asp-action="SetPassword">Create password</a>
+			}
+		</li>
+
+		<li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+			<a class="nav-link " id="email" asp-area="Identity" asp-controller="Manage" asp-action="ManagePhoneNumber">Phone number</a>
+		</li>
+
+		<li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+			<a class="nav-link " id="email" asp-area="Identity" asp-controller="Manage" asp-action="ManageLogins">Manage external login</a>
+		</li>
+
+	</ul>
+</div>

@@ -20,29 +20,31 @@
         <div class="container">
             <div class="margin-bottom-60px">
                 <div class="listing-search box-shadow">
-                    <form class="row no-gutters" action="/Search/SearchKeyWord">
+                    <form class="row no-gutters" action="/Search/SearchKeyWordFitler">
                         <div class="col-md-4">
                             <div class="keywords">
-                                <input class="listing-form first" type="text" placeholder="Keywords..." value="@ViewBag.keyword" name="keyword">
+                                <input class="listing-form first" type="text" placeholder="Keywords..." value="@ViewBag.keyword" name="keyword" id="postTitle">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="categories dropdown">
-                                <a class="listing-form d-block text-nowrap" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Categories</a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <button class="dropdown-item text-up-small" type="button">Fish</button>
-                                    <button class="dropdown-item text-up-small" type="button">Cocktails</button>
-                                    <button class="dropdown-item text-up-small" type="button">Salads</button>
-                                    <button class="dropdown-item text-up-small" type="button">Asian</button>
-                                    <button class="dropdown-item text-up-small" type="button">Fish</button>
-                                    <button class="dropdown-item text-up-small" type="button">Cocktails</button>
-                                    <button class="dropdown-item text-up-small" type="button">Salads</button>
-                                    <button class="dropdown-item text-up-small" type="button">Asian</button>
-                                </div>
+                                <select class="listing-form d-block text-nowrap" id="dropdownMenu2" name="filter">
+                                    <option value="1">Top Share</option>
+                                    <option value="2">Date Recent</option>
+                                    <option value="3">A-Z</option>
+                                    <option value="4">hong biet</option>
+                                </select>
                             </div>
+                            <script>
+                                // Replace "selectedValue" with the actual variable name in your JavaScript code
+                                var selectedValue = @ViewBag.filter; // Example value
+
+                                // Set the value of the select element to the desired value
+                                document.getElementById("dropdownMenu2").value = selectedValue.toString();
+                            </script>
                         </div>
                         <div class="col-md-4">
-                            <button class="listing-bottom background-second-color box-shadow" type="submit">Search Now</button>
+                            <button class="listing-bottom background-second-color box-shadow hvr-bounce-to-right" type="submit">Search Now</button>
                         </div>
                     </form>
                 </div>
@@ -50,43 +52,49 @@
         </div>
 
         <div class="recipes-masonry">
-
-            @foreach (var item in Model.Recipes)
-            {
-                <!-- Recipe Item -->
-                <div class="col-xl-3 col-lg-4 col-md-6 recipe-item margin-bottom-40px">
-                    <div class="card border-0 box-shadow">
-                        <div class="card-img-top"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img src="http://placehold.it/420x335" alt=""></a></div>
-                        <div class="padding-lr-30px padding-tb-20px">
-                            <h5 class="margin-bottom-20px margin-top-10px"><a class="text-dark" href="#">@item.Description</a></h5>
-                            <div class="rating">
-                                <ul>
-                                    <li class="active"></li>
-                                    <li class="active"></li>
-                                    <li class="active"></li>
-                                    <li class="active"></li>
-                                    <li></li>
-                                </ul>
+            @if (Model.Recipes != null&&ViewBag.notfound != "")
+            
+                {
+                    @foreach (var item in Model.Recipes)
+                    {
+                    <!-- Recipe Item -->
+                    <div class="col-xl-3 col-lg-4 col-md-6 recipe-item margin-bottom-40px hvr-buzz">
+                        <div class="card border-0 box-shadow">
+                            <div class="card-img-top"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img src="http://placehold.it/420x335" alt=""></a></div>
+                            <div class="padding-lr-30px padding-tb-20px">
+                                <h5 class="margin-bottom-20px margin-top-10px"><a class="text-dark" href="#">@item.Title</a></h5>
+                                <div class="rating">
+                                    <ul>
+                                        <li class="active"></li>
+                                        <li class="active"></li>
+                                        <li class="active"></li>
+                                        <li class="active"></li>
+                                        <li></li>
+                                    </ul>
+                                </div>
+                                <hr>
+                                <div class="row no-gutters">
+                                    <div class="col-4 text-left"><a href="#" class="text-red"><i class="far fa-heart"></i> Save</a></div>
+                                    <div class="col-8 text-right"><a href="#" class="text-grey-2"><i class="fas fa-users"></i> @item.NumberShare</a></div>
+                                </div>
                             </div>
-                            <hr>
-                            <div class="row no-gutters">
-                                <div class="col-4 text-left"><a href="#" class="text-red"><i class="far fa-heart"></i> Save</a></div>
-                                <div class="col-8 text-right"><a href="#" class="text-grey-2"><i class="fas fa-users"></i> 6-8 servings</a></div>
+                            <div class="background-light-grey border-top-1 border-grey padding-lr-30px padding-tb-20px">
+                                <a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="d-inline-block text-grey-3 h6 margin-bottom-0px margin-right-15px"> @item.Description.ToString().Substring(0,1)....<font color="red">(View More)</font> </a>
                             </div>
-                        </div>
-                        <div class="background-light-grey border-top-1 border-grey padding-lr-30px padding-tb-20px">
-                            <a href="#" class="d-inline-block text-grey-3 h6 margin-bottom-0px margin-right-15px"><img src="http://placehold.it/50x50" class="height-30px border-radius-30 margin-right-15px" alt=""> @item.Title</a>
                         </div>
                     </div>
-                </div>
-                <!-- // Recipe Item -->
+                    <!-- // Recipe Item -->
+                    }
+
+            }
+            else
+            {
+                <h1 color="red">@ViewBag.notfound</h1>
             }
 
 
-
-
         </div>
-        <div class="col-12 pb-1">
+ @*       <div class="col-12 pb-1">
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center mb-3">
                     <li class="page-item disabled">
@@ -110,9 +118,80 @@
                     </li>
                 </ul>
             </nav>
+        </div>*@
+
+        <div class="col-12 pb-1">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mb-3">
+
+
+                    @if (Model.PagingInfo.CurrentPage != 1)
+                    {
+                        <li class="page-item ">
+                            <a class="page-link" href="/Items/Display/?productPage=@(Model.PagingInfo.CurrentPage-1)" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="/Items/Display/?productPage=@i"
+                               style="@((Model.PagingInfo.CurrentPage == i) ? "background-color: blue; color: white;" : "")">@i</a>
+                        </li>
+
+                    }
+                    @if (Model.PagingInfo.CurrentPage != Model.PagingInfo.TotalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="/Items/Display/?productPage=@(Model.PagingInfo.CurrentPage+1)" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+            </nav>
         </div>
 
 
     </div>
+    @section Scripts {
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+
+            (function ($) {
+                $(document).ready(function () {
+                    $("#postTitle").autocomplete({
+                        source: '/api/postapi/search1'
+
+                    });
+
+                });
+            })(jQuery);
+        </script>
+    }
     <!-- // container -->
 </section>

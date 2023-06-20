@@ -1,0 +1,136 @@
+﻿@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Authentication
+
+@model LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var notice = TempData["ErrorMessage"];
+    //var googleLogin = Model.ExternalLogins.FirstOrDefault(login => login.Name == "Google").Name;
+    //var facebookLogin = Model.ExternalLogins.FirstOrDefault(login => login.Name == "Facebook").Name;
+    //string googleLogin = Model.ExternalLogins[0].Name;
+    //string facebookLogin = Model.ExternalLogins[1].Name;
+}
+
+<style>
+    .login-button {
+        
+    }
+
+    .login-button:hover {
+        background-color: #777777;
+    }
+
+    .google-login-button {
+        background-color: #db4437;
+        color: #ffffff;
+        margin-top: 20px;
+        margin-bottom: 6px;
+    }
+
+    .google-login-button:hover {
+        background-color: #ffffff; /* Background color on hover */
+        color: #db4437;
+        border: 1px solid #db4437;
+    }
+
+    .facebook-login-button {
+        background-color: #244c9d;
+        color: #ffffff;
+        margin-bottom: 6px;
+    }
+
+        .facebook-login-button:hover {
+            background-color: #ffffff; /* Background color on hover */
+            color: #000810;
+            border: 1px solid #000810;
+        }
+</style>
+
+<body>
+    @if (TempData["ChangePasswordSuccess"] != null)
+    {
+         <div class="alert alert-success">
+            @TempData["ChangePasswordSuccess"]
+         </div>
+    }
+
+    @if(TempData.ContainsKey("ErrorMessage"))
+    {
+        <partial name="/Areas/Identity/Pages/Account/_StatusMessage.cshtml" model="notice"/>
+    }
+    <div id="page-title" class="padding-tb-30px gradient-white text-center">
+        <div class="container">
+            <ol class="breadcrumb opacity-5">
+                <li><a href=@Url.Action("Index", "Home")>Home</a></li>
+                <span>>></span>
+                <li class="active">Login Page</li>
+            </ol>
+            <h1 class="font-weight-300">Login Page</h1>
+        </div>
+    </div>
+
+
+    <div class="container margin-bottom-100px">
+        <!--======= log_in_page =======-->
+        <div id="log-in" class="site-form log-in-form box-shadow border-radius-10">
+            <div class="form-output">
+                <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <label asp-for="UserNameOrEmail" class="form-label"></label>
+                    <div class="mb-3">
+                        <input asp-for="UserNameOrEmail" class="form-control" autocomplete="username" aria-required="true" />
+                        <span asp-validation-for="UserNameOrEmail" class="text-danger"></span>
+                    </div>
+                    <label asp-for="Password" class="form-label"></label>
+                    <div class="mb-3">
+                        <input asp-for="Password" class="form-control" autocomplete="current-password" aria-required="true" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                        <div class="remember">
+                            <div class="checkbox ml-4">
+                                <label asp-for="RememberMe" class="form-label">
+                                    <input class="form-check-input" asp-for="RememberMe" />
+                                    @Html.DisplayNameFor(m => m.RememberMe)
+                                </label>
+                            </div>
+                            <a class="forgot" asp-action="ForgotPassword">Forgot your password?</a>
+                        </div>
+
+                    <button type="submit" class="login-button btn btn-md btn-primary full-width" style="margin-top: 12px;padding: 10px;">Login</button>
+                    @*<a id="resend-confirm-email" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>*@
+                </form>
+                <div class="or text-center" style="margin-top:0px; margin-bottom:0px;">or</div>
+                @*<form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                    <div>
+                        <p>
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">Login with @provider.DisplayName</button>
+                            }
+                        </p>
+                    </div>
+                </form>*@
+                
+                <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+
+                    <button type="submit" class="google-login-button btn btn-md full-width btn-icon-left" name="provider" value="Google" title="Log in using your Google account" style="">
+                        <i class="fab fa-google margin-right-8px" aria-hidden="true"></i>Login with Google
+                        </button>
+
+                    <button type="submit" class="facebook-login-button btn btn-md  full-width btn-icon-left" name="provider" value="Facebook" title="Log in using your Facebook account" style="">
+                        <i class="fab fa-facebook margin-right-8px" aria-hidden="true"></i>Login with Facebook
+                        </button>
+                </form>
+                @*<a href="#" class="btn btn-md bg-facebook full-width btn-icon-left"><i class="fab fa-facebook margin-right-8px" aria-hidden="true"></i> Login with Facebook</a>
+                <a href="#" class="btn btn-md border-grey-2 full-width btn-icon-left margin-top-8px margin-bottom-10px"><i class="fab fa-google margin-right-8px" aria-hidden="true"></i> Login with Google</a>*@
+                <p>Don't you have an account?  <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register now!</a> </p>
+            </div>
+        </div>
+    </div>
+</body>
+

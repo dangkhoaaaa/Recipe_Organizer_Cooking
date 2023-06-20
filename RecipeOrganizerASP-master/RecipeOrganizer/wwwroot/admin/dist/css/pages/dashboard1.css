@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800");
+/*Boxed layout width*/
+/**
+ * Table Of Content
+ *
+ * 	1. Colors
+ *	2. Typography
+ *	3. Forms
+ *	4. Tabs
+ */
+/*******************
+ Campaign
+*******************/
+.campaign {
+  position: relative;
+  height: 250px; }
+  .campaign .ct-series-a .ct-area {
+    fill-opacity: 0.2;
+    fill: url(#gradient); }
+  .campaign .ct-series-a .ct-line, .campaign .ct-series-a .ct-point {
+    stroke: #2961ff;
+    stroke-width: 2px; }
+  .campaign .ct-series-b .ct-area {
+    fill: #7c55fb;
+    fill-opacity: 0.1; }
+  .campaign .ct-series-b .ct-line, .campaign .ct-series-b .ct-point {
+    stroke: #7c55fb;
+    stroke-width: 2px; }
+  .campaign .ct-series-a .ct-point, .campaign .ct-series-b .ct-point {
+    stroke-width: 6px; }
+
+.order-widget .order .order-category {
+  padding: 0 25px;
+  margin: 0; }
+  .order-widget .order .order-category:first-child {
+    padding-left: 0; }
+
+.order-widget .chart-align {
+  margin-left: auto; }
+
+@media (max-width: 767px) {
+  .order-widget {
+    text-align: center; }
+    .order-widget .order .order-category {
+      padding: 0 14px;
+      margin: 0; }
+    .order-widget .chart-align {
+      margin-left: unset;
+      margin: 0 auto; } }

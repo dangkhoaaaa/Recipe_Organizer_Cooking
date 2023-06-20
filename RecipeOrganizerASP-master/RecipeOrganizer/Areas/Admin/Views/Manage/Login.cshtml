@@ -1,0 +1,93 @@
+﻿@model LoginViewModel
+@{
+    Layout = "";    
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Recipe Organizer</title>
+    <link href="~/admin/dist/css/style.css" rel="stylesheet">
+    <link href="~/admin/dist/css/pages/authentication.css" rel="stylesheet">
+</head>
+<body class="">
+    <div class="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Preloader - style you can find in spinners.css -->
+        <!-- ============================================================== -->
+        <div class="preloader">
+            <div class="loader">
+                <div class="loader__figure"></div>
+                <p class="loader__label">Recipe Organizer Login</p>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- Preloader - style you can find in spinners.css -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Login box.scss -->
+        <!-- ============================================================== -->
+        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center" style="background: url('@Url.Content("~/admin/assets/images/big/auth-bg.jpg")') no-repeat center center;">
+            <div class="auth-box">
+                <div id="loginform">
+                    <div class="logo">
+                        <span class="db"><img src="~/admin/assets/images/logo-icon.png" alt="logo" /></span>
+                        <h5 class="font-medium m-b-20">Sign In to Admin</h5>
+                    </div>
+                    <!-- Form -->
+                    <div class="row">
+                        <form asp-area="Admin" asp-controller="Manage" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <label asp-for="UserNameOrEmail" class="form-label"></label>
+                            <div class="mb-3">
+                                <input asp-for="UserNameOrEmail" class="form-control" autocomplete="username" aria-required="true" />
+                                <span asp-validation-for="UserNameOrEmail" class="text-danger"></span>
+                            </div>
+                            <label asp-for="Password" class="form-label"></label>
+                            <div class="mb-3">
+                                <input asp-for="Password" class="form-control" autocomplete="current-password" aria-required="true" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="row m-t-5">
+                                <div class="col s7 left-align">
+                                    <label>
+                                        <input type="checkbox" />
+                                        <span>Remember Me</span>
+                                    </label>
+                                </div>
+                                <div class="col s5 right-align"><a class="forgot" asp-action="ForgotPassword" id="to-recover">Forgot Password</a></div>
+                            </div>
+
+                            <div class="row m-t-40" style="margin-top:20px;">
+                                <div class="col s12">
+                                    <button class="btn-large w100 blue accent-4" type="submit" >Login</button>
+                                </div>
+                            </div>
+                            @*<a id="resend-confirm-email" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>*@
+                        </form>
+                    </div>
+                    <a asp-area="Admin" asp-controller="Manage" asp-action="CreateAdmin">Create admin account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/admin/dist/js/materialize.min.js"></script>
+    <script>
+        $('.tooltipped').tooltip();
+        // ==============================================================
+        // Login and Recover Password
+        // ==============================================================
+        $('#to-recover').on("click", function () {
+            $("#loginform").slideUp();
+            $("#recoverform").fadeIn();
+        });
+        $(function () {
+            $(".preloader").fadeOut();
+        });
+    </script>
+</body>
+</html>

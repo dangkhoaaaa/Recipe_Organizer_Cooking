@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using RecipeOrganizer.Data;
+using Services;
 using Services.Models;
 using Services.Models.Authentication;
-using Services.Services;
+using Services.Repository;
+//using Services.Services;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +28,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //                                                .AddEntityFrameworkStores<Recipe_OrganizerContext>()
 //                                                .AddDefaultTokenProviders();
+builder.Services.AddTransient<RecipeRepository>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 //Session

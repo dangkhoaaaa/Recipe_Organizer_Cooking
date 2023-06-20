@@ -211,6 +211,9 @@ namespace Services.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -266,6 +269,13 @@ namespace Services.Migrations
 
             modelBuilder.Entity("Services.Models.Collection", b =>
                 {
+                    b.Property<int>("CollectionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CollectionId"), 1L, 1);
+
                     b.Property<int>("RecipeId")
                         .HasColumnType("int")
                         .HasColumnName("recipe_id");
@@ -274,6 +284,8 @@ namespace Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("user_id");
+
+                    b.HasKey("CollectionId");
 
                     b.HasIndex("RecipeId");
 
@@ -450,9 +462,7 @@ namespace Services.Migrations
 
                     b.Property<string>("Filelocation")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(300)")
+                        .HasColumnType("text")
                         .HasColumnName("filelocation");
 
                     b.HasKey("MediaId");
@@ -535,6 +545,10 @@ namespace Services.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecipeId"), 1L, 1);
 
+                    b.Property<double?>("AvgRate")
+                        .HasColumnType("float")
+                        .HasColumnName("avg_rate");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime")
                         .HasColumnName("date");
@@ -571,6 +585,13 @@ namespace Services.Migrations
 
             modelBuilder.Entity("Services.Models.RecipeHasCategory", b =>
                 {
+                    b.Property<int>("RecipeHasCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecipeHasCategoryId"), 1L, 1);
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int")
                         .HasColumnName("category_id");
@@ -578,6 +599,8 @@ namespace Services.Migrations
                     b.Property<int>("RecipeId")
                         .HasColumnType("int")
                         .HasColumnName("recipe_id");
+
+                    b.HasKey("RecipeHasCategoryId");
 
                     b.HasIndex("CategoryId");
 
@@ -588,6 +611,13 @@ namespace Services.Migrations
 
             modelBuilder.Entity("Services.Models.RecipeHasTag", b =>
                 {
+                    b.Property<int>("RecipeHasTagId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecipeHasTagId"), 1L, 1);
+
                     b.Property<int>("RecipeId")
                         .HasColumnType("int")
                         .HasColumnName("recipe_id");
@@ -595,6 +625,8 @@ namespace Services.Migrations
                     b.Property<int>("TagId")
                         .HasColumnType("int")
                         .HasColumnName("tag_id");
+
+                    b.HasKey("RecipeHasTagId");
 
                     b.HasIndex("RecipeId");
 
@@ -632,6 +664,13 @@ namespace Services.Migrations
 
             modelBuilder.Entity("Services.Models.SessionHasRecipe", b =>
                 {
+                    b.Property<int>("SessionHasRecipeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SessionHasRecipeId"), 1L, 1);
+
                     b.Property<int>("RecipeId")
                         .HasColumnType("int")
                         .HasColumnName("recipe_id");
@@ -639,6 +678,8 @@ namespace Services.Migrations
                     b.Property<int>("SessionId")
                         .HasColumnType("int")
                         .HasColumnName("session_id");
+
+                    b.HasKey("SessionHasRecipeId");
 
                     b.HasIndex("RecipeId");
 
