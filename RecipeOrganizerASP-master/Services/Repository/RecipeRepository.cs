@@ -20,12 +20,14 @@ namespace Services.Repository
 
 		protected DbSet<Recipe> _dbSet;
 		protected DbSet<RecipeHasCategory> _dbSet1;
-
-		public RecipeRepository()
+        protected DbSet<AppUser> _dbSetUser;
+        protected DbSet<Metadata> _dbSetMetadata;
+        public RecipeRepository()
 		{
 			_context = new Recipe_OrganizerContext();
 			_dbSet = _context.Set<Recipe>();
 			_dbSet1 = _context.Set<RecipeHasCategory>();
+			_dbSetUser = _context.Set<AppUser>();
 		}
 
 
@@ -44,7 +46,7 @@ namespace Services.Repository
 				foreach (Recipe recipe in _dbSet)
 				{
 
-					if (recipe.Title.ToUpper().Contains(keyword.ToUpper())&&recipe.Status.Equals("1")) { listRecipe.Add(recipe); }
+					if (recipe.Title.ToUpper().Contains(keyword.ToUpper())&&recipe.Status.Equals("public")) { listRecipe.Add(recipe); }
 
 
 				}
@@ -64,7 +66,7 @@ namespace Services.Repository
 				foreach (Recipe recipe in _dbSet)
 				{
 
-					if (recipe.Title.ToUpper().Contains(keyword.ToUpper()) && recipe.Status.Equals("1")) { listRecipe.Add(recipe.Title); }
+					if (recipe.Title.ToUpper().Contains(keyword.ToUpper()) && recipe.Status.Equals("public")) { listRecipe.Add(recipe.Title); }
 
 
 				}
@@ -84,15 +86,15 @@ namespace Services.Repository
 			switch (filter) 
 			{
 				case "1":
-					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("1")).OrderByDescending(r => r.NumberShare).ToList();
+					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("public")).OrderByDescending(r => r.NumberShare).ToList();
 				case "2":
-					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("1")).OrderBy(r => r.Date).ToList();
+					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("public")).OrderBy(r => r.Date).ToList();
 				case "3":
-					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("1")).OrderBy(r => r.Title).ToList();
+					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("public")).OrderBy(r => r.Title).ToList();
 				case "4":
-					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("1")).OrderBy(r => r.RecipeId).ToList();
+					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("public")).OrderBy(r => r.RecipeId).ToList();
 				default:
-					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("1")).OrderBy(r => r.Title).ToList();
+					return _dbSet.Where(r => r.Title.Contains(title) && r.Status.Equals("public")).OrderBy(r => r.Title).ToList();
 
 			}
 		
@@ -103,8 +105,8 @@ namespace Services.Repository
 			List<Recipe> listmapCategory = new List<Recipe>();
 				 var query = from rc in _dbSet1
 							 join r in _dbSet on rc.RecipeId equals r.RecipeId
-							 where rc.CategoryId == categoryID && r.Status == "1"
-							 select r;
+							 where rc.CategoryId == categoryID && r.Status.Equals("public", StringComparison.OrdinalIgnoreCase)
+                             select r;
 
 			listmapCategory = query.ToList();
 			switch (filter)
@@ -133,7 +135,7 @@ namespace Services.Repository
 			foreach (Recipe recipe in recipeAllSearch)
 			{
 
-				if (recipe.Title.ToUpper().Contains(keyword.ToUpper()) && recipe.Status.Equals("1") && i > ((productPage - 1) * PageSize) && i <= ((productPage - 1) * PageSize) + PageSize) { listRecipe.Add(recipe); }
+				if (recipe.Title.ToUpper().Contains(keyword.ToUpper()) && recipe.Status.Equals("public", StringComparison.OrdinalIgnoreCase) && i > ((productPage - 1) * PageSize) && i <= ((productPage - 1) * PageSize) + PageSize) { listRecipe.Add(recipe); }
 				i++;
 			}
 			// return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
@@ -149,7 +151,7 @@ namespace Services.Repository
             foreach (Recipe recipe in recipeAllSearch)
             {
 
-                if (recipe.Status.Equals("1") && ( i > ((productPage - 1) * PageSize)) && i <= ((productPage - 1) * PageSize) + PageSize) { listRecipe.Add(recipe); }
+                if (recipe.Status.Equals("public", StringComparison.OrdinalIgnoreCase) && ( i > ((productPage - 1) * PageSize)) && i <= ((productPage - 1) * PageSize) + PageSize) { listRecipe.Add(recipe); }
                 i++;
             }
             // return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
@@ -163,7 +165,7 @@ namespace Services.Repository
 			List<Recipe> listRecipe = new List<Recipe>();
 			foreach (Recipe recipe in _dbSet)
 			{
-				if(recipe.Status.Equals("1"))
+				if(recipe.Status.Equals("public", StringComparison.OrdinalIgnoreCase))
 				listRecipe.Add(recipe);
 
 			}
@@ -181,7 +183,7 @@ namespace Services.Repository
 			int i = 1;
 			foreach (Recipe recipe in list)
 			{
-				if ( recipe.Status.Equals("1")&&i > ((productPage - 1) * PageSize) && i <= ((productPage - 1) * PageSize) + PageSize)
+				if ( recipe.Status.Equals("public", StringComparison.OrdinalIgnoreCase) &&i > ((productPage - 1) * PageSize) && i <= ((productPage - 1) * PageSize) + PageSize)
 				{
 					listRecipe.Add(recipe);
 
@@ -192,7 +194,20 @@ namespace Services.Repository
 			// return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
 			return listRecipe;
 		}
+        public int getListRecipebyUserWithStatus(string userID)
+        {
+            List<Recipe> listmapCategory = new List<Recipe>();
+            var query = from md in _dbSetMetadata
+                        join us in _dbSetUser on md.UserId equals us.Id
+                        join rp in _dbSet on md.RecipeId equals rp.RecipeId
+                        
+                        where us.Id == userID
+                        select rp;
 
-	}
+            listmapCategory = query.ToList();
+			return 1;
+
+        }
+    }
 }
 
