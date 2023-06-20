@@ -7,6 +7,7 @@ namespace Services.Models
 {
     public partial class Collection
     {
+        public int CollectionId { get; set; }
         public string UserId { get; set; }
         public int RecipeId { get; set; }
 
