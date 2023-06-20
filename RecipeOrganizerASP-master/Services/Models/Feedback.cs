@@ -5,6 +5,8 @@ namespace Services.Models
 {
     public partial class Feedback
     {
+        public object feedbackId;
+
         public Feedback()
         {
             MetaData = new HashSet<Metadata>();

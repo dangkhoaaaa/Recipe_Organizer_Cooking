@@ -8,16 +8,47 @@ using System.Threading.Tasks;
 
 namespace Services.Repository
 {
-    public class FeedbackRepository : RepositoryBase<FeedbackRepository>
+    public class FeedbackRepository : RepositoryBase<Feedback>
     {
         Recipe_OrganizerContext _context;
+<<<<<<< HEAD
+        protected DbSet<Feedback> _dbSet1;
+        public object feedbackId;
+=======
 
         protected DbSet<Feedback> _dbSetFeedBack;
         protected DbSet<Metadata> _dbSetMetadata;
+>>>>>>> 176a703046f2002d8656a3231c7ab22a34c0a480
 
         public FeedbackRepository()
         {
             _context = new Recipe_OrganizerContext();
+<<<<<<< HEAD
+            _dbSet1 = _context.Set<Feedback>();
+        }
+
+        public ICollection<Feedback> Products { get; set; } = new List<Feedback>();
+
+        //public List<Feedback> getFeedbackByUserId(string userId)
+        //{
+        //    List<Feedback> listFeedback = new List<Feedback>();
+
+        //    if (userId != null && userId.Trim().Length > 0)
+        //    {
+        //        foreach (var Feedback in _dbSet)
+        //        {
+        //            // Check if the feedback is associated with the specified user
+        //            var metadata = Metadata(m => m.feedback_id == Feedback.feedback_id && m.user_id == userId);
+        //            if (metadata != null)
+        //            {
+        //                listFeedback.Add(Feedback);
+        //            }
+        //        }
+        //    }
+
+        //    return listFeedback;
+        //}
+=======
             _dbSetFeedBack = _context.Set<Feedback>();
             _dbSetMetadata = _context.Set<Metadata>();
         }
@@ -46,5 +77,6 @@ namespace Services.Repository
 
             return result;
         }
+>>>>>>> 176a703046f2002d8656a3231c7ab22a34c0a480
     }
 }
