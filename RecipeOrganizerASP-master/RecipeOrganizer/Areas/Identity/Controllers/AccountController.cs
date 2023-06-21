@@ -347,7 +347,9 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     };
 
                     var resultNewUser = await _userManager.CreateAsync(newUser);
-                    if (resultNewUser.Succeeded)
+					await _userManager.AddToRoleAsync(newUser, RoleName.Member);
+
+					if (resultNewUser.Succeeded)
                     {
                         await _userManager.AddLoginAsync(newUser, info);
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
