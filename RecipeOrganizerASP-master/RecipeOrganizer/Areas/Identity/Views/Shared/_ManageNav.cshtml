@@ -37,11 +37,11 @@
         <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
             @if (Model.HasPassword)
             {
-                <a class="nav-link " id="change-password" asp-controller="Manage" asp-action="ChangePassword">Change password</a>
+                <a class="nav-link " id="change-password" asp-area="Identity" asp-controller="Manage" asp-action="ChangePassword">Change password</a>
             }
             else
             {
-                <a class="nav-link " id="change-password" asp-controller="Manage" asp-action="SetPassword">Create password</a>
+                <a class="nav-link " id="change-password" asp-area="Identity"  asp-controller="Manage" asp-action="SetPassword">Create password</a>
             }
         </li>
 
