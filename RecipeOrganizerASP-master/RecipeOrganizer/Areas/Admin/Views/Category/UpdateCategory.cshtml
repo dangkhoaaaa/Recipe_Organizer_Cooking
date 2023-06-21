@@ -1,0 +1,73 @@
+﻿@using System.Data
+@model List<ParentCategory>
+
+@{
+    ViewData["Title"] = "Admin";
+    Layout = "_AdminLayout";
+}
+
+
+<h4 class="card-title">Update for <font color="red"> @ViewBag.CategoryName  </font> Category </h4>
+<div class="table-responsive">
+
+
+
+    <div class="modal-content">
+        <form asp-area="Admin" asp-controller="Category" asp-action="UpdateCategory">
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="id" name="txtid" type="text" value="@ViewBag.CategoryId" readonly>
+                    <label for="name">Id</label>
+                </div>
+            </div>
+           
+
+         
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="name" name="txtname" type="text" placeholder="@ViewBag.CategoryName" required>
+                    <label for="name">Name</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="age" name="txtdescription" type="text" placeholder="input description ....." required>
+                    <label for="age">Desciption</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <select id="description" name="txtnameparent" required>
+
+                        <option value="" disabled selected>Choose your option</option>
+                        @foreach (var item in Model)
+                        {
+                            <option value="@item.ParentId">@item.Title</option>
+
+                        }
+
+
+
+                    </select>
+                    <label for="description">Name Parent Category</label>
+                </div>
+            </div>
+
+
+
+
+
+            <input class="btn modal-action modal-close waves-effect waves-light cyan" type="submit" value="Update">
+        </form>
+    </div>
+
+
+
+
+
+</div>
+<!-- render body here -->
