@@ -221,6 +221,36 @@ namespace RecipeOrganizer.Controllers
 			}
 		}
 
+		private RecipeData ConvertToRecipeData(Recipe recipe)
+		{
+			RecipeData data = new RecipeData();
+			data.RecipeId = recipe.RecipeId;
+			data.Title = recipe.Title;
+			data.Description = recipe.Description;
+			List<Ingredient> ingredients = _ingredientRepository.GetByRecipeId(recipe.RecipeId);
+			List<Direction> directions = _directionRepository.GetByRecipeId(recipe.RecipeId);
+
+			if (ingredients != null)
+			{
+				data.Ingredients = ingredients.ToList();
+			}
+
+			if (directions != null)
+			{
+				data.Directions = directions.ToList();
+			}
+
+			return data;
+		}
+
+		[HttpPost]
+		public IActionResult ToggleCollection(int recipeId, int userId)
+		{
+			_collectionRepository.ToggleCollection(recipeId, userId);
+
+			return RedirectToAction("RecipeDetail", "Recipe", new { recipeId = recipeId });
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> EditRecipe(RecipeData recipe, string Action, IFormFile mediaFile)
 		{
@@ -385,37 +415,6 @@ namespace RecipeOrganizer.Controllers
 
 			return RedirectToAction("UserNotFound");
 		}
-
-		private RecipeData ConvertToRecipeData(Recipe recipe)
-		{
-			RecipeData data = new RecipeData();
-			data.RecipeId = recipe.RecipeId;
-			data.Title = recipe.Title;
-			data.Description = recipe.Description;
-			List<Ingredient> ingredients = _ingredientRepository.GetByRecipeId(recipe.RecipeId);
-			List<Direction> directions = _directionRepository.GetByRecipeId(recipe.RecipeId);
-
-			if (ingredients != null)
-			{
-				data.Ingredients = ingredients.ToList();
-			}
-
-			if (directions != null)
-			{
-				data.Directions = directions.ToList();
-			}
-
-			return data;
-		}
-
-		[HttpPost]
-		public IActionResult ToggleCollection(int recipeId, int userId)
-		{
-			_collectionRepository.ToggleCollection(recipeId, userId);
-
-			return RedirectToAction("RecipeDetail", "Recipe", new { recipeId = recipeId });
-		}
-
 
 
 	}
