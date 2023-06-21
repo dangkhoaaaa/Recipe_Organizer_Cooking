@@ -31,6 +31,9 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.AddTransient<RecipeRepository>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+//Session
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
 
 //add mail
 builder.Services.AddOptions();                                        // Kích hoạt Options
@@ -105,6 +108,9 @@ builder.Services.AddAuthentication()
 
 //app build
 var app = builder.Build();
+
+//Session
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
