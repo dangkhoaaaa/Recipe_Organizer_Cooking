@@ -181,7 +181,7 @@
 					<div class="col-md-6">
 						<div class="form-group margin-bottom-20px">
 							<label><i class="far fa-flag margin-right-10px"></i> Tags</label>
-							@Html.TextBoxFor(m => m.TagsInput, new { @class = "form-control", placeholder="Enter a comma after each tag" })
+							@Html.TextBoxFor(m => m.TagsInput, new { @class = "form-control", placeholder="Enter a comma after each tag", value=Model.TagsInput })
 
 						</div>
 					</div>
@@ -190,8 +190,8 @@
 						<div class="form-group margin-bottom-20px">
 							<label><i class="far fa-list-alt margin-right-10px"></i>Status</label>
 							<select name="Status" class="form-control">
-								<option value="Public" selected="@(Model.Status == "Public" ? "selected" : "")">Public</option>
-								<option value="Draft" selected="@(Model.Status == "Draft" ? "selected" : "")">Draft</option>
+								<option value="Public" selected="@(Model.Status == "public" ? "selected" : "")">Public</option>
+								<option value="Draft" selected="@(Model.Status == "draft" ? "selected" : "")">Draft</option>
 							</select>
 						</div>
 					</div>
