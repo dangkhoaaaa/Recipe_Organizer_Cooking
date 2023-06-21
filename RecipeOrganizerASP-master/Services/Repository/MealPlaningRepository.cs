@@ -15,15 +15,20 @@ namespace Services.Repository
 
         protected DbSet<MealPlanning> _dbSet;
 
-        public MealPlaningRepository()
+		
+
+		public MealPlaningRepository()
         {
             _context = new Recipe_OrganizerContext();
             _dbSet = _context.Set<MealPlanning>();
         }
 
-        public MealPlanning GetPlanID(string UserID,  string WeekNow)
+        public MealPlanning GetPlanID(string UserID,  string Week)
         {
-            return _dbSet.Where(m =>  m.UserId.Equals(UserID) && m.WeekStartDate.Equals(WeekNow)).FirstOrDefault();
+            MealPlanning meal = _dbSet.Where(m =>  m.UserId.Equals(UserID) && m.WeekStartDate.Equals(Week)).FirstOrDefault();
+            
+            
+            return meal;
         }
 
         public string WeekNow()
