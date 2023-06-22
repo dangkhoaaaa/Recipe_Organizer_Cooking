@@ -1,5 +1,6 @@
 ﻿@using System.Data
 @model List<IndexViewModel>
+@inject UserManager<AppUser> _userManager
 
 @{
     ViewData["Title"] = "Admin";
@@ -31,90 +32,41 @@
                 {
                     counter += 1;
                     <tr>
-                        <td>@counter</td>
-                        <td>@user.Email</td>
-                        <td>@user.FirstName</td>
-                        <td>@user.LastName</td>
-                        <td>@user.PhoneNumber</td>
-                        <td>@user.Birthday</td>
-                        <td>
+                            <td>@counter</td>
+                            <td>@user.Email</td>
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>@user.PhoneNumber</td>
+                            <td>@user.Birthday</td>
+                            <td>
                                     @foreach (var role in @user.Role)
                                     {
-                                <span class="label label-danger">@role</span>
+                                    <span class="label label-danger">@role</span>
                                     }
-                        </td>
-                        <td>@user.TotalRecipe</td>
-                        <td>@user.Status</td>
-                        <td><button>Update ik ba</button></td>
+                            </td>
+                            <td>@user.TotalRecipe</td>
+                            <td>
+
+                                @if (user.Status)
+                                {
+                                    <span>Enable</span>
+                                } else
+                                {
+                                    <span>Disable</span>
+                                }
+
+                            </td>
+                            <td>
+                                <form asp-area="Admin" asp-controller="Manage" asp-action="UpdateUserStatus" method="post">
+                                    <input id="userEmail" name="userEmail" type="hidden" value="@user.Email" />
+                                    <button type="submit" class="btn btn-success btn-sm">Update ik ba</button>
+                                </form>
+                            </td>
                     </tr>
                 }
             }
         </tbody>
     </table>
-    <a href="#add-contact" class="waves-effect waves-light btn modal-trigger m-t-20">Add New Contact</a>
-    <div id="add-contact" class="modal">
-        <div class="modal-content">
-            <form>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="name" type="text">
-                        <label for="name">Name</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="email" type="email">
-                        <label for="email">Email</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="phone" type="text">
-                        <label for="phone">Phone</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="designation" type="text">
-                        <label for="designation">Designation</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="age" type="text">
-                        <label for="age">Age</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="date" type="text" class="datepicker">
-                        <label for="date">Date</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input id="salary" type="text">
-                        <label for="salary">Salary</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="file-field input-field col s12">
-                        <div class="btn">
-                            <span>File</span>
-                            <input type="file">
-                        </div>
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text">
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <a href="#!" class="btn modal-action modal-close waves-effect waves-light cyan">Save</a>
-            <a href="#!" class="btn modal-action modal-close waves-effect waves-light grey darken-4">Cancel</a>
-        </div>
-    </div>
 </div>
 <!-- render body here -->
 

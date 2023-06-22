@@ -9,6 +9,7 @@ using System;
 using Services.Repository;
 using RecipeOrganizer.Utilities;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Firebase.Auth;
 
 namespace RecipeOrganizer.Areas.Admin.Controllers
 {
@@ -74,8 +75,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 
             foreach (var user in listUser)
             {
-                var userName = await _userManager.FindByIdAsync(user.Id);
-                var role = await _userManager.GetRolesAsync(userName);
+                var role = await _userManager.GetRolesAsync(user);
                 var model = new IndexViewModel
                 {
                     FirstName = user.FirstName,
@@ -83,12 +83,11 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
                     Role = role.ToList(),
-                    TotalRecipe = 2, 
-                    Status = true
+                    TotalRecipe = 2,
+                    Status = user.Status
                 };
                 list.Add(model);
             }
-			
             return View(list);
         }
 
@@ -167,6 +166,33 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             _logger.LogInformation("User logged out");
             return RedirectToAction("Index", "Home", new { area = "" });
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateUserStatus(string userEmail)
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user != null)
+            {
+                if (user.Status)
+                {
+                    user.Status = false;
+                }
+                else
+                {
+                    user.Status = true;
+                }
+                await _userManager.UpdateAsync(user);
+                await _signInManager.RefreshSignInAsync(user);
+                return RedirectToAction("Index");
+
+            }
+            return RedirectToAction("LogOut");
+
+        }
+
+
+
 
         ////
         //// GET: /Account/SendCode

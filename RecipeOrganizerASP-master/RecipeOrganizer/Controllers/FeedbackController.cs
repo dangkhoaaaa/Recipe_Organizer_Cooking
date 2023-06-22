@@ -1,8 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Asn1.Cms;
+<<<<<<< HEAD
 using RecipeOrganizer.Areas.Identity.Models.Manage;
+=======
+using RecipeOrganizer.Areas.Data;
+>>>>>>> 448415c3e0951ded71e01c7eb8634d6b25d76c90
 using Services.Models;
 using Services.Models.Authentication;
 using Services.Repository;
@@ -10,6 +15,7 @@ using System.Net;
 
 namespace RecipeOrganizer.Controllers
 {
+    [Authorize]
     public class FeedbackController : Controller
     {
         private readonly FeedbackRepository _feedbackRepository;

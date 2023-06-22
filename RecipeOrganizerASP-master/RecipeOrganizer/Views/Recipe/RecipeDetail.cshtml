@@ -5,6 +5,18 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script>
+	function scrollToSection(sectionId) {
+		var targetElement = document.querySelector(sectionId);
+		var targetPosition = targetElement.offsetTop;
+
+		window.scrollTo({
+			top: targetPosition,
+			behavior: "smooth"
+		});
+	}
+</script>
+
 <body>
 	<div id="page-title" class="padding-top-30px padding-bottom-10px gradient-white">
 		<div class="container text-left">
@@ -32,7 +44,7 @@
 					</div>
 					|
 					<div class="col-5">
-						<a href="#">89 reviews</a>
+						<a href="#" onclick="scrollToSection('#addFeedback')">@Model.NumberShare reviews</a>
 						<span class="margin-lr-5px">|</span>
 						<a href="#">55 photos</a>
 					</div>
@@ -48,33 +60,47 @@
 				</div>
 				<div class="margin-bottom-20px">
 					@*<form method="post" action="/Recipe/ToggleCollection?userId=@(ViewBag.UserId ?? "")&recipeId=@Model.RecipeId">
-						<input type="hidden" name="recipeId" value="@Model.RecipeId" />
-						@{
-							var collectionRepository = ViewBag.CollectionRepository as CollectionRepository;
-							bool isSaved = collectionRepository?.IsRecipeSaved(Model.RecipeId, ViewBag.UserId?.ToString()) ?? false;
-						}
-						@if (isSaved)
-						{
-							<button type="submit" class="text-red border-0" id="saveButton">
-								<i class="icon_heart"></i> Unsave
-							</button>
-						}
-						else
-						{
-							<button type="submit" class="text-red border-0" id="saveButton">
-								<i class="far fa-heart"></i> Save
-							</button>
-						}
+					<input type="hidden" name="recipeId" value="@Model.RecipeId" />
+					@{
+					var collectionRepository = ViewBag.CollectionRepository as CollectionRepository;
+					bool isSaved = collectionRepository?.IsRecipeSaved(Model.RecipeId, ViewBag.UserId?.ToString()) ?? false;
+					}
+					@if (isSaved)
+					{
+					<button type="submit" class="text-red border-0" id="saveButton">
+					<i class="icon_heart"></i> Unsave
+					</button>
+					}
+					else
+					{
+					<button type="submit" class="text-red border-0" id="saveButton">
+					<i class="far fa-heart"></i> Save
+					</button>
+					}
 					</form>*@
 					<button type="submit" class="text-red border-0 bg-transparent" id="saveButton">
 						<i class="far fa-heart"></i> Save
 					</button>
 					<span class="margin-left-5px margin-right-5px">|</span>
-					<a href="#"><i class="far fa-star"></i> Rate</a>
+					<a href="#" onclick="scrollToSection('#addFeedback')"><i class="far fa-star"></i> Rate</a>
 					<span class="margin-left-5px margin-right-5px">|</span>
 					<a href="#"><i class="fas fa-print"></i> Print</a>
 					<span class="margin-left-5px margin-right-5px">|</span>
-					<a href="#"><i class="fas fa-share"></i> Share</a>
+					@{
+						var encodedTitle = Uri.EscapeDataString("Recipe: " + @Model.Title);
+						var encodedDescription = Uri.EscapeDataString(@Model.Description);
+						var encodedIngredients = string.Join(Environment.NewLine, Model.Ingredients.Select(i => "- " + Uri.EscapeDataString(i.IngredientName)));
+						var encodedUrl = Uri.EscapeDataString($"https://localhost:7186/Recipe/RecipeDetail/?id={Model.RecipeId}");
+
+					}
+					<a href="mailto:?subject=@encodedTitle&amp;body=@Html.Raw(encodedDescription)%0D%0A%0D%0AIngredients:%0D%0A@{
+					    foreach (var item in Model.Ingredients) {
+									@Html.Raw(Uri.EscapeDataString("- " + item.IngredientName + Environment.NewLine))
+}
+ }%0D%0A%0D%0AView%20more%20at%20@encodedUrl">
+						<i class="fas fa-share"></i> Share via Email
+					</a>
+
 				</div>
 
 				<div class="margin-bottom-40px card border-0 box-shadow">
@@ -100,7 +126,8 @@
 						</div>
 						<div class="row no-gutters padding-tb-20px">
 							<div class="col-12 text-center">
-								<button class="btn box-shadow padding-lr-30px padding-tb-10px btn-sm border-2 border-radius-10 btn-inline-block background-main-color text-white margin-right-20px margin-tb-12px ">
+								<button id="scrollButton" onclick="scrollToSection('#addFeedback')"
+										class="btn box-shadow padding-lr-30px padding-tb-10px btn-sm border-2 border-radius-10 btn-inline-block background-main-color text-white margin-right-20px margin-tb-12px ">
 									I MADE IT <i class="fas fa-utensil-spoon"></i>
 								</button>
 								<button class="btn box-shadow padding-lr-30px padding-tb-10px btn-sm border-2 border-radius-10 btn-inline-block border-main-color text-main-color margin-right-20px margin-tb-12px ">
@@ -113,6 +140,33 @@
 				</div>
 
 				<div class="margin-bottom-40px box-shadow">
+					<div class="padding-30px background-white">
+						<h3><i class="far fa-star margin-right-10px text-main-color"></i> Add Review </h3>
+						<hr>
+						<form id="addFeedback" method="post" action="">
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label for="inputName">Full Name</label>
+									<input type="text" class="form-control" id="inputName" placeholder="Name">
+								</div>
+								<div class="form-group col-md-6">
+									<label for="inputEmail4">Email</label>
+									<input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="exampleFormControlTextarea1">Feedback</label>
+								<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+										  placeholder="Feedback"></textarea>
+							</div>
+							<a href="#"
+							   class="btn-sm btn-lg btn-block background-main-color text-white text-center font-weight-bold text-uppercase border-radius-10 padding-10px">
+								Add Now!
+							</a>
+						</form>
+					</div>
+				</div>
+				<div class="margin-bottom-80px box-shadow">
 					<div class="padding-30px background-white">
 						<h3><i class="far fa-star margin-right-10px text-main-color"></i> Review &amp; Rating</h3>
 						<hr>
@@ -209,34 +263,6 @@
 					</div>
 				</div>
 
-				<div class="margin-bottom-80px box-shadow">
-					<div class="padding-30px background-white">
-						<h3><i class="far fa-star margin-right-10px text-main-color"></i> Add Review </h3>
-						<hr>
-						<form>
-							<div class="form-row">
-								<div class="form-group col-md-6">
-									<label for="inputName">Full Name</label>
-									<input type="text" class="form-control" id="inputName" placeholder="Name">
-								</div>
-								<div class="form-group col-md-6">
-									<label for="inputEmail4">Email</label>
-									<input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="exampleFormControlTextarea1">Feedback</label>
-								<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
-										  placeholder="Feedback"></textarea>
-							</div>
-							<a href="#"
-							   class="btn-sm btn-lg btn-block background-main-color text-white text-center font-weight-bold text-uppercase border-radius-10 padding-10px">
-								Add
-								Now!
-							</a>
-						</form>
-					</div>
-				</div>
 			</div>
 
 			<div class="col-lg-4">

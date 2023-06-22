@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Services.Models;
 
@@ -11,9 +12,10 @@ using Services.Models;
 namespace Services.Migrations
 {
     [DbContext(typeof(Recipe_OrganizerContext))]
-    partial class Recipe_OrganizerContextModelSnapshot : ModelSnapshot
+    [Migration("20230620113708_addAvgRateToRecipe")]
+    partial class addAvgRateToRecipe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -559,10 +561,6 @@ namespace Services.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(1000)")
                         .HasColumnName("description");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("text")
-                        .HasColumnName("image");
 
                     b.Property<int>("NumberShare")
                         .HasColumnType("int")

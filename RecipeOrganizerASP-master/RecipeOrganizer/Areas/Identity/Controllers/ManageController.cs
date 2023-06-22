@@ -239,6 +239,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     message = ManageMessageId.RemoveLoginSuccess;
+                    ViewData["ExternalLoginMessage"] = "Remove sucess";
                 }
             }
             return RedirectToAction(nameof(ManageLogins), new { Message = message });

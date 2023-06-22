@@ -222,8 +222,7 @@ namespace Services.Models
                     .HasColumnName("date");
 
                 entity.Property(e => e.Filelocation)
-                    .HasMaxLength(300)
-                    .IsUnicode(false)
+                    .HasColumnType("text")
                     .HasColumnName("filelocation");
             });
 
@@ -308,6 +307,12 @@ namespace Services.Models
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("title");
+
+                entity.Property(e => e.AvgRate).HasColumnName("avg_rate");
+
+                entity.Property(e => e.Image)
+                    .HasColumnType("text")
+                    .HasColumnName("image");
             });
 
             modelBuilder.Entity<RecipeHasCategory>(entity =>
