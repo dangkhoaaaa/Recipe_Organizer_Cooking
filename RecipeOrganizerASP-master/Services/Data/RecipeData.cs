@@ -25,5 +25,7 @@ namespace Services.Data
 		public List<Media> medias { get; set; }
 		public List<Category> categories { get; set; }
 
+		public bool Collection { get; set; }
+
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Services.Models;
+using Services.Models.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Services.Repository
 
 			return collections;
 		}
-		public bool IsRecipeSaved(int recipeId, int userId)
+		public bool IsRecipeSaved(int recipeId, string userId)
 		{
 			return _dbSet.Any(c => c.RecipeId == recipeId && c.UserId == userId.ToString());
 		}
@@ -40,7 +41,7 @@ namespace Services.Repository
 			return 0;
 		}
 
-		public void ToggleCollection(int recipeId, int userId)
+		public void ToggleCollection(int recipeId, string userId)
 		{
 			Collection? collection = _dbSet.FirstOrDefault(c => c.RecipeId == recipeId && c.UserId == userId.ToString());
 

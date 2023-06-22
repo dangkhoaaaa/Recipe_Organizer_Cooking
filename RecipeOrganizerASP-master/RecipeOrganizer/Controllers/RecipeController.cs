@@ -185,12 +185,13 @@ namespace RecipeOrganizer.Controllers
 		}
 
 		[AllowAnonymous]
-		public ActionResult RecipeDetail(int id)
+		public async Task<IActionResult> RecipeDetail(int id)
 		{
 			Recipe recipe = _recipeRepository.GetById(id);
 			if (recipe != null)
 			{
 				RecipeData data = new RecipeData();
+				data.RecipeId = id;
 				data.Title = recipe.Title;
 				data.Description = recipe.Description;
 				data.Status = recipe.Status;
@@ -199,12 +200,38 @@ namespace RecipeOrganizer.Controllers
 				data.Ingredients = ingredient;
 				List<Direction> direction = _directionRepository.GetByRecipeId(recipe.RecipeId);
 				data.Directions = direction;
+				List<Tag> tags = _recipeHasTagRepository.GetTagsByRecipeId(recipe.RecipeId);
+				data.Tags = tags;
 
-				ViewBag.CollectionRepository = _collectionRepository;
+				var user = await _userManager.GetUserAsync(User);
+				if (user != null)
+				{
+					var checkCollectionSave = _collectionRepository.IsRecipeSaved(id, user.Id);
+                    if (checkCollectionSave)
+                    {
+						data.Collection = true;
+                    }
+                    else
+                    {
+                        data.Collection = false;
+                    }
+                }
 
 				return View(data);
 			}
 			return RedirectToAction("Index", "Home");
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> ToggleCollection(int recipeId)
+		{
+			var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                _collectionRepository.ToggleCollection(recipeId, user.Id);
+            }
+
+            return RedirectToAction("RecipeDetail", "Recipe", new { id = recipeId });
 		}
 
 		public IActionResult EditRecipe(int id)
@@ -217,7 +244,7 @@ namespace RecipeOrganizer.Controllers
 			}
 			else
 			{
-				return RedirectToAction("Index", "Home");
+				return RedirectToAction("RecipeDetail", "Recipe", new { recipeId = id });
 			}
 		}
 
@@ -241,14 +268,6 @@ namespace RecipeOrganizer.Controllers
 			}
 
 			return data;
-		}
-
-		[HttpPost]
-		public IActionResult ToggleCollection(int recipeId, int userId)
-		{
-			_collectionRepository.ToggleCollection(recipeId, userId);
-
-			return RedirectToAction("RecipeDetail", "Recipe", new { recipeId = recipeId });
 		}
 
 		[HttpPost]
@@ -282,118 +301,10 @@ namespace RecipeOrganizer.Controllers
 							_directionRepository.UpdateDirections(recipe.DirectionsInput, existingRecipe.RecipeId);
 						}
 
-						//// Update the media
-						//if (mediaFile != null && mediaFile.Length > 0)
-						//{
-						//	// Save the file to the server
-						//	var fileName = Guid.NewGuid().ToString() + Path.GetExtension(mediaFile.FileName);
-						//	var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", user.Id, fileName);
+						// Update the media
 
-						//	// Save the file to the filePath
-						//	using (var stream = new FileStream(filePath, FileMode.Create))
-						//	{
-						//		await mediaFile.CopyToAsync(stream);
-						//	}
-
-						//	// Check if the recipe already has a media file
-						//	Media existingMedia = _mediaRepository.GetByRecipeId(existingRecipe.RecipeId);
-						//	if (existingMedia != null)
-						//	{
-						//		// Update the existing media file
-						//		existingMedia.Filelocation = filePath;
-						//		existingMedia.Date = DateTime.Now;
-						//		_mediaRepository.Update(existingMedia);
-						//	}
-						//	else
-						//	{
-						//		// Create a new Media object and assign values to the fields
-						//		Media media = new Media
-						//		{
-						//			Filelocation = filePath,
-						//			Date = DateTime.Now
-						//		};
-
-						//		// Save the Media object to the database
-						//		_mediaRepository.Add(media);
-
-						//		// Create a new Metadata object and assign values to the fields
-						//		Metadata metadata = new Metadata
-						//		{
-						//			RecipeId = existingRecipe.RecipeId,
-						//			MediaId = media.MediaId,
-						//			UserId = user.Id
-						//		};
-
-						//		// Save the Metadata object to the database
-						//		_metadataRepository.Add(metadata);
-						//	}
-						//}
-
-						//// Update the tags
-						//if (!string.IsNullOrEmpty(recipe.TagsInput))
-						//{
-						//	string[] tags = recipe.TagsInput.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-						//	List<int> existingTagIds = _tagRepository.GetTagIdsByRecipeId(existingRecipe.RecipeId);
-
-						//	foreach (string tagName in tags)
-						//	{
-						//		// Check if the tag already exists in the Tag table
-						//		Tag existingTag = _tagRepository.GetByName(tagName.Trim());
-						//		if (existingTag != null)
-						//		{
-						//			// Tag already exists, add/update a record to RecipeHasTags table
-						//			if (existingTagIds.Contains(existingTag.TagId))
-						//			{
-						//				// Update the existing record
-						//				RecipeHasTag existingRecipeHasTag = _recipeHasTagRepository.GetByRecipeIdAndTagId(existingRecipe.RecipeId, existingTag.TagId);
-						//				if (existingRecipeHasTag != null)
-						//				{
-						//					// Update the existing record
-						//					existingRecipeHasTag.TagId = existingTag.TagId;
-						//					_recipeHasTagRepository.Update(existingRecipeHasTag);
-						//				}
-						//			}
-						//			else
-						//			{
-						//				// Add a new record
-						//				RecipeHasTag recipeHasTag = new RecipeHasTag
-						//				{
-						//					RecipeId = existingRecipe.RecipeId,
-						//					TagId = existingTag.TagId
-						//				};
-						//				_recipeHasTagRepository.Add(recipeHasTag);
-						//			}
-						//		}
-						//		else
-						//		{
-						//			// Tag does not exist, create a new tag and add a record to RecipeHasTags table
-						//			Tag newTag = new Tag
-						//			{
-						//				TagName = tagName.Trim()
-						//			};
-						//			_tagRepository.Add(newTag);
-
-						//			RecipeHasTag recipeHasTag = new RecipeHasTag
-						//			{
-						//				RecipeId = existingRecipe.RecipeId,
-						//				TagId = newTag.TagId
-						//			};
-						//			_recipeHasTagRepository.Add(recipeHasTag);
-						//		}
-						//	}
-
-						//	// Remove tags that are not included in the updated tags
-						//	List<int> updatedTagIds = _tagRepository.GetTagIdsByRecipeId(existingRecipe.RecipeId);
-						//	List<int> tagsToRemove = existingTagIds.Except(updatedTagIds).ToList();
-						//	foreach (int tagId in tagsToRemove)
-						//	{
-						//		RecipeHasTag recipeHasTag = _recipeHasTagRepository.GetByRecipeIdAndTagId(existingRecipe.RecipeId, tagId);
-						//		if (recipeHasTag != null)
-						//		{
-						//			_recipeHasTagRepository.Remove(recipeHasTag);
-						//		}
-						//	}
-						//}
+						// Update the tags
+						
 
 						_recipeRepository.Update(existingRecipe);
 						return RedirectToAction("RecipeDetail", "Recipe", new { id = existingRecipe.RecipeId });
