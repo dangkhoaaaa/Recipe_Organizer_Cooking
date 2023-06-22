@@ -309,6 +309,10 @@ namespace Services.Models
                     .HasColumnName("title");
 
                 entity.Property(e => e.AvgRate).HasColumnName("avg_rate");
+
+                entity.Property(e => e.Image)
+                    .HasColumnType("text")
+                    .HasColumnName("image");
             });
 
             modelBuilder.Entity<RecipeHasCategory>(entity =>
