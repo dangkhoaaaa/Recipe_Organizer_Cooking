@@ -78,7 +78,7 @@ namespace Services.Repository
 
 		public Recipe GetById(int id)
 		{
-			return _dbSet.Where(r => r.RecipeId == id && r.Status.Equals("1")).FirstOrDefault();
+			return _dbSet.Where(r => r.RecipeId == id && r.Status.Equals("public")).FirstOrDefault();
 		}
 
 		public List<Recipe> SearchAllTitleWithFilter(string filter,string title)

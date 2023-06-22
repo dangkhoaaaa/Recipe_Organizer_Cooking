@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Services.Models.Authentication;
 using RecipeOrganizer.Areas.Data;
+using System.Data;
 
 namespace RecipeOrganizer.Areas.Identity.Controllers
 {
@@ -177,7 +178,6 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
-
                 }
 
                 ModelState.AddModelError(result);
@@ -307,8 +307,9 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
 
                 if ((registeredUser != null) && (externalEmailUser != null))
                 {
-                    // externalEmail  == Input.Email
-                    if (registeredUser.Id == externalEmailUser.Id)
+					// externalEmail  == Input.Email
+					// email google or facebook == email da dang ky vao app
+					if (registeredUser.Id == externalEmailUser.Id)
                     {
                         // Lien ket tai khoan, dang nhap
                         var resultLink = await _userManager.AddLoginAsync(registeredUser, info);
@@ -346,7 +347,9 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     };
 
                     var resultNewUser = await _userManager.CreateAsync(newUser);
-                    if (resultNewUser.Succeeded)
+					await _userManager.AddToRoleAsync(newUser, RoleName.Member);
+
+					if (resultNewUser.Succeeded)
                     {
                         await _userManager.AddLoginAsync(newUser, info);
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
@@ -407,12 +410,19 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                if (user == null)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
+                    //username does not existed
+                    ViewData["ErrorEmail"] = "Email is not registered";
+                    return View("ForgotPassword");
                 }
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+				if (!(await _userManager.IsEmailConfirmedAsync(user)))
+				{
+					// Don't reveal that the user does not exist or is not confirmed
+					return View("AccountNotConfirm");
+				}
+				var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.ActionLink(
                     action: nameof(ResetPassword),
@@ -681,5 +691,66 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         {
             return View();
         }
-  }
+
+		// GET: /Account/ResendEmail
+		[HttpGet("/account-not-confirm/")]
+		[AllowAnonymous]
+		public IActionResult AccountNotConfirm(string returnUrl = null)
+		{
+			return View();
+		}
+
+        [AllowAnonymous]
+        [HttpPost("/resend-email/")]
+        public async Task<IActionResult> ResendEmailConfirm(ResendEmailConfirmViewModel model)
+        {
+            //if (!ModelState.IsValid)
+            //{
+            //	return Page();
+            //}
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                ViewData["ConfirmError"] = "Email has not register yet";
+                return View("AccountNotConfirm");
+            }
+
+            var userId = await _userManager.GetUserIdAsync(user);
+            //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            //var callbackUrl = Url.Page(
+            //    "/Account/ConfirmEmail",
+            //    pageHandler: null,
+            //    values: new { userId = userId, code = code },
+            //    protocol: Request.Scheme);
+            //await _emailSender.SendEmailAsync(
+            //    Input.Email,
+            //    "Confirm your email",
+            //    $"<tr><td align='center' bgcolor='#e9ecef'><table border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width: 600px;'><tr><td align='left' bgcolor='#ffffff' style='padding: 36px 24px 0; font-family: Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;'><h1 style='margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;'>Welcome to Recipe Organizer App!</h1></td></tr></table></td></tr><tr><td align='center' bgcolor='#e9ecef'><table border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width: 600px;'><tr><td align='left' bgcolor='#ffffff' style='padding: 24px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;'><p style='margin: 0;'>You have been registered in the Recipe Organizer app. Please confirm your account by clicking the button below:</td></tr><tr><td align='left' bgcolor='#ffffff'><table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td align='center' bgcolor='#ffffff' style='padding: 12px;'><table border='0' cellpadding='0' cellspacing='0'><tr><td align='center' bgcolor='#1a82e2' style='border-radius: 6px;'><a href='{HtmlEncoder.Default.Encode(callbackUrl)}' class='btn btn-primary' style='padding: 16px 36px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px; background-color: #ff472f; border-color: #ffffff; font-weight: bold;'>Click here</a></td></tr></table></td></tr></table></td></tr><tr><td align='left' bgcolor='#ffffff' style='padding: 24px; font-family:Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;'><p style='margin: 0;'>If that doesn't work, contact to our: <a href={Url.Page("Contact")} target='_blank'>Contact</a></p></td></tr><tr><td align='left' bgcolor='#ffffff' style='padding: 12px 24px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-bottom: 3px solid #d4dadf'><p style='margin: 0;'>Cheers,<br>Recipe Organizer</p></td></tr></table></td></tr><tr><td align='center' bgcolor='#e9ecef' style='padding: 12px 24px;'><table border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width: 600px;'><tr><td align='center' bgcolor='#e9ecef' style='padding: 12px 24px; font-family:  Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;'><p style='margin: 0;'>You received this email because we received a request for verify for your account. If you didn't request registered you can safely delete this email.</p></td></tr><tr><td align='center' bgcolor='#e9ecef' style='padding: 12px 24px; font-family:  Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;'><p style='margin: 0;'>Thu Duc city, Ho Chi Minh city</p></td></tr></table></td></tr></table></body></html>");
+
+
+			// Phát sinh token để xác nhận email
+			var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+			code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+			// https://localhost:5001/confirm-email?userId=fdsfds&code=xyz&returnUrl=
+			var callbackUrl = Url.ActionLink(
+				action: nameof(ConfirmEmail),
+				values:
+					new
+					{
+						area = "Identity",
+						userId = userId,
+						code = code
+					},
+				protocol: Request.Scheme);
+			await _emailSender.SendEmailAsync(model.Email,
+				"Confirm email",
+				@$"<tr><td align='center' bgcolor='#e9ecef'><table border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width: 600px;'><tr><td align='left' bgcolor='#ffffff' style='padding: 36px 24px 0; font-family: Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;'><h1 style='margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;'>Welcome to Recipe Organizer App!</h1></td></tr></table></td></tr><tr><td align='center' bgcolor='#e9ecef'><table border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width: 600px;'><tr><td align='left' bgcolor='#ffffff' style='padding: 24px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;'><p style='margin: 0;'>You have been registered in the Recipe Organizer app. Please confirm your account by clicking the button below:</td></tr><tr><td align='left' bgcolor='#ffffff'><table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td align='center' bgcolor='#ffffff' style='padding: 12px;'><table border='0' cellpadding='0' cellspacing='0'><tr><td align='center' bgcolor='#1a82e2' style='border-radius: 6px;'><a href='{HtmlEncoder.Default.Encode(callbackUrl)}' class='btn btn-primary' style='padding: 16px 36px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px; background-color: #ff472f; border-color: #ffffff; font-weight: bold;'>Click here</a></td></tr></table></td></tr></table></td></tr><tr><td align='left' bgcolor='#ffffff' style='padding: 24px; font-family:Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;'><p style='margin: 0;'>If that doesn't work, contact to our: <a href={Url.Action("Contact", "Home")} target='_blank'>Contact</a></p></td></tr><tr><td align='left' bgcolor='#ffffff' style='padding: 12px 24px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-bottom: 3px solid #d4dadf'><p style='margin: 0;'>Cheers,<br>Recipe Organizer</p></td></tr></table></td></tr><tr><td align='center' bgcolor='#e9ecef' style='padding: 12px 24px;'><table border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width: 600px;'><tr><td align='center' bgcolor='#e9ecef' style='padding: 12px 24px; font-family:  Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;'><p style='margin: 0;'>You received this email because we received a request for verify for your account. If you didn't request registered you can safely delete this email.</p></td></tr><tr><td align='center' bgcolor='#e9ecef' style='padding: 12px 24px; font-family:  Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;'><p style='margin: 0;'>Thu Duc city, Ho Chi Minh city</p></td></tr></table></td></tr></table></body></html>");
+			
+            ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+            return RedirectToAction("RegisterConfirmation");
+        }
+    }
 }
