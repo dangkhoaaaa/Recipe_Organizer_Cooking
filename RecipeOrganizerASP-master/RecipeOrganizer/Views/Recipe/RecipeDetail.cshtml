@@ -43,7 +43,7 @@
 							<li class="active"></li>
 							<li class="active"></li>
 							<li></li>
-							<a href="#">4.1 (99)</a>
+							<a href="#" onclick="scrollToSection('#addFeedback')">4.1 (99)</a>
 						</ul>
 					</div>
 					|
@@ -63,7 +63,7 @@
 					Updated on @Model.Date
 				</div>
 				<div class="margin-bottom-20px">
-					<form method="post" action="/Recipe/ToggleCollection">
+					<form method="get" action="/Recipe/ToggleCollection?recipeId=@Model.RecipeId">
 						<input type="hidden" name="recipeId" value="@Model.RecipeId" />
 						@if (SignInManager.IsSignedIn(User) && Model.Collection)
 						{
@@ -87,14 +87,18 @@
 							var encodedTitle = Uri.EscapeDataString("Recipe: " + @Model.Title);
 							var encodedDescription = Uri.EscapeDataString(@Model.Description);
 							var encodedIngredients = string.Join(Environment.NewLine, Model.Ingredients.Select(i => "- " + Uri.EscapeDataString(i.IngredientName)));
-							var encodedUrl = Uri.EscapeDataString($"https://localhost:7186/Recipe/RecipeDetail/?id={Model.RecipeId}");
-
+							var encodedDirections = string.Join(Environment.NewLine, Model.Directions.Select(i => "- " + Uri.EscapeDataString(i.Direction1)));
+							//var encodedUrl = Uri.EscapeDataString($"https://localhost:7186/Recipe/RecipeDetail/?id={Model.RecipeId}");
 						}
 						<a href="mailto:?subject=@encodedTitle&amp;body=@Html.Raw(encodedDescription)%0D%0A%0D%0AIngredients:%0D%0A@{
 					    foreach (var item in Model.Ingredients) {
-											@Html.Raw(Uri.EscapeDataString("- " + item.IngredientName + Environment.NewLine))
+												@Html.Raw(Uri.EscapeDataString("- " + item.IngredientName + Environment.NewLine))
 }
- }%0D%0A%0D%0AView%20more%20at%20@encodedUrl">
+ }%0D%0A%0D%0ADirections:%0D%0A%0D%0A@{
+					    foreach (var item in Model.Directions) {
+												@Html.Raw(Uri.EscapeDataString("Step " + @item.Step + ": " + item.Direction1 + Environment.NewLine + Environment.NewLine))
+}
+ }%0D%0AView%20more%20at%20https://localhost:7186/Recipe/RecipeDetail/?id=@Model.RecipeId">
 							<i class="fas fa-share"></i> Share via Email
 						</a>
 					</form>
@@ -119,6 +123,24 @@
 								{
 									<p><b>Step @item.Step</b> - <span>@item.Direction1</span></p>
 								}
+							</div>
+						</div>
+						<div class="padding-tb-10px">
+							<h3>Tags</h3>
+							<div class="padding-lr-20px">
+								<p>
+									@foreach (var item in Model.Tags)
+									{
+										@if (item.ToString().Trim() != null)
+										{
+											<a href="#">#@item.TagName</a>
+											@*@if (item != Model.Tags.Last())
+											{
+												<text>,</text>
+											}*@
+										}
+									}
+								</p>
 							</div>
 						</div>
 						<div class="row no-gutters padding-tb-20px">
@@ -274,6 +296,11 @@
 							<button type="submit" class="listing-bottom border-radius-10 background-second-color box-shadow">Search Now</button>
 						</div>
 					</form>
+				</div>
+
+				<div class="margin-tb-40px text-center">
+					<h1 class="font-weight-500 margin-bottom-20px">Related Recipes</h1>
+
 				</div>
 			</div>
 		</div>

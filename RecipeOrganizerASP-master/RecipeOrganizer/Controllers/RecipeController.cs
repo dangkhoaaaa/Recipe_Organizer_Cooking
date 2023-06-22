@@ -5,6 +5,8 @@ using Services.Models.Authentication;
 using Services.Repository;
 using Services.Data;
 using Microsoft.AspNetCore.Authorization;
+using Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace RecipeOrganizer.Controllers
 {
@@ -21,6 +23,7 @@ namespace RecipeOrganizer.Controllers
 		private readonly MediaRepository _mediaRepository;
 		private readonly CollectionRepository _collectionRepository;
 		private readonly UserManager<AppUser> _userManager;
+		private readonly FireBaseService _fireBaseService;
 
 		public RecipeController(UserManager<AppUser> userManager)
 		{
@@ -34,6 +37,7 @@ namespace RecipeOrganizer.Controllers
 			_mediaRepository = new MediaRepository();
 			_collectionRepository = new CollectionRepository();
 			_userManager = userManager;
+			_fireBaseService = new FireBaseService();
 		}
 
 		public IActionResult Index()
@@ -47,7 +51,7 @@ namespace RecipeOrganizer.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddNewRecipe(RecipeData recipe, IFormFile mediaFile)
+		public async Task<IActionResult> AddNewRecipe(RecipeData recipe, List<IFormFile> mediaFile)
 		{
 			//if (ModelState.IsValid)
 			//{
@@ -98,38 +102,40 @@ namespace RecipeOrganizer.Controllers
 				}
 
 				// Media
-				if (mediaFile != null && mediaFile.Length > 0)
+				if (mediaFile != null)
 				{
 					// Save the file to the server
-					var fileName = Guid.NewGuid().ToString() + Path.GetExtension(mediaFile.FileName);
-					var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", user.Id, fileName);
+					//var fileName = Guid.NewGuid().ToString() + Path.GetExtension(mediaFile.FileName);
+					//var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", user.Id, fileName);
 
 					// Save the file to the filePath
-					using (var stream = new FileStream(filePath, FileMode.Create))
+					//using (var stream = new FileStream(filePath, FileMode.Create))
+					//{
+					//	await mediaFile.CopyToAsync(stream);
+					//}
+
+					string[] filePath = _fireBaseService.UploadImage(mediaFile).ToString().Split(new[] { "ygbygyn34897gnygytfrfr" }, StringSplitOptions.RemoveEmptyEntries);
+					//_mediaRepository.addMedia(filePath);
+
+					foreach (var imgUrl in filePath)
 					{
-						await mediaFile.CopyToAsync(stream);
+						Media media = new Media
+						{
+							Filelocation = imgUrl,
+							Date = DateTime.Now
+						};
+						_mediaRepository.Add(media);
+
+						Metadata metadata = new Metadata
+						{
+							RecipeId = data.RecipeId,
+							MediaId = media.MediaId,
+							UserId = user.Id
+						};
+
+						// Save the Metadata object to the database
+						_metadataRepository.Add(metadata);
 					}
-
-					// Create a new Media object and assign values to the fields
-					Media media = new Media
-					{
-						Filelocation = filePath,
-						Date = DateTime.Now
-					};
-
-					// Save the Media object to the database
-					_mediaRepository.Add(media);
-
-					// Create a new Metadata object and assign values to the fields
-					Metadata metadata = new Metadata
-					{
-						RecipeId = data.RecipeId,
-						MediaId = media.MediaId,
-						UserId = user.Id
-					};
-
-					// Save the Metadata object to the database
-					_metadataRepository.Add(metadata);
 				}
 				else
 				{
@@ -207,31 +213,31 @@ namespace RecipeOrganizer.Controllers
 				if (user != null)
 				{
 					var checkCollectionSave = _collectionRepository.IsRecipeSaved(id, user.Id);
-                    if (checkCollectionSave)
-                    {
+					if (checkCollectionSave)
+					{
 						data.Collection = true;
-                    }
-                    else
-                    {
-                        data.Collection = false;
-                    }
-                }
+					}
+					else
+					{
+						data.Collection = false;
+					}
+				}
 
 				return View(data);
 			}
 			return RedirectToAction("Index", "Home");
 		}
 
-		[HttpPost]
+		[HttpGet]
 		public async Task<IActionResult> ToggleCollection(int recipeId)
 		{
 			var user = await _userManager.GetUserAsync(User);
-            if (user != null)
-            {
-                _collectionRepository.ToggleCollection(recipeId, user.Id);
-            }
+			if (user != null)
+			{
+				_collectionRepository.ToggleCollection(recipeId, user.Id);
+			}
 
-            return RedirectToAction("RecipeDetail", "Recipe", new { id = recipeId });
+			return RedirectToAction("RecipeDetail", "Recipe", new { id = recipeId });
 		}
 
 		public IActionResult EditRecipe(int id)
@@ -276,10 +282,10 @@ namespace RecipeOrganizer.Controllers
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
 			{
-				if (Action == "save")
+				Recipe existingRecipe = _recipeRepository.GetById(recipe.RecipeId);
+				if (existingRecipe != null)
 				{
-					Recipe existingRecipe = _recipeRepository.GetById(recipe.RecipeId);
-					if (existingRecipe != null)
+					if (Action == "save")
 					{
 						// Update the recipe details
 						existingRecipe.Title = string.IsNullOrEmpty(recipe.Title) ? "null" : recipe.Title;
@@ -304,19 +310,21 @@ namespace RecipeOrganizer.Controllers
 						// Update the media
 
 						// Update the tags
-						
+
 
 						_recipeRepository.Update(existingRecipe);
 						return RedirectToAction("RecipeDetail", "Recipe", new { id = existingRecipe.RecipeId });
+
 					}
-					else
+					else if (Action == "trash")
 					{
-						return RedirectToAction("Index", "Home");
+						existingRecipe.Status = "trash";
+						_recipeRepository.Update(existingRecipe);
 					}
 				}
-				else if (Action == "trash")
+				else
 				{
-					// Xử lý khi nhấn nút "Trash"
+					return RedirectToAction("Index", "Home");
 				}
 			}
 			else
@@ -326,7 +334,6 @@ namespace RecipeOrganizer.Controllers
 
 			return RedirectToAction("UserNotFound");
 		}
-
 
 	}
 }

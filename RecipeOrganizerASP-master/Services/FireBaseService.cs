@@ -16,7 +16,7 @@ namespace Services
 		private static string AuthEmail = "recipeorganizert3@gmail.com";
 		private static string AuthPassword = "recipeorganizer123";
 
-		public static async Task<string> UploadImage(List<IFormFile> files)
+		public async Task<string> UploadImage(List<IFormFile> files)
 		{
 			var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
 
@@ -49,7 +49,7 @@ namespace Services
 					cancellation.Cancel();
 					try
 					{
-						imageLink += result + "ro";
+						imageLink += result + "ygbygyn34897gnygytfrfr";
 
 					}
 					catch (Exception)

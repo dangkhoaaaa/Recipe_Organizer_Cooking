@@ -29,6 +29,21 @@ namespace Services.Repository
 			return _dbSet.Any(c => c.RecipeId == recipeId && c.UserId == userId.ToString());
 		}
 
+		public List<bool> CollectionList(List<Recipe> recipes, string userId)
+		{
+			List<bool> results = new List<bool>();
+
+			CollectionRepository collectionRepository = new CollectionRepository();
+
+			List<int> recipeId = recipes.Select(r => r.RecipeId).ToList();
+			foreach (int id in recipeId)
+			{
+				bool isSaved = collectionRepository.IsRecipeSaved(id, userId);
+				results.Add(isSaved);
+			}
+			return results;
+		}
+
 		public int CountRecipeCollection(int recipeId)
 		{
 			List<Collection> collections = GetCollections();
