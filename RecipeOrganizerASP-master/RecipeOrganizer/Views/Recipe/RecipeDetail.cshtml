@@ -1,4 +1,8 @@
-﻿@model Services.Data.RecipeData
+﻿@using Microsoft.AspNetCore.Identity
+@model Services.Data.RecipeData
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 
 @{
 	ViewBag.Title = Model.Title;
@@ -59,48 +63,41 @@
 					Updated on @Model.Date
 				</div>
 				<div class="margin-bottom-20px">
-					@*<form method="post" action="/Recipe/ToggleCollection?userId=@(ViewBag.UserId ?? "")&recipeId=@Model.RecipeId">
-					<input type="hidden" name="recipeId" value="@Model.RecipeId" />
-					@{
-					var collectionRepository = ViewBag.CollectionRepository as CollectionRepository;
-					bool isSaved = collectionRepository?.IsRecipeSaved(Model.RecipeId, ViewBag.UserId?.ToString()) ?? false;
-					}
-					@if (isSaved)
-					{
-					<button type="submit" class="text-red border-0" id="saveButton">
-					<i class="icon_heart"></i> Unsave
-					</button>
-					}
-					else
-					{
-					<button type="submit" class="text-red border-0" id="saveButton">
-					<i class="far fa-heart"></i> Save
-					</button>
-					}
-					</form>*@
-					<button type="submit" class="text-red border-0 bg-transparent" id="saveButton">
-						<i class="far fa-heart"></i> Save
-					</button>
-					<span class="margin-left-5px margin-right-5px">|</span>
-					<a href="#" onclick="scrollToSection('#addFeedback')"><i class="far fa-star"></i> Rate</a>
-					<span class="margin-left-5px margin-right-5px">|</span>
-					<a href="#"><i class="fas fa-print"></i> Print</a>
-					<span class="margin-left-5px margin-right-5px">|</span>
-					@{
-						var encodedTitle = Uri.EscapeDataString("Recipe: " + @Model.Title);
-						var encodedDescription = Uri.EscapeDataString(@Model.Description);
-						var encodedIngredients = string.Join(Environment.NewLine, Model.Ingredients.Select(i => "- " + Uri.EscapeDataString(i.IngredientName)));
-						var encodedUrl = Uri.EscapeDataString($"https://localhost:7186/Recipe/RecipeDetail/?id={Model.RecipeId}");
+					<form method="post" action="/Recipe/ToggleCollection">
+						<input type="hidden" name="recipeId" value="@Model.RecipeId" />
+						@if (SignInManager.IsSignedIn(User) && Model.Collection)
+						{
+							<button type="submit" class="text-red border-0 bg-transparent" id="saveButton">
+								<i class="icon_heart"></i> Unsave
+							</button>
+						}
+						else
+						{
+							<button type="submit" class="text-red border-0 bg-transparent" id="saveButton">
+								<i class="far fa-heart"></i> Save
+							</button>
+						}
 
-					}
-					<a href="mailto:?subject=@encodedTitle&amp;body=@Html.Raw(encodedDescription)%0D%0A%0D%0AIngredients:%0D%0A@{
+						<span class="margin-left-5px margin-right-5px">|</span>
+						<a href="#" onclick="scrollToSection('#addFeedback')"><i class="far fa-star"></i> Rate</a>
+						<span class="margin-left-5px margin-right-5px">|</span>
+						<a href="#"><i class="fas fa-print"></i> Print</a>
+						<span class="margin-left-5px margin-right-5px">|</span>
+						@{
+							var encodedTitle = Uri.EscapeDataString("Recipe: " + @Model.Title);
+							var encodedDescription = Uri.EscapeDataString(@Model.Description);
+							var encodedIngredients = string.Join(Environment.NewLine, Model.Ingredients.Select(i => "- " + Uri.EscapeDataString(i.IngredientName)));
+							var encodedUrl = Uri.EscapeDataString($"https://localhost:7186/Recipe/RecipeDetail/?id={Model.RecipeId}");
+
+						}
+						<a href="mailto:?subject=@encodedTitle&amp;body=@Html.Raw(encodedDescription)%0D%0A%0D%0AIngredients:%0D%0A@{
 					    foreach (var item in Model.Ingredients) {
-									@Html.Raw(Uri.EscapeDataString("- " + item.IngredientName + Environment.NewLine))
+											@Html.Raw(Uri.EscapeDataString("- " + item.IngredientName + Environment.NewLine))
 }
  }%0D%0A%0D%0AView%20more%20at%20@encodedUrl">
-						<i class="fas fa-share"></i> Share via Email
-					</a>
-
+							<i class="fas fa-share"></i> Share via Email
+						</a>
+					</form>
 				</div>
 
 				<div class="margin-bottom-40px card border-0 box-shadow">

@@ -1,13 +1,19 @@
 ﻿using Services.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Repository
 {
 	public class RecipeHasTagRepository : RepositoryBase<RecipeHasTag>
 	{
+		public List<Tag> GetTagsByRecipeId(int recipeId)
+		{
+			var tags = _dbSet
+				.Where(rht => rht.RecipeId == recipeId)
+				.Select(rht => rht.Tag)
+				.ToList();
+
+			return tags;
+		}
 	}
 }

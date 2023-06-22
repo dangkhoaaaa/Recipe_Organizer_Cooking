@@ -13,5 +13,10 @@ namespace Services.Repository
 		{
 			return _dbSet.FirstOrDefault(t => t.TagName == tagName);
 		}
+		public Tag? GetById(int id)
+		{
+			return _dbSet.Where(d => d.TagId == id).FirstOrDefault();
+		}
+
 	}
 }
