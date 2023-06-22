@@ -1,0 +1,43 @@
+﻿<div class="margin-bottom-80px box-shadow">
+    <div class="padding-30px background-white">
+        <h3><i class="far fa-star margin-right-10px text-main-color"></i> Add Review</h3>
+        <hr>
+        <form method="post" action="@Url.Action("AddReview", "Recipe")">
+            @Html.AntiForgeryToken()
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputName">Full Name</label>
+                    <input type="text" class="form-control" id="inputName" name="FullName" placeholder="Name">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Email</label>
+                    <input type="email" class="form-control" id="inputEmail4" name="Email" placeholder="Email">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputTitle">Title</label>
+                <input type="text" class="form-control" id="inputTitle" name="Title" placeholder="Title">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Comment:</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" name="Comment" rows="3" placeholder="Comment"></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputDate">Date</label>
+                    <input type="date" class="form-control" id="inputDate" name="Date">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputRating">Rating</label>
+                    <input type="number" class="form-control" id="inputRating" name="Rating" min="1" max="5">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-sm btn-lg btn-block background-main-color text-white text-center font-weight-bold text-uppercase border-radius-10 padding-10px">Add Now!</button>
+        </form>
+    </div>
+</div>

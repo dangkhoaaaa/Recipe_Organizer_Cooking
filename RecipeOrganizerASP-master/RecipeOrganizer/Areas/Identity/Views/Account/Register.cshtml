@@ -1,0 +1,162 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+    var notice = TempData["ErrorMessage"];
+    //var googleLogin = Model.ExternalLogins.FirstOrDefault(login => login.Name == "Google").Name;
+    //var facebookLogin = Model.ExternalLogins.FirstOrDefault(login => login.Name == "Facebook").Name;
+
+    //string googleLogin = Model.ExternalLogins[0].Name;
+    //string facebookLogin = Model.ExternalLogins[1].Name;
+}
+<style>
+    .register-button {
+    }
+
+    .register-button:hover {
+            background-color: #777777;
+     }
+
+    .google-login-button {
+        background-color: #db4437;
+        color: #ffffff;
+        margin-top: 20px;
+        margin-bottom: 6px;
+    }
+    
+    .google-login-button:hover {
+            background-color: #ffffff; /* Background color on hover */
+            color: #db4437;
+            border: 1px solid #db4437;
+    }
+
+    .facebook-login-button {
+        background-color: #244c9d;
+        color: #ffffff;
+        margin-top: 10px;
+        margin-bottom: 6px;
+    }
+
+    .facebook-login-button:hover {
+        background-color: #ffffff; /* Background color on hover */
+        color: #000810;
+        border: 1px solid #000810;
+    }
+</style>
+
+
+    <div id="page-title" class="padding-tb-30px gradient-white text-center">
+        <div class="container">
+            <ol class="breadcrumb opacity-5">
+                <li><a href=@Url.Action("Index", "Home")>Home</a></li><span>>></span>
+                <li class="active">Register Page</li>
+            </ol>
+            <h1 class="font-weight-300">Register Page</h1>
+        </div>
+    </div>
+
+
+    <div class="container margin-bottom-100px">
+        <!--======= log_in_page =======-->
+        <div id="log-in" class="site-form log-in-form box-shadow border-radius-10">
+            <div class="form-output">
+                <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <label class="control-label" asp-for="UserName"></label>
+                    <div class=" form-group">
+                        <input asp-for="UserName" class="form-control" autocomplete="username" aria-required="true" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+
+                    <label class="control-label" asp-for="Email"></label>
+                    <div class=" form-group">
+                        <input asp-for="Email" class="form-control" autocomplete="email" aria-required="true" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <label class="control-label" asp-for="Password"></label>
+                    <div class=" form-group">
+                        <input asp-for="Password" class="form-control" autocomplete="new-password" aria-required="true" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <label class="control-label" asp-for="ConfirmPassword"></label>
+                    <div class=" form-group">
+                        <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                <button id="registerSubmit" type="submit" class="register-button btn btn-md btn-primary full-width">Register</button>
+                </form>
+                @*<div class="or"></div>
+                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                    <div>
+                        <p>
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Register using your @provider.DisplayName account">Register with @provider.DisplayName</button>
+                            }
+                        </p>
+                    </div>
+                </form>
+                <a href="#" class="btn btn-md bg-facebook full-width btn-icon-left"><i class="fab fa-facebook margin-right-8px" aria-hidden="true"></i> Register with Facebook</a>
+                <a href="#" class="btn btn-md border-grey-2 full-width btn-icon-left margin-top-8px margin-bottom-10px"><i class="fab fa-google margin-right-8px" aria-hidden="true"></i> Register with Google</a>*@
+            <div class="or text-center" style="margin-top:0px; margin-bottom:0px;">or</div>
+            @*<form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+            <div>
+            <p>
+            @foreach (var provider in Model.ExternalLogins!)
+            {
+            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">Login with @provider.DisplayName</button>
+            }
+            </p>
+            </div>
+            </form>*@
+
+           <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+
+                    <button type="submit" class="google-login-button btn btn-md bg-google full-width btn-icon-left" name="provider" value="Google" title="Log in using your Google account" style="">
+                        <i class="fab fa-google margin-right-8px" aria-hidden="true"></i>Sign up with Google
+                    </button>
+
+                    <button type="submit" class="facebook-login-button btn btn-md  full-width btn-icon-left" name="provider" value="Facebook" title="Log in using your Facebook account" style="">
+                        <i class="fab fa-facebook margin-right-8px" aria-hidden="true"></i>Sign up with Facebook
+                    </button>
+            </form>
+            </div>
+        </div>
+    </div>
+    @*<div class="col-md-6 col-md-offset-2">
+        <section>
+            <h3>Use another service to register.</h3>
+            <hr />
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <div>
+                        <p>
+                            Chưa có cấu hình dich vụ ngoài
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>*@
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

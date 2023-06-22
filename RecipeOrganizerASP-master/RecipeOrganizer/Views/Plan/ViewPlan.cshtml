@@ -1,0 +1,362 @@
+﻿@{
+    ViewBag.Title = "Plan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Services.Repository.Slot
+<body>
+
+
+    <div id="page-title" class="padding-tb-30px gradient-white">
+        <div class="container text-left">
+            <ol class="breadcrumb opacity-5">
+                <li><a href="#">Home</a></li>
+                <li class="active">Meal Planning</li>
+            </ol>
+            <h1 class="font-weight-300">Meal Planning</h1>
+        </div>
+    </div>
+    @*<table class="text-center" style="width:100%">
+    <tr>
+    <th>Session/Day</th>
+
+    <th>Monday</th>
+    <th>Tuesday</th>
+    <th>Wednesday</th>
+    <th>Thursday</th>
+    <th>Friday</th>
+    <th>Saturday</th>
+    <th>Sunday</th>
+    </tr>
+
+
+    @{int count = 0;
+    for(int i =1; i <= 3; i++)
+    {
+    <tr>      <td>@{
+    string session;
+    @switch (i)
+    {
+    case 0: session = "Breakfar";
+    break;
+    case 1:
+    session = "Lunch";
+    break;
+    default:
+    session = "Dinner";
+    break;
+    }
+    }
+    @session
+
+    </td>
+
+    @for(int j = 0; j < 7; j++)
+    {
+
+
+    <td>
+    @if (Model?.Lines != null)
+    {
+
+    @foreach (var item in Model.Lines)
+    {
+
+
+
+    if (item.SlotID == (3 * j + i))
+    {
+    @item.Recipes.Title
+    count++;
+    <br />
+    }
+
+
+    }
+
+
+
+
+    }
+    @if (count < 5)
+    {
+    <a href="/Plan/ListRecipe/?slotNow=@(3*j+i)"><i class="fas fa-plus"></i></a>
+
+    count = 0;
+    }
+    </td>
+    //<td><a href="/Plan/ListRecipe/?slotNow=@(7*i+j)"><i class="fas fa-plus"></i></a></td>
+
+    }
+
+    </tr>
+    }
+
+
+
+
+
+    }
+
+    </table>
+    *@
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+
+                <div class="row">
+                    <div class="col-lg-5">
+                        <form action="#">
+                            <label for="week">Select a week:</label>
+                            <input type="week" id="week" name="week">
+                            <input type="submit" value="Submit">
+                        </form>
+
+                    </div>
+
+                    <div class="col-lg-7">
+                        <a href="#" class="btn box-shadow border-2 border-radius-30 text-red width-140px">Recommend</a>
+                        <a href="#"
+                           class="btn box-shadow border-2 border-radius-30 background-main-color text-white width-140px">Save</a>
+                        <a href="#" class="btn box-shadow border-2 border-radius-30 text-red width-140px">Print</a>
+
+                    </div>
+                </div>
+                <hr>
+                <div class="text-center">
+                    <table class="text-center" style="width:100%">
+                        <tr>
+                            <th>Session/Day</th>
+
+                            <th>Monday</th>
+                            <th>Tuesday</th>
+                            <th>Wednesday</th>
+                            <th>Thursday</th>
+                            <th>Friday</th>
+                            <th>Saturday</th>
+                            <th>Sunday</th>
+                        </tr>
+
+
+                        @*<tr>
+                        <td>Breakfast</td>
+                        <td >
+                        @if (Model?.Lines != null)
+                        {
+
+                        @foreach (var item in Model.Lines)
+                        {
+
+
+
+
+                        @item.Recipes.Title
+
+                        <br />
+                        }
+
+                        }
+                        <a href="/Plan/ListRecipe/?slotNow=1"><i class="fas fa-plus"></i></a>
+                        </td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        </tr>
+                        <tr>
+                        <td>Lunch</td>
+                        <td>
+
+                        <a href="/Plan/ListRecipe/?slotNow=2"><i class="fas fa-plus"></i></a>
+                        </td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        </tr>
+                        <tr>
+                        <td>Dinner</td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        <td><a href="#"><i class="fas fa-plus"></i></a></td>
+                        </tr>*@
+                        @{
+                            int count = 0;
+                            for (int i = 1; i <= 3; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @{
+                                            string session;
+                                            @switch (i)
+                                            {
+                                                case 0:
+                                                    session = "Breakfar";
+                                                    break;
+                                                case 1:
+                                                    session = "Lunch";
+                                                    break;
+                                                default:
+                                                    session = "Dinner";
+                                                    break;
+                                            }
+                                        }
+                                        @session
+
+                                    </td>
+
+
+                                    @for (int j = 0; j < 7; j++)
+                                    {
+
+                                        count = 0;
+                                        <td>
+                                            @if (Model?.Lines != null)
+                                            {
+
+                                                @foreach (var item in Model.Lines)
+                                                {
+
+
+
+                                                    if (item.SlotID == (3 * j + i))
+                                                    {
+                                                        @item.Recipes.Title
+                                                        <a href="/Plan/RemoveFromCart/?slotNow=@(3*j+i)&recipeID=@item.Recipes.RecipeId">X</a>
+                                                        count++;
+                                                        <br />
+                                                    }
+
+
+                                                }
+
+
+
+
+                                            }
+                                            @if (count < 5)
+                                            {
+                                                <a href="/Plan/ListRecipe/?slotNow=@(3*j+i)"><i class="fas fa-plus"></i></a>
+
+                                                
+                                            }
+                                        </td>
+                                        //<td><a href="/Plan/ListRecipe/?slotNow=@(7*i+j)"><i class="fas fa-plus"></i></a></td>
+
+                                    }
+
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+                
+            </div>
+            <!-- <div class="col-lg-3">
+                <ul class="nav nav-pills ">
+                    <li class="active col-lg-6 btn box-shadow border-2 border-radius-30 background-main-color text-white width-140px"><a data-toggle="pill" href="#search">Search</a></li>
+                    <li class="col-lg-6 btn box-shadow border-2 border-radius-30 background-main-color text-white width-140px"><a data-toggle="pill" href="#save">Save</a></li>
+
+                </ul>
+
+                <div class="tab-content">
+                    <div id="search" class="tab-pane fade in active listing-search box-shadow background-main-color padding-30px margin-bottom-30px">
+                        <form class="row no-gutters">
+                            <div class="col-md-12">
+                                <div class="keywords">
+                                    <input class="listing-form first border-radius-10 margin-bottom-10px" type="text"
+                                        placeholder="Keywords..." value="">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="categories dropdown">
+                                    <a class="listing-form d-block text-nowrap border-radius-10 margin-bottom-10px"
+                                        id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">All Categories</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        <button class="dropdown-item text-up-small" type="button">Fish</button>
+                                        <button class="dropdown-item text-up-small" type="button">Cocktails</button>
+                                        <button class="dropdown-item text-up-small" type="button">Salads</button>
+                                        <button class="dropdown-item text-up-small" type="button">Asian</button>
+                                        <button class="dropdown-item text-up-small" type="button">Fish</button>
+                                        <button class="dropdown-item text-up-small" type="button">Cocktails</button>
+                                        <button class="dropdown-item text-up-small" type="button">Salads</button>
+                                        <button class="dropdown-item text-up-small" type="button">Asian</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <a class="listing-bottom border-radius-10 background-second-color box-shadow"
+                                    href="#">Search Now</a>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="save" class="tab-pane fade listing-search box-shadow background-main-color padding-30px margin-bottom-30px">
+                        <ul class="col-md-12 height-380px ">
+                            <li data-id="1">
+                                <img class="col-md-6" src="image1.jpg" alt="ok">
+                                <a class="col-md-6" href=""></a>
+
+                            </li>
+                            <li>Item 2</li>
+                            <li>Item 3</li>
+                            <li>Item 1</li>
+                        </ul>
+                    </div>
+
+                  </div> -->
+            <!-- <div class="listing-search box-shadow background-main-color padding-30px margin-bottom-30px ">
+                <form class="row no-gutters">
+                    <div class="col-md-12">
+                        <div class="keywords">
+                            <input class="listing-form first border-radius-10 margin-bottom-10px" type="text"
+                                placeholder="Keywords..." value="">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="categories dropdown">
+                            <a class="listing-form d-block text-nowrap border-radius-10 margin-bottom-10px"
+                                id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">All Categories</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <button class="dropdown-item text-up-small" type="button">Fish</button>
+                                <button class="dropdown-item text-up-small" type="button">Cocktails</button>
+                                <button class="dropdown-item text-up-small" type="button">Salads</button>
+                                <button class="dropdown-item text-up-small" type="button">Asian</button>
+                                <button class="dropdown-item text-up-small" type="button">Fish</button>
+                                <button class="dropdown-item text-up-small" type="button">Cocktails</button>
+                                <button class="dropdown-item text-up-small" type="button">Salads</button>
+                                <button class="dropdown-item text-up-small" type="button">Asian</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <a class="listing-bottom border-radius-10 background-second-color box-shadow"
+                            href="#">Search Now</a>
+                    </div>
+                </form>
+            </div> -->
+
+            <div class="row margin-tb-45px">
+            </div>
+
+            <div class="widget widget_categories">
+                <div class="margin-bottom-30px">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    </div>
+</body>
+

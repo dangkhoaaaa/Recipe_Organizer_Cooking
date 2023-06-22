@@ -1,0 +1,213 @@
+﻿@model Services.Data.RecipeData
+
+@{
+	ViewBag.Title = "Edit recipe " + Model.Title;
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+	function validateForm(event) {
+		var titleInput = document.getElementById('Title');
+		var isValid = true;
+		// Check condition for Title field
+		if (titleInput.value.trim() === '') {
+			titleInput.classList.add('invalid');
+			isValid = false;
+		}
+		if (!isValid) {
+			event.preventDefault(); // Prevent submit event
+			alert('Please fill in all required fields.'); // Show error message
+		}
+	}
+	function replaceLineBreaks() {
+		var description = document.getElementById('Description');
+		description.value = description.value.replace(/\r?\n/g, '\n');
+	}
+
+	$(function () {
+		$("#sortable-container").sortable({
+			handle: ".handle",
+			update: function (event, ui) {
+				// Get the list of steps after sorting
+				var steps = [];
+				$(".step").each(function () {
+					var stepId = $(this).find("textarea").attr("id");
+					var direction = $(this).find("textarea").val();
+					steps.push({
+						stepId: stepId,
+						direction: direction
+					});
+				});
+
+				// Send the list of steps to the server for update
+				$.ajax({
+					url: "/update-directions",
+					method: "POST",
+					data: { steps: JSON.stringify(steps) },
+					success: function (response) {
+						// Code to handle the response from the server
+						console.log(response);
+					},
+					error: function (xhr, status, error) {
+						// Error handling
+						console.log(error);
+					}
+				});
+			}
+		}).disableSelection();
+	});
+
+</script>
+
+<body>
+	<div id="page-title" class="padding-tb-30px gradient-white">
+		<div class="container">
+			<ol class="breadcrumb opacity-5">
+				<li><a href="@Url.Action("Index", "Home")">Home</a></li>
+				<li><a href="@Url.Action("AddNewRecipe", "Recipe")">Add new Recipe</a></li>
+			</ol>
+			<h1 class="font-weight-300">Edit Recipe</h1>
+		</div>
+	</div>
+	<form method="post" action="/Recipe/EditRecipe?@Model.RecipeId" enctype="multipart/form-data">
+		@Html.HiddenFor(m => m.RecipeId, new { value=Model.RecipeId })
+		<div class="container">
+			<div class="margin-tb-20px full-width">
+				<h4 class="padding-lr-10px padding-tb-10px background-white box-shadow border-radius-10">
+					<i class="far fa-list-alt margin-right-10px text-main-color"></i>Basic Informations
+				</h4>
+				<div class="padding-10px padding-bottom-10px background-white border-radius-10">
+
+					<div class="row">
+						<div class="col-md-8">
+							<div class="form-group margin-bottom-10px">
+								<label><i class="far fa-list-alt margin-right-10px"></i> Recipe Title</label>
+								@Html.TextBoxFor(m => m.Title, new { @class="form-control form-control-sm", placeholder="Give your recipe a title", required = "required" })
+								@Html.ValidationMessageFor(m => m.Title)
+							</div>
+							<div class="margin-bottom-10px">
+								<label><i class="far fa-list-alt margin-right-10px"></i> Description</label>
+								@Html.TextAreaFor(m => m.Description, new { @class = "form-control recipe-textbox", placeholder = "Share the story behind your recipe and what makes it special.", @rows = "8", onblur = "replaceLineBreaks()" })
+
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="formLayout__uploadContent form-group margin-bottom-10px">
+								<div class="formLayoutPhotoUpload">
+									<div class="formLayout__uploadLabel">
+										<label>
+											<i class="far fa-list-alt margin-right-10px"></i> Photo
+											(optional)
+										</label><br>
+									</div>
+									<input id="imageURL" class="formLayoutPhotoUpload__uniqueId js--uploadedPhotoId"
+										   name="imageURL" type="hidden">
+									<div class="formLayoutPhotoUpload__uploadedImage js--uploadedImage">
+									</div>
+									<input aria-labelledby="photoUploadFileAdd photoUploadFileMain"
+										   aria-describedby="uploadSectionDescription" type="file" id="photoUploadFile"
+										   class="formLayoutPhotoUpload__uploadInput js--fileInput" accept="image/*">
+								</div>
+							</div>
+							<div class="margin-top-40px form-group margin-bottom-10px">
+								<p>
+									Use JPEG or PNG. Must be at least 960 x 960.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="margin-bottom-20px full-width">
+				<h4 class="padding-lr-10px padding-tb-10px background-white box-shadow border-radius-10">
+					<i class="far fa-list-alt margin-right-10px text-main-color"></i>Ingredients
+				</h4>
+				<div class="padding-10px padding-bottom-10px background-white border-radius-10">
+					<div class="margin-bottom-10px">
+						<label><i class="far fa-flag margin-right-10px"></i> Edit multiple ingredients</label><br>
+						<p>
+							Paste your ingredient list here. Add one ingredient per line. Include the quantity (i.e. cups,
+							tablespoons) and any special preparation (i.e. sifted, softened, chopped).
+						</p>
+						<textarea id="ingredients" name="IngredientsInput" class="form-control" rows="8">
+							@foreach (var ingredient in Model.Ingredients)
+							{
+								@ingredient.IngredientName
+								@Html.Raw("\n")
+							}
+						</textarea>
+					</div>
+				</div>
+			</div>
+			<div class="margin-bottom-20px full-width">
+				<h4 class="padding-lr-10px padding-tb-10px background-white box-shadow border-radius-10">
+					<i class="far fa-list-alt margin-right-10px text-main-color"></i>Directions
+				</h4>
+				<div class="padding-10px padding-bottom-10px background-white border-radius-10">
+					<div class="margin-bottom-10px">
+						<label><i class="far fa-flag margin-right-10px"></i> Edit multiple steps</label><br>
+						<p>
+							Explain how to make your recipe, including oven temperatures, baking or cooking times, and
+							pan sizes, etc. Use optional headers to organize the different parts of the recipe (i.e. Prep,
+							Bake,
+							Decorate).
+						</p>
+						@*<div id="sortable-container" class="row">
+						@{
+						int step = 1;
+						}
+						@foreach (var direction in Model.Directions)
+						{
+						<div class="col-12 step">
+						<div class="handle">Step @step:</div>
+						<textarea id="@direction.DirectionId" name="@direction.DirectionId" class="form-control" rows="2">@direction.Direction1</textarea>
+						</div>
+						step++;
+						}
+						</div>*@
+						<textarea id="directions" name="DirectionsInput" class="form-control" rows="8">
+							@foreach (var direction in Model.Directions)
+							{
+								@direction.Direction1
+								@Html.Raw("\n")
+							}
+						</textarea>
+					</div>
+				</div>
+			</div>
+			<div class="form-group margin-bottom-20px">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group margin-bottom-20px">
+							<label><i class="far fa-flag margin-right-10px"></i> Tags</label>
+							@Html.TextBoxFor(m => m.TagsInput, new { @class = "form-control", placeholder="Enter a comma after each tag", value=Model.TagsInput })
+
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="form-group margin-bottom-20px">
+							<label><i class="far fa-list-alt margin-right-10px"></i>Status</label>
+							<select name="Status" class="form-control">
+								<option value="Public" selected="@(Model.Status == "public" ? "selected" : "")">Public</option>
+								<option value="Draft" selected="@(Model.Status == "draft" ? "selected" : "")">Draft</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="text-center">
+				<button type="submit" name="Action" value="save" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">
+					Save
+				</button>
+				<button type="submit" name="Action" value="trash" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">
+					Trash
+				</button>
+
+				<a href="@Url.Action("Index", "Home")" class="btn btn-lg border-2 ba-1 text-white margin-bottom-80px border-radius-15 padding-15px box-shadow">Cancel</a>
+			</div>
+		</div>
+	</form>
+
+</body>

@@ -14,7 +14,7 @@ namespace Services.Models
 
         public int PlanId { get; set; }
         public string UserId { get; set; }
-        public DateTime WeekStartDate { get; set; }
+        public string WeekStartDate { get; set; }
 
         public virtual AppUser User { get; set; } = null!;
         public virtual ICollection<Day> Days { get; set; }

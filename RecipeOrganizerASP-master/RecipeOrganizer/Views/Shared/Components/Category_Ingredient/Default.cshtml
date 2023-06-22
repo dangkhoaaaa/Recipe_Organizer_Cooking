@@ -1,0 +1,14 @@
+﻿@model List<Category>
+
+
+
+<li class="has-dropdown">
+    <a href="#">INGREDIENTS</a>
+    <ul class="sub-menu text-left">
+        @foreach( var item in Model){
+            <li><a href="/Items/DisplayCategoryIngredient/?categoryId=@item.CategoryId"> @item.Title </a></li>
+            
+        }
+        
+    </ul>
+</li>

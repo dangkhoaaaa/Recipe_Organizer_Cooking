@@ -6,9 +6,11 @@ using RecipeOrganizer.Data;
 using Services.Models;
 using Services.Models.Authentication;
 using Services.Repository;
+using System.Reflection.Metadata;
 
 namespace RecipeOrganizer.Controllers
 {
+
     public class SearchController : Controller
     {
 		public int PageSize = 8;
@@ -101,14 +103,75 @@ namespace RecipeOrganizer.Controllers
 			});
 		}
 
+		public IActionResult SearchKeyWordFitler(string keyword, string filter, int productPage = 1)
+		{
+			ViewBag.Keyword = keyword;
+			ViewBag.filter = filter;
+			List<Recipe> results = null;
+
+			List<Recipe> recipesSearchAll = _recipeRepository.SearchAllTitleWithFilter(filter, keyword);
 
 
-		[HttpPost]
-        public async Task<IActionResult> SearchKeyWord1()
-        {
-            //var results = _recipeRepository.getRecipeByKeyword(keyword);
-            return View();
-        }
-         
+
+			if (keyword != null && recipesSearchAll.Count() > 0)
+			{
+				results = _recipeRepository.getRecipeByKeywordWitPaging(keyword, productPage, PageSize, recipesSearchAll);
+			}
+			else
+			{
+				ViewBag.notfound = "Not Found Recipe";
+			}
+
+
+			return View("SearchKeyWord", new RecipeListDisplayWithPaging
+			{
+				Recipes = results
+					,
+				PagingInfo = new PagingInfo
+				{
+					ItemsPerPage = PageSize,
+					CurrentPage = productPage,
+					TotalItems = recipesSearchAll.Count()
+
+				}
+			});
+		}
+
+
+		public IActionResult SearchKeyWordFitlerCategory(string keyword, string filter, int CategoryId, int productPage = 1)
+		{
+			ViewBag.Keyword = keyword;
+			ViewBag.filter = filter;
+			ViewBag.categoryid= CategoryId;
+			List<Recipe> results = null;
+
+			List<Recipe> recipesSearchAll = _recipeRepository.SearchAllTitleWithFilterandCategory(filter, keyword, CategoryId);
+
+
+
+			if (keyword != null && recipesSearchAll.Count() > 0)
+			{
+				results = _recipeRepository.getRecipeByKeywordWitPaging(keyword, productPage, PageSize, recipesSearchAll);
+			}
+			else
+			{
+				ViewBag.notfound = "Not Found Recipe";
+			}
+
+
+			return View("SearchKeyWord", new RecipeListDisplayWithPaging
+			{
+				Recipes = results
+					,
+				PagingInfo = new PagingInfo
+				{
+					ItemsPerPage = PageSize,
+					CurrentPage = productPage,
+					TotalItems = recipesSearchAll.Count()
+
+				}
+			});
+		}
+
 	}
 }

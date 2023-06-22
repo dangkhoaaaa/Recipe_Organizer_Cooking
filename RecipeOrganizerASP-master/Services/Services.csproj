@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Firebase.Auth" Version="1.0.0" />
+    <PackageReference Include="FirebaseDatabase.net" Version="4.2.0" />
+    <PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
     <PackageReference Include="MailKit" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.1.0" />
@@ -34,10 +37,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore" Version="6.0.13" />
     <PackageReference Include="MimeKit" Version="4.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Identity\" />
   </ItemGroup>
 
 </Project>

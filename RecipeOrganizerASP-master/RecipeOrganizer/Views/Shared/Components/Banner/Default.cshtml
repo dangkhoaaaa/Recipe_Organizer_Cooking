@@ -1,0 +1,85 @@
+﻿<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RecipeOrganizer_AspNetCore</title
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/RecipeOrganizer_AspNetCore.styles.css" asp-append-version="true" />
+    <meta name="author" content="CaoCong">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="keywords" content="recipes food, recipes , chinese food, italian food">
+    <meta name="description" content="Recipe Organizer - Food & Recipes Food">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/assets/css/mystyle.css" />
+    <!-- google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,800%7CPoppins:100,200,300i,300,400,700,400i,500%7CDancing+Script:700" rel="stylesheet">
+    <!-- animate -->
+    <link rel="stylesheet" href="~/" />
+    <!-- owl Carousel ~/assets -->
+    <link href="~/assets/css/owl.carousel.css" rel="stylesheet">
+    <link href="~/assets/css/owl.theme.css" rel="stylesheet">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+    <!-- hover anmation -->
+    <link rel="stylesheet" href="~/assets/css/hover-min.css">
+    <!-- slick slider -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- flag icon -->
+    <link rel="stylesheet" href="~/assets/css/flag-icon.min.css">
+    <!-- main style -->
+    <link rel="stylesheet" href="~/assets/css/style.css">
+    <!-- colors -->
+    <link rel="stylesheet" href="~/assets/css/colors/main.css">
+    <!-- elegant icon -->
+    <link rel="stylesheet" href="~/assets/css/elegant_icon.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/assets/css/fontawesome-all.min.css">
+    <!-- Jquery-->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+</head>
+<div class="container">
+
+	<div class="padding-tb-120px z-index-2 position-relative">
+		<div class="text-center">
+			<h1 class="text-white pull-l icon-large font-weight-500 margin-bottom-40px hvr-underline-from-right">+20,000</h1>
+			<h3 class="text-white icon-large font-weight-100 ">Cooking Recipes</h3>
+		</div>
+		<div class="margin-top-45px">
+			<div class="row justify-content-center margin-tb-60px">
+				<div class="col-lg-8">
+					<div class="listing-search">
+						<form action="Search/SearchKeyWord" class="row no-gutters ">
+							<div class="col-md-8 hvr-grow-shadow">
+								<input class="listing-form first max-width-set " aria-label="" aria-describedby="basic-addon1" type="text" placeholder="Keywords...." name="keyword" value="" id="postTitle">
+							</div>
+
+							<div class="col-md-4 hvr-grow-shadow">
+								<button type="submit" class="listing-bottom background-second-color box-shadow hvr-bounce-to-right">Search Now</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+</div>
+@section Scripts {
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+
+		(function ($) {
+			$(document).ready(function () {
+				$("#postTitle").autocomplete({
+					source: 'api/postapi/search'
+
+				});
+
+			});
+		})(jQuery);
+	</script>
+	}

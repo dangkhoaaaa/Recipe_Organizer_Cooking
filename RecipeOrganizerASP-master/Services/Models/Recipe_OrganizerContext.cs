@@ -77,9 +77,13 @@ namespace Services.Models
 
             modelBuilder.Entity<Collection>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
 
                 entity.ToTable("Collection");
+
+                entity.HasKey(e => e.CollectionId);
+
+                entity.Property(e => e.CollectionId).HasColumnName("id");
 
                 entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
 
@@ -196,8 +200,9 @@ namespace Services.Models
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.Property(e => e.WeekStartDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("week_start_date");
+					.HasMaxLength(10)
+					.IsUnicode(false)
+					.HasColumnName("week_start_date");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.MealPlannings)
@@ -217,8 +222,7 @@ namespace Services.Models
                     .HasColumnName("date");
 
                 entity.Property(e => e.Filelocation)
-                    .HasMaxLength(300)
-                    .IsUnicode(false)
+                    .HasColumnType("text")
                     .HasColumnName("filelocation");
             });
 
@@ -303,13 +307,22 @@ namespace Services.Models
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("title");
+
+                entity.Property(e => e.AvgRate).HasColumnName("avg_rate");
+
+                entity.Property(e => e.Image)
+                    .HasColumnType("text")
+                    .HasColumnName("image");
             });
 
             modelBuilder.Entity<RecipeHasCategory>(entity =>
             {
-                entity.HasNoKey();
 
                 entity.ToTable("Recipe_has_Category");
+
+                entity.HasKey(e => e.RecipeHasCategoryId);
+
+                entity.Property(e => e.RecipeHasCategoryId).HasColumnName("id");
 
                 entity.Property(e => e.CategoryId).HasColumnName("category_id");
 
@@ -330,9 +343,13 @@ namespace Services.Models
 
             modelBuilder.Entity<RecipeHasTag>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
 
                 entity.ToTable("Recipe_has_Tags");
+
+                entity.HasKey(e => e.RecipeHasTagId);
+
+                entity.Property(e => e.RecipeHasTagId).HasColumnName("id");
 
                 entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
 
@@ -373,9 +390,13 @@ namespace Services.Models
 
             modelBuilder.Entity<SessionHasRecipe>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
 
                 entity.ToTable("Session_has_Recipe");
+
+                entity.HasKey(e => e.SessionHasRecipeId);
+
+                entity.Property(e => e.SessionHasRecipeId).HasColumnName("id");
 
                 entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
 
