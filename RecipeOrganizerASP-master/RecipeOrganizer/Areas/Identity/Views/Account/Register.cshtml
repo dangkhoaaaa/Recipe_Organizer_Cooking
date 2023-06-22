@@ -74,6 +74,20 @@
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label class="control-label" asp-for="FirstName"></label>
+                            <input asp-for="FirstName" class="form-control" autocomplete="email" aria-required="true" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="control-label" asp-for="LastName"></label>
+                            <input asp-for="LastName" class="form-control" autocomplete="email" aria-required="true" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+
                     <label class="control-label" asp-for="Password"></label>
                     <div class=" form-group">
                         <input asp-for="Password" class="form-control" autocomplete="new-password" aria-required="true" />

@@ -69,9 +69,10 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         {
             returnUrl ??= Url.Content("~/");
             ViewData["ReturnUrl"] = returnUrl;
-           
-                 
-                var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, lockoutOnFailure: false);                
+
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, lockoutOnFailure: false);
                 // Tìm UserName theo Email, đăng nhập lại
                 if ((!result.Succeeded) && AppUtilities.IsValidEmail(model.UserNameOrEmail))
                 {
@@ -80,7 +81,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     {
                         result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
                     }
-                } 
+                }
 
                 if (result.Succeeded)
                 {
@@ -90,9 +91,9 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                 }
                 if (result.RequiresTwoFactor)
                 {
-                   return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 }
-                
+
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning(2, "Account was banned.");
@@ -103,7 +104,8 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     ModelState.AddModelError("Invalid login attempt.");
                     return View(model);
                 }
-            //return View(model);
+            }
+            return View(model);
         }
 
         // POST: /Account/LogOut
@@ -132,7 +134,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         }
         //
         // POST: /Account/Register
-        [HttpPost]
+        [HttpPost("/register/")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
@@ -141,7 +143,13 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new AppUser { UserName = model.UserName, Email = model.Email };
+                var user = new AppUser { 
+                    UserName = model.UserName, 
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Status = true
+                };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 await _userManager.AddToRoleAsync(user, RoleName.Member);
 
@@ -277,6 +285,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        //xac nhan de confirm add vao db
         public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
@@ -289,7 +298,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     return View("ExternalLoginFailure");
                 }
 
-                // Input.Email
+                //email luc nhap confirm so sanh xem da co ton tai trong DB chua
                 var registeredUser = await _userManager.FindByEmailAsync(model.Email);
                 string externalEmail = null;
                 AppUser externalEmailUser = null;
@@ -300,11 +309,13 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     externalEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
                 }
 
+                //email cua external
                 if (externalEmail != null)
                 {
                     externalEmailUser = await _userManager.FindByEmailAsync(externalEmail);
                 }
 
+                //email da dang ki vao app va email external cung da dang ki vao app
                 if ((registeredUser != null) && (externalEmailUser != null))
                 {
 					// externalEmail  == Input.Email
@@ -319,6 +330,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                             return LocalRedirect(returnUrl);
                         }
                     }
+                    //email chua dang ki vao app hoac email external chua dang ki vao app => lien ket tai khoan google vao email confirm
                     else 
                     {
                         // registeredUser = externalEmailUser (externalEmail != Input.Email)
@@ -331,23 +343,26 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     }
                 }
 
-
+                //email external da ton tai trong db va confirm email chua co 
                 if ((externalEmailUser != null) && (registeredUser == null))
                 {
                     ModelState.AddModelError(string.Empty, "New account creation is not supported - There is a different email from an external service");
                     return View();                    
                 }
 
+                //email external chua dang ki va external email == email confirm
                 if((externalEmailUser == null) && (externalEmail == model.Email)) 
                 {
                     // Chua co Account -> Tao Account, lien ket, dang nhap
                     var newUser = new AppUser() {
                         UserName = externalEmail,
-                        Email = externalEmail
+                        Email = externalEmail,
+                        Status = true
                     };
-
+                    //tao user
                     var resultNewUser = await _userManager.CreateAsync(newUser);
-					await _userManager.AddToRoleAsync(newUser, RoleName.Member);
+					//add role
+                    await _userManager.AddToRoleAsync(newUser, RoleName.Member);
 
 					if (resultNewUser.Succeeded)
                     {
@@ -365,11 +380,18 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                         ModelState.AddModelError("Can not create new account");
                         return View();   
                     }
-                }           
+                }
 
 
-                var user = new AppUser { UserName = model.Email, Email = model.Email };
+                var user = new AppUser {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    Status = true
+                };
                 var result = await _userManager.CreateAsync(user);
+                //add role
+                await _userManager.AddToRoleAsync(user, RoleName.Member);
+
                 if (result.Succeeded)
                 {
                     result = await _userManager.AddLoginAsync(user, info);
