@@ -7,7 +7,7 @@ namespace Services.Models
 {
     public partial class Metadata
     {
-        public object feedbackId;
+        //public object feedbackId;
 
         public int MetadataId { get; set; }
         public string? UserId { get; set; }

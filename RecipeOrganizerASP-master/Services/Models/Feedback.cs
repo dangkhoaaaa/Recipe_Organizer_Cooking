@@ -12,6 +12,7 @@ namespace Services.Models
             MetaData = new HashSet<Metadata>();
         }
 
+        
         public int FeedbackId { get; set; }
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
@@ -20,5 +21,6 @@ namespace Services.Models
         public bool Status { get; set; }
 
         public virtual ICollection<Metadata> MetaData { get; set; }
-    }
+
+	}
 }
