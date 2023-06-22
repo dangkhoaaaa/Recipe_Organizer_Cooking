@@ -59,7 +59,16 @@
                             <td>
                                 <form asp-area="Admin" asp-controller="Manage" asp-action="UpdateUserStatus" method="post">
                                     <input id="userEmail" name="userEmail" type="hidden" value="@user.Email" />
-                                    <button type="submit" class="btn btn-success btn-sm">Update ik ba</button>
+                                @if (user.Status)
+                                {
+                                    <button type="submit" class="btn btn-success btn-sm" style="background-color: #28a745;#28a745;">
+                                        Update
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-danger btn-sm" style="background-color: #dc3545; border-color: #dc3545;">Update</button>
+                                }
                                 </form>
                             </td>
                     </tr>

@@ -16,7 +16,6 @@ namespace RecipeOrganizer.Areas.Identity.Models.AccountViewModels
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-
         [Required(ErrorMessage = "Must input {0}")]
         [StringLength(100, ErrorMessage = "{0} must be between {2} and {1} characters long.", MinimumLength = 3)]
         [DataType(DataType.Password)]
@@ -30,10 +29,22 @@ namespace RecipeOrganizer.Areas.Identity.Models.AccountViewModels
 
 
         [DataType(DataType.Text)]
-        [Display(Name = "Username")]
+        [Display(Name = "User Name")]
         [Required(ErrorMessage = "Must input {0}")]
         [StringLength(100, ErrorMessage = "{0} must be between {2} and {1} characters long.", MinimumLength = 3)]
         public string UserName { get; set; }
+
+        [DataType(DataType.Text)]
+        [Display(Name = "First Name")]
+        //[Required(ErrorMessage = "Must input {0}")]
+       // [StringLength(100, ErrorMessage = "{0} must be between {2} and {1} characters long.", MinimumLength = 1)]
+        public string? FirstName { get; set; }
+
+        [DataType(DataType.Text)]
+        [Display(Name = "Last Name")]
+     //   [Required(ErrorMessage = "Must input {0}")]
+      //  [StringLength(100, ErrorMessage = "{0} must be between {2} and {1} characters long.", MinimumLength = 1)]
+        public string? LastName { get; set; }
 
     }
 }

@@ -29,6 +29,9 @@ namespace Services.Models.Authentication
 
         [DefaultValue("true")]
         public bool Status { get; set; }
+
+        [Column(TypeName = "text")]
+        public string? Image { get; set; }
         public virtual ICollection<MealPlanning> MealPlannings { get; set; }
         public virtual ICollection<Metadata> MetaData { get; set; }
     }

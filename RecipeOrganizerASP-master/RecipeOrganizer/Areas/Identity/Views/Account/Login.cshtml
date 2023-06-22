@@ -90,12 +90,12 @@
                         <input asp-for="Password" class="form-control" autocomplete="current-password" aria-required="true" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
-
-                        <div class="remember">
-                            <div class="checkbox ml-4">
-                                <label asp-for="RememberMe" class="form-label">
-                                    <input class="form-check-input" asp-for="RememberMe" />
-                                    @Html.DisplayNameFor(m => m.RememberMe)
+                    
+                    <div class="remember">
+                        <div class="checkbox ml-4">
+                            <label asp-for="RememberMe" class="form-label">
+                                <input class="form-check-input" asp-for="RememberMe" />
+                                @Html.DisplayNameFor(m => m.RememberMe)
                                 </label>
                             </div>
                             <a class="forgot" asp-action="ForgotPassword">Forgot your password?</a>

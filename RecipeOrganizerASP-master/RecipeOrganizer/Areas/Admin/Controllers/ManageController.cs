@@ -183,9 +183,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                     user.Status = true;
                 }
                 await _userManager.UpdateAsync(user);
-                await _signInManager.RefreshSignInAsync(user);
                 return RedirectToAction("Index");
-
             }
             return RedirectToAction("LogOut");
 
