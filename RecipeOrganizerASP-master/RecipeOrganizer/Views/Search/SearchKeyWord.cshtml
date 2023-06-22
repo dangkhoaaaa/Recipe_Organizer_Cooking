@@ -3,7 +3,10 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model Services.Repository.RecipeListDisplayWithPaging
+@using Microsoft.AspNetCore.Identity
 
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 
 <main>
 <div id="page-title" class="padding-tb-30px gradient-white text-center">
@@ -75,7 +78,23 @@
 							</div>
 							<hr>
 							<div class="row no-gutters">
-								<div class="col-4 text-left"><a href="#" class="text-red"><i class="far fa-heart"></i> Save</a></div>
+								<div class="col-4 text-left"><a href="#" class="text-red">
+									<form method="get" action="/Recipe/ToggleCollection?recipeId=@item.RecipeId">
+										<input type="hidden" name="recipeId" value="@item.RecipeId" />
+										@if (SignInManager.IsSignedIn(User) && ViewBag.CheckCollectionSave[Model.Recipes.IndexOf(item)])
+										{
+											<button type="submit" class="text-red border-0 bg-transparent" id="saveButton">
+												<i class="icon_heart"></i> Unsave
+											</button>
+										}
+										else
+										{
+											<button type="submit" class="text-red border-0 bg-transparent" id="saveButton">
+												<i class="far fa-heart"></i> Save
+											</button>
+										}
+									</form>
+								</div>
 									<div class="col-8 text-right"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="text-grey-2"><i class="fas fa-users"></i> @item.NumberShare</a></div>
 							</div>
 						</div>
