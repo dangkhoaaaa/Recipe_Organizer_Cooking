@@ -83,28 +83,47 @@ namespace RecipeOrganizer.Controllers
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
 			{
-                //List<Recipe> recipeList = _recipeRepository.GetUserCollection(user.Id);
-                //if (recipeList != null)
-                //{
-                //    List<RecipeUserData> dataList = new List<RecipeUserData>();
-                //    foreach (var recipe in recipeList)
-                //    {
-                //        string image = recipe.Image ?? "https://media.istockphoto.com/id/1316145932/photo/table-top-view-of-spicy-food.jpg?s=612x612&w=0&k=20&c=eaKRSIAoRGHMibSfahMyQS6iFADyVy1pnPdy1O5rZ98=";
-                //        RecipeUserData userData = new RecipeUserData
-                //        {
-                //            RecipeId = recipe.RecipeId,
-                //            Title = recipe.Title,
-                //            Date = recipe.Date,
-                //            Image = image
-                //        };
-                //        dataList.Add(userData);
-                //    }
-                //    // Pass the dataList to the view
-                //    return View(dataList);
-                //}
-            }
+				List<Recipe> recipeList = _collectionRepository.GetUserCollection(user.Id);
+				if (recipeList != null)
+				{
+					List<RecipeUserData> dataList = new List<RecipeUserData>();
+					foreach (var recipe in recipeList)
+					{
+						string image = recipe.Image ?? "https://media.istockphoto.com/id/1316145932/photo/table-top-view-of-spicy-food.jpg?s=612x612&w=0&k=20&c=eaKRSIAoRGHMibSfahMyQS6iFADyVy1pnPdy1O5rZ98=";
+                        if (recipe.AvgRate == null)
+                        {
+                            recipe.AvgRate = 0.0;
+                        }
+                        RecipeUserData userData = new RecipeUserData
+						{
+							RecipeId = recipe.RecipeId,
+							Title = recipe.Title,
+							Date = recipe.Date,
+							Image = image,
+							AvgRate = recipe.AvgRate
+						};
+						dataList.Add(userData);
+					}
+					// Pass the dataList to the view
+					return View(dataList);
+				}
+			}
 			return View(Index);
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> ToggleCollection(int recipeId)
+		{
+			var user = await _userManager.GetUserAsync(User);
+			if (user != null)
+			{
+				_collectionRepository.ToggleCollection(recipeId, user.Id);
+			}
+
+			return RedirectToAction("UserCollectionList", "User");
+		}
+
+
 	}
 }
 

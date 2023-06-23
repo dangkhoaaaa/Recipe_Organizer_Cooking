@@ -77,5 +77,39 @@ namespace Services.Repository
 			_context.SaveChanges();
 		}
 
+		public List<Recipe> GetUserCollections(string userId)
+		{
+			List<Recipe> userCollection = new List<Recipe>();
+
+			var userCollections = _dbSet.Where(c => c.UserId == userId).ToList();
+
+			foreach (var collection in userCollections)
+			{
+				var recipe = _recipeRepository.GetById(collection.RecipeId);
+				if (recipe != null)
+				{
+					userCollection.Add(recipe);
+				}
+			}
+
+			return userCollection;
+		}
+		public List<Recipe> GetUserCollection(string userId)
+		{
+			List<Recipe> userCollection = new List<Recipe>();
+
+			var userCollections = _dbSet.Where(c => c.UserId == userId).ToList();
+
+			foreach (var collection in userCollections)
+			{
+				var recipe = _recipeRepository.GetById(collection.RecipeId);
+				if (recipe != null)
+				{
+					userCollection.Add(recipe);
+				}
+			}
+
+			return userCollection;
+		}
 	}
 }
