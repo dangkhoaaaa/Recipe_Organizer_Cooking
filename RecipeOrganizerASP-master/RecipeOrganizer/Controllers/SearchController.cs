@@ -11,8 +11,8 @@ using System.Reflection.Metadata;
 namespace RecipeOrganizer.Controllers
 {
 
-    public class SearchController : Controller
-    {
+	public class SearchController : Controller
+	{
 		public int PageSize = 8;
 
 		//      private readonly recipe_organizercontext _reciperepository;
@@ -32,6 +32,7 @@ namespace RecipeOrganizer.Controllers
 		private readonly MetadataRepository _metadataRepository;
 		private readonly MediaRepository _mediaRepository;
 		private readonly UserManager<AppUser> _userManager;
+		private readonly CollectionRepository _collectionRepository;
 
 		public SearchController(UserManager<AppUser> userManager)
 		{
@@ -44,11 +45,12 @@ namespace RecipeOrganizer.Controllers
 			_metadataRepository = new MetadataRepository();
 			_mediaRepository = new MediaRepository();
 			_userManager = userManager;
+			_collectionRepository = new CollectionRepository();
 		}
 		public IActionResult Index()
-        {
-            return View();
-        }
+		{
+			return View();
+		}
 
 		// GET: Search/SearchKeyWord
 
@@ -70,18 +72,22 @@ namespace RecipeOrganizer.Controllers
 		//         return View(results);
 		//     }
 
-		public IActionResult SearchKeyWord(string keyword, int productPage=1)
+		public async Task<IActionResult> SearchKeyWord(string keyword, int productPage = 1)
 		{
 			ViewBag.Keyword = keyword;
 			List<Recipe> results = null;
 
 			List<Recipe> recipesSearchAll = _recipeRepository.getRecipeByKeyword(keyword);
 
-		
-
-			if (keyword != null&& recipesSearchAll.Count()>0)
+			if (keyword != null && recipesSearchAll.Count() > 0)
 			{
-				results = _recipeRepository.getRecipeByKeywordWitPaging(keyword,productPage,PageSize, recipesSearchAll);
+				results = _recipeRepository.getRecipeByKeywordWitPaging(keyword, productPage, PageSize, recipesSearchAll);
+				var user = await _userManager.GetUserAsync(User);
+				if (user != null)
+				{
+					var checkRecipeSave = _collectionRepository.CollectionList(recipesSearchAll, user.Id);
+					ViewBag.CheckCollectionSave = checkRecipeSave;
+				}
 			}
 			else
 			{
@@ -103,7 +109,7 @@ namespace RecipeOrganizer.Controllers
 			});
 		}
 
-		public IActionResult SearchKeyWordFitler(string keyword, string filter, int productPage = 1)
+		public async Task<IActionResult> SearchKeyWordFitler(string keyword, string filter, int productPage = 1)
 		{
 			ViewBag.Keyword = keyword;
 			ViewBag.filter = filter;
@@ -116,6 +122,12 @@ namespace RecipeOrganizer.Controllers
 			if (keyword != null && recipesSearchAll.Count() > 0)
 			{
 				results = _recipeRepository.getRecipeByKeywordWitPaging(keyword, productPage, PageSize, recipesSearchAll);
+				var user = await _userManager.GetUserAsync(User);
+				if (user != null)
+				{
+					var checkRecipeSave = _collectionRepository.CollectionList(recipesSearchAll, user.Id);
+					ViewBag.CheckCollectionSave = checkRecipeSave;
+				}
 			}
 			else
 			{
@@ -138,16 +150,21 @@ namespace RecipeOrganizer.Controllers
 		}
 
 
-		public IActionResult SearchKeyWordFitlerCategory(string keyword, string filter, int CategoryId, int productPage = 1)
+		public async Task<IActionResult> SearchKeyWordFitlerCategory(string keyword, string filter, int CategoryId, int productPage = 1)
 		{
 			ViewBag.Keyword = keyword;
 			ViewBag.filter = filter;
-			ViewBag.categoryid= CategoryId;
+			ViewBag.categoryid = CategoryId;
 			List<Recipe> results = null;
 
 			List<Recipe> recipesSearchAll = _recipeRepository.SearchAllTitleWithFilterandCategory(filter, keyword, CategoryId);
 
-
+			var user = await _userManager.GetUserAsync(User);
+			if (user != null)
+			{
+				var checkRecipeSave = _collectionRepository.CollectionList(recipesSearchAll, user.Id);
+				ViewBag.CheckCollectionSave = checkRecipeSave;
+			}
 
 			if (keyword != null && recipesSearchAll.Count() > 0)
 			{
