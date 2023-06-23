@@ -24,7 +24,8 @@ namespace Services.Data
 		public virtual Media FilePath { get; set; }
 		public List<Media> medias { get; set; }
 		public List<Category> categories { get; set; }
-
+		public double? AvgRate { get; set; }
+		public string? Image { get; set; }
 		public bool Collection { get; set; }
 
 	}

@@ -137,7 +137,7 @@ namespace RecipeOrganizer.Controllers
 						_metadataRepository.Add(metadata);
 					}
 				}
-				else
+				else if (mediaFile == null || mediaFile.Count == 0)
 				{
 					// If there is no media file, just create a new Metadata object
 					Metadata metadata = new Metadata
@@ -293,7 +293,7 @@ namespace RecipeOrganizer.Controllers
 						existingRecipe.Date = DateTime.Now;
 
 						// Update the recipe status
-
+						existingRecipe.Status = recipe.Status;
 
 						// Update the ingredients
 						if (!string.IsNullOrEmpty(recipe.IngredientsInput))
