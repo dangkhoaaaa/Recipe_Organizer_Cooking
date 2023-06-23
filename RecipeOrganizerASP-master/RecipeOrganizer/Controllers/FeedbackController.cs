@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Asn1.Cms;
 
-using RecipeOrganizer.Areas.Identity.Models.Manage;
 
 using RecipeOrganizer.Areas.Data;
 
@@ -12,6 +11,8 @@ using Services.Models;
 using Services.Models.Authentication;
 using Services.Repository;
 using System.Net;
+using Services.Data;
+using System.Data.SqlClient;
 
 namespace RecipeOrganizer.Controllers
 {
@@ -103,72 +104,33 @@ namespace RecipeOrganizer.Controllers
         //		throw new NotImplementedException();
         //	}
 
-        //[HttpPost]
-        //public async Task<IActionResult> AddFeedback(FeedbackViewModel feedbackViewModel)
-        //{
-        //	if (ModelState.IsValid)
-        //	{
-        //		var user = await _userManager.FindByEmailAsync(User.Identity.Name);
-
-        //		if (user.UserName != feedbackViewModel.UserName || user.Email != feedbackViewModel.Email)
-        //		{
-        //			ModelState.AddModelError(string.Empty, "Fullname or email does not match the ones in your Personal Profile.");
-        //			return View(feedbackViewModel);
-        //		}
-
-        //		var feedback = new Feedback
-        //		{
-        //			Title = feedbackViewModel.Title,
-        //			Description = feedbackViewModel.Description,
-        //			Date = DateTime.Now,
-        //			Rating = feedbackViewModel.Rating,
-        //			Status = feedbackViewModel.Status,
-        //		};
-
-        //		_feedbackRepository.Add(feedback);
-
-        //		var listRecipe = _recipeRepository.GetAll().ToList();
-
-        //		var metadata = new Metadata
-        //		{
-        //			UserId = user.Id,
-        //			RecipeId = feedbackViewModel.RecipeId,
-        //			FeedbackId = feedback.FeedbackId,
-        //		};
-
-        //		_metadataRepository.Add(metadata);
-
-        //		await _context.SaveChangesAsync();
-
-        //		TempData["SuccessMessage"] = "Thank you for your feedback! We will review it shortly.";
-
-        //		return RedirectToAction("RecipeDetail", "Recipe", new { recipeId = feedbackViewModel.RecipeId });
-        //	}
-
-        //	return View(feedbackViewModel);
-        //}
-
 
         [HttpPost]
-        public async Task<IActionResult> AddFeedback(FeedbackViewModel feedbackViewModel)
+        public async Task<IActionResult> AddFeedback(RecipeData recipeFb)
         {
-            if (ModelState.IsValid)
-            {
+            
                 var user = await _userManager.FindByEmailAsync(User.Identity.Name);
 
-                if (user.UserName != feedbackViewModel.UserName || user.Email != feedbackViewModel.Email)
-                {
-                    ModelState.AddModelError(string.Empty, "Username or email does not match the ones in your Personal Profile.");
-                    return View(feedbackViewModel);
-                }
+			//if (user.UserName != recipeFb.UserName || user.Email != recipeFb.Email)
+			//{
+			//    ModelState.AddModelError(string.Empty, "Username or email does not match the ones in your Personal Profile.");
+			//    return View(recipeFb);
+			//}
 
-                var feedback = new Feedback
+				// Check if user has already given feedback for this recipe
+				if (HasFeedback(recipeFb.FeedbackId, recipeFb.UserId))
+				{
+					ViewBag.Message = "You have already given feedback for this recipe.";
+					return RedirectToAction("RecipeDetail", "Recipe", new { recipeId = recipeFb.RecipeId });
+			}
+
+				var feedback = new Feedback
                 {
-                    Title = feedbackViewModel.Title,
-                    Description = feedbackViewModel.Description,
+                    Title = recipeFb.TitleFb,
+                    Description = recipeFb.DescriptionFb,
                     Date = DateTime.Now,
-                    Rating = feedbackViewModel.Rating,
-                    Status = feedbackViewModel.Status,
+                    Rating = recipeFb.Rating,
+                    Status = recipeFb.StatusFb,
                 };
 
                 _feedbackRepository.Add(feedback);
@@ -178,7 +140,7 @@ namespace RecipeOrganizer.Controllers
                 var metadata = new Metadata
                 {
                     UserId = user.Id,
-                    RecipeId = feedbackViewModel.RecipeId,
+                    RecipeId = recipeFb.RecipeId,
                     FeedbackId = feedback.FeedbackId,
                 };
 
@@ -188,10 +150,53 @@ namespace RecipeOrganizer.Controllers
 
                 TempData["SuccessMessage"] = "Thank you for your feedback! We will review it shortly.";
 
-                return RedirectToAction("RecipeDetail", "Recipe", new { recipeId = feedbackViewModel.RecipeId });
-            }
+                return RedirectToAction("RecipeDetail", "Recipe", new { recipeId = recipeFb.RecipeId });
+    
+		}
 
-            return View(feedbackViewModel);
-        }
-    }
+
+		private bool HasFeedback(int recipeId, int userId)
+		{
+			string connectionString = "server=.; database=Recipe_Organizer;uid=sa;pwd=12345;TrustServerCertificate=True;";
+			string selectQuery = "SELECT COUNT(*) FROM MetaData WHERE recipe_id = @RecipeId AND user_id = @UserId";
+
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				SqlCommand command = new SqlCommand(selectQuery, connection);
+				command.Parameters.AddWithValue("@RecipeId", recipeId);
+				command.Parameters.AddWithValue("@UserId", userId);
+
+				connection.Open();
+				int result = (int)command.ExecuteScalar();
+				if (result > 0)
+				{
+					return true;
+				}
+				return false;
+			}
+		}
+
+		private bool CheckUserProfile(int userId, string username, string email)
+		{
+			// Check if username and email match with the user's personal profile
+			string connectionString = "server=.; database=Recipe_Organizer;uid=sa;pwd=12345;TrustServerCertificate=True;";
+			string selectQuery = "SELECT COUNT(*) FROM AspNetUsers WHERE Id = @UserId AND UserName = @Username AND Email = @Email";
+
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				SqlCommand command = new SqlCommand(selectQuery, connection);
+				command.Parameters.AddWithValue("@UserId", userId);
+				command.Parameters.AddWithValue("@Username", username);
+				command.Parameters.AddWithValue("@Email", email);
+
+				connection.Open();
+				int result = (int)command.ExecuteScalar();
+				if (result > 0)
+				{
+					return true;
+				}
+				return false;
+			}
+		}
+	}
 }

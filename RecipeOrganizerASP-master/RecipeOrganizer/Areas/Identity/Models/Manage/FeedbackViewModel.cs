@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 
-namespace RecipeOrganizer.Areas.Identity.Models.Manage
+namespace RecipeOrganizer.Areas.Identity.Models.ManageViewModels
 {
     public class FeedbackViewModel
     {
@@ -26,5 +26,7 @@ namespace RecipeOrganizer.Areas.Identity.Models.Manage
 
         [Required(ErrorMessage = "")]
         public bool Status { get; set; }
+
+        
     }
 }
