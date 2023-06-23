@@ -17,54 +17,71 @@
 </ul>*@
 @model ManageNavViewModel
 
-        <style>
-            .nav-item {
-                padding-top:16px;
-                padding-bottom:16px;
-                font-size:16px;
-            }
-            
-            .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-            background-color: #ee1000;
-            }
-        </style>
-        <div class="padding-25px padding-bottom-30px background-white border-radius-10">
-        <ul class="nav nav-pills flex-column" style="padding-left: 0px">
-        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
-            <a class="nav-link " id="profile" asp-area="Identity" asp-controller="Manage" asp-action="Index">Personal Info</a>
-        </li>
+<style>
+	.nav-item {
+		padding-top: 16px;
+		padding-bottom: 16px;
+		font-size: 16px;
+	}
 
-        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
-            @if (Model.HasPassword)
-            {
-                <a class="nav-link " id="change-password" asp-area="Identity" asp-controller="Manage" asp-action="ChangePassword">Change password</a>
-            }
-            else
-            {
-                <a class="nav-link " id="change-password" asp-area="Identity"  asp-controller="Manage" asp-action="SetPassword">Create password</a>
-            }
-        </li>
+	.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+		background-color: #ee1000;
+	}
+</style>
+<div class="padding-25px padding-bottom-30px background-white border-radius-10">
+	<ul class="nav nav-pills flex-column" style="padding-left: 0px">
+		<li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+			<a class="nav-link " id="profile" asp-area="Identity" asp-controller="Manage" asp-action="Index">
+				<i class="fa fa-user-circle margin-right-10px"></i> Personal Info
+			</a>
+		</li>
 
-   @*     <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
-            <a class="nav-link " id="email" asp-area="Identity" asp-controller="Manage" asp-action="ManagePhoneNumber">Phone number</a>
-        </li>*@
+		<li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+			@if (Model.HasPassword)
+			{
+				<a class="nav-link " id="change-password" asp-area="Identity" asp-controller="Manage" asp-action="ChangePassword">
+					<i class="fa fa-lock margin-right-10px"></i> Change password
+				</a>
+			}
+			else
+			{
+				<a class="nav-link " id="change-password" asp-area="Identity" asp-controller="Manage" asp-action="SetPassword">
+					<i class="fa fa-plus margin-right-10px"></i> Create password
+				</a>
+			}
+		</li>
 
-        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
-            <a class="nav-link " id="email" asp-area="Identity" asp-controller="Manage" asp-action="ManageLogins">Manage external login</a>
-        </li>
+		@*     <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+		<a class="nav-link " id="email" asp-area="Identity" asp-controller="Manage" asp-action="ManagePhoneNumber">Phone number</a>
+		</li>*@
 
-        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
-            <a class="nav-link " asp-controller="User" asp-action="UserCollectionList">Saved Recipes & Collections</a>
-        </li>
+		<li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+			<a class="nav-link " id="email" asp-area="Identity" asp-controller="Manage" asp-action="ManageLogins">
+				<i class="fa fa-sign-in-alt margin-right-10px"></i> Manage external login
+			</a>
+		</li>
 
-        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
-            <a class="nav-link " asp-controller="User" asp-action="UserRecipeList">All Personal Recipes </a>
-        </li>
+		<li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+			<a class="nav-link " asp-controller="User" asp-action="UserCollectionList">
+				<i class="fas fa-bookmark margin-right-10px"></i> Saved Recipes & Collections
+			</a>
+		</li>
 
-        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
-            <a class="nav-link " asp-controller="Feedback" asp-action="UserFeedback">Reviews</a>
-        </li>
-        <li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link " id="personal-data" href="/personal-data">Personal data</a></li>
-            
-            </ul>                   
-        </div>
+		<li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+			<a class="nav-link " asp-controller="User" asp-action="UserRecipeList">
+				<i class="fas fa-utensil-spoon margin-right-10px"></i> All Personal Recipes
+			</a>
+		</li>
+
+		<li style="padding-top:16px;padding-bottom:16px;font-size:16px;">
+			<a class="nav-link " asp-controller="Feedback" asp-action="UserFeedback">
+				<i class="fas fa-comment-alt margin-right-10px"></i> Reviews
+			</a>
+		</li>
+		<li style="padding-top:16px;padding-bottom:16px;font-size:16px;"><a class="nav-link " id="personal-data" href="/personal-data">
+				<i class="fas fa-info-circle margin-right-10px"></i> Personal data
+			</a>
+		</li>
+
+	</ul>
+</div>

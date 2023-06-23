@@ -51,7 +51,7 @@ namespace RecipeOrganizer.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddNewRecipe(RecipeData recipe, List<IFormFile> mediaFile)
+		public async Task<IActionResult> AddNewRecipe(RecipeData recipe, List<IFormFile> mediaFiles)
 		{
 			//if (ModelState.IsValid)
 			//{
@@ -71,7 +71,7 @@ namespace RecipeOrganizer.Controllers
 				}
 				else
 				{
-					data.Title = recipe.Title;
+					data.Title = recipe.Title.Trim();
 				}
 
 				// Description
@@ -102,7 +102,7 @@ namespace RecipeOrganizer.Controllers
 				}
 
 				// Media
-				if (mediaFile != null)
+				if (mediaFiles != null)
 				{
 					// Save the file to the server
 					//var fileName = Guid.NewGuid().ToString() + Path.GetExtension(mediaFile.FileName);
@@ -114,10 +114,11 @@ namespace RecipeOrganizer.Controllers
 					//	await mediaFile.CopyToAsync(stream);
 					//}
 
-					string[] filePath = _fireBaseService.UploadImage(mediaFile).ToString().Split(new[] { "ygbygyn34897gnygytfrfr" }, StringSplitOptions.RemoveEmptyEntries);
+					string[] filePaths = _fireBaseService.UploadImage(mediaFiles).ToString().Split(new[] { "ygbygyn34897gnygytfrfr" }, StringSplitOptions.RemoveEmptyEntries);
+					
 					//_mediaRepository.addMedia(filePath);
 
-					foreach (var imgUrl in filePath)
+					foreach (var imgUrl in filePaths)
 					{
 						Media media = new Media
 						{
@@ -137,7 +138,7 @@ namespace RecipeOrganizer.Controllers
 						_metadataRepository.Add(metadata);
 					}
 				}
-				else if (mediaFile == null || mediaFile.Count == 0)
+				else if (mediaFiles == null || mediaFiles.Count == 0)
 				{
 					// If there is no media file, just create a new Metadata object
 					Metadata metadata = new Metadata
@@ -242,7 +243,7 @@ namespace RecipeOrganizer.Controllers
 
 		public IActionResult EditRecipe(int id)
 		{
-			Recipe recipe = _recipeRepository.GetById(id);
+			Recipe recipe = _recipeRepository.GetByIdForEdit(id);
 			if (recipe != null)
 			{
 				RecipeData recipeData = ConvertToRecipeData(recipe);
@@ -260,8 +261,16 @@ namespace RecipeOrganizer.Controllers
 			data.RecipeId = recipe.RecipeId;
 			data.Title = recipe.Title;
 			data.Description = recipe.Description;
+			data.Status = recipe.Status;
+			data.Image = recipe.Image;
+            if (recipe.AvgRate == null)
+            {
+                recipe.AvgRate = 0.0;
+            }
+            data.AvgRate = recipe.AvgRate;
 			List<Ingredient> ingredients = _ingredientRepository.GetByRecipeId(recipe.RecipeId);
 			List<Direction> directions = _directionRepository.GetByRecipeId(recipe.RecipeId);
+			List<Tag> tags = _recipeHasTagRepository.GetTagsByRecipeId(recipe.RecipeId);
 
 			if (ingredients != null)
 			{
@@ -271,6 +280,11 @@ namespace RecipeOrganizer.Controllers
 			if (directions != null)
 			{
 				data.Directions = directions.ToList();
+			}
+
+			if (tags != null)
+			{
+				data.Tags = tags.ToList();
 			}
 
 			return data;

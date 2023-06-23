@@ -73,6 +73,10 @@ namespace Services.Repository
 		{
 			return _dbSet.Where(r => r.RecipeId == id && r.Status.Equals("public")).FirstOrDefault();
 		}
+		public Recipe GetByIdForEdit(int id)
+		{
+			return _dbSet.Where(r => r.RecipeId == id).FirstOrDefault();
+		}
 
 		public List<Recipe> GetByAuthor(string userId)
 		{

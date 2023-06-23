@@ -57,43 +57,72 @@
 						</div>
 						<div class="col-md-4">
 							<div class="formLayout__uploadContent form-group margin-bottom-10px">
-								@*<div class="formLayoutPhotoUpload">
-									<div class="formLayout__uploadLabel">
-										<label>
-											<i class="far fa-list-alt margin-right-10px"></i> Photo
-											(optional)
-										</label><br>
-									</div>
-									<div class="formLayoutPhotoUpload__uploadedImage js--uploadedImage">
-										<!-- Display the uploaded image if needed -->
-										<img src="@Model.Image" alt="Uploaded Image" />
-									</div>
-									<input aria-labelledby="photoUploadFileAdd photoUploadFileMain"
-										   aria-describedby="uploadSectionDescription" type="file" id="photoUploadFile"
-										   class="formLayoutPhotoUpload__uploadInput js--fileInput" accept="image/*" name="Image" />
-								</div>*@
-
 								<div class="formLayoutPhotoUpload">
 									<div class="formLayout__uploadLabel">
 										<label>
-											<i class="far fa-list-alt margin-right-10px"></i> Photo
-											(optional)
+											<i class="far fa-list-alt margin-right-10px"></i> Photo (optional)
 										</label><br>
 									</div>
-									<input id="imageURL" class="formLayoutPhotoUpload__uniqueId js--uploadedPhotoId"
-										   name="imageURL" type="hidden">
-									<div class="formLayoutPhotoUpload__uploadedImage js--uploadedImage">
+
+									<div class=" js--uploadedImage">
+										<!-- Display the uploaded image if needed -->
+										@*<input type="file" id="mediaFiles" name="mediaFiles" multiple>*@
+										@Html.TextBoxFor(m => m.MediaFiles, new { type = "file", multiple = "multiple", id = "photoUploadFile" })
+										<p>
+											Use JPEG or PNG. Must be at least 960 x 960.
+										</p>
+										<span id="imageFormatError" class="text-danger" style="display: none;">
+											<b>Invalid image format.</b><br> Only JPG, PNG, and GIF formats are allowed.
+										</span>
 									</div>
-									<input aria-labelledby="photoUploadFileAdd photoUploadFileMain"
-										   aria-describedby="uploadSectionDescription" type="file" id="photoUploadFile"
-										   class="formLayoutPhotoUpload__uploadInput js--fileInput" accept="image/*">
+
+									<script>
+										// JavaScript code to validate image format and clear input value on error
+										var inputElement = document.getElementById("photoUploadFile");
+										var imageFormatError = document.getElementById("imageFormatError");
+
+										inputElement.addEventListener("change", function () {
+											var file = this.files[0];
+											var allowedFormats = ["image/jpeg", "image/png", "image/gif"];
+
+											if (file && !allowedFormats.includes(file.type)) {
+												// Display error message
+												imageFormatError.style.display = "block";
+
+												// Clear input value on error
+												inputElement.value = "";
+											} else {
+												// Hide error message
+												imageFormatError.style.display = "none";
+											}
+										});
+									</script>
+
 								</div>
+
 							</div>
-							<div class="margin-top-40px form-group margin-bottom-10px">
-								<p>
-									Use JPEG or PNG. Must be at least 960 x 960.
-								</p>
-							</div>
+
+							@*<div class="formLayoutPhotoUpload">
+						<div class="formLayout__uploadLabel">
+						<label>
+						<i class="far fa-list-alt margin-right-10px"></i> Photo
+						(optional)
+						</label><br>
+						</div>
+						<input id="imageURL" class="formLayoutPhotoUpload__uniqueId js--uploadedPhotoId"
+						name="imageURL" type="hidden">
+						<div class="formLayoutPhotoUpload__uploadedImage js--uploadedImage">
+						</div>
+						<input aria-labelledby="photoUploadFileAdd photoUploadFileMain"
+						aria-describedby="uploadSectionDescription" type="file" id="photoUploadFile"
+						class="formLayoutPhotoUpload__uploadInput js--fileInput" accept="image/*">
+						</div>*@
+
+							@*<div class="margin-top-40px form-group margin-bottom-10px">
+						<p>
+						Use JPEG or PNG. Must be at least 960 x 960.
+						</p>
+						</div>*@
 						</div>
 					</div>
 				</div>
