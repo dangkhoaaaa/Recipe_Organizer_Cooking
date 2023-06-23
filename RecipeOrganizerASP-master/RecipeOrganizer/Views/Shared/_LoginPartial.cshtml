@@ -47,9 +47,9 @@
     <a href="add-recipe.html" class="text-white ba-2 box-shadow float-right padding-lr-29px padding-tb-24px text-extra-large"><i class="fas fa-plus"></i></a>
     <a href="@Url.Action("Login", "Home")" class="text-white ba-1 box-shadow float-right padding-lr-29px padding-tb-24px text-extra-large"><i class="far fa-user"></i></a>*@
     <div class="dropdown" id="userDropdown">
-        <a class="btn-add-recipe text-white ba-2 box-shadow float-right padding-lr-29px padding-tb-24px text-extra-large" asp-area="Admin" asp-controller="Manage" asp-action="Index">
+     @*   <a class="btn-add-recipe text-white ba-2 box-shadow float-right padding-lr-29px padding-tb-24px text-extra-large" asp-area="Admin" asp-controller="Manage" asp-action="Index">
            Admin
-        </a>
+        </a>*@
         <a class="btn-add-recipe text-white ba-2 box-shadow float-right padding-lr-29px padding-tb-24px text-extra-large" href="@Url.Action("AddNewRecipe", "Recipe")">
             <i class="fas fa-plus"></i>
         </a>
@@ -103,6 +103,6 @@ else
     <hr class="margin-bottom-0px d-block d-sm-none">
     <a href="/register" class="text-white ba-1 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large btn-login" style="font-size:15px;">Signup</a>
     <a href="/login" class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large btn-register" style="font-size:15px;">Login</a>
-    <a href=@Url.Action("Active", "Home") class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large btn-register" style="font-size:15px;" >Add role</a>
+  @*  <a href=@Url.Action("Active", "Home") class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large btn-register" style="font-size:15px;" >Add role</a>*@
 }
 
