@@ -56,6 +56,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+            returnUrl ??= Url.Content("~/");
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }

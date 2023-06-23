@@ -23,8 +23,13 @@ namespace RecipeOrganizer.Controllers
             return View();
         }
 
+        public ActionResult Error()
+        {
+            return View();
+        }
 
-		[HttpGet]
+
+        [HttpGet]
 		public ActionResult Search()
         {
             return RedirectToAction("SearchKeyWord", "Search");

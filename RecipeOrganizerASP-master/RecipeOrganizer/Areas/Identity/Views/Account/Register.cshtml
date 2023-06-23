@@ -61,7 +61,6 @@
             <div class="form-output">
                 <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
                     <label class="control-label" asp-for="UserName"></label>
                     <div class=" form-group">
                         <input asp-for="UserName" class="form-control" autocomplete="username" aria-required="true" />
@@ -100,32 +99,10 @@
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
 
-                <button id="registerSubmit" type="submit" class="register-button btn btn-md btn-primary full-width">Register</button>
+                    <button id="registerSubmit" type="submit" class="register-button btn btn-md btn-primary full-width">Register</button>
                 </form>
-                @*<div class="or"></div>
-                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                    <div>
-                        <p>
-                            @foreach (var provider in Model.ExternalLogins!)
-                            {
-                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Register using your @provider.DisplayName account">Register with @provider.DisplayName</button>
-                            }
-                        </p>
-                    </div>
-                </form>
-                <a href="#" class="btn btn-md bg-facebook full-width btn-icon-left"><i class="fab fa-facebook margin-right-8px" aria-hidden="true"></i> Register with Facebook</a>
-                <a href="#" class="btn btn-md border-grey-2 full-width btn-icon-left margin-top-8px margin-bottom-10px"><i class="fab fa-google margin-right-8px" aria-hidden="true"></i> Register with Google</a>*@
+                
             <div class="or text-center" style="margin-top:0px; margin-bottom:0px;">or</div>
-            @*<form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-            <div>
-            <p>
-            @foreach (var provider in Model.ExternalLogins!)
-            {
-            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">Login with @provider.DisplayName</button>
-            }
-            </p>
-            </div>
-            </form>*@
 
            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
 
@@ -140,35 +117,6 @@
             </div>
         </div>
     </div>
-    @*<div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            Chưa có cấu hình dich vụ ngoài
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
-    </div>*@
 
 
 @section Scripts {
