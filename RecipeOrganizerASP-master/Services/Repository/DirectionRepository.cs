@@ -14,14 +14,17 @@ namespace Services.Repository
 			string[] steps = directions.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 			for (int i = 0; i < steps.Length; i++)
 			{
-				Direction direction = new Direction
+				if (steps[i].Trim().Length > 0)
 				{
-					RecipeId = recipeId,
-					Step = i + 1,
-					Direction1 = steps[i]
-				};
-				_dbSet.Add(direction);
-				_context.SaveChanges();
+					Direction direction = new Direction
+					{
+						RecipeId = recipeId,
+						Step = i + 1,
+						Direction1 = steps[i]
+					};
+					_dbSet.Add(direction);
+					_context.SaveChanges();
+				}
 			}
 		}
 
@@ -38,13 +41,16 @@ namespace Services.Repository
 			string[] steps = directionsInput.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 			for (int i = 0; i < steps.Length; i++)
 			{
-				Direction direction = new Direction
+				if (steps[i].Trim().Length > 0)
 				{
-					RecipeId = recipeId,
-					Step = i + 1,
-					Direction1 = steps[i]
-				};
-				_dbSet.Add(direction);
+					Direction direction = new Direction
+					{
+						RecipeId = recipeId,
+						Step = i + 1,
+						Direction1 = steps[i]
+					};
+					_dbSet.Add(direction);
+				}
 			}
 
 			_context.SaveChanges();

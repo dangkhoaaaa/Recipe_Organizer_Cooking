@@ -14,13 +14,16 @@ namespace Services.Repository
 			string[] ingredients = IngredientsInput.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 			foreach (var ingredientName in ingredients)
 			{
-				Ingredient ingredient = new Ingredient
+				if (ingredientName.Trim().Length > 0)
 				{
-					RecipeId = recipeId,
-					IngredientName = ingredientName
-				};
-				_dbSet.Add(ingredient);
-				_context.SaveChanges();
+					Ingredient ingredient = new Ingredient
+					{
+						RecipeId = recipeId,
+						IngredientName = ingredientName
+					};
+					_dbSet.Add(ingredient);
+					_context.SaveChanges();
+				}
 			}
 		}
 
@@ -69,12 +72,15 @@ namespace Services.Repository
 			string[] ingredients = ingredientsInput.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 			foreach (var ingredientName in ingredients)
 			{
-				Ingredient ingredient = new Ingredient
+				if (ingredientName.Trim().Length > 0)
 				{
-					RecipeId = recipeId,
-					IngredientName = ingredientName
-				};
-				_dbSet.Add(ingredient);
+					Ingredient ingredient = new Ingredient
+					{
+						RecipeId = recipeId,
+						IngredientName = ingredientName
+					};
+					_dbSet.Add(ingredient);
+				}
 			}
 			_context.SaveChanges();
 		}
