@@ -9,40 +9,53 @@
 
 <!-- render body here -->
 <h4 class="card-title">User list</h4>
+<form asp-area="Admin" asp-controller="Manage" asp-action="SearchUser" method="get">
+    <div class="row">
+        <div class="input-field col s12">
+            <input id="search" name="keyword" type="text" value="@ViewBag.Keyword" placeholder="Input user email or user name">
+            <label for="search">Search</label>
+        </div>
+    </div>
+    <button type="submit" class="btn">Search</button>
+</form>
+
 <div class="table-responsive">
-    <table id="demo-foo-addrow" class="table m-t-10 highlight contact-list no-wrap" data-sorting="true" data-paging="true" data-paging-size="6">
-        <thead>
-            <tr style="font-weight:bold;">
-                <th>No</th>
-                <th>Email</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Phone</th>
-                <th>Birthday</th>
-                <th>Role</th>
-                <th>No.Recipe</th>
-                <th>Status</th>
-                <th>Update</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                int counter = 0;
-                foreach (var user in Model)
-                {
-                    counter += 1;
-                    <tr>
+@ViewBag.NotFind
+@if (Model != null)
+{
+        <table id="demo-foo-addrow" class="table m-t-10 highlight contact-list no-wrap" data-sorting="true" data-paging="true" data-paging-size="6">
+            <thead>
+                <tr style="font-weight:bold;">
+                    <th>No</th>
+                    <th>User name</th>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Birthday</th>
+                    <th>Role</th>
+                    <th>No.Recipe</th>
+                    <th>Status</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int counter = 0;
+                    foreach (var user in Model)
+                    {
+                        counter += 1;
+                        <tr>
                             <td>@counter</td>
-                            <td>@user.Email</td>
-                            <td>@user.FirstName</td>
-                            <td>@user.LastName</td>
-                            <td>@user.PhoneNumber</td>
-                            <td>@user.Birthday</td>
+                            <td>@user.Member.UserName</td>
+                            <td>@user.Member.Email</td>
+                            <td>@user.Member.FirstName</td>
+                            <td>@user.Member.LastName</td>
+                            <td>@user.Member.Birthday</td>
                             <td>
-                                    @foreach (var role in @user.Role)
-                                    {
+                                @foreach (var role in @user.Role)
+                                {
                                     <span class="label label-danger">@role</span>
-                                    }
+                                }
                             </td>
                             <td>@user.TotalRecipe</td>
                             <td>
@@ -50,7 +63,8 @@
                                 @if (user.Status)
                                 {
                                     <span>Enable</span>
-                                } else
+                                }
+                                else
                                 {
                                     <span>Disable</span>
                                 }
@@ -58,24 +72,27 @@
                             </td>
                             <td>
                                 <form asp-area="Admin" asp-controller="Manage" asp-action="UpdateUserStatus" method="post">
-                                    <input id="userEmail" name="userEmail" type="hidden" value="@user.Email" />
-                                @if (user.Status)
-                                {
-                                    <button type="submit" class="btn btn-success btn-sm" style="background-color: #28a745;#28a745;">
-                                        Update
-                                    </button>
-                                }
-                                else
-                                {
-                                    <button type="submit" class="btn btn-danger btn-sm" style="background-color: #dc3545; border-color: #dc3545;">Update</button>
-                                }
+                                    <input id="userID" name="userID" type="hidden" value="@user.Member.Id" />
+                                    @if (user.Status)
+                                    {
+                                        <button type="submit" class="btn btn-success btn-sm" style="background-color: #28a745;#28a745;">
+                                            Enable
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-danger btn-sm" style="background-color: #dc3545; border-color: #dc3545;">
+                                            Disable
+                                        </button>
+                                    }
                                 </form>
                             </td>
-                    </tr>
+                        </tr>
+                    }
                 }
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    }
 </div>
 <!-- render body here -->
 

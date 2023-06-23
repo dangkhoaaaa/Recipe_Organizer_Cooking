@@ -10,6 +10,7 @@ using Services.Repository;
 using RecipeOrganizer.Utilities;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Firebase.Auth;
+using System.Collections.Generic;
 
 namespace RecipeOrganizer.Areas.Admin.Controllers
 {
@@ -76,15 +77,13 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             foreach (var user in listUser)
             {
                 var role = await _userManager.GetRolesAsync(user);
+                var isLockout = await _userManager.IsLockedOutAsync(user);
                 var model = new IndexViewModel
                 {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    PhoneNumber = user.PhoneNumber,
+                    Member = user,
                     Role = role.ToList(),
                     TotalRecipe = 2,
-                    Status = user.Status
+                    Status = !isLockout
                 };
                 list.Add(model);
             }
@@ -122,14 +121,14 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             ViewData["ReturnUrl"] = returnUrl;
 
 
-            var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, lockoutOnFailure: true);
             // Tìm UserName theo Email, đăng nhập lại
             if ((!result.Succeeded) && AppUtilities.IsValidEmail(model.UserNameOrEmail))
             {
                 var user = await _userManager.FindByEmailAsync(model.UserNameOrEmail);
                 if (user != null)
                 {
-                    result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+                    result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: true);
                 }
             }
 
@@ -167,183 +166,85 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> UpdateUserStatus(string userEmail)
+        //{
+        //    var user = await _userManager.FindByEmailAsync(userEmail);
+        //    if (user != null)
+        //    {
+        //        if (user.Status)
+        //        {
+        //            user.Status = false;
+        //        }
+        //        else
+        //        {
+        //            user.Status = true;
+        //        }
+        //        await _userManager.UpdateAsync(user);
+        //        return RedirectToAction("Index");
+        //    }
+        //    return RedirectToAction("LogOut
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateUserStatus(string userEmail)
+        public async Task<IActionResult> UpdateUserStatus(string userID)
         {
-            var user = await _userManager.FindByEmailAsync(userEmail);
+            var user = await _userManager.FindByIdAsync(userID);
             if (user != null)
             {
-                if (user.Status)
+                var isLockedOut = await _userManager.IsLockedOutAsync(user);
+                if (isLockedOut)
                 {
-                    user.Status = false;
-                }
-                else
+                    //user.LockoutEnabled = false;
+                    user.LockoutEnd = null;
+                } else
                 {
-                    user.Status = true;
+                    //user.LockoutEnabled = true;
+                    user.LockoutEnd = DateTimeOffset.MaxValue;
                 }
                 await _userManager.UpdateAsync(user);
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("LogOut");
-
+            return RedirectToAction("Error", "Home");
         }
 
+        public async Task<IActionResult> SearchUser(string keyword)
+        {
+            ViewBag.Keyword = keyword;
+            List<AppUser> listAllUsers = new List<AppUser>(_userManager.Users);
+            List<IndexViewModel> index = new List<IndexViewModel>();
+            if (keyword != null)
+            {
+                var listSearchUser = listAllUsers.Where(p => p.Email.Contains(keyword.Trim()) || p.UserName.Contains(keyword.Trim())).ToList();
+                if (listSearchUser.Count == 0)
+                {
 
+                    ViewBag.NotFind = "No result match the keyword";
+                    return View("Index");
 
-
-        ////
-        //// GET: /Account/SendCode
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public async Task<ActionResult> SendCode(string returnUrl = null, bool rememberMe = false)
-        //{
-        //    var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-        //    if (user == null)
-        //    {
-        //        return View("Error");
-        //    }
-        //    var userFactors = await _userManager.GetValidTwoFactorProvidersAsync(user);
-        //    var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-        //    return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
-        //}
-        //
-        //// POST: /Account/SendCode
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> SendCode(SendCodeViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View();
-        //    }
-
-        //    var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-        //    if (user == null)
-        //    {
-        //        return View("Error");
-        //    }
-        //    // Dùng mã Authenticator
-        //    if (model.SelectedProvider == "Authenticator")
-        //    {
-        //        return RedirectToAction(nameof(VerifyAuthenticatorCode), new { ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
-        //    }
-
-        //    // Generate the token and send it
-        //    var code = await _userManager.GenerateTwoFactorTokenAsync(user, model.SelectedProvider);
-        //    if (string.IsNullOrWhiteSpace(code))
-        //    {
-        //        return View("Error");
-        //    }
-
-        //    var message = "Your security code is: " + code;
-        //    if (model.SelectedProvider == "Email")
-        //    {
-        //        await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
-        //    }
-        //    else if (model.SelectedProvider == "Phone")
-        //    {
-        //        await _emailSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), message);
-        //    }
-
-        //    return RedirectToAction(nameof(VerifyCode), new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
-        //}
-        ////
-        //// GET: /Account/VerifyCode
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> VerifyCode(string provider, bool rememberMe, string returnUrl = null)
-        //{
-        //    // Require that the user has already logged in via username/password or external login
-        //    var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-        //    if (user == null)
-        //    {
-        //        return View("Error");
-        //    }
-        //    return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
-        //}
-
-        ////
-        //// POST: /Account/VerifyCode
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> VerifyCode(VerifyCodeViewModel model)
-        //{
-        //    model.ReturnUrl ??= Url.Content("~/");
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-
-        //    // The following code protects for brute force attacks against the two factor codes.
-        //    // If a user enters incorrect codes for a specified amount of time then the user account
-        //    // will be locked out for a specified amount of time.
-        //    var result = await _signInManager.TwoFactorSignInAsync(model.Provider, model.Code, model.RememberMe, model.RememberBrowser);
-        //    if (result.Succeeded)
-        //    {
-        //        return LocalRedirect(model.ReturnUrl);
-        //    }
-        //    if (result.IsLockedOut)
-        //    {
-        //        _logger.LogWarning(7, "User account locked out.");
-        //        return View("Lockout");
-        //    }
-        //    else
-        //    {
-        //        ModelState.AddModelError(string.Empty, "Invalid code.");
-        //        return View(model);
-        //    }
-        //}
-
-        ////
-        //// GET: /Account/VerifyAuthenticatorCode
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> VerifyAuthenticatorCode(bool rememberMe, string returnUrl = null)
-        //{
-        //    // Require that the user has already logged in via username/password or external login
-        //    var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-        //    if (user == null)
-        //    {
-        //        return View("Error");
-        //    }
-        //    return View(new VerifyAuthenticatorCodeViewModel { ReturnUrl = returnUrl, RememberMe = rememberMe });
-        //}
-
-        ////
-        //// POST: /Account/VerifyAuthenticatorCode
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> VerifyAuthenticatorCode(VerifyAuthenticatorCodeViewModel model)
-        //{
-        //    model.ReturnUrl ??= Url.Content("~/");
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-
-        //    // The following code protects for brute force attacks against the two factor codes.
-        //    // If a user enters incorrect codes for a specified amount of time then the user account
-        //    // will be locked out for a specified amount of time.
-        //    var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(model.Code, model.RememberMe, model.RememberBrowser);
-        //    if (result.Succeeded)
-        //    {
-        //        return LocalRedirect(model.ReturnUrl);
-        //    }
-        //    if (result.IsLockedOut)
-        //    {
-        //        _logger.LogWarning(7, "User account locked out.");
-        //        return View("Lockout");
-        //    }
-        //    else
-        //    {
-        //        ModelState.AddModelError(string.Empty, "Wrong code.");
-        //        return View(model);
-        //    }
-        //}
+                }
+                foreach (var userSearch in listSearchUser)
+                {
+                    var role = await _userManager.GetRolesAsync(userSearch);
+                    var isLockout = await _userManager.IsLockedOutAsync(userSearch);
+                    index.Add(new IndexViewModel
+                    {
+                        Member = userSearch,
+                        Role = role.ToList(),
+                        TotalRecipe = 2,
+                        Status = !isLockout
+                    });
+                }
+                return View("Index", index);
+            }
+            else
+            {
+                ViewBag.NotFind = "Invalid keyword";
+            }
+            return View("Index");
+        }
 
         [AllowAnonymous]
         public async Task<IActionResult> CreateAdminAsync()

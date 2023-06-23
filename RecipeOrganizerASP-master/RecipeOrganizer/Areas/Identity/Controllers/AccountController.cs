@@ -73,17 +73,18 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, lockoutOnFailure: false);
-                // Tìm UserName theo Email, đăng nhập lại
+                //login with username
+                var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, lockoutOnFailure: true);
+                // Login with email 
                 if ((!result.Succeeded) && AppUtilities.IsValidEmail(model.UserNameOrEmail))
                 {
                     var user = await _userManager.FindByEmailAsync(model.UserNameOrEmail);
                     if (user != null)
                     {
-                        result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+                        result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: true);
                     }
                 }
-
+                //login success
                 if (result.Succeeded)
                 {
                     //tìm user theo email truyền tới

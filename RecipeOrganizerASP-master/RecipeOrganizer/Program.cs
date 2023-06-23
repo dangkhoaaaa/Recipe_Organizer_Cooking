@@ -55,13 +55,14 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredLength = 3; // Số ký tự tối thiểu của password
     options.Password.RequiredUniqueChars = 1; // Số ký tự riêng biệt
 
-    // Cấu hình Lockout - khóa user
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2); // Khóa 5 phút
-    options.Lockout.MaxFailedAccessAttempts = 7; // Thất bại 7 lầ thì khóa
+	// Cấu hình Lockout - khóa user
+    options.Lockout.AllowedForNewUsers = true;
+	options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2); // Khóa 5 phút
+    options.Lockout.MaxFailedAccessAttempts = 7; // Thất bại 7 lần thì khóa
     options.Lockout.AllowedForNewUsers = true;
 
     // Cấu hình về User.
-    options.User.AllowedUserNameCharacters = // các ký tự đặt tên user
+    options.User.AllowedUserNameCharacters = // các ký tự đặt tên user name
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
         //"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     options.User.RequireUniqueEmail = true;  // Email là duy nhất
