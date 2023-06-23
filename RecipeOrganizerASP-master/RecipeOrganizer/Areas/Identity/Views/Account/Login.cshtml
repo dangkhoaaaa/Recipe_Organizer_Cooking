@@ -96,10 +96,10 @@
                             <label asp-for="RememberMe" class="form-label">
                                 <input class="form-check-input" asp-for="RememberMe" />
                                 @Html.DisplayNameFor(m => m.RememberMe)
-                                </label>
-                            </div>
-                            <a class="forgot" asp-action="ForgotPassword">Forgot your password?</a>
+                            </label>
                         </div>
+                        <a class="forgot" asp-action="ForgotPassword">Forgot your password?</a>
+                    </div>
 
                     <button type="submit" class="login-button btn btn-md btn-primary full-width" style="margin-top: 12px;padding: 10px;">Login</button>
                     @*<a id="resend-confirm-email" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>*@

@@ -28,12 +28,16 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //                                                .AddEntityFrameworkStores<Recipe_OrganizerContext>()
 //                                                .AddDefaultTokenProviders();
-builder.Services.AddTransient<RecipeRepository>();
+
+//builder.Services.AddTransient<RecipeRepository>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 //Session
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession();
+builder.Services.AddSession(session => {                    // Đăng ký dịch vụ Session
+    session.Cookie.Name = "RecipeOrganizer";                 // Đặt tên Session - tên này sử dụng ở Browser (Cookie)
+    session.IdleTimeout = new TimeSpan(0, 30, 0);    // Thời gian tồn tại của Session - 30p
+});
 
 //add mail
 builder.Services.AddOptions();                                        // Kích hoạt Options
@@ -58,7 +62,8 @@ builder.Services.Configure<IdentityOptions>(options =>
 
     // Cấu hình về User.
     options.User.AllowedUserNameCharacters = // các ký tự đặt tên user
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+        //"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     options.User.RequireUniqueEmail = true;  // Email là duy nhất
 
     // Cấu hình đăng nhập.
@@ -81,7 +86,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 ////cấu hình login google, facebook
 builder.Services.AddAuthentication()
-//.AddMicrosoftAccount(microsoftOptions => { ... })   // thêm provider Microsoft và cấu hình
+//.AddMicrosoftAccount(microsoftOptions => { ... })   // Login with Microsoft
 .AddGoogle(googleOptions =>
 {
     // Đọc thông tin Authentication:Google từ appsettings.json
