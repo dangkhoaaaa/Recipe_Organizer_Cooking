@@ -12,11 +12,13 @@ namespace RecipeOrganizer.Areas.Identity.Models.AccountViewModels
     public class LoginViewModel
     {
         [Required(ErrorMessage = "Must input {0}")]
+        [StringLength(100, ErrorMessage = "{0} must be between {2} and {1} characters long.", MinimumLength = 3)]
         [Display(Name = "Username or email")]
         public string UserNameOrEmail { get; set; }
 
 
-        [Required]
+        [Required(ErrorMessage = "Must input {0}")]
+        [StringLength(100, ErrorMessage = "{0} must be between {2} and {1} characters long.", MinimumLength = 3)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

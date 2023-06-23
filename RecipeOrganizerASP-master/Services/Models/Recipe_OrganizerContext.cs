@@ -68,6 +68,10 @@ namespace Services.Models
                     .IsUnicode(false)
                     .HasColumnName("title");
 
+                entity.Property(e => e.Image)
+                    .HasColumnType("text")
+                    .HasColumnName("image");
+
                 entity.HasOne(d => d.Parent)
                     .WithMany(p => p.Categories)
                     .HasForeignKey(d => d.ParentId)

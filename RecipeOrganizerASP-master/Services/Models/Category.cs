@@ -9,6 +9,7 @@ namespace Services.Models
         public int ParentId { get; set; }
         public string Title { get; set; } = null!;
         public string? Description { get; set; }
+        public string? Image { get; set; }
 
         public virtual ParentCategory Parent { get; set; } = null!;
     }

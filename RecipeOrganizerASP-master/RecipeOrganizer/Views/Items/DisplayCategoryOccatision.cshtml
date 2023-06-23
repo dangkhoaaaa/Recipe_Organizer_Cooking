@@ -1,12 +1,13 @@
 ﻿@model Services.Repository.RecipeListDisplayWithPaging
+@using Microsoft.AspNetCore.Identity
 
-
-
-
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 
 
 
 <section class="padding-tb-100px">
+
     <div class="container">
         <div class="title text-center">
             <h2 class="font-weight-700 text-main-color">@ViewBag.Category.Title</h2>
@@ -188,4 +189,4 @@
     }
    
     <!-- // container -->
-</section>
+<section/>
