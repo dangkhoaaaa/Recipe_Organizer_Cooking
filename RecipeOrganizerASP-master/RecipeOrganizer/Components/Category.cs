@@ -21,7 +21,7 @@ namespace RecipeOrganizer.Components
 		private readonly UserManager<AppUser> _userManager;
 		private readonly CategoryRepository _categoryRepository;
 
-		public Category(UserManager<AppUser> userManager)
+		public Category()
 		{
 			_recipeRepository = new RecipeRepository();
 			_ingredientRepository = new IngredientRepository();
