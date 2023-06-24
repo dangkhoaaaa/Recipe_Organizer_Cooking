@@ -31,10 +31,7 @@ namespace Services.Repository
 			_dbSetUser = _context.Set<AppUser>();
 		}
 
-
-
 		public ICollection<Recipe> Products { get; set; } = new List<Recipe>();
-
 
 		public List<Recipe> getRecipeByKeyword(string keyword)
 		{
@@ -68,10 +65,9 @@ namespace Services.Repository
 			return listRecipe;
 		}
 
-
-		public Recipe GetById(int id)
+		public Recipe GetById(int id, string status)
 		{
-			return _dbSet.Where(r => r.RecipeId == id && r.Status.Equals("public")).FirstOrDefault();
+			return _dbSet.Where(r => r.RecipeId == id && r.Status.Equals(status)).FirstOrDefault();
 		}
 		public Recipe GetByIdForEdit(int id)
 		{
@@ -85,6 +81,47 @@ namespace Services.Repository
 
 			return listRecipe;
 		}
+		public List<Recipe> GetByAuthorPending(string userId)
+		{
+			List<Recipe> listRecipe = GetByAuthor(userId);
+			List<Recipe> pendingRecipes = new List<Recipe>();
+			if (listRecipe != null)
+			{
+				foreach (var item in listRecipe)
+				{
+					Recipe pendingRecipe = _dbSet.FirstOrDefault(r => r.RecipeId == item.RecipeId && r.Status.Equals("pending"));
+					if (pendingRecipe != null)
+					{
+						pendingRecipes.Add(pendingRecipe);
+					}
+				}
+			}
+			return pendingRecipes;
+		}
+
+		public void ChangeStatusRecipe(int recipeId, string oldStatus, string newStatus)
+		{
+			if (recipeId != 0 && oldStatus != null && newStatus != null)
+			{
+				Recipe recipe = GetById(recipeId, oldStatus);
+				if (recipe != null)
+				{
+					recipe.Status = newStatus;
+					_dbSet.Update(recipe);
+					_context.SaveChanges();
+				}
+			}
+		}
+
+		public void UpdateApprovalStatus(int recipeId, string action)
+		{
+			if (recipeId != 0 && action != null)
+			{
+				ChangeStatusRecipe(recipeId, "pending", action);
+			}
+		}
+
+
 		//public List<Recipe> GetUserCollection(string userId)
 		//{
 		//	List<Recipe> listRecipe = _dbSet.Where(r => r.Collection.Any(c => c.UserId == userId))
