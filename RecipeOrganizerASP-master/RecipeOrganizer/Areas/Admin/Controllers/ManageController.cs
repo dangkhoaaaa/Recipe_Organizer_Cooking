@@ -73,7 +73,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 
             var listUser = _userRepository.GetAll();
             List<IndexViewModel> list = new List<IndexViewModel>();
-
+            //get all user
             foreach (var user in listUser)
             {
                 var role = await _userManager.GetRolesAsync(user);
@@ -82,7 +82,8 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 {
                     Member = user,
                     Role = role.ToList(),
-                    TotalRecipe = 2,
+                    TotalRecipe = _recipeRepository.GetByAuthor(user.Id).Count,
+                    //TotalRecipe = 2,
                     Status = !isLockout
                 };
                 list.Add(model);
@@ -166,26 +167,6 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> UpdateUserStatus(string userEmail)
-        //{
-        //    var user = await _userManager.FindByEmailAsync(userEmail);
-        //    if (user != null)
-        //    {
-        //        if (user.Status)
-        //        {
-        //            user.Status = false;
-        //        }
-        //        else
-        //        {
-        //            user.Status = true;
-        //        }
-        //        await _userManager.UpdateAsync(user);
-        //        return RedirectToAction("Index");
-        //    }
-        //    return RedirectToAction("LogOut
-        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -233,7 +214,8 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                     {
                         Member = userSearch,
                         Role = role.ToList(),
-                        TotalRecipe = 2,
+                        TotalRecipe = _recipeRepository.GetByAuthor(userSearch.Id).Count,
+                        //TotalRecipe = 2,
                         Status = !isLockout
                     });
                 }

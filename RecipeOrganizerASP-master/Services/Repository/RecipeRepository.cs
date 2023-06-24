@@ -206,20 +206,6 @@ namespace Services.Repository
 			// return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
 			return listRecipe;
 		}
-		public int getListRecipebyUserWithStatus(string userID)
-		{
-			List<Recipe> listmapCategory = new List<Recipe>();
-			var query = from md in _dbSetMetadata
-						join us in _dbSetUser on md.UserId equals us.Id
-						join rp in _dbSet on md.RecipeId equals rp.RecipeId
-
-						where us.Id == userID
-						select rp;
-
-			listmapCategory = query.ToList();
-			return 1;
-
-		}
 	}
 }
 
