@@ -17,7 +17,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
     [Authorize(Roles = RoleName.Administrator)]
     [Area("Admin")]
     [Route("/Admin/[action]")]
-    public class Category : Controller
+    public class CategoryController : Controller
     {
    
       
@@ -25,7 +25,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         private readonly Parent_CategoryRepository _parentCategoryRepository;
         private readonly RecipeHasCategoryRepository _recipeHasCategory;
 
-        public Category(UserManager<AppUser> userManager)
+        public CategoryController(UserManager<AppUser> userManager)
         {
 
             _parentCategoryRepository = new Parent_CategoryRepository();

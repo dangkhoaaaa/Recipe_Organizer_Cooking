@@ -36,34 +36,23 @@ namespace RecipeOrganizer.Controllers
 
 		[Produces("application/json")]
 		[HttpGet("search")]
-		public async Task<IActionResult> Search()
-		{
+        public IActionResult Search()
+        {
+            try
+            {
+                string term = HttpContext.Request.Query["term"].ToString();
+                var postTitle = _recipeRepository.getListTitleRecipeByKeyword(term);
+                return Ok(postTitle);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
 
-			try
-			{
-
-				string term = HttpContext.Request.Query["term"].ToString();
-				var postTitle = _recipeRepository.getListTitleRecipeByKeyword(term);
-			   //  var postTitle = new string[] { "Iphone", "Samsung", "Nokia" };
-
-
-				return Ok(postTitle);
-				
-			}
-			catch
-			{
-
-				return BadRequest();
-			}
-
-
-			
-		
-		}
-
-		[Produces("application/json")]
+        [Produces("application/json")]
 		[HttpGet("search1")]
-		public async Task<IActionResult> Search1()
+        public IActionResult Search1()
 		{
 
 			try
