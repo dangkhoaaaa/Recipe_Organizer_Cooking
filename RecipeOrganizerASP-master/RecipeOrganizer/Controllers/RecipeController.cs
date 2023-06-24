@@ -194,7 +194,7 @@ namespace RecipeOrganizer.Controllers
 		[AllowAnonymous]
 		public async Task<IActionResult> RecipeDetail(int id)
 		{
-			Recipe recipe = _recipeRepository.GetById(id);
+			Recipe recipe = _recipeRepository.GetById(id, "public");
 			if (recipe != null)
 			{
 				RecipeData data = new RecipeData();
@@ -296,7 +296,7 @@ namespace RecipeOrganizer.Controllers
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
 			{
-				Recipe existingRecipe = _recipeRepository.GetById(recipe.RecipeId);
+				Recipe existingRecipe = _recipeRepository.GetByIdForEdit(recipe.RecipeId);
 				if (existingRecipe != null)
 				{
 					if (Action == "save")
