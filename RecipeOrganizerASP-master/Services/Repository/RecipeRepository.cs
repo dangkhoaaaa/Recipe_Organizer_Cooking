@@ -73,6 +73,17 @@ namespace Services.Repository
 		{
 			return _dbSet.Where(r => r.RecipeId == id).FirstOrDefault();
 		}
+		public Recipe GetRecipeByAuthor(int recipeId, string userId)
+		{
+			Recipe recipe = null;
+			if (!string.IsNullOrEmpty(userId) && recipeId != 0)
+			{
+				recipe = _dbSet.FirstOrDefault(r => r.MetaData.Any(md => md.UserId == userId
+																		  && md.RecipeId == recipeId
+																		  && md.FeedbackId == null));
+			}
+			return recipe;
+		}
 
 		public List<Recipe> GetByAuthor(string userId)
 		{
@@ -117,7 +128,21 @@ namespace Services.Repository
 		{
 			if (recipeId != 0 && action != null)
 			{
-				ChangeStatusRecipe(recipeId, "pending", action);
+				string status;
+				if (action == "approved")
+				{
+					status = "public";
+				}
+				else if (action == "rejected")
+				{
+					status = "rejected";
+				}
+				else
+				{
+					return;
+				}
+
+				ChangeStatusRecipe(recipeId, "pending", status);
 			}
 		}
 
