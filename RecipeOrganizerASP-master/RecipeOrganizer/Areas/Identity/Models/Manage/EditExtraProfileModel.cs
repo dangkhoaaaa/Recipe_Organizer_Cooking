@@ -25,5 +25,8 @@ namespace RecipeOrganizer.Areas.Identity.Models.ManageViewModels
 
         [Display(Name = "Birthday")]
         public DateTime? Birthday { get; set; }
+
+        [Display(Name = "Imagee")]
+        public string? Img { get; set; }
     }
 }
