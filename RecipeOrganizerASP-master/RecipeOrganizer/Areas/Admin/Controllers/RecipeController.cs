@@ -39,27 +39,27 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             _userRepository = new UserRepository();
         }
 
-        [HttpGet("/manage/recipe")]
-        public async Task<IActionResult> Index()
-        {
-            var listUser = _userRepository.GetAll();
-            List<IndexViewModel> list = new List<IndexViewModel>();
-            //get all user
-            foreach (var user in listUser)
-            {
-                var role = await _userManager.GetRolesAsync(user);
-                var isLockout = await _userManager.IsLockedOutAsync(user);
-                var model = new IndexViewModel
-                {
-                    Member = user,
-                    Role = role.ToList(),
-                    TotalRecipe = _recipeRepository.GetByAuthor(user.Id).Count,
-                    //TotalRecipe = 2,
-                    Status = !isLockout
-                };
-                list.Add(model);
-            }
-            return View(list);
-        }
+        //[HttpGet("/manage/recipe")]
+        //public async Task<IActionResult> Index()
+        //{
+        //    var listUser = _recipeRepository.GetAll();
+        //    List<IndexViewModel> list = new List<IndexViewModel>();
+        //    //get all user
+        //    foreach (var user in listUser)
+        //    {
+        //        var role = await _userManager.GetRolesAsync(user);
+        //        var isLockout = await _userManager.IsLockedOutAsync(user);
+        //        var model = new IndexViewModel
+        //        {
+        //            Member = user,
+        //            Role = role.ToList(),
+        //            TotalRecipe = _recipeRepository.GetByAuthor(user.Id).Count,
+        //            //TotalRecipe = 2,
+        //            Status = !isLockout
+        //        };
+        //        list.Add(model);
+        //    }
+        //    return View(list);
+        //}
     }
 }
