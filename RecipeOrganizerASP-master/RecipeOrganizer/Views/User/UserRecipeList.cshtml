@@ -1,0 +1,76 @@
+﻿@model List<Services.Data.RecipeUserData>
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+	ViewBag.Title = "All recipes Personal Recipes";
+	Layout = "~/Areas/Identity/Views/Shared/_ProfileLayout.cshtml";
+}
+
+
+
+<div class="row">
+	<div class="col-lg-12 margin-bottom-40px">
+		<div class="box-shadow border-radius-10 overflow-hidden">
+			<div class="padding-30px background-white">
+				<h2>All recipes Personal Recipes</h2>
+				<p>Recipes you have created on Recipe Organizer.</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+@if (Model.Count > 0)
+{
+	<!-- have -->
+	<div class="container margin-bottom-100px">
+		<div class="row">
+			@foreach (var item in Model)
+			{
+				<!-- item -->
+				<div class="col-lg-12 margin-bottom-20px">
+					<div class="background-white thum-hover box-shadow hvr-float full-width">
+						<div class="float-md-left margin-right-30px thum-xs">
+							<a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img class="width-200px" src="@item.Image" alt=""></a>
+						</div>
+						<div class="padding-25px">
+							<h3>
+								<a class="text-dark" href="/Recipe/RecipeDetail/?id=@item.RecipeId">@item.Title</a>
+							</h3>
+							<hr>
+							<div class="row no-gutters">
+								<div class="col-4 text-left">Date: @item.Date.ToString("dd/MM/yyyy")</div>
+								<div class="col-8 text-right">
+									<a href="/Recipe/EditRecipe/?id=@item.RecipeId" class="text-grey-4">Edit</a>
+								</div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+				<!-- // item -->
+			}
+		</div>
+	</div>
+	<!-- // have -->
+}
+else
+{
+	<div class="col-lg-12 margin-bottom-40px">
+		<div class="box-shadow border-radius-10 overflow-hidden">
+			<div class="padding-30px background-white">
+				<div class="text-center">
+					<h3>You haven't created any recipes yet.</h3>
+					<p>To add a recipe click the button below</p>
+					<a href="@Url.Action("AddNewRecipe", "Recipe")"
+					   class="btn box-shadow margin-top-50px padding-tb-10px btn-sm border-2 border-radius-30 btn-inline-block width-210px background-second-color text-white">
+						<i class="fas fa-plus"></i> Add A Recipes
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
