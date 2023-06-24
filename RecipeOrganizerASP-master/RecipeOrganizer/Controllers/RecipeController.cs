@@ -115,7 +115,7 @@ namespace RecipeOrganizer.Controllers
 					//}
 
 					string[] filePaths = _fireBaseService.UploadImage(mediaFiles).ToString().Split(new[] { "ygbygyn34897gnygytfrfr" }, StringSplitOptions.RemoveEmptyEntries);
-					
+
 					//_mediaRepository.addMedia(filePath);
 
 					foreach (var imgUrl in filePaths)
@@ -186,15 +186,30 @@ namespace RecipeOrganizer.Controllers
 					}
 				}
 				//}
-				return RedirectToAction("EditRecipe", "Recipe", new { id = data.RecipeId });
+				return RedirectToAction("RecipePending", "Recipe", new { id = data.RecipeId });
 			}
 			return View();
+		}
+		
+		public async Task<IActionResult> PendingRecipe(int id)
+		{
+			var user = await _userManager.GetUserAsync(User);
+			if (user != null)
+			{
+				Recipe recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
+				if (recipe != null)
+				{
+					RecipeData data = ConvertToRecipeData(recipe);
+					return View(data);
+				}
+			}
+			return RedirectToAction("Index", "Home");
 		}
 
 		[AllowAnonymous]
 		public async Task<IActionResult> RecipeDetail(int id)
 		{
-			Recipe recipe = _recipeRepository.GetById(id);
+			Recipe recipe = _recipeRepository.GetById(id, "public");
 			if (recipe != null)
 			{
 				RecipeData data = new RecipeData();
@@ -263,11 +278,12 @@ namespace RecipeOrganizer.Controllers
 			data.Description = recipe.Description;
 			data.Status = recipe.Status;
 			data.Image = recipe.Image;
-            if (recipe.AvgRate == null)
-            {
-                recipe.AvgRate = 0.0;
-            }
-            data.AvgRate = recipe.AvgRate;
+			if (recipe.AvgRate == null)
+			{
+				recipe.AvgRate = 0.0;
+			}
+			data.AvgRate = recipe.AvgRate;
+
 			List<Ingredient> ingredients = _ingredientRepository.GetByRecipeId(recipe.RecipeId);
 			List<Direction> directions = _directionRepository.GetByRecipeId(recipe.RecipeId);
 			List<Tag> tags = _recipeHasTagRepository.GetTagsByRecipeId(recipe.RecipeId);
@@ -296,7 +312,7 @@ namespace RecipeOrganizer.Controllers
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
 			{
-				Recipe existingRecipe = _recipeRepository.GetById(recipe.RecipeId);
+				Recipe existingRecipe = _recipeRepository.GetByIdForEdit(recipe.RecipeId);
 				if (existingRecipe != null)
 				{
 					if (Action == "save")

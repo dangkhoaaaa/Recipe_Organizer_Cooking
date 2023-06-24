@@ -47,7 +47,7 @@ namespace Services.Repository
 		public int CountRecipeCollection(int recipeId)
 		{
 			List<Collection> collections = GetCollections();
-			Recipe recipe = _recipeRepository.GetById(recipeId);
+			Recipe recipe = _recipeRepository.GetById(recipeId, "public");
 			if (recipe != null)
 			{
 				int likeCount = collections.Count(c => c.RecipeId == recipeId);
@@ -85,7 +85,7 @@ namespace Services.Repository
 
 			foreach (var collection in userCollections)
 			{
-				var recipe = _recipeRepository.GetById(collection.RecipeId);
+				var recipe = _recipeRepository.GetById(collection.RecipeId, "public");
 				if (recipe != null)
 				{
 					userCollection.Add(recipe);
@@ -102,7 +102,7 @@ namespace Services.Repository
 
 			foreach (var collection in userCollections)
 			{
-				var recipe = _recipeRepository.GetById(collection.RecipeId);
+				var recipe = _recipeRepository.GetById(collection.RecipeId, "public");
 				if (recipe != null)
 				{
 					userCollection.Add(recipe);

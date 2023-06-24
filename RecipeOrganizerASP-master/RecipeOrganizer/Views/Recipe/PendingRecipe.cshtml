@@ -1,0 +1,112 @@
+﻿@model Services.Data.RecipeData
+
+@{
+	ViewBag.Title = "Recipe Added Successfully";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+	<div id="page-title" class="padding-top-30px padding-bottom-10px gradient-white">
+		<div class="container text-left">
+			<ol class="breadcrumb opacity-5">
+				<li><a href="@Url.Action("Index", "Home")">Home</a></li>
+				<li class="active">Recipe</li>
+			</ol>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="margin-tb-20px card border-0 box-shadow">
+					<div class="padding-lr-20px padding-tb-20px">
+						<div class="padding-tb-10px text-center">
+							@if (Model.Status == "public")
+							{
+								<div class="text-success">
+									<h1>Your Recipe Added Approved</h1>
+									<p>Your recipe has been added successfully.</p>
+								</div>
+
+							}
+							else if (Model.Status == "rejected")
+							{
+								<div class="text-danger">
+									<h1>Your Recipe Added Denied</h1>
+									<p></p>
+								</div>
+							}
+							else if (Model.Status == "pending")
+							{
+								<div class="text-warning">
+									<h1>Your Recipe Added Pending</h1>
+									<p><a href="">Edit it?</a></p>
+								</div>
+							}
+							else if (Model.Status == "trash")
+							{
+								<div class="text-muted">
+									<h1>Your Recipe Added Delete</h1>
+								</div>
+							}
+						</div>
+					</div>
+				</div>
+
+				<div class="margin-bottom-40px card border-0 box-shadow">
+					<div class="padding-lr-30px padding-tb-20px">
+						<h2 class="font-weight-500 margin-bottom-20px text-center">@Model.Title</h2>
+						<div class="margin-tb-10px">
+							@Model.Description
+						</div>
+						<div class="margin-bottom-10px">
+							Recipe by Cook
+							<span class="margin-lr-5px">|</span>
+							Updated on @Model.Date
+						</div>
+					</div>
+					<div class="card-img-top"><a href="#"><img src="http://placehold.it/1600x800" alt=""></a></div>
+					<div class="padding-lr-30px padding-tb-20px">
+						<div class="padding-tb-10px">
+							<h3>Ingredients</h3>
+							<ul>
+								@foreach (var item in Model.Ingredients)
+								{
+									<li>@item.IngredientName</li>
+								}
+							</ul>
+						</div>
+						<div class="padding-tb-10px">
+							<h3>Directions</h3>
+							<div class="padding-lr-20px">
+								@foreach (var item in Model.Directions)
+								{
+									<p><b>Step @item.Step</b> - <span>@item.Direction1</span></p>
+								}
+							</div>
+						</div>
+						<div class="padding-tb-10px">
+							<h3>Tags</h3>
+							<div class="padding-lr-20px">
+								<p>
+									@foreach (var item in Model.Tags)
+									{
+										@if (item.ToString().Trim() != null)
+										{
+											<a href="#">#@item.TagName</a>
+											@*@if (item != Model.Tags.Last())
+									{
+									<text>,</text>
+									}*@
+										}
+									}
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
