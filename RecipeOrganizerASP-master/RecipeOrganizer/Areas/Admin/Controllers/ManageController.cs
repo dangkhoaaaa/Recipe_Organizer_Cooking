@@ -78,13 +78,15 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             {
                 var role = await _userManager.GetRolesAsync(user);
                 var isLockout = await _userManager.IsLockedOutAsync(user);
+                var externalLogins = (List<UserLoginInfo>) await _userManager.GetLoginsAsync(user);
                 var model = new IndexViewModel
                 {
                     Member = user,
                     Role = role.ToList(),
                     TotalRecipe = _recipeRepository.GetByAuthor(user.Id).Count,
                     //TotalRecipe = 2,
-                    Status = !isLockout
+                    Status = !isLockout,
+                    ExternalLogin = externalLogins,
                 };
                 list.Add(model);
             }
