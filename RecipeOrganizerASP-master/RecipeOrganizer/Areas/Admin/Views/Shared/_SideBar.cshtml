@@ -14,16 +14,24 @@
                 <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="collapsible-header"><i class="material-icons">assignment</i><span class="hide-menu"> Category </span></a>
             </li>
 
-            <li class="small-cap"><span class="hide-menu">PERSONAL</span></li>
+            <li class="small-cap"><span class="hide-menu">Recipe</span></li>
             <li>
-                <a href="javascript: void(0);" class="collapsible-header has-arrow"><i class="material-icons">dashboard</i><span class="hide-menu"> Dashboard</span></a>
+                <a href="javascript: void(0);" class="collapsible-header has-arrow"><i class="material-icons">restaurant_menu</i><span class="hide-menu">Manage recipe</span></a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li><a href="/manage/recipe"><i class="material-icons">adjust</i><span class="hide-menu">User recipe</span></a></li>
+                        <li><a href=@Url.Action("PendingRecipe", "Recipe")><i class="material-icons">adjust</i><span class="hide-menu">Pending recipe</span></a></li>
+                        <li><a href="index3.html"><i class="material-icons">adjust</i><span class="hide-menu">...</span></a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="small-cap"><span class="hide-menu">Feedback</span></li>
+            <li>
+                <a href="javascript: void(0);" class="collapsible-header has-arrow"><i class="material-icons">feedback</i><span class="hide-menu"> User feedback</span></a>
                 <div class="collapsible-body">
                     <ul>
                         <li><a href="index.html"><i class="material-icons">adjust</i><span class="hide-menu">Dashboard-1</span></a></li>
-                        <li><a href="index2.html"><i class="material-icons">adjust</i><span class="hide-menu">Dashboard-2</span></a></li>
-                        <li><a href="index3.html"><i class="material-icons">adjust</i><span class="hide-menu">Dashboard-3</span></a></li>
-                        <li><a href="index4.html"><i class="material-icons">adjust</i><span class="hide-menu">Dashboard-4</span></a></li>
-                        <li><a href="index5.html"><i class="material-icons">adjust</i><span class="hide-menu">Dashboard-5</span></a></li>
                     </ul>
                 </div>
             </li>

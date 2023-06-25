@@ -90,7 +90,7 @@ $(function() {
     function handlethemeview() {
         $('#theme-view').change(function() {
             if ($(this).is(":checked")) {
-                $('body').attr("data-theme", 'dark');
+                $('body').attr("data-theme", 'light');
             } else {
                 $('body').attr("data-theme", 'light');
             }

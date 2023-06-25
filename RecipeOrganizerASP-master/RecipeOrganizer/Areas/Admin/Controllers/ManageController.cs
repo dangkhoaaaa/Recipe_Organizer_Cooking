@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RecipeOrganizer.Areas.Data;
-using RecipeOrganizer.Areas.Admin.Models;
 using Services.Models;
 using Services.Models.Authentication;
 using System;
@@ -11,6 +10,7 @@ using RecipeOrganizer.Utilities;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Firebase.Auth;
 using System.Collections.Generic;
+using RecipeOrganizer.Areas.Admin.Models.Manage;
 
 namespace RecipeOrganizer.Areas.Admin.Controllers
 {
@@ -73,7 +73,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 
             var listUser = _userRepository.GetAll();
             List<IndexViewModel> list = new List<IndexViewModel>();
-
+            //get all user
             foreach (var user in listUser)
             {
                 var role = await _userManager.GetRolesAsync(user);
@@ -82,7 +82,8 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 {
                     Member = user,
                     Role = role.ToList(),
-                    TotalRecipe = 2,
+                    TotalRecipe = _recipeRepository.GetByAuthor(user.Id).Count,
+                    //TotalRecipe = 2,
                     Status = !isLockout
                 };
                 list.Add(model);
@@ -166,26 +167,6 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> UpdateUserStatus(string userEmail)
-        //{
-        //    var user = await _userManager.FindByEmailAsync(userEmail);
-        //    if (user != null)
-        //    {
-        //        if (user.Status)
-        //        {
-        //            user.Status = false;
-        //        }
-        //        else
-        //        {
-        //            user.Status = true;
-        //        }
-        //        await _userManager.UpdateAsync(user);
-        //        return RedirectToAction("Index");
-        //    }
-        //    return RedirectToAction("LogOut
-        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -233,7 +214,8 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                     {
                         Member = userSearch,
                         Role = role.ToList(),
-                        TotalRecipe = 2,
+                        TotalRecipe = _recipeRepository.GetByAuthor(userSearch.Id).Count,
+                        //TotalRecipe = 2,
                         Status = !isLockout
                     });
                 }
@@ -244,6 +226,25 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 ViewBag.NotFind = "Invalid keyword";
             }
             return View("Index");
+        }
+
+        //GET: Admin/UserRecipe/{id}
+        public async Task<IActionResult> UserRecipe(string userID)
+        {
+            var user = await _userManager.FindByIdAsync(userID);
+            if (user == null)
+            {
+                ViewBag.UserError = "Can not find user";
+                return View("Index");
+            }
+            var listUserRecipe = _recipeRepository.GetByAuthor(userID);
+            var model = new UserReipceViewModel {
+                User = user,
+                UserRecipe = listUserRecipe,
+            };
+            if (listUserRecipe == null)
+                ViewBag.NoRecipe = "No recipe";
+            return View(model);
         }
 
         [AllowAnonymous]

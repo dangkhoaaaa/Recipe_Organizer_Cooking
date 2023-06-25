@@ -1,6 +1,6 @@
 ﻿using Services.Models.Authentication;
 
-namespace RecipeOrganizer.Areas.Admin.Models
+namespace RecipeOrganizer.Areas.Admin.Models.Manage
 {
     public class IndexViewModel
     {
