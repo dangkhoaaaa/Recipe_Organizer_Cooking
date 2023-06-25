@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RecipeOrganizer.Areas.Data;
-using RecipeOrganizer.Areas.Admin.Models;
 using Services.Models;
 using Services.Models.Authentication;
 using System;
@@ -11,6 +10,7 @@ using RecipeOrganizer.Utilities;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Firebase.Auth;
 using System.Collections.Generic;
+using RecipeOrganizer.Areas.Admin.Models.Manage;
 
 namespace RecipeOrganizer.Areas.Admin.Controllers
 {
@@ -226,6 +226,25 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 ViewBag.NotFind = "Invalid keyword";
             }
             return View("Index");
+        }
+
+        //GET: Admin/UserRecipe/{id}
+        public async Task<IActionResult> UserRecipe(string userID)
+        {
+            var user = await _userManager.FindByIdAsync(userID);
+            if (user == null)
+            {
+                ViewBag.UserError = "Can not find user";
+                return View("Index");
+            }
+            var listUserRecipe = _recipeRepository.GetByAuthor(userID);
+            var model = new UserReipceViewModel {
+                User = user,
+                UserRecipe = listUserRecipe,
+            };
+            if (listUserRecipe == null)
+                ViewBag.NoRecipe = "No recipe";
+            return View(model);
         }
 
         [AllowAnonymous]

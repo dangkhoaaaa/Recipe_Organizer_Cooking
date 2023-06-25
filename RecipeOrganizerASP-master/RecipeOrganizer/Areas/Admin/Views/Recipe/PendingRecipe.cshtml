@@ -1,0 +1,82 @@
+﻿@using System.Data
+@model List<RecipeViewModel>
+@inject UserManager<AppUser> _userManager
+
+@{
+    ViewData["Title"] = "Pending recipe";
+    Layout = "_AdminLayout";
+}
+
+<!-- render body here -->
+<div class="col s12">
+    <div class="card">
+        <div class="card-content">
+            <h4 class="card-title"></h4>
+            <form asp-area="Admin" asp-controller="Recipe" asp-action="SearchRecipe" method="get">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="search" name="keyword" type="text" value="@ViewBag.RecipeKeyword" placeholder="Enter recipe title or cook name">
+                        <label for="search">Search</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Search</button>
+            </form>
+
+            <div class="table-responsive">
+                @ViewBag.NotFind
+                @if (Model != null)
+                {
+                    <table id="demo-foo-addrow" class="table m-t-10 highlight contact-list no-wrap" data-sorting="true" data-paging="true" data-paging-size="6">
+                        <thead>
+                            <tr style="font-weight:bold;">
+                                <th>No</th>
+                                <th>Title</th>
+                                <th>Cook (Author)</th>
+                                <th>Create date</th>
+                                <th>Status</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter = 0;
+                                foreach (var recipe in Model)
+                                {
+                                    counter += 1;
+                                    <tr>
+                                        <td>@counter</td>
+                                        <td><a href="/Recipe/RecipeDetails/?recipeID=@recipe.RecipeId">@recipe.RecipeTitle</a></td>
+                                        <td>@recipe.UserName</td>
+                                        <td>@recipe.CreateDate</td>
+                                        <td>@recipe.Status</td>
+                                        <td>
+                                        <form asp-area="Admin" asp-controller="Recipe" asp-action="PendingRecipe" method="post">
+                                                <input id="Status" name="Status" type="hidden" value="Approved" />
+                                            <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
+                                                <button type="submit" class="waves-effect waves-light btn green btn-sm">
+                                                    Approve
+                                            </button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form asp-area="Admin" asp-controller="Recipe" asp-action="PendingRecipe" method="post">
+                                                <input id="Status" name="Status" type="hidden" value="Rejected" />
+                                                <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
+                                                <button type="submit" class="waves-effect waves-light btn red btn-sm">
+                                                    Reject
+                                                </button>
+                                            </form>
+                                        </td
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+            <!-- render body here -->
+        </div>
+    </div>
+</div>
+
