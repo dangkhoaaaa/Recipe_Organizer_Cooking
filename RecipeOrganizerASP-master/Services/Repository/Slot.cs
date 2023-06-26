@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Services.Repository
 {
-	public class Slot : RepositoryBase<Recipe>
+	public class Slot : RepositoryBase<Slot>
 	{
 		public List<CartLine> Lines { get; set; } = new List<CartLine>();
-		public void AddItemToSlot(Recipe recipe, int slotNow)
+		public void AddItemToSlot(Recipe recipe, int slotNow, string userID, string week)
 		{
 			CartLine? line = Lines
-			.Where(p => p.SlotID == slotNow && p.Recipes.RecipeId > 0)
+			.Where(p => p.SlotID == slotNow)
 			.FirstOrDefault();
 
 			if (line == null )
@@ -21,15 +21,20 @@ namespace Services.Repository
 
 				Lines.Add(new CartLine
 				{
-					Recipes = recipe,
+					Recipes = new List<Recipe> { recipe},
 					//Quantity = quantity
+					UserID = userID,
+					Week = week,
 					SlotID = slotNow
 
 				});
 			}
 			else
 			{
-				Console.WriteLine("da co recipe");
+				if(line.Recipes.IndexOf(recipe) != -1)
+				{
+					line.Recipes.Add(recipe);
+				}
 			}
 		}
 
@@ -56,20 +61,55 @@ namespace Services.Repository
 		//	}
 		//}
 
-		public void RemoveSlot(int slotNow, Recipe recipe) =>
-			Lines.RemoveAll(l => l.SlotID == slotNow && l.Recipes.RecipeId == recipe.RecipeId);
+		public void RemoveSlot(int slotNow, string userID, string week) =>
+			Lines.RemoveAll(l => l.SlotID == slotNow 
+			&& l.Week == week && l.UserID == userID);
 
-		
+		public void RemoveRecipe(int slotNow, Recipe recipe, string userID, string week)
+		{
+			foreach (var line in Lines)
+			{
+				if (line.SlotID == slotNow && line.UserID == userID && line.Week == week) {
+					line.Recipes.Remove(recipe);
+                    if (line.Recipes.Count == 0)
+                    {
+						RemoveSlot(slotNow, userID, week);
+                    }
+                    break;
+				}
+			}
+			
+		}
 
-		public void Clear() => Lines.Clear();
 
-	}
 
+        public void Clear() => Lines.Clear();
+        public Boolean AddSlot(Slot slot)
+        {
+            if (slot != null)
+			{
+				foreach (var line in slot.Lines)
+				{
+					Lines.Add(line);
+				}
+				return true;
+			} 
+			return false;
+
+    }
+
+    }
+
+	
 	public class CartLine
 	{
 		public int CartLineID { get; set; } // ko biet la gi
 
-		public Recipe Recipes { get; set; } = new();   // mo awn
+		public string Week { get; set; }
+
+		public string UserID { get; set; }
+
+		public List<Recipe> Recipes { get; set; } = new();   // mo awn
 
 		public int SlotID { get; set; }   // vi tri 1 -21
 
