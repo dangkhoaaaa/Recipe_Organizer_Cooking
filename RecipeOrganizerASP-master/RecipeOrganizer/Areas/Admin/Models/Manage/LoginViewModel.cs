@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
-namespace RecipeOrganizer.Areas.Admin.Models
+namespace RecipeOrganizer.Areas.Admin.Models.Manage
 {
     public class LoginViewModel
     {

@@ -11,19 +11,45 @@
     </div>
 }
 
+<style>
+    .user-avt{
+        max-width:82px;
+        border-radius: 15px;
+        border: 3px solid #ffc8c8;
+        margin: 7px 3px -11px 3px;
+    }
+</style>
     <div class="row">
         <div class="col-lg-10 margin-bottom-40px">
             <div class="box-shadow border-radius-10 overflow-hidden">
                 <div class="padding-30px background-white">
                     
                     <h2>@ViewData["Title"]</h2>
-                    <form id="profile-form" asp-controller="Manage" asp-action="EditProfile" method="post">
+                   
                         <div class="form-group label-floating">
-                            <img src="http://placehold.it/100x100"> <br>
-                            <a href="#" style="font-size:14px;">Change your avatar</a>
+                            <div>
+                            
+                          
+                            @if (Model.profile.Img != null)
+                            {
+                                <img src="@Model.profile.Img" class="user-avt" style="">
+                            }
+                            else
+                            {
+                                <img src="~/assets/img/chef-avt-default.png" class="user-avt" style="">
+                            }
+                            
+                        </div>
+                            <br>
+
+                    <form id="profile-form" asp-controller="Manage" asp-action="UploadImgAvatar" method="post" enctype="multipart/form-data">
+                        <input type="file" name="files" multiple />
+                        <button type="submit">Upload Avatar</button>
+                    </form>
+                       
 
                         </div>
-
+                <form id="profile-form" asp-controller="Manage" asp-action="EditProfile" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group label-floating">
                             <label asp-for="profile.Username" class="control-label"></label>

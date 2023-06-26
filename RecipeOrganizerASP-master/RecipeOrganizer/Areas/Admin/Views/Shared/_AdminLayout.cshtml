@@ -4,12 +4,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" sizes="16x16" href="~/admin/assets/images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/img/logo-red.png">
     <title>@ViewData["Title"] - RecipeOrganizer</title>
     <link href="~/admin/dist/css/style.css" rel="stylesheet">
     <!-- This page CSS -->
     <link href="~/admin/assets/extra-libs/footable/css/footable.bootstrap.min.css" rel="stylesheet">
     <link href="~/admin/dist/css/pages/footable-page.css" rel="stylesheet">
+
+
+
 </head>
 <body>
     <div class="main-wrapper" id="main-wrapper">
@@ -43,7 +46,7 @@
                 <div class="d-flex align-items-center">
                     <h5 class="font-medium m-b-0">@ViewData["Title"]</h5>
                     <div class="custom-breadcrumb ml-auto">
-                        <a href=@Url.Action("Index", "Home") class="breadcrumb">Home</a>
+                        <a href="/manage/" class="breadcrumb">Home</a>
                         <a href="#!" class="breadcrumb">@ViewData["Title"]</a>
                     </div>
                 </div>
@@ -53,18 +56,13 @@
             <!-- ============================================================== -->
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col s12">
-                        <div class="card">
-                            <div class="card-content">
-                                <!-- render body here!!!-->
-                                @RenderBody()
-                            </div>
-                        </div>
-                    </div>
+                    <!-- render body here!!!-->
+                    @RenderBody()       
                 </div>
             </div>
-            <footer class="center-align m-b-30 m-l-15 m-r-15">Recipe Organizer</footer>
         </div>
+    </div>
+
         <!-- ============================================================== -->
         <!-- Page wrapper scss in scafholding.scss -->
         <!-- ============================================================== -->
@@ -102,7 +100,32 @@
                 </li>
             </ul>
         </aside>
-    </div>
+    <footer class="page-footer" style="background-color:#232a37;">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s12">
+                    <div class="logo margin-bottom-10px"><img src="~/assets/img/logo-color-01-01.png" alt="Recipe Organizer" style="max-width:30%;"></div>
+                    <div class="text-grey-2 font-weight-300">
+                        <p style="font-size: 16px;">Our mission to help people who struggle to locate culinary recipes that are appropriate for their hobbies or eating habits.</p>
+                    </div>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Recipe Organizer</h5>
+                    <ul>
+                        <li><a class="grey-text text-lighten-3" href=@Url.Action("Index", "Home")>Homepage</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container">
+                © Recipe Organizer | 2023 All copy rights reserved
+            </div>
+        </div>
+    </footer>
     <!-- ============================================================== -->
     <!-- All Required js -->
     <!-- ============================================================== -->

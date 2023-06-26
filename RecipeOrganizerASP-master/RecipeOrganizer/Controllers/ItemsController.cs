@@ -83,7 +83,7 @@ namespace RecipeOrganizer.Controllers
 			if (keyword != null && recipesSearchAll.Count() > 0)
 			{
 				results = _recipeRepository.getRecipeByKeywordWitPaging(keyword, productPage, PageSize, recipesSearchAll);
-				
+
 				var user = await _userManager.GetUserAsync(User);
 				if (user != null)
 				{

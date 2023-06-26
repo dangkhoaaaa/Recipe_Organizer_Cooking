@@ -32,6 +32,8 @@ namespace Services.Models.Authentication
 
         [Column(TypeName = "text")]
         public string? Image { get; set; }
+        public DateTime? LastLoginTime { get; set; }
+        public DateTime RegistrationTime { get; set; }
         public virtual ICollection<MealPlanning> MealPlannings { get; set; }
         public virtual ICollection<Metadata> MetaData { get; set; }
     }

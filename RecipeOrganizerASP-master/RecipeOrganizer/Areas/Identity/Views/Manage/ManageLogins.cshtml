@@ -36,7 +36,7 @@
                                                 <div>
                                                     <input asp-for="@Model.CurrentLogins[index].LoginProvider" name="LoginProvider" type="hidden" />
                                                     <input asp-for="@Model.CurrentLogins[index].ProviderKey" name="ProviderKey" type="hidden" />
-                                                    <input type="submit" class="btn btn-primary" value="Remove" title="Remove this @Model.CurrentLogins[index].ProviderDisplayName login from your account" />
+                                                    <input type="submit" class="btn btn-danger" value="Remove" title="Remove this @Model.CurrentLogins[index].ProviderDisplayName login from your account" />
                                                 </div>
                                             </form>
                                         }

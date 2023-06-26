@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Services.Models.Authentication;
 using RecipeOrganizer.Areas.Identity.Models;
+using Services;
 
 namespace RecipeOrganizer.Areas.Identity.Controllers
 {
@@ -25,7 +26,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ManageController> _logger;
-
+        private readonly FireBaseService _fireBaseService;
         private readonly string USER_NAV = "UserNav";
         private readonly string ACCOUNT_NAV = "AccountNav";
 
@@ -33,12 +34,14 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
         IEmailSender emailSender,
-        ILogger<ManageController> logger)
+        ILogger<ManageController> logger, FireBaseService fireBaseService)
         {
+            _fireBaseService = fireBaseService;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+           
         }
 
         //
@@ -66,6 +69,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                 AuthenticatorKey = await _userManager.GetAuthenticatorKeyAsync(user),
                 profile = new EditExtraProfileModel()
                 {
+                    Img = user.Image,
                     Username = user.UserName,
                     Birthday = user.Birthday,
                     FirstName = user.FirstName,
@@ -400,6 +404,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             
             var model = new EditExtraProfileModel()
             {
+
                 Birthday = user.Birthday,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -407,11 +412,16 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             };
             return View(model);
         }
+
+    
+
+
         [HttpPost]
         public async Task<IActionResult> EditProfileAsync(IndexViewModel model)
         {
             var user = await GetCurrentUserAsync();
 
+            
             user.Birthday = model.profile.Birthday;
             user.FirstName = model.profile.FirstName;
             user.LastName = model.profile.LastName;
@@ -423,6 +433,28 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UploadImgAvatar(List<IFormFile> files)
+        {
+            if (files == null || files.Count == 0)
+            {
+                return BadRequest("No files selected.");
+            }
+            
+            var imageLinkTask = _fireBaseService.UploadImageSingle(files);
+            var imageLink = await imageLinkTask;
+            var user = await GetCurrentUserAsync();
+            user.Image = imageLink;
+            await _userManager.UpdateAsync(user);
 
+            await _signInManager.RefreshSignInAsync(user);
+            TempData["EditSuccess"] = "Update " + user.UserName + " successful";
+
+
+            return RedirectToAction(nameof(Index), "Manage");
+        }
+
+
+     
     }
 }

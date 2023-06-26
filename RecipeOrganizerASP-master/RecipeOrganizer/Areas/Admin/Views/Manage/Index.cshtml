@@ -8,74 +8,112 @@
 }
 
 <!-- render body here -->
-<h4 class="card-title">User list</h4>
-<div class="table-responsive">
-    <table id="demo-foo-addrow" class="table m-t-10 highlight contact-list no-wrap" data-sorting="true" data-paging="true" data-paging-size="6">
-        <thead>
-            <tr style="font-weight:bold;">
-                <th>No</th>
-                <th>Email</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Phone</th>
-                <th>Birthday</th>
-                <th>Role</th>
-                <th>No.Recipe</th>
-                <th>Status</th>
-                <th>Update</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                int counter = 0;
-                foreach (var user in Model)
-                {
-                    counter += 1;
-                    <tr>
-                            <td>@counter</td>
-                            <td>@user.Email</td>
-                            <td>@user.FirstName</td>
-                            <td>@user.LastName</td>
-                            <td>@user.PhoneNumber</td>
-                            <td>@user.Birthday</td>
-                            <td>
-                                    @foreach (var role in @user.Role)
-                                    {
-                                    <span class="label label-danger">@role</span>
-                                    }
-                            </td>
-                            <td>@user.TotalRecipe</td>
-                            <td>
+<div class="col s12">
+    <div class="card">
+        <div class="card-content">
+            <h4 class="card-title">User list</h4>
+            <form asp-area="Admin" asp-controller="Manage" asp-action="SearchUser" method="get">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="search" name="keyword" type="text" value="@ViewBag.Keyword" placeholder="Input user email or user name">
+                        <label for="search">Search</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Search</button>
+            </form>
 
-                                @if (user.Status)
+            <div class="table-responsive">
+            @ViewBag.UserError
+            @ViewBag.NotFind
+            @if (Model != null)
+            {
+                    <table id="demo-foo-addrow" class="table m-t-10 highlight contact-list no-wrap" data-sorting="true" data-paging="true" data-paging-size="6">
+                        <thead>
+                            <tr style="font-weight:bold;">
+                                <th>No</th>
+                                <th>User name</th>
+                                <th>Email</th>
+                                <th>Birthday</th>
+                                <th>Role</th>
+                                <th>No.Recipe</th>
+                                <th>Extenal login</th>
+                                <th>Register date</th>
+                                <th>Last login</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter = 0;
+                                foreach (var user in Model)
                                 {
-                                    <span>Enable</span>
-                                } else
-                                {
-                                    <span>Disable</span>
-                                }
+                                    counter += 1;
+                                    <tr>
+                                        <td>@counter</td>
+                                        <td>
+                                            <div class="chip">
+                                                <img src="~/assets/img/chef-avt-default.png" alt="username">
+                                                <a href="/Admin/UserRecipe/?userID=@user.Member.Id">@user.Member.UserName</a>
+                                            </div>
+                                        </td>
+                                        <td>@user.Member.Email</td>
+                                        @*<td>@user.Member.FirstName</td>
+                                        <td>@user.Member.LastName</td>*@
+                                        <td>@user.Member.Birthday</td>
+                                        <td>
+                                            @foreach (var role in user.Role)
+                                            {
+                                                if (role.Contains("Admin"))
+                                                {
+                                                    <span class="label label-warning">@role</span>
+                                                } else {
+                                                    <span class="label label-primary">@role</span>
+                                                }
+                                            }
+                                        </td>
+                                        <td>@user.TotalRecipe</td>
+                                        <td>
+                                            @if (user.ExternalLogin != null){
+                                            foreach (var provide in user.ExternalLogin)
+                                                {
+                                                    if (provide.LoginProvider.Contains("Google"))
+                                                    {
+                                                        <span class="label label-warning">@provide.LoginProvider</span>
+                                                    } else if (provide.LoginProvider.Contains("Facebook")) {
+                                                        <span class="label label-primary">@provide.LoginProvider</span>
+                                                    }
+                                                }
+                                            }
+                                        </td>
+                                        <td>@user.Member.RegistrationTime</td>
+                                        <td>@MyToys.getLastLogin(user.Member.LastLoginTime)</td>
 
-                            </td>
-                            <td>
-                                <form asp-area="Admin" asp-controller="Manage" asp-action="UpdateUserStatus" method="post">
-                                    <input id="userEmail" name="userEmail" type="hidden" value="@user.Email" />
-                                @if (user.Status)
-                                {
-                                    <button type="submit" class="btn btn-success btn-sm" style="background-color: #28a745;#28a745;">
-                                        Update
-                                    </button>
+                                        <td>
+                                            <form asp-area="Admin" asp-controller="Manage" asp-action="UpdateUserStatus" method="post">
+                                                <input id="userID" name="userID" type="hidden" value="@user.Member.Id" />
+                                                @if (user.Status)
+                                                {
+                                                    <button type="submit" class="btn btn-success btn-sm" style="background-color: #28a745;#28a745;">
+                                                        Enable
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button type="submit" class="btn btn-danger btn-sm" style="background-color: #dc3545; border-color: #dc3545;">
+                                                        Disable
+                                                    </button>
+                                                }
+                                            </form>
+                                        </td>
+                                    </tr>
                                 }
-                                else
-                                {
-                                    <button type="submit" class="btn btn-danger btn-sm" style="background-color: #dc3545; border-color: #dc3545;">Update</button>
-                                }
-                                </form>
-                            </td>
-                    </tr>
+                            }
+                        </tbody>
+                    </table>
                 }
-            }
-        </tbody>
-    </table>
+            </div>
+            <!-- render body here -->
+        </div> 
+    </div>
 </div>
-<!-- render body here -->
 

@@ -19,5 +19,7 @@
 		<h3 class="text-center ">Something wrong :(</h3>
 
 		<a href="@Url.Action("Index", "Home")" class="btn btn-sm border-radius-30 margin-tb-15px text-white background-second-color  box-shadow padding-lr-25px"><i class="fas fa-home  margin-right-7px"></i>  Go Home</a>
+		<a asp-area="Admin" asp-controller="Manage" asp-action="CreateAdmin" class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large btn-register" style="font-size:15px;">Create admin account</a>
+		<a href=@Url.Action("Active", "Home") class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large btn-register" style="font-size:15px;" >Add role</a>
 	</div>
 </div>
