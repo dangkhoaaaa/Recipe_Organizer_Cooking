@@ -41,7 +41,7 @@ namespace Services.Repository
                 List<Recipe> recipes1 = new List<Recipe>();
                 foreach (var recipe in recipes)
                 {
-                    recipes1.Add(_recipeRepository.GetById(recipe.RecipeId));
+                    recipes1.Add(_recipeRepository.GetById(recipe.RecipeId, "public"));
                 }
 
                     CartLine line = new CartLine
