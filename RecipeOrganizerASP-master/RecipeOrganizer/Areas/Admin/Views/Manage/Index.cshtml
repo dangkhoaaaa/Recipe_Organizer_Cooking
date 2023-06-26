@@ -33,13 +33,13 @@
                                 <th>No</th>
                                 <th>User name</th>
                                 <th>Email</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
                                 <th>Birthday</th>
                                 <th>Role</th>
                                 <th>No.Recipe</th>
+                                <th>Extenal login</th>
+                                <th>Register date</th>
+                                <th>Last login</th>
                                 <th>Status</th>
-                                <th>Update</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,11 +57,11 @@
                                             </div>
                                         </td>
                                         <td>@user.Member.Email</td>
-                                        <td>@user.Member.FirstName</td>
-                                        <td>@user.Member.LastName</td>
+                                        @*<td>@user.Member.FirstName</td>
+                                        <td>@user.Member.LastName</td>*@
                                         <td>@user.Member.Birthday</td>
                                         <td>
-                                            @foreach (var role in @user.Role)
+                                            @foreach (var role in user.Role)
                                             {
                                                 if (role.Contains("Admin"))
                                                 {
@@ -73,17 +73,21 @@
                                         </td>
                                         <td>@user.TotalRecipe</td>
                                         <td>
-
-                                            @if (user.Status)
-                                            {
-                                                <span>Enable</span>
+                                            @if (user.ExternalLogin != null){
+                                            foreach (var provide in user.ExternalLogin)
+                                                {
+                                                    if (provide.LoginProvider.Contains("Google"))
+                                                    {
+                                                        <span class="label label-warning">@provide.LoginProvider</span>
+                                                    } else if (provide.LoginProvider.Contains("Facebook")) {
+                                                        <span class="label label-primary">@provide.LoginProvider</span>
+                                                    }
+                                                }
                                             }
-                                            else
-                                            {
-                                                <span>Disable</span>
-                                            }
-
                                         </td>
+                                        <td>@user.Member.RegistrationTime</td>
+                                        <td>@MyToys.getLastLogin(user.Member.LastLoginTime)</td>
+
                                         <td>
                                             <form asp-area="Admin" asp-controller="Manage" asp-action="UpdateUserStatus" method="post">
                                                 <input id="userID" name="userID" type="hidden" value="@user.Member.Id" />
