@@ -280,6 +280,7 @@ namespace Services.Repository
                             UserId = u.Id,
                             RecipeId = r.RecipeId,
                             UserName = u.UserName,
+							UserImage = u.Image,
                             RecipeTitle = r.Title,
                             RecipeDescription = r.Description,
                             CreateDate = r.Date,

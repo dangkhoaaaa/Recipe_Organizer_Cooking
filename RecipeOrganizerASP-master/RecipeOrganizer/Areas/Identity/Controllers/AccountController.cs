@@ -22,6 +22,7 @@ using Services.Models.Authentication;
 using RecipeOrganizer.Areas.Data;
 using System.Data;
 using Firebase.Auth;
+using Services;
 
 namespace RecipeOrganizer.Areas.Identity.Controllers
 {
@@ -34,17 +35,21 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<AccountController> _logger;
-
+        private readonly FireBaseService _fireBaseService;
+        private readonly string DEFAULT_AVT_IMG = "/assets/img/chef-avt-default.png";
         public AccountController(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            FireBaseService fireBaseService
+        )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _fireBaseService = fireBaseService;
         }
 
         // GET: /Account/Login
@@ -164,9 +169,11 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Status = true,
+                    Image = DEFAULT_AVT_IMG
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 await _userManager.AddToRoleAsync(user, RoleName.Member);
+
 
                 if (result.Succeeded)
                 {
@@ -386,6 +393,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                         Email = externalEmail,
                         Status = true,
                         RegistrationTime = DateTime.Now,
+                        Image = DEFAULT_AVT_IMG
                     };
                     //tao user
                     var resultNewUser = await _userManager.CreateAsync(newUser);
@@ -416,6 +424,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     Email = model.Email,
                     Status = true,
                     RegistrationTime = DateTime.Now,
+                    Image = DEFAULT_AVT_IMG
                 };
                 var result = await _userManager.CreateAsync(user);
                 //add role

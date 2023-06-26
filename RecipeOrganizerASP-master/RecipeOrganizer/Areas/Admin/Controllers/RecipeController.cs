@@ -65,24 +65,22 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 		{
 			ViewBag.RecipeKeyword = keyword;
 			var model = _recipeRepository.GetRecipesWithMetadata();
-			if (keyword != null)
+			if (keyword == null)
 			{
-				var listSearchRecipe = model.Where(p => p.RecipeTitle.Contains(keyword.Trim()) || p.UserName.Contains(keyword.Trim())).ToList();
-				if (listSearchRecipe.Count == 0)
-				{
+                    ViewBag.NotFind = "";
+					return View("Index", model);
 
-					ViewBag.NotFind = "No result match the keyword";
-					return View("Index", listSearchRecipe);
+            }
+            var listSearchRecipe = model.Where(p => p.RecipeTitle.Contains(keyword.Trim()) || p.UserName.Contains(keyword.Trim())).ToList();
+            if (listSearchRecipe.Count == 0)
+            {
 
-				}
-				return View("Index", listSearchRecipe);
-			}
-			else
-			{
-				ViewBag.NotFind = "Invalid keyword";
-			}
-			return View("Index", model);
-		}
+                ViewBag.NotFind = "No result match the keyword";
+                return View("Index", listSearchRecipe);
+
+            }
+            return View("Index", listSearchRecipe);
+        }
 
         // GET: /Recipe/Censhorship
         public async Task<IActionResult> PendingRecipe()

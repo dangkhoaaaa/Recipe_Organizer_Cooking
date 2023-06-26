@@ -31,10 +31,12 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         private readonly string ACCOUNT_NAV = "AccountNav";
 
         public ManageController(
-        UserManager<AppUser> userManager,
-        SignInManager<AppUser> signInManager,
-        IEmailSender emailSender,
-        ILogger<ManageController> logger, FireBaseService fireBaseService)
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager,
+            IEmailSender emailSender,
+            ILogger<ManageController> logger, 
+            FireBaseService fireBaseService
+        )
         {
             _fireBaseService = fireBaseService;
             _userManager = userManager;

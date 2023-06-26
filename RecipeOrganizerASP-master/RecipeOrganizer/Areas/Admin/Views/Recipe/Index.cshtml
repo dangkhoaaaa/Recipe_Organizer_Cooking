@@ -23,7 +23,7 @@
             </form>
 
             <div class="table-responsive">
-            @ViewBag.NotFind
+                <p style="margin-top: 15px;"> @ViewBag.NotFind</p>
             @if (Model != null)
                 {
                     <table id="demo-foo-addrow" class="table m-t-10 highlight contact-list no-wrap" data-sorting="true" data-paging="true" data-paging-size="6">
@@ -46,7 +46,18 @@
                                     counter += 1;
                                     <tr>
                                         <td>@counter</td>
-                                        <td><a href="/Recipe/RecipeDetails/?recipeID=@recipe.RecipeId">@recipe.RecipeTitle</a></td>
+                                        <td>
+                                            <div class="chip">
+                                                <img src="@recipe.RecipeImage" alt="username">
+                                                <a href="/Recipe/RecipeDetails/?recipeID=@recipe.RecipeId">@recipe.RecipeTitle</a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="chip">
+                                                <img src="@recipe.UserImage" alt="username">
+                                                <a href="/Admin/UserRecipe/?userID=@recipe.UserId">@recipe.UserName</a>
+                                            </div>
+                                        </td>
                                         <td>@recipe.UserName</td>
                                         <td>@recipe.NumberShare</td>
                                         <td>@recipe.CreateDate</td>
