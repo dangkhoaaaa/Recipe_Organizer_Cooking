@@ -172,7 +172,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateUserStatus(string userID)
+        public async Task<IActionResult> UpdateUserStatus(string userID, string searchUser)
         {
             var user = await _userManager.FindByIdAsync(userID);
             if (user != null)
@@ -200,7 +200,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                     user.LockoutEnd = DateTimeOffset.MaxValue;
                 }
                 await _userManager.UpdateAsync(user);
-                return RedirectToAction("Index");
+                return RedirectToAction("SearchUser", new {keyword = searchUser});
             }
             return RedirectToAction("Error", "Home");
         }

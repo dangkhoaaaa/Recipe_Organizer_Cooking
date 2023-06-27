@@ -12,7 +12,7 @@
     <div class="card">
         <div class="card-content">
             <h4 class="card-title"></h4>
-            <form asp-area="Admin" asp-controller="Recipe" asp-action="SearchRecipe" method="get">
+            <form asp-area="Admin" asp-controller="Recipe" asp-action="SearchRejectRecipe" method="get">
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="search" name="keyword" type="text" value="@ViewBag.RecipeKeyword" placeholder="Enter recipe title or cook name">
@@ -54,19 +54,20 @@
                                         <td>
                                             <div class="chip">
                                                 <img src="@recipe.UserImage" alt="username">
-                                                <a class="a-text" href="/Admin/UserRecipe/?userID=@recipe.UserId">@recipe.UserImage</a>
+                                                <a class="a-text" href="/Admin/UserRecipe/?userID=@recipe.UserId">@recipe.UserName</a>
                                             </div>
                                         </td>
                                         <td>@recipe.CreateDate</td>
                                         <td>@recipe.Status</td>
                                         <td>
-                                        <form asp-area="Admin" asp-controller="Recipe" asp-action="PendingRecipe" method="post">
-                                                <input id="Status" name="Status" type="hidden" value="Approved" />
-                                            <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
+                                            <form asp-area="Admin" asp-controller="Recipe" asp-action="RejectRecipe" method="post">
+                                                <input id="status" name="status" type="hidden" value="Public" />
+                                                <input id="searchValue" name="searchValue" type="hidden" value="@ViewBag.RecipeKeyword" />
+                                                <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
                                                 <button type="submit" class="waves-effect waves-light btn green btn-sm">
-                                                    Approve
-                                            </button>
-                                            </form>
+                                                        Approve
+                                                </button>
+                                        </form>
                                         </td>
                                     </tr>
                                 }

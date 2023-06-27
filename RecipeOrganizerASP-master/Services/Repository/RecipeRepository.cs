@@ -110,11 +110,11 @@ namespace Services.Repository
 			return pendingRecipes;
 		}
 
-		public void ChangeStatusRecipe(int recipeId, string oldStatus, string newStatus)
+		public void ChangeStatusRecipe(int recipeId, string newStatus)
 		{
-			if (recipeId != 0 && oldStatus != null && newStatus != null)
+			if (recipeId != 0 && newStatus != null)
 			{
-				Recipe recipe = GetById(recipeId, oldStatus);
+				var recipe = GetById(recipeId);
 				if (recipe != null)
 				{
 					recipe.Status = newStatus;
@@ -124,12 +124,17 @@ namespace Services.Repository
 			}
 		}
 
+		public Recipe GetById(int id)
+		{
+			return GetAll().Where(r => r.RecipeId == id).FirstOrDefault();
+		}
+
 		public void UpdateApprovalStatus(int recipeId, string action)
 		{
 			if (recipeId > 0 && action != null)
 			{
 				string status;
-				if (action == "Approved")
+				if (action == "Public")
 				{
 					status = "public";
 				}
@@ -142,7 +147,7 @@ namespace Services.Repository
 					return;
 				}
 
-				ChangeStatusRecipe(recipeId, "pending", status);
+				ChangeStatusRecipe(recipeId, status);
 			}
 		}
 

@@ -6,13 +6,12 @@
     ViewData["Title"] = "Pending recipe";
     Layout = "_AdminLayout";
 }
-
 <!-- render body here -->
 <div class="col s12">
     <div class="card">
         <div class="card-content">
             <h4 class="card-title"></h4>
-            <form asp-area="Admin" asp-controller="Recipe" asp-action="SearchRecipe" method="get">
+            <form asp-area="Admin" asp-controller="Recipe" asp-action="SearchPendingRecipe" method="get">
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="search" name="keyword" type="text" value="@ViewBag.RecipeKeyword" placeholder="Enter recipe title or cook name">
@@ -46,22 +45,34 @@
                                     counter += 1;
                                     <tr>
                                         <td>@counter</td>
-                                        <td><a href="/Recipe/RecipeDetails/?recipeID=@recipe.RecipeId">@recipe.RecipeTitle</a></td>
-                                        <td>@recipe.UserName</td>
+                                        <td>
+                                            <div class="chip">
+                                                <img src="@recipe.RecipeImage" alt="username">
+                                                <a class="a-text" href="/Recipe/RecipeDetails/?recipeID=@recipe.RecipeId">@recipe.RecipeTitle</a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="chip">
+                                                <img src="@recipe.UserImage" alt="username">
+                                                <a class="a-text" href="/Admin/UserRecipe/?userID=@recipe.UserId">@recipe.UserName</a>
+                                            </div>
+                                        </td>
                                         <td>@recipe.CreateDate</td>
                                         <td>@recipe.Status</td>
                                         <td>
                                             <form asp-area="Admin" asp-controller="Recipe" asp-action="PendingRecipe" method="post">
-                                            <input id="Status" name="Status" type="hidden" value="Approved" />
-                                            <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
-                                            <button type="submit" class="waves-effect waves-light btn green btn-sm">
-                                                    Approve
-                                            </button>
+                                                <input id="searchRecipe" name="searchRecipe" type="hidden" value="@ViewBag.RecipeKeyword" />
+                                                <input id="status" name="status" type="hidden" value="Public" />
+                                                <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
+                                                <button type="submit" class="waves-effect waves-light btn green btn-sm">
+                                                        Approve
+                                                </button>
                                             </form>
                                         </td>
                                         <td>
                                             <form asp-area="Admin" asp-controller="Recipe" asp-action="PendingRecipe" method="post">
-                                                <input id="Status" name="Status" type="hidden" value="Rejected" />
+                                                <input id="searchRecipe" name="searchRecipe" type="hidden" value="@ViewBag.RecipeKeyword" />
+                                                <input id="status" name="status" type="hidden" value="Rejected" />
                                                 <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
                                                 <button type="submit" class="waves-effect waves-light btn red btn-sm">
                                                     Reject

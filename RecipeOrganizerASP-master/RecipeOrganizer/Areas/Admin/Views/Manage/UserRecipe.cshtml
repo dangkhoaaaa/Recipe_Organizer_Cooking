@@ -16,7 +16,7 @@
             <div class="align-self-center">
                 <img src="@Model.User.Image" class="circle" width="100" alt="user-image">
                 <h4 class="card-title white-text">@Model.User.UserName</h4>
-                <h6 class="card-subtitle">
+                <h6 class="card-subtitle" style="color: #e5e500; font-weight: bold;">
                     @{
                         var tag = Model.User.FirstName + " " + Model.User.LastName;
                         @tag
@@ -73,7 +73,7 @@
                                         <div>
                                             <div>
                                                 <h4 style="display:inline-block;"><a href="/Recipe/RecipeDetails/?recipeID=@recipe.RecipeId" style="margin-right:20px;">@recipe.Title</a></h4>
-                                                @if (recipe.Status.Contains("deny"))
+                                                @if (recipe.Status.Contains("rejected"))
                                                 {
                                                     <span class="label label-danger" style="font-size: 15px;">@recipe.Status</span>
                                                 }
