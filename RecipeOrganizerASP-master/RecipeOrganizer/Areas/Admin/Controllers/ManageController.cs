@@ -172,11 +172,23 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateUserStatus(string userID)
+        public async Task<IActionResult> UpdateUserStatus(string userID, string searchUser)
         {
             var user = await _userManager.FindByIdAsync(userID);
             if (user != null)
             {
+                var role = await _userManager.GetRolesAsync(user);
+                var currentUser = await GetCurrentUserAsync();
+                if (userID.Equals(currentUser.Id))
+                {
+                    TempData["UpdateError"] = "You can not update yourself";
+                    return RedirectToAction("Index");
+                }
+                if (role.Contains(RoleName.Administrator))
+                {
+                    TempData["UpdateError"] = "You can not update another admin";
+                    return RedirectToAction("Index");
+                }
                 var isLockedOut = await _userManager.IsLockedOutAsync(user);
                 if (isLockedOut)
                 {
@@ -188,7 +200,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                     user.LockoutEnd = DateTimeOffset.MaxValue;
                 }
                 await _userManager.UpdateAsync(user);
-                return RedirectToAction("Index");
+                return RedirectToAction("SearchUser", new {keyword = searchUser});
             }
             return RedirectToAction("Error", "Home");
         }
@@ -198,36 +210,32 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             ViewBag.Keyword = keyword;
             List<AppUser> listAllUsers = new List<AppUser>(_userManager.Users);
             List<IndexViewModel> index = new List<IndexViewModel>();
-            if (keyword != null)
+            if (keyword == null)
             {
-                var listSearchUser = listAllUsers.Where(p => p.Email.Contains(keyword.Trim()) || p.UserName.Contains(keyword.Trim())).ToList();
-                if (listSearchUser.Count == 0)
-                {
-
-                    ViewBag.NotFind = "No result match the keyword";
-                    return View("Index");
-
-                }
-                foreach (var userSearch in listSearchUser)
-                {
-                    var role = await _userManager.GetRolesAsync(userSearch);
-                    var isLockout = await _userManager.IsLockedOutAsync(userSearch);
-                    index.Add(new IndexViewModel
-                    {
-                        Member = userSearch,
-                        Role = role.ToList(),
-                        TotalRecipe = _recipeRepository.GetByAuthor(userSearch.Id).Count,
-                        //TotalRecipe = 2,
-                        Status = !isLockout
-                    });
-                }
-                return View("Index", index);
+                ViewBag.NotFind = "";
+                return View("Index");
             }
-            else
+            var listSearchUser = listAllUsers.Where(p => p.Email.Contains(keyword.Trim()) || p.UserName.Contains(keyword.Trim())).ToList();
+            if (listSearchUser.Count == 0)
             {
-                ViewBag.NotFind = "Invalid keyword";
+
+                ViewBag.NotFind = "No result match the keyword";
+                return View("Index");
             }
-            return View("Index");
+            foreach (var userSearch in listSearchUser)
+            {
+                var role = await _userManager.GetRolesAsync(userSearch);
+                var isLockout = await _userManager.IsLockedOutAsync(userSearch);
+                index.Add(new IndexViewModel
+                {
+                    Member = userSearch,
+                    Role = role.ToList(),
+                    TotalRecipe = _recipeRepository.GetByAuthor(userSearch.Id).Count,
+                    //TotalRecipe = 2,
+                    Status = !isLockout
+                });
+            }
+            return View("Index", index);
         }
 
         //GET: Admin/UserRecipe/{id}

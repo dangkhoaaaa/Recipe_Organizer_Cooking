@@ -17,6 +17,13 @@ File: scss
 /*******************
 Table- Footable
 ******************/
+.a-text {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 15px;
+}
+
 .footable .pagination li a {
   position: relative;
   padding: .5rem .75rem;

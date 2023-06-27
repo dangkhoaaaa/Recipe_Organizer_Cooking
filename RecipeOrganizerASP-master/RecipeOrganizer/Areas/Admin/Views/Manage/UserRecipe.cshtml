@@ -14,11 +14,11 @@
         <img class="responsive-img" src="~/assets/img/user-background-01.png" height="456" alt="Card image">
         <div class="card-img-overlay white-text social-profile d-flex justify-content-center">
             <div class="align-self-center">
-                <img src="~/assets/img/chef-avt-default.png" class="circle" width="100" alt="user-image">
+                <img src="@Model.User.Image" class="circle" width="100" alt="user-image">
                 <h4 class="card-title white-text">@Model.User.UserName</h4>
-                <h6 class="card-subtitle">
+                <h6 class="card-subtitle" style="color: #e5e500; font-weight: bold;">
                     @{
-                        var tag = Model.User.FirstName + Model.User.LastName;
+                        var tag = Model.User.FirstName + " " + Model.User.LastName;
                         @tag
                     }
                     </h6>
@@ -73,7 +73,7 @@
                                         <div>
                                             <div>
                                                 <h4 style="display:inline-block;"><a href="/Recipe/RecipeDetails/?recipeID=@recipe.RecipeId" style="margin-right:20px;">@recipe.Title</a></h4>
-                                                @if (recipe.Status.Contains("deny"))
+                                                @if (recipe.Status.Contains("rejected"))
                                                 {
                                                     <span class="label label-danger" style="font-size: 15px;">@recipe.Status</span>
                                                 }
@@ -89,12 +89,12 @@
                                             <p style="margin: 20px; font-size: 16px;">@recipe.Description</p>
 
                                             <div class="row">
-                                                <div class="col l3 m6 m-b-20"><img src="~/admin/assets/images/big/img1.jpg" class="responsive-img radius" alt="image" /></div>
+                                                <div class="col l3 m6 m-b-20"><img src="@recipe.Image" class="responsive-img radius" alt="image" /></div>
                                                 <div class="col l3 m6 m-b-20"><img src="~/admin/assets/images/big/img2.jpg" class="responsive-img radius" alt="image" /></div>
                                                 <div class="col l3 m6 m-b-20"><img src="~/admin/assets/images/big/img3.jpg" class="responsive-img radius" alt="image" /></div>
                                                 <div class="col l3 m6 m-b-20"><img src="~/admin/assets/images/big/img4.jpg" class="responsive-img radius" alt="image" /></div>
                                             </div>
-                                            <div> <h4><i class="material-icons">date_range</i>@recipe.Date</h4></div>
+                                            <div> <h5><i class="material-icons">date_range</i>Date create: @recipe.Date</h5></div>
                                         </div>
                                     </div>
                                 </div>
