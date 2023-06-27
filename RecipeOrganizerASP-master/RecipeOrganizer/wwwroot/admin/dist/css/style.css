@@ -20131,3 +20131,75 @@ Padding margin property
         margin-right: 0px;
     }
 }
+
+.rDetail {
+    width: 100%;
+    margin: 50px;
+}
+
+.ingredients ul {
+    margin: 0;
+    padding: 0;
+}
+
+    .ingredients ul li {
+        margin: 0 30px;
+        list-style-type: circle;
+    }
+
+.directions {
+    margin: 10px 0;
+}
+
+.padding-lr-20px {
+    padding: 0 20px;
+}
+
+.padding-tb-10px {
+    padding: 10px 0;
+}
+
+img.imgRD {
+    width: 700px;
+    margin: 20px 0;
+}
+
+
+div.buttonCheck {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+a.approve:link,
+a.approve:visited {
+    background-color: #069912;
+    color: white;
+    padding: 15px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 8px;
+    margin: 0 10px;
+}
+
+a.approve:hover,
+a.approve:active {
+    background-color: green;
+}
+
+a.reject:link,
+a.reject:visited {
+    background-color: #f44336;
+    color: white;
+    padding: 15px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 8px;
+    margin: 0 10px;
+}
+
+a.reject:hover,
+a.reject:active {
+    background-color: red;
+}
