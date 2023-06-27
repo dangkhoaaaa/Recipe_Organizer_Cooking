@@ -67,7 +67,8 @@
 									<div class=" js--uploadedImage">
 										<!-- Display the uploaded image if needed -->
 										@*<input type="file" id="mediaFiles" name="mediaFiles" multiple>*@
-										@Html.TextBoxFor(m => m.MediaFiles, new { type = "file", multiple = "multiple", id = "photoUploadFile" })
+										@Html.TextBoxFor(m => m.Img, new { type = "file", id = "photoUploadFile" })
+										@*@Html.TextBoxFor(m => m.MediaFiles, new { type = "file", multiple = "multiple", id = "photoUploadFile" })*@
 										<p>
 											Use JPEG or PNG. Must be at least 960 x 960.
 										</p>

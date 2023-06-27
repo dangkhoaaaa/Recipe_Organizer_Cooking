@@ -81,7 +81,7 @@
 						<span class="margin-left-5px margin-right-5px">|</span>
 						<a href="#" onclick="scrollToSection('#addFeedback')"><i class="far fa-star"></i> Rate</a>
 						<span class="margin-left-5px margin-right-5px">|</span>
-						<a href="#"><i class="fas fa-print"></i> Print</a>
+						<a href="@Url.Action("PrintRecipe", "Recipe", new { recipeId = Model.RecipeId })" target="_blank"><i class="fas fa-print"></i> Print</a>
 						<span class="margin-left-5px margin-right-5px">|</span>
 						@{
 							var encodedTitle = Uri.EscapeDataString("Recipe: " + @Model.Title);
@@ -105,7 +105,7 @@
 				</div>
 
 				<div class="margin-bottom-40px card border-0 box-shadow">
-					<div class="card-img-top"><a href="#"><img src="http://placehold.it/1600x800" alt=""></a></div>
+					<div class="card-img-top"><a href="#"><img src="@Model.Img" alt=""></a></div>
 					<div class="padding-lr-30px padding-tb-20px">
 						<div class="padding-tb-10px">
 							<h3>Ingredients</h3>
@@ -298,10 +298,20 @@
 					</form>
 				</div>
 
-				<div class="margin-tb-40px text-center">
+				@*<div class="margin-tb-40px text-center">
 					<h1 class="font-weight-500 margin-bottom-20px">Related Recipes</h1>
+					<hr />
 
-				</div>
+					<div class="col-lg-3 col-md-3 text-center margin-bottom-40px">
+						<div class="hvr-float">
+							<div class="thum"><a href="#"><img class="border-radius-8 box-shadow" src="http://placehold.it/270x270" alt=""></a></div>
+							<a class="h4 d-block margin-top-20px" href="#">M.Salman ali</a>
+							<small class="text-grey-2">(145 Recipes)</small>
+						</div>
+					</div>
+
+
+				</div>*@
 			</div>
 		</div>
 	</div>
