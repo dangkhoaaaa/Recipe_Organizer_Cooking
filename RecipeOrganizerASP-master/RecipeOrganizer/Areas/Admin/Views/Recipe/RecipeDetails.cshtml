@@ -11,68 +11,52 @@
 @{
 	string avg = Model.AvgRate + "%";
 }
-
-		<div class="col-lg-8">
-			<h1 class="font-weight-500 margin-bottom-20px">@Model.RecipeTitle</h1>
-			<div class="row">
-				<div class="col-3">
-					<div class="progress">
-						<div class="determinate indigo darken-1" style="width:@avg"></div>
-					</div>
-				</div>
-				|
-				<div class="col-5">
-					<a href="#" onclick="scrollToSection('#addFeedback')">@Model.NumberShare reviews</a>
-					<span class="margin-lr-5px">|</span>
-					<a href="#">55 photos</a>
-				</div>
-			</div>
-
-			<div class="margin-tb-10px">
-				@Model.RecipeDescription
-			</div>
-			<div class="margin-bottom-10px">
-				Recipe by Cook
-				<span class="margin-lr-5px">|</span>
-				Updated on @Model.CreateDate
-			</div>
-
-			<div class="margin-bottom-40px card border-0 box-shadow">
-				<div class="card-img-top"><a href="#"><img src="http://placehold.it/1600x800" alt=""></a></div>
-				<div class="padding-lr-30px padding-tb-20px">
-					<div class="padding-tb-10px">
-						<h3>Ingredients</h3>
-						<ul>
-							@foreach (var item in Model.Ingredients)
-							{
-								<li>@item.IngredientName</li>
-							}
-						</ul>
-					</div>
-					<div class="padding-tb-10px">
-						<h3>Directions</h3>
-						<div class="padding-lr-20px">
-							@foreach (var item in Model.Directions)
-							{
-								<p><b>Step @item.Step</b> - <span>@item.Direction1</span></p>
-							}
-						</div>
-					</div>
-					<div class="padding-tb-10px">
-						<h3>Tags</h3>
-						<div class="padding-lr-20px">
-							<p>
-								@foreach (var item in Model.Tags)
-								{
-									@if (item.ToString().Trim() != null)
-									{
-										<a href="#">#@item.TagName</a>
-									}
-								}
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
+<div class="rDetail">
+	<div>
+		<h1>@Model.RecipeTitle</h1>
+	</div>
+	<div class="margin-tb-10px">
+		@Model.RecipeDescription
+	</div>
+	<div>
+		<a href="#"><img class="imgRD" src="http://placehold.it/1600x800" alt=""></a>
+	</div>
+	<div class="ingredients padding-tb-10px">
+		<h3>Ingredients</h3>
+		<ul class="padding-lr-20px">
+			@foreach (var item in Model.Ingredients)
+			{
+				<li>@item.IngredientName</li>
+			}
+		</ul>
+	</div>
+	<div class="directions padding-tb-10px">
+		<h3>Directions</h3>
+		<div class="padding-lr-20px">
+			@foreach (var item in Model.Directions)
+			{
+				<p><b>Step @item.Step</b> - <span>@item.Direction1</span></p>
+			}
 		</div>
+	</div>
+	<div class="padding-tb-10px">
+		<h3>Tags</h3>
+		<div class="padding-lr-20px">
+			<p>
+				@foreach (var item in Model.Tags)
+				{
+					@if (item.ToString().Trim() != null)
+					{
+						<a href="#">#@item.TagName</a>
+					}
+				}
+			</p>
+		</div>
+	</div>
+</div>
+
+<div class="buttonCheck">
+	<a href="#" class="approve">Approve</a>
+	<a href="#" class="reject">Reject</a>
+</div>
 
