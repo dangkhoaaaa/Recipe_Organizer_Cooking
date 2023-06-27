@@ -51,10 +51,10 @@
                                         <td>@recipe.CreateDate</td>
                                         <td>@recipe.Status</td>
                                         <td>
-                                        <form asp-area="Admin" asp-controller="Recipe" asp-action="PendingRecipe" method="post">
-                                                <input id="Status" name="Status" type="hidden" value="Approved" />
+                                            <form asp-area="Admin" asp-controller="Recipe" asp-action="PendingRecipe" method="post">
+                                            <input id="Status" name="Status" type="hidden" value="Approved" />
                                             <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
-                                                <button type="submit" class="waves-effect waves-light btn green btn-sm">
+                                            <button type="submit" class="waves-effect waves-light btn green btn-sm">
                                                     Approve
                                             </button>
                                             </form>
@@ -67,7 +67,7 @@
                                                     Reject
                                                 </button>
                                             </form>
-                                        </td
+                                        </td>
                                     </tr>
                                 }
                             }

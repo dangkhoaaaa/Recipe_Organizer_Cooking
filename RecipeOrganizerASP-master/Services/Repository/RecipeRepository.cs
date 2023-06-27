@@ -292,17 +292,18 @@ namespace Services.Repository
             return query.ToList();
         }
 
-        public List<RecipeViewModel> GetPendingRecipesWithMetadata()
+        public List<RecipeViewModel> GetRecipesByStatusWithMetadata(string status)
         {
             var query = from m in _context.MetaData
                         join r in _context.Recipes on m.RecipeId equals r.RecipeId
                         join u in _context.Users on m.UserId equals u.Id
-                        where r.Status.Equals("pending") //&& r.Status.Equals("draft")
+                        where r.Status.Equals(status) //&& r.Status.Equals("draft")
                         select new RecipeViewModel
                         {
                             UserId = u.Id,
                             RecipeId = r.RecipeId,
                             UserName = u.UserName,
+							UserImage = u.Image,
                             RecipeTitle = r.Title,
                             RecipeDescription = r.Description,
                             CreateDate = r.Date,

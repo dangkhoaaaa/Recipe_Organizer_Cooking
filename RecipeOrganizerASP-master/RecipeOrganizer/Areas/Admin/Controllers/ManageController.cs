@@ -179,14 +179,14 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             {
                 var role = await _userManager.GetRolesAsync(user);
                 var currentUser = await GetCurrentUserAsync();
-                if (role.Contains(RoleName.Administrator))
-                {
-                    TempData["UpdateError"] = "You can not update another admin";
-                    return RedirectToAction("Index");
-                }
                 if (userID.Equals(currentUser.Id))
                 {
                     TempData["UpdateError"] = "You can not update yourself";
+                    return RedirectToAction("Index");
+                }
+                if (role.Contains(RoleName.Administrator))
+                {
+                    TempData["UpdateError"] = "You can not update another admin";
                     return RedirectToAction("Index");
                 }
                 var isLockedOut = await _userManager.IsLockedOutAsync(user);

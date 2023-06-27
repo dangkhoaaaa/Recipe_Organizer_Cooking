@@ -85,7 +85,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         // GET: /Recipe/Censhorship
         public async Task<IActionResult> PendingRecipe()
         {
-            var model = _recipeRepository.GetPendingRecipesWithMetadata();
+            var model = _recipeRepository.GetRecipesByStatusWithMetadata("pending");
             return View(model);
         }
 
@@ -93,6 +93,19 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         public ActionResult PendingRecipe(int recipeID, string Status)
         {
 			_recipeRepository.UpdateApprovalStatus(recipeID, Status);
+            return RedirectToAction(nameof(PendingRecipe));
+        }
+
+        public async Task<IActionResult> RejectRecipe()
+        {
+            var model = _recipeRepository.GetRecipesByStatusWithMetadata("reject");
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult RejectRecipe(int recipeID, string Status)
+        {
+            _recipeRepository.UpdateApprovalStatus(recipeID, Status);
             return RedirectToAction(nameof(PendingRecipe));
         }
 

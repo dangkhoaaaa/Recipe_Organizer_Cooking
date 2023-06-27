@@ -3,7 +3,7 @@
 @inject UserManager<AppUser> _userManager
 
 @{
-    ViewData["Title"] = "Recipe manage";
+    ViewData["Title"] = "Reject recipe";
     Layout = "_AdminLayout";
 }
 
@@ -23,8 +23,8 @@
             </form>
 
             <div class="table-responsive">
-                <p style="margin-top: 15px;"> @ViewBag.NotFind</p>
-            @if (Model != null)
+                @ViewBag.NotFind
+                @if (Model != null)
                 {
                     <table id="demo-foo-addrow" class="table m-t-10 highlight contact-list no-wrap" data-sorting="true" data-paging="true" data-paging-size="6">
                         <thead>
@@ -32,10 +32,8 @@
                                 <th>No</th>
                                 <th>Title</th>
                                 <th>Cook (Author)</th>
-                                <th>No.Share</th>
                                 <th>Create date</th>
                                 <th>Status</th>
-                                <th></th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -56,28 +54,18 @@
                                         <td>
                                             <div class="chip">
                                                 <img src="@recipe.UserImage" alt="username">
-                                                <a class="a-text" href="/Admin/UserRecipe/?userID=@recipe.UserId">@recipe.UserName</a>
+                                                <a class="a-text" href="/Admin/UserRecipe/?userID=@recipe.UserId">@recipe.UserImage</a>
                                             </div>
                                         </td>
-                                        <td>@recipe.NumberShare</td>
                                         <td>@recipe.CreateDate</td>
                                         <td>@recipe.Status</td>
                                         <td>
-                                            <form asp-area="Admin" asp-controller="Recipe" asp-action="PendingRecipe" method="post">
+                                        <form asp-area="Admin" asp-controller="Recipe" asp-action="PendingRecipe" method="post">
                                                 <input id="Status" name="Status" type="hidden" value="Approved" />
-                                                <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
+                                            <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
                                                 <button type="submit" class="waves-effect waves-light btn green btn-sm">
                                                     Approve
-                                                </button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <form asp-area="Admin" asp-controller="Recipe" asp-action="PendingRecipe" method="post">
-                                                <input id="Status" name="Status" type="hidden" value="Rejected" />
-                                                <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
-                                                <button type="submit" class="waves-effect waves-light btn red btn-sm">
-                                                    Reject
-                                                </button>
+                                            </button>
                                             </form>
                                         </td>
                                     </tr>
