@@ -7,6 +7,7 @@ using Services.Data;
 using Microsoft.AspNetCore.Authorization;
 using Services;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Imaging;
 
 namespace RecipeOrganizer.Controllers
 {
@@ -50,8 +51,13 @@ namespace RecipeOrganizer.Controllers
 			return View();
 		}
 
+		public IActionResult AccessDenied()
+		{
+			return View();
+		}
+
 		[HttpPost]
-		public async Task<IActionResult> AddNewRecipe(RecipeData recipe, List<IFormFile> mediaFiles)
+		public async Task<IActionResult> AddNewRecipe(RecipeData recipe, IFormFile mediaFile)
 		{
 			//if (ModelState.IsValid)
 			//{
@@ -102,43 +108,40 @@ namespace RecipeOrganizer.Controllers
 				}
 
 				// Media
-				if (mediaFiles != null)
+				if (mediaFile != null && mediaFile.Length > 0)
 				{
 					// Save the file to the server
-					//var fileName = Guid.NewGuid().ToString() + Path.GetExtension(mediaFile.FileName);
-					//var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", user.Id, fileName);
+					var fileName = Guid.NewGuid().ToString() + Path.GetExtension(mediaFile.FileName);
+					var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", user.Id, fileName);
 
 					// Save the file to the filePath
-					//using (var stream = new FileStream(filePath, FileMode.Create))
-					//{
-					//	await mediaFile.CopyToAsync(stream);
-					//}
-
-					string[] filePaths = _fireBaseService.UploadImage(mediaFiles).ToString().Split(new[] { "ygbygyn34897gnygytfrfr" }, StringSplitOptions.RemoveEmptyEntries);
-
-					//_mediaRepository.addMedia(filePath);
-
-					foreach (var imgUrl in filePaths)
+					using (var stream = new FileStream(filePath, FileMode.Create))
 					{
-						Media media = new Media
-						{
-							Filelocation = imgUrl,
-							Date = DateTime.Now
-						};
-						_mediaRepository.Add(media);
-
-						Metadata metadata = new Metadata
-						{
-							RecipeId = data.RecipeId,
-							MediaId = media.MediaId,
-							UserId = user.Id
-						};
-
-						// Save the Metadata object to the database
-						_metadataRepository.Add(metadata);
+						await mediaFile.CopyToAsync(stream);
 					}
+
+					// Create a new Media object and assign values to the fields
+					Media media = new Media
+					{
+						Filelocation = filePath,
+						Date = DateTime.Now
+					};
+
+					// Save the Media object to the database
+					_mediaRepository.Add(media);
+
+					// Create a new Metadata object and assign values to the fields
+					Metadata metadata = new Metadata
+					{
+						RecipeId = data.RecipeId,
+						MediaId = media.MediaId,
+						UserId = user.Id
+					};
+
+					// Save the Metadata object to the database
+					_metadataRepository.Add(metadata);
 				}
-				else if (mediaFiles == null || mediaFiles.Count == 0)
+				else
 				{
 					// If there is no media file, just create a new Metadata object
 					Metadata metadata = new Metadata
@@ -186,11 +189,11 @@ namespace RecipeOrganizer.Controllers
 					}
 				}
 				//}
-				return RedirectToAction("RecipePending", "Recipe", new { id = data.RecipeId });
+				return RedirectToAction("PendingRecipe", "Recipe", new { id = data.RecipeId });
 			}
 			return View();
 		}
-		
+
 		public async Task<IActionResult> PendingRecipe(int id)
 		{
 			var user = await _userManager.GetUserAsync(User);
@@ -224,6 +227,7 @@ namespace RecipeOrganizer.Controllers
 				data.Directions = direction;
 				List<Tag> tags = _recipeHasTagRepository.GetTagsByRecipeId(recipe.RecipeId);
 				data.Tags = tags;
+				data.Img = recipe.Image;
 
 				var user = await _userManager.GetUserAsync(User);
 				if (user != null)
@@ -241,7 +245,7 @@ namespace RecipeOrganizer.Controllers
 
 				return View(data);
 			}
-			return RedirectToAction("Index", "Home");
+			return RedirectToAction("PageNotFound", "Home");
 		}
 
 		[HttpGet]
@@ -256,18 +260,23 @@ namespace RecipeOrganizer.Controllers
 			return RedirectToAction("RecipeDetail", "Recipe", new { id = recipeId });
 		}
 
-		public IActionResult EditRecipe(int id)
+		public async Task<IActionResult> EditRecipe(int id)
 		{
-			Recipe recipe = _recipeRepository.GetByIdForEdit(id);
-			if (recipe != null)
+			var user = await _userManager.GetUserAsync(User);
+			if (user != null)
 			{
-				RecipeData recipeData = ConvertToRecipeData(recipe);
-				return View(recipeData);
+				Recipe recipe = _recipeRepository.GetByIdForEdit(id);
+				if (recipe != null)
+				{
+					RecipeData recipeData = ConvertToRecipeData(recipe);
+					return View(recipeData);
+				}
+				else
+				{
+					return RedirectToAction("RecipeDetail", "Recipe", new { recipeId = id });
+				}
 			}
-			else
-			{
-				return RedirectToAction("RecipeDetail", "Recipe", new { recipeId = id });
-			}
+			return RedirectToAction("AccessDenied", "Recipe");
 		}
 
 		private RecipeData ConvertToRecipeData(Recipe recipe)
@@ -354,7 +363,7 @@ namespace RecipeOrganizer.Controllers
 				}
 				else
 				{
-					return RedirectToAction("Index", "Home");
+					return RedirectToAction("PageNotFound", "Home");
 				}
 			}
 			else
@@ -362,8 +371,22 @@ namespace RecipeOrganizer.Controllers
 				return View(recipe);
 			}
 
-			return RedirectToAction("UserNotFound");
+			return RedirectToAction("PageNotFound", "Home");
 		}
+
+		[AllowAnonymous]
+		public IActionResult PrintRecipe(int recipeId)
+		{
+			Recipe recipe = _recipeRepository.GetById(recipeId, "public");
+			if (recipe != null)
+			{
+				RecipeData data = ConvertToRecipeData(recipe);
+				return View(data);
+			}
+
+			return RedirectToAction("Index", "Home");
+		}
+
 
 	}
 }

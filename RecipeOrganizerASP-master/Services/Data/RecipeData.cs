@@ -22,6 +22,7 @@ namespace Services.Data
 		public string TagsInput { get; set; }
 		public List<Tag> Tags { get; set; }
 		public List<Media> MediaFiles { get; set; }
+		public string Img { get; set; }
 		public List<Category> categories { get; set; }
 		public double? AvgRate { get; set; }
 		public string? Image { get; set; }

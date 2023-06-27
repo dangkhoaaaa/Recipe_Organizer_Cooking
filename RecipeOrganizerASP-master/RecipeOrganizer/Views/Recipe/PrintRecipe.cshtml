@@ -1,0 +1,75 @@
+﻿@model Services.Data.RecipeData
+@{
+	ViewBag.Title = Model.Title;
+	Layout = "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - Recipe Organizer</title>
+	<link rel="icon" type="image/png" sizes="16x16" href="~/assets/img/logo-red.png">
+	<meta name="author" content="CaoCong">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="keywords" content="recipes food, recipes , chinese food, italian food">
+	<meta name="description" content="Recipe Organizer - Food & Recipes Food">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href="~/assets/css/content.css" rel="stylesheet">
+
+	<script>
+		function printPage() {
+			window.print();
+		}
+		window.onload = function () {
+			printPage();
+		};
+	</script>
+</head>
+<body class="layout-print">
+	<div class="layout-print-header">
+		<a class="logo" rel="home" href="/" aria-label="Home">
+			<img src="../../assets/img/logo-red.png" class="icon-logo" />
+			<div class="is-screenreader-only">
+				Recipe Ogranization
+			</div>
+		</a>
+	</div>
+
+	<div class="layout-print-content">
+		<div class="recipe-article">
+			<h1>@Model.Title</h1>
+			<p>@Model.Description</p>
+			<hr />
+			<div class="margin-bottom-10px">
+				Recipe by Cook
+				<span class="margin-lr-5px">|</span>
+				Updated on @Model.Date
+			</div>
+			<div class="ingredients">
+				<h3>Ingredients</h3>
+				<ul>
+					@foreach (var item in Model.Ingredients)
+					{
+						<li>@item.IngredientName</li>
+					}
+				</ul>
+			</div>
+			<div class="directions">
+				<h3>Directions</h3>
+				<div class="padding-lr-20px">
+					@foreach (var item in Model.Directions)
+					{
+						<p>
+							<b>Step @item.Step</b> <br>
+							<span>@item.Direction1</span>
+						</p>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+﻿@{
+	ViewBag.Title = "Page Not Fount";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+	<div id="page-title" class="padding-tb-30px gradient-white">
+		<div class="container text-center">
+			<ol class="breadcrumb opacity-5">
+				<li><a href="@Url.Action("Index", "Home")">Home</a></li>
+				<li class="active">404 page</li>
+			</ol>
+		</div>
+	</div>
+
+	<div class="container margin-bottom-100px">
+		<div class="text-center">
+			<img src="assets/img/404.png" alt="">
+			<h3 class="text-center">Page Not Fount</h3>
+			<h4 class="text-center text-grey-2">Ooops! The page you are looking for, couldn't be found.</h4>
+
+			<a href="@Url.Action("Index", "Home")" class="btn btn-sm border-radius-30 margin-tb-15px text-white background-second-color  box-shadow padding-lr-25px margin-left-30px"><i class="fas fa-home  margin-right-7px"></i>  Go Home</a>
+		</div>
+	</div>
+
+</body>
