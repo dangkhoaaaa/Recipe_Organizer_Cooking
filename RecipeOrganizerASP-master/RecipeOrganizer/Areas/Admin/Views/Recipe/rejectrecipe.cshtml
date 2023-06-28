@@ -57,7 +57,7 @@
                                                 <a class="a-text" href="/Admin/UserRecipe/?userID=@recipe.UserId">@recipe.UserName</a>
                                             </div>
                                         </td>
-                                        <td>@recipe.CreateDate</td>
+                                        <td class="dateElement">@recipe.CreateDate</td>
                                         <td>@recipe.Status</td>
                                         <td>
                                             <form asp-area="Admin" asp-controller="Recipe" asp-action="RejectRecipe" method="post">

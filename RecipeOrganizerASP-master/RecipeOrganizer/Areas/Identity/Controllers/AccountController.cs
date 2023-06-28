@@ -340,7 +340,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                         if (resultLink.Succeeded)
                         {
 
-                            await _userManager.AddLoginAsync(registeredUser, info);
+                            //await _userManager.AddLoginAsync(registeredUser, info);
                             var code = await _userManager.GenerateEmailConfirmationTokenAsync(registeredUser);
                             await _userManager.ConfirmEmailAsync(registeredUser, code);
 

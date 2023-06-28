@@ -146,7 +146,14 @@
                                 }
                             } else
                             {
-                                <span>@ManageNav.FirstName</span>
+                                if (ManageNav.LastName != null)
+                                {
+                                    string fullName = ManageNav.FirstName + " " + ManageNav.LastName;
+                                    <span>@fullName</span>
+                                } else
+                                {
+                                    <span>@ManageNav.FirstName</span>
+                                }
                             }
 
                         </h4>

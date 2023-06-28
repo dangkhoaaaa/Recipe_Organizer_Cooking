@@ -13,9 +13,23 @@
 }
 <div class="rDetail">
 	<div>
-		<h1>@Model.RecipeTitle</h1> <span class="label label-danger" style="font-size: 15px;">@Model.Status</span>
+		<h1>@Model.RecipeTitle</h1> 
+		<!--Hiển thị màu sắc label-->
+		@if (Model.Status.Contains("rejected"))
+		{
+			<span class="label label-danger" style="font-size: 15px;">@Model.Status</span>
+		}
+		else if (Model.Status.Contains("public"))
+		{
+			<span class="label label-success" style="font-size: 15px;">@Model.Status</span>
+		}
+		else
+		{
+			<span class="label label-default" style="color:black; font-size: 15px;">@Model.Status</span>
+		}
 	</div>
-	<div class="margin-tb-10px">
+	<div class="margin-tb-20px" style="margin:15px 0px;">
+		<h4>Description</h4>
 		@Model.RecipeDescription
 	</div>
 	<div>
