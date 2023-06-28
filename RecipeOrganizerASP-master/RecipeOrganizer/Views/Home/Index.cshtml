@@ -2,53 +2,10 @@
 	ViewData["Title"] = "Home Page";
 }
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RecipeOrganizer_AspNetCore</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/RecipeOrganizer_AspNetCore.styles.css" asp-append-version="true" />
-    <meta name="author" content="CaoCong">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta name="keywords" content="recipes food, recipes , chinese food, italian food">
-    <meta name="description" content="Recipe Organizer - Food & Recipes Food">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/assets/css/mystyle.css" />
-    <!-- google fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,800%7CPoppins:100,200,300i,300,400,700,400i,500%7CDancing+Script:700" rel="stylesheet">
-    <!-- animate -->
-    <link rel="stylesheet" href="~/" />
-    <!-- owl Carousel ~/assets -->
-    <link href="~/assets/css/owl.carousel.css" rel="stylesheet">
-    <link href="~/assets/css/owl.theme.css" rel="stylesheet">
-    <!-- bootstrap -->
-    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
-    <!-- hover anmation -->
-    <link rel="stylesheet" href="~/assets/css/hover-min.css">
-    <!-- slick slider -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- flag icon -->
-    <link rel="stylesheet" href="~/assets/css/flag-icon.min.css">
-    <!-- main style -->
-    <link rel="stylesheet" href="~/assets/css/style.css">
-    <!-- colors -->
-    <link rel="stylesheet" href="~/assets/css/colors/main.css">
-    <!-- elegant icon -->
-    <link rel="stylesheet" href="~/assets/css/elegant_icon.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="~/assets/css/fontawesome-all.min.css">
-    <!-- Jquery-->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-</head>
-
-<main>
 	<div class="autoplayBanner">
-	
+
 		<div class="banner padding-tb-20px background-overlay" style="background-image: url('https://wallpapershome.com/images/pages/pic_h/17815.jpg'); ">
 
 		@await Component.InvokeAsync("Banner")
@@ -79,25 +36,25 @@
 		@await Component.InvokeAsync("Banner")
 		<!-- //container  -->
 	</div>
-    </div>
+	</div>
 
-	@await Component.InvokeAsync("Category")
+@await Component.InvokeAsync("Category")
 
-	 <div data-aos="flip-left" class="col-md-7">
-                    <p class="text-grey-2 ">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                </div>
+	 @*<div data-aos="flip-left" class="col-md-7">
+					<p class="text-grey-2 ">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+				</div>
 
 	 <div data-aos="flip-left" class="title text-center ">
-            <h2 class="font-weight-700 text-main-color">Popular Recipes</h2>
-            <div class="row justify-content-center margin-bottom-45px">
-                <div class="col-md-7">
-                    <p class="text-grey-2 ">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                </div>
-            </div>
-        </div>
+			<h2 class="font-weight-700 text-main-color">Popular Recipes</h2>
+			<div class="row justify-content-center margin-bottom-45px">
+				<div class="col-md-7">
+					<p class="text-grey-2 ">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+				</div>
+			</div>
+		</div>*@
 
 
-	@await Component.InvokeAsync("Items")
+@await Component.InvokeAsync("Items")
 
 
 	<div class="instgram-feed ">
@@ -122,22 +79,22 @@
 			</div>
 		</div>
 	</div>
-	@section Scripts {
-		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-		<script>
-			
-			(function ($) {
-				$(document).ready(function () {
-					$("#postTitle").autocomplete({
-						source: 'api/postapi/search'
+@section Scripts {
+			<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+			<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+			<script>
+
+				(function ($) {
+					$(document).ready(function () {
+						$("#postTitle").autocomplete({
+							source: 'api/postapi/search'
+
+						});
 
 					});
+				})(jQuery);
 
-				});
-			})(jQuery);
-
-		</script>
+			</script>
 	}
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -163,24 +120,24 @@
 			slidesToScroll: 1,
 			autoplay: true,
 			autoplaySpeed: 2000,
-			 
+
   arrows: false,
    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2, arrows: false
-        }
-      },
-      {
-        breakpoint: 576,
-        settings: {
-          slidesToShow: 1, arrows: false
-        }
-      }
-    ]
+	  {
+		breakpoint: 768,
+		settings: {
+		  slidesToShow: 2, arrows: false
+		}
+	  },
+	  {
+		breakpoint: 576,
+		settings: {
+		  slidesToShow: 1, arrows: false
+		}
+	  }
+	]
 		});
 	</script>
 	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-</main>
+
 
