@@ -23,7 +23,7 @@
             </form>
 
             <div class="table-responsive">
-            @ViewBag.NotFind
+                <p style="margin-top: 15px;"> @ViewBag.NotFind</p>
             @if (Model != null)
                 {
                     <table id="demo-foo-addrow" class="table m-t-10 highlight contact-list no-wrap" data-sorting="true" data-paging="true" data-paging-size="6">
@@ -35,7 +35,8 @@
                                 <th>No.Share</th>
                                 <th>Create date</th>
                                 <th>Status</th>
-                                <th>Update</th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,12 +47,98 @@
                                     counter += 1;
                                     <tr>
                                         <td>@counter</td>
-                                        <td><a href="/Recipe/RecipeDetails/?recipeID=@recipe.RecipeId">@recipe.RecipeTitle</a></td>
-                                        <td>@recipe.UserName</td>
+                                        <td>
+                                            <div class="chip">
+                                                <img src="@recipe.RecipeImage" alt="username">
+                                                <a class="a-text" href="/Recipe/RecipeDetails/?recipeID=@recipe.RecipeId">@recipe.RecipeTitle</a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="chip">
+                                                <img src="@recipe.UserImage" alt="username">
+                                                <a class="a-text" href="/Admin/UserRecipe/?userID=@recipe.UserId">@recipe.UserName</a>
+                                            </div>
+                                        </td>
                                         <td>@recipe.NumberShare</td>
-                                        <td>@recipe.CreateDate</td>
-                                        <td>@recipe.Status</td>
-                                        <td><button>Click vao day ik</button></td>
+                                        <td class="dateElement">@recipe.CreateDate</td>
+                                        <td>
+                                        <!--Hiển thị màu sắc label-->
+                                            @if (recipe.Status.Contains("rejected"))
+                                            {
+                                                <span class="label label-danger" style="font-size: 15px;">@recipe.Status</span>
+                                            }
+                                            else if (recipe.Status.Contains("public"))
+                                            {
+                                                <span class="label label-success" style="font-size: 15px;">@recipe.Status</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="label label-default" style="color:black; font-size: 15px;">@recipe.Status</span>
+                                            }
+                                        </td>
+                                        @*Recipe đã được duyệt rồi thì chỉ có nút reject*@
+                                        @if (recipe.Status.Equals("public"))
+                                        {
+                                            <td>
+                                                <div style="display:inline-block">
+                                                    <form asp-area="Admin" asp-controller="Recipe" asp-action="Index" method="post">
+                                                        <input id="Status" name="Status" type="hidden" value="Rejected" />
+                                                        <input id="SearchValue" name="SearchValue" type="hidden" value="@ViewBag.RecipeKeyword" />
+                                                        <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
+                                                        <button type="submit" class="waves-effect waves-light btn red btn-sm">
+                                                            Reject
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        }
+                                        //Recipe bị reject thì chỉ có nút approve
+                                        else if (recipe.Status.Equals("rejected"))
+                                        {
+                                            <td>
+                                                <div style="display:inline-block">
+                                                    <form asp-area="Admin" asp-controller="Recipe" asp-action="Index" method="post">
+                                                        <input id="Status" name="Status" type="hidden" value="Public" />
+                                                        <input id="SearchValue" name="SearchValue" type="hidden" value="@ViewBag.RecipeKeyword" />
+                                                        <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
+                                                        <button type="submit" class="waves-effect waves-light btn  green btn-sm">
+                                                            Approve
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                            
+                                        }
+                                        //Recipe chưa được duyệt có cả 2
+                                        else if (recipe.Status.Equals("pending"))
+                                        {
+                                            <td>
+                                                <div style="display:inline-block">
+                                                    <form asp-area="Admin" asp-controller="Recipe" asp-action="Index" method="post">
+                                                        <input id="Status" name="Status" type="hidden" value="Public" />
+                                                        <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
+                                                        <button type="submit" class="waves-effect waves-light btn green btn-sm">
+                                                            Approve
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                            
+                                            <td>
+                                                <div style="display:inline-block">
+                                                    <form asp-area="Admin" asp-controller="Recipe" asp-action="Index" method="post">
+                                                        <input id="Status" name="Status" type="hidden" value="Rejected" />
+                                                        <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
+                                                        <button type="submit" class="waves-effect waves-light btn red btn-sm">
+                                                            Reject
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                        }
                                     </tr>
                                 }
                             }

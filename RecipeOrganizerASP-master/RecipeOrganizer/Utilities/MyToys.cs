@@ -36,12 +36,12 @@
                 }
                 else
                 {
-                    displayText = "Last login unknown";
+                    displayText = "No login last";
                 }
             }
             else
             {
-                displayText = "Last login unknown";
+                displayText = "Last login ";
             }
             return displayText;
         }

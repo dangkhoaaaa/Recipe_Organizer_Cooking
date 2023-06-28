@@ -67,7 +67,8 @@ namespace RecipeOrganizer.Controllers
 							RecipeId = recipe.RecipeId,
 							Title = recipe.Title,
 							Date = recipe.Date,
-							Image = image
+							Image = image,
+							Status = recipe.Status,
 						};
 						dataList.Add(userData);
 					}

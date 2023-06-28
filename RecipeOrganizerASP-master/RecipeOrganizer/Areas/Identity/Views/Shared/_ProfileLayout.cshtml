@@ -51,7 +51,8 @@
 </head>
 <body>
 
-    <header class="background-main-color">
+    <header class="background-main-color" style="background: rgb(180,58,136);
+            background: linear-gradient(90deg, rgba(180,58,136,1) 0%, rgba(217,16,16,1) 54%, rgba(255,127,63,1) 100%);">
         <div class="container">
             <div class="header-output">
                 <div class="header-in">
@@ -145,7 +146,14 @@
                                 }
                             } else
                             {
-                                <span>@ManageNav.FirstName</span>
+                                if (ManageNav.LastName != null)
+                                {
+                                    string fullName = ManageNav.FirstName + " " + ManageNav.LastName;
+                                    <span>@fullName</span>
+                                } else
+                                {
+                                    <span>@ManageNav.FirstName</span>
+                                }
                             }
 
                         </h4>

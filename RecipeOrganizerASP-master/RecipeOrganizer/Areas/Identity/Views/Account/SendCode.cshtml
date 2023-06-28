@@ -1,6 +1,6 @@
 ﻿@model SendCodeViewModel
 @{
-    ViewData["Title"] = "Gửi mã xác thực";
+    ViewData["Title"] = "Verify code";
 }
 
 <h1>@ViewData["Title"].</h1>
@@ -9,9 +9,9 @@
     <input asp-for="RememberMe" type="hidden" />
     <div class="row">
         <div class="col-md-8">
-            Mã xác thực gửi tới:
+           Verify code will send to: 
             <select asp-for="SelectedProvider" asp-items="Model.Providers"></select>
-            <button type="submit" class="btn btn-success btn-sm">Gửi</button>
+            <button type="submit" class="btn btn-success btn-sm">Send</button>
         </div>
     </div>
 </form>

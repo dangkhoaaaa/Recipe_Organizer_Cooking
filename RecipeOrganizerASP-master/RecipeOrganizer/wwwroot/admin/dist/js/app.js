@@ -5,7 +5,7 @@ $.fn.AdminSettings = function(settings) {
 
     // General option for vertical header 
     var defaults = {
-        Theme: false, // this can be true or false ( true means dark and false means light ),
+        Theme: true, // this can be true or false ( true means dark and false means light ),
         Layout: 'vertical', // 
         LogoBg: 'skin1', // You can change the Value to be skin1/skin2/skin3/skin4/skin5/skin6 
         NavbarBg: 'skin6', // You can change the Value to be skin1/skin2/skin3/skin4/skin5/skin6 

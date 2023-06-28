@@ -1,7 +1,7 @@
 $(function() {
     "use strict";
     $("#main-wrapper").AdminSettings({
-        Theme: true, // this can be true or false ( true means dark and false means light ),
+        Theme: false, // this can be true or false ( true means dark and false means light ),
         Layout: 'vertical',
         LogoBg: 'skin5', // You can change the Value to be skin1/skin2/skin3/skin4/skin5/skin6
         NavbarBg: 'skin1', // You can change the Value to be skin1/skin2/skin3/skin4/skin5/skin6

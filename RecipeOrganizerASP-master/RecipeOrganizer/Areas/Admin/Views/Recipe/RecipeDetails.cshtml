@@ -11,68 +11,121 @@
 @{
 	string avg = Model.AvgRate + "%";
 }
-
-		<div class="col-lg-8">
-			<h1 class="font-weight-500 margin-bottom-20px">@Model.RecipeTitle</h1>
-			<div class="row">
-				<div class="col-3">
-					<div class="progress">
-						<div class="determinate indigo darken-1" style="width:@avg"></div>
-					</div>
-				</div>
-				|
-				<div class="col-5">
-					<a href="#" onclick="scrollToSection('#addFeedback')">@Model.NumberShare reviews</a>
-					<span class="margin-lr-5px">|</span>
-					<a href="#">55 photos</a>
-				</div>
-			</div>
-
-			<div class="margin-tb-10px">
-				@Model.RecipeDescription
-			</div>
-			<div class="margin-bottom-10px">
-				Recipe by Cook
-				<span class="margin-lr-5px">|</span>
-				Updated on @Model.CreateDate
-			</div>
-
-			<div class="margin-bottom-40px card border-0 box-shadow">
-				<div class="card-img-top"><a href="#"><img src="http://placehold.it/1600x800" alt=""></a></div>
-				<div class="padding-lr-30px padding-tb-20px">
-					<div class="padding-tb-10px">
-						<h3>Ingredients</h3>
-						<ul>
-							@foreach (var item in Model.Ingredients)
-							{
-								<li>@item.IngredientName</li>
-							}
-						</ul>
-					</div>
-					<div class="padding-tb-10px">
-						<h3>Directions</h3>
-						<div class="padding-lr-20px">
-							@foreach (var item in Model.Directions)
-							{
-								<p><b>Step @item.Step</b> - <span>@item.Direction1</span></p>
-							}
-						</div>
-					</div>
-					<div class="padding-tb-10px">
-						<h3>Tags</h3>
-						<div class="padding-lr-20px">
-							<p>
-								@foreach (var item in Model.Tags)
-								{
-									@if (item.ToString().Trim() != null)
-									{
-										<a href="#">#@item.TagName</a>
-									}
-								}
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
+<div class="rDetail">
+	<div>
+		<h1>@Model.RecipeTitle</h1> 
+		<!--Hiển thị màu sắc label-->
+		@if (Model.Status.Contains("rejected"))
+		{
+			<span class="label label-danger" style="font-size: 15px;">@Model.Status</span>
+		}
+		else if (Model.Status.Contains("public"))
+		{
+			<span class="label label-success" style="font-size: 15px;">@Model.Status</span>
+		}
+		else
+		{
+			<span class="label label-default" style="color:black; font-size: 15px;">@Model.Status</span>
+		}
+	</div>
+	<div class="margin-tb-20px" style="margin:15px 0px;">
+		<h4>Description</h4>
+		@Model.RecipeDescription
+	</div>
+	<div>
+		<a href="#"><img class="imgRD" src="@Model.RecipeImage" alt="Recipe Image"></a>
+	</div>
+	<div class="ingredients padding-tb-10px">
+		<h3>Ingredients</h3>
+		<ul class="padding-lr-20px">
+			@foreach (var item in Model.Ingredients)
+			{
+				<li>@item.IngredientName</li>
+			}
+		</ul>
+	</div>
+	<div class="directions padding-tb-10px">
+		<h3>Directions</h3>
+		<div class="padding-lr-20px">
+			@foreach (var item in Model.Directions)
+			{
+				<p><b>Step @item.Step</b> - <span>@item.Direction1</span></p>
+			}
 		</div>
+	</div>
+	<div class="padding-tb-10px">
+		<h3>Tags</h3>
+		<div class="padding-lr-20px">
+			<p>
+				@foreach (var item in Model.Tags)
+				{
+					@if (item.ToString().Trim() != null)
+					{
+						<a href="#">#@item.TagName</a>
+					}
+				}
+			</p>
+		</div>
+	</div>
+</div>
+
+<div class="buttonCheck">
+	@*Recipe đã được duyệt rồi thì chỉ có nút reject*@
+	@if (Model.Status.Equals("public"))
+	{
+		<div style="display:inline-block">
+			<form asp-area="Admin" asp-controller="Recipe" asp-action="RecipeDetails" method="post">
+				<input id="status" name="status" type="hidden" value="Rejected" />
+				<input id="searchValue" name="searchValue" type="hidden" value="@ViewBag.RecipeKeyword" />
+				<input id="recipeID" name="recipeID" type="hidden" value="@Model.RecipeId" />
+				<button type="submit" class="waves-effect waves-light btn red btn-sm">
+					Reject
+				</button>
+			</form>
+		</div>
+	}
+	//Recipe bị reject thì chỉ có nút approve
+	else if (Model.Status.Equals("rejected"))
+	{
+		<div style="display:inline-block">
+			<form asp-area="Admin" asp-controller="Recipe" asp-action="RecipeDetails" method="post">
+				<input id="status" name="status" type="hidden" value="Public" />
+				<input id="searchValue" name="searchValue" type="hidden" value="@ViewBag.RecipeKeyword" />
+				<input id="recipeID" name="recipeID" type="hidden" value="@Model.RecipeId" />
+				<button type="submit" class="waves-effect waves-light btn  green btn-sm">
+					Approve
+				</button>
+			</form>
+		</div>
+	}
+	//Recipe chưa được duyệt có cả 2
+	else if (Model.Status.Equals("pending"))
+	{
+		<div style="display:inline-block">
+			<form asp-area="Admin" asp-controller="Recipe" asp-action="RecipeDetails" method="post">
+				<input id="status" name="status" type="hidden" value="Public" />
+				<input id="searchValue" name="searchValue" type="hidden" value="@ViewBag.RecipeKeyword" />
+				<input id="recipeID" name="recipeID" type="hidden" value="@Model.RecipeId" />
+				<button type="submit" class="waves-effect waves-light btn green btn-sm">
+					Approve
+				</button>
+			</form>
+		</div>
+
+		<div style="display:inline-block">
+			<form asp-area="Admin" asp-controller="Recipe" asp-action="RecipeDetails" method="post">
+				<input id="status" name="status" type="hidden" value="Rejected" />
+				<input id="searchValue" name="searchValue" type="hidden" value="@ViewBag.RecipeKeyword" />
+				<input id="recipeID" name="recipeID" type="hidden" value="@Model.RecipeId" />
+				<button type="submit" class="waves-effect waves-light btn red btn-sm">
+					Reject
+				</button>
+			</form>
+		</div>
+	} else {
+
+	}
+	@*<a href="#" class="approve">Approve</a>
+	<a href="#" class="reject">Reject</a>*@
+</div>
 

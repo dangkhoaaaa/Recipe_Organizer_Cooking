@@ -15,5 +15,23 @@ namespace Services.Repository
 
 			return tags;
 		}
+
+		public void AddByRecipeId(int recipeId, int tagId)
+		{
+			RecipeHasTag recipeHasTag = new RecipeHasTag
+			{
+				RecipeId = recipeId,
+				TagId = tagId
+			};
+			_dbSet.Add(recipeHasTag);
+			_context.SaveChanges();
+		}
+
+		public void DeleteByRecipeId(int recipeId)
+		{
+			var recipeHasTags = _dbSet.Where(r => r.RecipeId == recipeId);
+			_dbSet.RemoveRange(recipeHasTags);
+			_context.SaveChanges();
+		}
 	}
 }

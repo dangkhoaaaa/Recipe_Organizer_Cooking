@@ -7,6 +7,7 @@ namespace RecipeOrganizer.Areas.Admin.Models.RecipeManage
     {
         public string UserId { get; set; }
         public string UserName { get; set; }
+        public string UserImage { get; set; }
         public int RecipeId { get; set; }
         public string RecipeTitle { get; set; }
         public string? RecipeDescription { get; set; }
