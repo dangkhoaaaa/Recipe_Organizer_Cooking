@@ -60,8 +60,22 @@
                                             </div>
                                         </td>
                                         <td>@recipe.NumberShare</td>
-                                        <td>@recipe.CreateDate</td>
-                                        <td>@recipe.Status</td>
+                                        <td class="dateElement">@recipe.CreateDate</td>
+                                        <td>
+                                        <!--Hiển thị màu sắc label-->
+                                            @if (recipe.Status.Contains("rejected"))
+                                            {
+                                                <span class="label label-danger" style="font-size: 15px;">@recipe.Status</span>
+                                            }
+                                            else if (recipe.Status.Contains("public"))
+                                            {
+                                                <span class="label label-success" style="font-size: 15px;">@recipe.Status</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="label label-default" style="color:black; font-size: 15px;">@recipe.Status</span>
+                                            }
+                                        </td>
                                         @*Recipe đã được duyệt rồi thì chỉ có nút reject*@
                                         @if (recipe.Status.Equals("public"))
                                         {

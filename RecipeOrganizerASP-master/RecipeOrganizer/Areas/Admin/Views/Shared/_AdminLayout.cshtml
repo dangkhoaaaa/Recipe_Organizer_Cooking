@@ -49,7 +49,7 @@
                 <div class="d-flex align-items-center">
                     <h5 class="font-medium m-b-0">@ViewData["Title"]</h5>
                     <div class="custom-breadcrumb ml-auto">
-                        <a href="/manage/" class="breadcrumb">Home</a>
+                        <a href="/Admin" class="breadcrumb">Home</a>
                         <a href="#!" class="breadcrumb">@ViewData["Title"]</a>
                     </div>
                 </div>
@@ -129,6 +129,17 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        var date = new Date(); // Get the current date and time
+        var formattedDate = date.toLocaleDateString(); // Format the date
+
+        var tdElements = document.getElementsByClassName("dateElement"); // Display the formatted date
+        for (var i = 0; i < tdElements.length; i++) {
+            if (tdElements[i].innerHTML.trim() != "")
+            tdElements[i].textContent = formattedDate; // Update the content of each <td> with the formatted date
+        }
+    </script>
     <!-- ============================================================== -->
     <!-- All Required js -->
     <!-- ============================================================== -->
@@ -152,5 +163,7 @@
     <script src="~/admin/assets/libs/moment/moment.js"></script>
     <script src="~/admin/assets/extra-libs/footable/js/footable.min.js"></script>
     <script src="~/admin/dist/js/pages/footable/footable-init.js"></script>
+    <!-- Addition -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </body>
 </html>
