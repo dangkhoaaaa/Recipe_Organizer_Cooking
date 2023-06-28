@@ -102,9 +102,13 @@ namespace Services.Repository
                     };
                     _dbSet.Add(meal);
                     _context.SaveChanges();
-
+                    _dayRepository.addDay(cartLines, meal);
                 }
-                _dayRepository.addDay(cartLines, meal);
+                else
+                {
+                    _dayRepository.SaveDay(cartLines, meal);
+                }
+                
             }
             
             //MealPlanning meal = _dbSet.Where(m => m.UserId.Equals(userID) && m.WeekStartDate.Equals(week)).FirstOrDefault();
