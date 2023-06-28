@@ -11,6 +11,7 @@ using Services.Models.Authentication;
 using Services.Repository;
 using System.Data;
 using System.Text.RegularExpressions;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace RecipeOrganizer.Areas.Admin.Controllers
 {
@@ -61,46 +62,126 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 			return View(model);
 		}
 
-		public async Task<IActionResult> SearchRecipe(string keyword)
+		[HttpPost]
+        public async Task<IActionResult> Index(int recipeID, string status, string searchRecipe)
+        {
+            _recipeRepository.UpdateApprovalStatus(recipeID, status);
+            return RedirectToAction("SearchRecipe", new { keyword = searchRecipe });
+        }
+
+
+        //HttpGet Recipe/SearchRecipe
+        public async Task<IActionResult> SearchRecipe(string keyword)
 		{
 			ViewBag.RecipeKeyword = keyword;
 			var model = _recipeRepository.GetRecipesWithMetadata();
-			if (keyword != null)
+			if (keyword == null)
 			{
-				var listSearchRecipe = model.Where(p => p.RecipeTitle.Contains(keyword.Trim()) || p.UserName.Contains(keyword.Trim())).ToList();
-				if (listSearchRecipe.Count == 0)
-				{
+                    ViewBag.NotFind = "";
+					return View("Index", model);
 
-					ViewBag.NotFind = "No result match the keyword";
-					return View("Index", listSearchRecipe);
+            }
+            var listSearchRecipe = model.Where(p => p.RecipeTitle.Contains(keyword.Trim()) || p.UserName.Contains(keyword.Trim())).ToList();
+            if (listSearchRecipe.Count == 0)
+            {
 
-				}
-				return View("Index", listSearchRecipe);
-			}
-			else
-			{
-				ViewBag.NotFind = "Invalid keyword";
-			}
-			return View("Index", model);
-		}
+                ViewBag.NotFind = "No result match the keyword";
+                return View("Index", listSearchRecipe);
+
+            }
+            return View("Index", listSearchRecipe);
+        }
 
         // GET: /Recipe/Censhorship
         public async Task<IActionResult> PendingRecipe()
         {
-            var model = _recipeRepository.GetPendingRecipesWithMetadata();
+            var model = _recipeRepository.GetRecipesByStatusWithMetadata("pending");
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult PendingRecipe(int recipeID, string Status)
+        public ActionResult PendingRecipe(int recipeID, string status, string searchRecipe)
         {
-			_recipeRepository.UpdateApprovalStatus(recipeID, Status);
-            return RedirectToAction(nameof(PendingRecipe));
+            _recipeRepository.UpdateApprovalStatus(recipeID, status);
+            return RedirectToAction("SearchPendingRecipe", new {keyword = searchRecipe });
+        }
+
+		//HttpGet Recipe/SearchPendingRecipe
+		public async Task<IActionResult> SearchPendingRecipe(string keyword)
+		{
+			ViewBag.RecipeKeyword = keyword;
+			var model = _recipeRepository.GetRecipesByStatusWithMetadata("pending");
+			if (keyword == null)
+			{
+				ViewBag.NotFind = "";
+				return View("PendingRecipe", model);
+
+			}
+			var listSearchRecipe = model.Where(p => p.RecipeTitle.Contains(keyword.Trim()) || p.UserName.Contains(keyword.Trim())).ToList();
+			if (listSearchRecipe.Count == 0)
+			{
+
+				ViewBag.NotFind = "No result match the keyword";
+				return View("PendingRecipe", listSearchRecipe);
+
+			}
+			return View("PendingRecipe", listSearchRecipe);
+		}
+
+		//HttpGet Recipe/RejectRecipe
+		public async Task<IActionResult> RejectRecipe()
+        {
+            var model = _recipeRepository.GetRecipesByStatusWithMetadata("rejected");
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult RejectRecipe(int recipeID, string status, string searchRecipe)
+        {
+            _recipeRepository.UpdateApprovalStatus(recipeID, status);
+            return RedirectToAction("SearchPendingRecipe", new { keyword = searchRecipe });
+        }
+
+        //HttpGet Recipe/SearchPendingRecipe
+        public async Task<IActionResult> SearchRejectRecipe(string keyword)
+        {
+            ViewBag.RecipeKeyword = keyword;
+            var model = _recipeRepository.GetRecipesByStatusWithMetadata("rejected");
+            if (keyword == null)
+            {
+                ViewBag.NotFind = "";
+                return View("RejectRecipe", model);
+
+            }
+            var listSearchRecipe = model.Where(p => p.RecipeTitle.Contains(keyword.Trim()) || p.UserName.Contains(keyword.Trim())).ToList();
+            if (listSearchRecipe.Count == 0)
+            {
+
+                ViewBag.NotFind = "No result match the keyword";
+                return View("RejectRecipe", listSearchRecipe);
+
+            }
+            return View("RejectRecipe", listSearchRecipe);
         }
 
         // GET: /Recipe/RecipeDetails
         public async Task<IActionResult> RecipeDetails(int recipeID)
 		{
+			var model = _recipeRepository.GetRecipesWithID(recipeID);
+			if (model == null)
+				return RedirectToAction("Index");
+			model.AvgRate = 76;
+			model.Ingredients = _ingredientRepository.GetByRecipeId(recipeID);
+			model.Directions = _directionRepository.GetByRecipeId(recipeID);
+			model.Tags = _recipeHasTagRepository.GetTagsByRecipeId(recipeID);
+			return View(model);
+		}
+
+		// GET: /Recipe/RecipeDetails
+		[HttpPost]
+        public async Task<IActionResult> RecipeDetails(int recipeID, string status)
+		{
+			_recipeRepository.UpdateApprovalStatus(recipeID, status);
 			var model = _recipeRepository.GetRecipesWithID(recipeID);
 			model.AvgRate = 76;
 			model.Ingredients = _ingredientRepository.GetByRecipeId(recipeID);
@@ -108,6 +189,8 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 			model.Tags = _recipeHasTagRepository.GetTagsByRecipeId(recipeID);
 			return View(model);
 		}
+
+
 
 
 

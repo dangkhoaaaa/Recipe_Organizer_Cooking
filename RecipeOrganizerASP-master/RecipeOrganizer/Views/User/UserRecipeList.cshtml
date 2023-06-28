@@ -32,18 +32,66 @@
 				<!-- item -->
 				<div class="col-lg-12 margin-bottom-20px">
 					<div class="background-white thum-hover box-shadow hvr-float full-width">
+
 						<div class="float-md-left margin-right-30px thum-xs">
-							<a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img class="width-200px" src="@item.Image" alt=""></a>
+							@if (item.Status == "public")
+							{
+								<a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img class="width-200px" src="@item.Image" alt=""></a>
+							}
+							else 
+							{
+								<a href="/Recipe/PendingRecipe/?id=@item.RecipeId"><img class="width-200px" src="@item.Image" alt=""></a>
+							}
 						</div>
 						<div class="padding-25px">
-							<h3>
-								<a class="text-dark" href="/Recipe/RecipeDetail/?id=@item.RecipeId">@item.Title</a>
-							</h3>
+							<div class="row">
+								<div class="col-10">
+									<h3>
+										@if (item.Status == "public")
+										{
+											<a class="text-dark" href="/Recipe/PendingRecipe/?id=@item.RecipeId">@item.Title</a>
+										}
+										else
+										{
+											<a class="text-dark" href="/Recipe/PendingRecipe/?id=@item.RecipeId">@item.Title</a>
+										}
+									</h3>
+								</div>
+							</div>
 							<hr>
-							<div class="row no-gutters">
-								<div class="col-4 text-left">Date: @item.Date.ToString("dd/MM/yyyy")</div>
-								<div class="col-8 text-right">
-									<a href="/Recipe/EditRecipe/?id=@item.RecipeId" class="text-grey-4">Edit</a>
+							<div class="row">
+								<div class="col-8 text-left">Date: @item.Date.ToString("dd/MM/yyyy")</div>
+								<div class="col-4 text-right">
+									@if (@item.Status == "public")
+									{
+										<span class="text-success">Public</span>
+										<span> - </span>
+										<a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="text-grey-4">View</a>
+									}
+									else if (@item.Status == "pending")
+									{
+										<span class="text-warning">Pending</span>
+										<span> - </span>
+										<a href="/Recipe/EditRecipe/?id=@item.RecipeId" class="text-grey-4">Edit</a>
+									}
+									else if (@item.Status == "draft")
+									{
+										<span class="text-dark">Draft</span>
+										<span> - </span>
+										<a href="/Recipe/EditRecipe/?id=@item.RecipeId" class="text-grey-4">Edit</a>
+									}
+									else if (@item.Status == "trash")
+									{
+										<span class="text-dark">Trash</span>
+									}
+									else if (@item.Status == "rejected")
+									{
+										<span class="text-danger">Rejected</span>
+									}
+									else
+									{
+										<span class="">@item.Status</span>
+									}
 								</div>
 							</div>
 						</div>

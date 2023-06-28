@@ -12,6 +12,7 @@ namespace Services.Data
         public string? RecipeDescription { get; set; }
         public int? NumberShare { get; set; }
         public string RecipeImage { get; set;}
+        public string UserImage { get; set; }
         public DateTime CreateDate { get; set; }
         public string Status { get; set; }
         public double? AvgRate { get; set; } 

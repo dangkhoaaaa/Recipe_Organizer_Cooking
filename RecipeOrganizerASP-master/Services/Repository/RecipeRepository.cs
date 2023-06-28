@@ -110,11 +110,11 @@ namespace Services.Repository
 			return pendingRecipes;
 		}
 
-		public void ChangeStatusRecipe(int recipeId, string oldStatus, string newStatus)
+		public void ChangeStatusRecipe(int recipeId, string newStatus)
 		{
-			if (recipeId != 0 && oldStatus != null && newStatus != null)
+			if (recipeId != 0 && newStatus != null)
 			{
-				Recipe recipe = GetById(recipeId, oldStatus);
+				var recipe = GetById(recipeId);
 				if (recipe != null)
 				{
 					recipe.Status = newStatus;
@@ -124,12 +124,17 @@ namespace Services.Repository
 			}
 		}
 
+		public Recipe GetById(int id)
+		{
+			return GetAll().Where(r => r.RecipeId == id).FirstOrDefault();
+		}
+
 		public void UpdateApprovalStatus(int recipeId, string action)
 		{
 			if (recipeId > 0 && action != null)
 			{
 				string status;
-				if (action == "Approved")
+				if (action == "Public")
 				{
 					status = "public";
 				}
@@ -142,10 +147,19 @@ namespace Services.Repository
 					return;
 				}
 
-				ChangeStatusRecipe(recipeId, "pending", status);
+				ChangeStatusRecipe(recipeId, status);
 			}
 		}
 
+		public void IncreaseNumberShare(int recipeId)
+		{
+			var recipe = _dbSet.FirstOrDefault(r => r.RecipeId == recipeId);
+			if (recipe != null)
+			{
+				recipe.NumberShare += 1;
+				_context.SaveChanges();
+			}
+		}
 
 		//public List<Recipe> GetUserCollection(string userId)
 		//{
@@ -280,6 +294,7 @@ namespace Services.Repository
                             UserId = u.Id,
                             RecipeId = r.RecipeId,
                             UserName = u.UserName,
+							UserImage = u.Image,
                             RecipeTitle = r.Title,
                             RecipeDescription = r.Description,
                             CreateDate = r.Date,
@@ -291,17 +306,18 @@ namespace Services.Repository
             return query.ToList();
         }
 
-        public List<RecipeViewModel> GetPendingRecipesWithMetadata()
+        public List<RecipeViewModel> GetRecipesByStatusWithMetadata(string status)
         {
             var query = from m in _context.MetaData
                         join r in _context.Recipes on m.RecipeId equals r.RecipeId
                         join u in _context.Users on m.UserId equals u.Id
-                        where r.Status.Equals("pending") //&& r.Status.Equals("draft")
+                        where r.Status.Equals(status) //&& r.Status.Equals("draft")
                         select new RecipeViewModel
                         {
                             UserId = u.Id,
                             RecipeId = r.RecipeId,
                             UserName = u.UserName,
+							UserImage = u.Image,
                             RecipeTitle = r.Title,
                             RecipeDescription = r.Description,
                             CreateDate = r.Date,

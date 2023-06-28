@@ -22,6 +22,7 @@ using Services.Models.Authentication;
 using RecipeOrganizer.Areas.Data;
 using System.Data;
 using Firebase.Auth;
+using Services;
 
 namespace RecipeOrganizer.Areas.Identity.Controllers
 {
@@ -34,17 +35,21 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<AccountController> _logger;
-
+        private readonly FireBaseService _fireBaseService;
+        private readonly string DEFAULT_AVT_IMG = "/assets/img/chef-avt-default.png";
         public AccountController(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            FireBaseService fireBaseService
+        )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _fireBaseService = fireBaseService;
         }
 
         // GET: /Account/Login
@@ -164,9 +169,11 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Status = true,
+                    Image = DEFAULT_AVT_IMG
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 await _userManager.AddToRoleAsync(user, RoleName.Member);
+
 
                 if (result.Succeeded)
                 {
@@ -303,9 +310,140 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                 ViewData["ReturnUrl"] = returnUrl;
                 ViewData["ProviderDisplayName"] = info.ProviderDisplayName;
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
-            }
-        } 
+                //-----------------------------------------------------------------------------------//
+                //email luc nhap confirm so sanh xem da co ton tai trong DB chua
+                var registeredUser = await _userManager.FindByEmailAsync(email);
+                string externalEmail = null;
+                AppUser externalEmailUser = null;
+
+                // Claim ~ Dac tinh mo ta mot doi tuong 
+                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
+                {
+                    externalEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
+                }
+
+                //email cua external
+                if (externalEmail != null)
+                {
+                    externalEmailUser = await _userManager.FindByEmailAsync(externalEmail);
+                }
+
+                //email da dang ki vao app va email external cung da dang ki vao app
+                if ((registeredUser != null) && (externalEmailUser != null))
+                {
+                    // externalEmail  == Input.Email
+                    // email google or facebook == email da dang ky vao app
+                    if (registeredUser.Id == externalEmailUser.Id)
+                    {
+                        // Lien ket tai khoan, dang nhap
+                        var resultLink = await _userManager.AddLoginAsync(registeredUser, info);
+                        if (resultLink.Succeeded)
+                        {
+
+                            //await _userManager.AddLoginAsync(registeredUser, info);
+                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(registeredUser);
+                            await _userManager.ConfirmEmailAsync(registeredUser, code);
+
+                            await _signInManager.SignInAsync(registeredUser, isPersistent: false);
+                            registeredUser.LastLoginTime = DateTime.Now; // Update the LastLoginTime property
+                            await _userManager.UpdateAsync(registeredUser); // Save the changes to the user entity
+                            return LocalRedirect(returnUrl);
+
+                        }
+                    }
+                    //email chua dang ki vao app hoac email external chua dang ki vao app => lien ket tai khoan google vao email confirm
+                    else
+                    {
+                        // registeredUser = externalEmailUser (externalEmail != Input.Email)
+                        /*
+                            info => user1 (mail1@abc.com)
+                                 => user2 (mail2@abc.com)
+                        */
+                        ModelState.AddModelError(string.Empty, "Account cannot be linked, please use another email account");
+                        return View();
+                    }
+
+                }
+                //email external da ton tai trong db va confirm email chua co 
+                if ((externalEmailUser != null) && (registeredUser == null))
+                {
+                    ModelState.AddModelError(string.Empty, "New account creation is not supported - There is a different email from an external service");
+                    return View();
+                }
+
+                //email external da ton tai trong db va confirm email chua co 
+                if ((externalEmailUser != null) && (registeredUser == null))
+                {
+                    ModelState.AddModelError(string.Empty, "New account creation is not supported - There is a different email from an external service");
+                    return View();
+                }
+                //email external chua dang ki va external email == email da confirm
+                if ((externalEmailUser == null) && (externalEmail == email))
+                {
+                    // Chua co Account -> Tao Account, lien ket, dang nhap
+                    var newUser = new AppUser()
+                    {
+                        UserName = externalEmail,
+                        Email = externalEmail,
+                        Status = true,
+                        RegistrationTime = DateTime.Now,
+                        Image = DEFAULT_AVT_IMG
+                    };
+                    //tao user
+                    var resultNewUser = await _userManager.CreateAsync(newUser);
+                    //add role
+                    await _userManager.AddToRoleAsync(newUser, RoleName.Member);
+
+                    if (resultNewUser.Succeeded)
+                    {
+                        await _userManager.AddLoginAsync(newUser, info);
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                        await _userManager.ConfirmEmailAsync(newUser, code);
+
+                        await _signInManager.SignInAsync(newUser, isPersistent: false);
+                        newUser.LastLoginTime = DateTime.Now; // Update the LastLoginTime property
+                        await _userManager.UpdateAsync(newUser); // Save the changes to the user entity
+
+                        return LocalRedirect(returnUrl);
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Can not create new account");
+                        return View();
+                    }
+                }
+                var user = new AppUser
+                {
+                    UserName = email,
+                    Email = email,
+                    Status = true,
+                    RegistrationTime = DateTime.Now,
+                    Image = DEFAULT_AVT_IMG
+                };
+                var results = await _userManager.CreateAsync(user);
+                //add role
+                await _userManager.AddToRoleAsync(user, RoleName.Member);
+
+                if (results.Succeeded)
+                {
+                    results = await _userManager.AddLoginAsync(user, info);
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        _logger.LogInformation(6, "User created an account using {Name} provider.", info.LoginProvider);
+
+                        // Update any authentication tokens as well
+                        await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+
+                        return LocalRedirect(returnUrl);
+                    }
+                }
+                ModelState.AddModelError(results);
+                return LocalRedirect(returnUrl);
+                //return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
+            } //end else
+        }
 
         //
         // POST: /Account/ExternalLoginConfirmation
@@ -386,6 +524,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                         Email = externalEmail,
                         Status = true,
                         RegistrationTime = DateTime.Now,
+                        Image = DEFAULT_AVT_IMG
                     };
                     //tao user
                     var resultNewUser = await _userManager.CreateAsync(newUser);
@@ -416,6 +555,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     Email = model.Email,
                     Status = true,
                     RegistrationTime = DateTime.Now,
+                    Image = DEFAULT_AVT_IMG
                 };
                 var result = await _userManager.CreateAsync(user);
                 //add role

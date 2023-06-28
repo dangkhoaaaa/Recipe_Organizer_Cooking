@@ -7,6 +7,28 @@
     Layout = "_AdminLayout";
 }
 
+<style>
+   .warning-msg {
+        font-size: 17px;
+        color: white;
+        background-color: #f44336;
+        padding: 10px;
+   }
+
+   .a-text {
+        color: black;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 15px;
+   }
+</style>
+@if (TempData["UpdateError"] != null)
+{
+    <div class="alert alert-success">
+        <p class="warning-msg"><i class="material-icons">warning</i> @TempData["UpdateError"]</p>
+    </div>
+}
+
 <!-- render body here -->
 <div class="col s12">
     <div class="card">
@@ -23,8 +45,8 @@
             </form>
 
             <div class="table-responsive">
-            @ViewBag.UserError
-            @ViewBag.NotFind
+                <p style="margin-top: 15px;">@ViewBag.UserError</p
+                <p style="margin-top: 15px;">@ViewBag.NotFind</p>
             @if (Model != null)
             {
                     <table id="demo-foo-addrow" class="table m-t-10 highlight contact-list no-wrap" data-sorting="true" data-paging="true" data-paging-size="6">
@@ -52,14 +74,14 @@
                                         <td>@counter</td>
                                         <td>
                                             <div class="chip">
-                                                <img src="~/assets/img/chef-avt-default.png" alt="username">
-                                                <a href="/Admin/UserRecipe/?userID=@user.Member.Id">@user.Member.UserName</a>
+                                                <img src="@user.Member.Image" alt="username">
+                                                <a class="a-text" href="/Admin/UserRecipe/?userID=@user.Member.Id">@user.Member.UserName</a>
                                             </div>
                                         </td>
                                         <td>@user.Member.Email</td>
                                         @*<td>@user.Member.FirstName</td>
                                         <td>@user.Member.LastName</td>*@
-                                        <td>@user.Member.Birthday</td>
+                                        <td class="dateElement">@user.Member.Birthday</td>
                                         <td>
                                             @foreach (var role in user.Role)
                                             {
@@ -78,9 +100,9 @@
                                                 {
                                                     if (provide.LoginProvider.Contains("Google"))
                                                     {
-                                                        <span class="label label-warning">@provide.LoginProvider</span>
+                                                        <span class="label label-danger">@provide.LoginProvider</span>
                                                     } else if (provide.LoginProvider.Contains("Facebook")) {
-                                                        <span class="label label-primary">@provide.LoginProvider</span>
+                                                        <span class="label label-info">@provide.LoginProvider</span>
                                                     }
                                                 }
                                             }
@@ -91,6 +113,7 @@
                                         <td>
                                             <form asp-area="Admin" asp-controller="Manage" asp-action="UpdateUserStatus" method="post">
                                                 <input id="userID" name="userID" type="hidden" value="@user.Member.Id" />
+                                                <input id="searchUser" name="searchUser" type="hidden" value="@ViewBag.Keyword" />
                                                 @if (user.Status)
                                                 {
                                                     <button type="submit" class="btn btn-success btn-sm" style="background-color: #28a745;#28a745;">

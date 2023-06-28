@@ -66,8 +66,9 @@
 
 									<div class=" js--uploadedImage">
 										<!-- Display the uploaded image if needed -->
-										@*<input type="file" id="mediaFiles" name="mediaFiles" multiple>*@
-										@Html.TextBoxFor(m => m.MediaFiles, new { type = "file", multiple = "multiple", id = "photoUploadFile" })
+										<input type="file" id="photoUploadFile" name="files" multiple />
+										@*@Html.TextBoxFor(m => m.Img, new { type = "file", id = "photoUploadFile" })*@
+										@*@Html.TextBoxFor(m => m.Imgs, new { type = "file", multiple = "multiple", id = "photoUploadFile" })*@
 										<p>
 											Use JPEG or PNG. Must be at least 960 x 960.
 										</p>
@@ -102,27 +103,6 @@
 
 							</div>
 
-							@*<div class="formLayoutPhotoUpload">
-						<div class="formLayout__uploadLabel">
-						<label>
-						<i class="far fa-list-alt margin-right-10px"></i> Photo
-						(optional)
-						</label><br>
-						</div>
-						<input id="imageURL" class="formLayoutPhotoUpload__uniqueId js--uploadedPhotoId"
-						name="imageURL" type="hidden">
-						<div class="formLayoutPhotoUpload__uploadedImage js--uploadedImage">
-						</div>
-						<input aria-labelledby="photoUploadFileAdd photoUploadFileMain"
-						aria-describedby="uploadSectionDescription" type="file" id="photoUploadFile"
-						class="formLayoutPhotoUpload__uploadInput js--fileInput" accept="image/*">
-						</div>*@
-
-							@*<div class="margin-top-40px form-group margin-bottom-10px">
-						<p>
-						Use JPEG or PNG. Must be at least 960 x 960.
-						</p>
-						</div>*@
 						</div>
 					</div>
 				</div>

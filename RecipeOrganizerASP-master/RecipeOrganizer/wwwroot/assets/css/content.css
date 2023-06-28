@@ -75,3 +75,52 @@
     background-color: #ccc;
     color: #000;
 }
+
+.card-img-top {
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+body.layout-print {
+    display: block;
+    margin: 5px 5px;
+}
+
+layout-print-header {
+    margin-bottom: 2rem;
+}
+
+.layout-print a {
+    text-decoration: none !important;
+    color: rgba(0,0,0,.95) !important;
+}
+
+.is-screenreader-only {
+    position: absolute;
+    margin: -1px px;
+    border: 0;
+    padding: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+.layout-print .icon-logo {
+    width: auto;
+    height: 30px;
+}
+
+.layout-print-content {
+    margin: 30px 10px;
+}
+
+.recipe-article {
+    padding: 0 10px;
+}
+
+.ingredients,
+.directions {
+    margin: 15px 0;
+}
