@@ -3,7 +3,7 @@
 
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
-
+@*
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -46,8 +46,8 @@
 
 	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-</head>
-<section class="padding-tb-100px">
+</head>*@
+<section class="padding-tb-50px">
 	<div class="container">
 		<div class="title text-center ">
 			<h2 class="font-weight-700 text-main-color hvr-bounce-to-top">Popular Recipes</h2>
@@ -65,7 +65,7 @@
 				<!-- Recipe Item -->
 				<div class="col-xl-12 col-lg-12 col-md-12 recipe-item margin-bottom-40px hvr-buzz">
 					<div class="card border-0 box-shadow">
-						<div class="card-img-top"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img src="http://placehold.it/420x335" alt=""></a></div>
+						<div class="card-img-top"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img src="@item.Image" alt=""></a></div>
 						<div class="padding-lr-30px padding-tb-20px">
 							<h5 class="margin-bottom-20px margin-top-10px"><a class="text-dark" href="/Recipe/RecipeDetail/?id=@item.RecipeId">@item.Title</a></h5>
 							<div class="rating">
