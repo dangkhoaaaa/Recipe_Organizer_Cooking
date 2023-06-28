@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Services;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Imaging;
+using RecipeOrganizer.Components;
 
 namespace RecipeOrganizer.Controllers
 {
@@ -57,7 +58,7 @@ namespace RecipeOrganizer.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddNewRecipe(RecipeData recipe, IFormFile mediaFile)
+		public async Task<IActionResult> AddNewRecipe(RecipeData recipe, List<IFormFile> files)
 		{
 			//if (ModelState.IsValid)
 			//{
@@ -93,7 +94,36 @@ namespace RecipeOrganizer.Controllers
 				data.Date = DateTime.Now;
 				data.NumberShare = recipe.NumberShare;
 				data.Status = recipe.Status;
-				_recipeRepository.Add(data);
+
+				// Media
+				if (files != null || files.Count > 0)
+				{
+					var imageLinkTask = _fireBaseService.UploadImageSingle(files);
+					var imageLink = await imageLinkTask;
+					int mediaId = _mediaRepository.addMedia(imageLink);
+
+					data.Image = imageLink;
+					_recipeRepository.Add(data);
+
+					Metadata metadata = new Metadata
+					{
+						RecipeId = data.RecipeId,
+						UserId = user.Id,
+						MediaId = mediaId
+					};
+					_metadataRepository.Add(metadata);
+				}
+				else
+				{
+					_recipeRepository.Add(data);
+					// If there is no media file, just create a new Metadata object
+					Metadata metadata = new Metadata
+					{
+						RecipeId = data.RecipeId,
+						UserId = user.Id
+					};
+					_metadataRepository.Add(metadata);
+				}
 
 				// Ingredients
 				if (!string.IsNullOrEmpty(recipe.IngredientsInput))
@@ -107,86 +137,43 @@ namespace RecipeOrganizer.Controllers
 					_directionRepository.addDirection(recipe.DirectionsInput, data.RecipeId);
 				}
 
-				// Media
-				if (mediaFile != null && mediaFile.Length > 0)
-				{
-					// Save the file to the server
-					var fileName = Guid.NewGuid().ToString() + Path.GetExtension(mediaFile.FileName);
-					var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", user.Id, fileName);
-
-					// Save the file to the filePath
-					using (var stream = new FileStream(filePath, FileMode.Create))
-					{
-						await mediaFile.CopyToAsync(stream);
-					}
-
-					// Create a new Media object and assign values to the fields
-					Media media = new Media
-					{
-						Filelocation = filePath,
-						Date = DateTime.Now
-					};
-
-					// Save the Media object to the database
-					_mediaRepository.Add(media);
-
-					// Create a new Metadata object and assign values to the fields
-					Metadata metadata = new Metadata
-					{
-						RecipeId = data.RecipeId,
-						MediaId = media.MediaId,
-						UserId = user.Id
-					};
-
-					// Save the Metadata object to the database
-					_metadataRepository.Add(metadata);
-				}
-				else
-				{
-					// If there is no media file, just create a new Metadata object
-					Metadata metadata = new Metadata
-					{
-						RecipeId = data.RecipeId,
-						UserId = user.Id
-					};
-					_metadataRepository.Add(metadata);
-				}
 
 				// Tags
 				if (!string.IsNullOrEmpty(recipe.TagsInput))
 				{
-					string[] tags = recipe.TagsInput.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					foreach (string tagName in tags)
-					{
-						// Check if the tag already exists in the Tag table
-						Tag existingTag = _tagRepository.GetByName(tagName.Trim());
-						if (existingTag != null)
-						{
-							// Tag already exists, add a record to RecipeHasTags table
-							RecipeHasTag recipeHasTag = new RecipeHasTag
-							{
-								RecipeId = data.RecipeId,
-								TagId = existingTag.TagId
-							};
-							_recipeHasTagRepository.Add(recipeHasTag);
-						}
-						else
-						{
-							// Tag does not exist, create a new tag and add a record to RecipeHasTags table
-							Tag newTag = new Tag
-							{
-								TagName = tagName.Trim()
-							};
-							_tagRepository.Add(newTag);
+					_tagRepository.AddTags(recipe.TagsInput, data.RecipeId);
+					//string[] tags = recipe.TagsInput.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+					//foreach (string tagName in tags)
+					//{
+					//	// Check if the tag already exists in the Tag table
+					//	Tag existingTag = _tagRepository.GetByName(tagName.Trim());
+					//	if (existingTag != null)
+					//	{
+					//		// Tag already exists, add a record to RecipeHasTags table
+					//		RecipeHasTag recipeHasTag = new RecipeHasTag
+					//		{
+					//			RecipeId = data.RecipeId,
+					//			TagId = existingTag.TagId
+					//		};
+					//		_recipeHasTagRepository.Add(recipeHasTag);
+					//	}
+					//	else
+					//	{
+					//		// Tag does not exist, create a new tag and add a record to RecipeHasTags table
+					//		Tag newTag = new Tag
+					//		{
+					//			TagName = tagName.Trim()
+					//		};
+					//		_tagRepository.Add(newTag);
 
-							RecipeHasTag recipeHasTag = new RecipeHasTag
-							{
-								RecipeId = data.RecipeId,
-								TagId = newTag.TagId
-							};
-							_recipeHasTagRepository.Add(recipeHasTag);
-						}
-					}
+					//		RecipeHasTag recipeHasTag = new RecipeHasTag
+					//		{
+					//			RecipeId = data.RecipeId,
+					//			TagId = newTag.TagId
+					//		};
+					//		_recipeHasTagRepository.Add(recipeHasTag);
+					//	}
+					//}
 				}
 				//}
 				return RedirectToAction("PendingRecipe", "Recipe", new { id = data.RecipeId });
@@ -286,7 +273,7 @@ namespace RecipeOrganizer.Controllers
 			data.Title = recipe.Title;
 			data.Description = recipe.Description;
 			data.Status = recipe.Status;
-			data.Image = recipe.Image;
+			data.Img = recipe.Image;
 			if (recipe.AvgRate == null)
 			{
 				recipe.AvgRate = 0.0;
@@ -316,7 +303,7 @@ namespace RecipeOrganizer.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> EditRecipe(RecipeData recipe, string Action, IFormFile mediaFile)
+		public async Task<IActionResult> EditRecipe(RecipeData recipe, string Action, List<IFormFile> files)
 		{
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
@@ -347,12 +334,31 @@ namespace RecipeOrganizer.Controllers
 						}
 
 						// Update the media
+						if (files != null || files.Count > 0)
+						{
+							var imageLinkTask = _fireBaseService.UploadImageSingle(files);
+							var imageLink = await imageLinkTask;
+							int mediaId = _mediaRepository.addMedia(imageLink);
 
+							existingRecipe.Image = imageLink;
+
+							Metadata metadata = new Metadata
+							{
+								RecipeId = existingRecipe.RecipeId,
+								UserId = user.Id,
+								MediaId = mediaId
+							};
+							_metadataRepository.Add(metadata);
+						}
+						
 						// Update the tags
-
+						if (!string.IsNullOrEmpty(recipe.TagsInput))
+						{
+							_tagRepository.UpdateTags(recipe.TagsInput, existingRecipe.RecipeId);
+						}
 
 						_recipeRepository.Update(existingRecipe);
-						return RedirectToAction("RecipeDetail", "Recipe", new { id = existingRecipe.RecipeId });
+						return RedirectToAction("PendingRecipe", "Recipe", new { id = existingRecipe.RecipeId });
 
 					}
 					else if (Action == "trash")
@@ -365,10 +371,6 @@ namespace RecipeOrganizer.Controllers
 				{
 					return RedirectToAction("PageNotFound", "Home");
 				}
-			}
-			else
-			{
-				return View(recipe);
 			}
 
 			return RedirectToAction("PageNotFound", "Home");
@@ -386,7 +388,6 @@ namespace RecipeOrganizer.Controllers
 
 			return RedirectToAction("Index", "Home");
 		}
-
 
 	}
 }

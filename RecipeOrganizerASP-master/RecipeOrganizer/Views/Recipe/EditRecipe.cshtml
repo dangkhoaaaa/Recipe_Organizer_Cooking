@@ -92,7 +92,6 @@
 							</div>
 						</div>
 						<div class="col-md-4">
-
 							<div class="formLayout__uploadContent form-group margin-bottom-10px">
 								<div class="formLayoutPhotoUpload">
 									<div class="formLayout__uploadLabel">
@@ -103,12 +102,11 @@
 
 									<div class=" js--uploadedImage">
 										<!-- Display the uploaded image if needed -->
-										<img src="" />
+										<img src="@Model.Img" width="300px" class="margin-bottom-10px" />
 
-										@Html.TextBoxFor(m => m.MediaFiles, new { type = "file", multiple = "multiple", id = "photoUploadFile" })
-										<p>
-											Use JPEG or PNG. Must be at least 960 x 960.
-										</p>
+										<label>Add more images?</label>
+										<input type="file" id="photoUploadFile" name="files" multiple />
+										@*@Html.TextBoxFor(m => m.MediaFiles, new { type = "file", multiple = "multiple", id = "photoUploadFile" })*@
 										<span id="imageFormatError" class="text-danger" style="display: none;">
 											<b>Invalid image format.</b><br> Only JPG, PNG, and GIF formats are allowed.
 										</span>
@@ -138,35 +136,12 @@
 
 								</div>
 							</div>
-
-							@*<div class="formLayout__uploadContent form-group margin-bottom-10px">
-							<div class="formLayoutPhotoUpload">
-							<div class="formLayout__uploadLabel">
-							<label>
-							<i class="far fa-list-alt margin-right-10px"></i> Photo
-							(optional)
-							</label><br>
-							</div>
-							<input id="imageURL" class="formLayoutPhotoUpload__uniqueId js--uploadedPhotoId"
-							name="imageURL" type="hidden">
-							<div class="formLayoutPhotoUpload__uploadedImage js--uploadedImage">
-							</div>
-							<input aria-labelledby="photoUploadFileAdd photoUploadFileMain"
-							aria-describedby="uploadSectionDescription" type="file" id="photoUploadFile"
-							class="formLayoutPhotoUpload__uploadInput js--fileInput" accept="image/*">
-							</div>
-							</div>
-							<div class="margin-top-40px form-group margin-bottom-10px">
-							<p>
-							Use JPEG or PNG. Must be at least 960 x 960.
-							</p>
-							</div>*@
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="margin-bottom-20px full-width">
+			<div class="margin-tb-20px full-width">
 				<h4 class="padding-lr-10px padding-tb-10px background-white box-shadow border-radius-10">
 					<i class="far fa-list-alt margin-right-10px text-main-color"></i>Ingredients
 				</h4>
@@ -177,13 +152,6 @@
 							Paste your ingredient list here. Add one ingredient per line. Include the quantity (i.e. cups,
 							tablespoons) and any special preparation (i.e. sifted, softened, chopped).
 						</p>
-						@*<textarea id="ingredients" name="IngredientsInput" class="form-control" rows="8">
-						@foreach (var ingredient in Model.Ingredients)
-						{
-						@ingredient.IngredientName.Trim()
-						@Html.Raw("\n")
-						}
-						</textarea>*@
 						<textarea id="ingredients" name="IngredientsInput" class="form-control" rows="8">
 							@for (int i = 0; i < Model.Ingredients.Count; i++)
 							{
@@ -211,19 +179,6 @@
 							Bake,
 							Decorate).
 						</p>
-						@*<div id="sortable-container" class="row">
-						@{
-						int step = 1;
-						}
-						@foreach (var direction in Model.Directions)
-						{
-						<div class="col-12 step">
-						<div class="handle">Step @step:</div>
-						<textarea id="@direction.DirectionId" name="@direction.DirectionId" class="form-control" rows="2">@direction.Direction1</textarea>
-						</div>
-						step++;
-						}
-						</div>*@
 						<textarea id="directions" name="DirectionsInput" class="form-control" rows="8">
 							@for (int i = 0; i < Model.Directions.Count; i++)
 							{
@@ -252,7 +207,7 @@
 					<div class="col-md-6">
 						<div class="form-group margin-bottom-20px">
 							<label><i class="far fa-list-alt margin-right-10px"></i>Status</label>
-
+							<p></p>
 							<select name="Status" class="form-control">
 								@if (Model.Status == "public")
 								{
@@ -261,20 +216,10 @@
 								}
 								else
 								{
-									<option value="public">Public</option>
+									<option value="pending">Public</option>
 									<option value="draft" selected="selected">Draft</option>
 								}
 							</select>
-
-							@*<select name="Status" class="form-control">
-								<option value="Public" selected="@(Model.Status == "public" ? "selected" : "")">Public</option>
-								<option value="Draft" selected="@(Model.Status == "draft" ? "selected" : "")">Draft</option>
-							</select>
-
-							<select name="Status" class="form-control">
-								<option value="Public" selected="@(Model.Status == "Public" ? "selected" : null)">Public</option>
-								<option value="Draft" selected="@(Model.Status == "Draft" ? "selected" : null)">Draft</option>
-							</select>*@
 
 						</div>
 					</div>
