@@ -25,7 +25,11 @@
 							{
 								<div class="text-success">
 									<h1>Your Recipe Added Approved</h1>
-									<p>Your recipe has been added successfully.</p>
+									<p>
+										Your recipe has been added successfully. <br />
+										Thank you for your contribution! We will moderate your recipe, please be patient and wait for a while....
+									</p>
+									<p><a href="/Recipe/RecipeDetail/?id=@Model.RecipeId">View it publicly</a> or <a href="/User/UserRecipeList">View your contribution</a></p>
 								</div>
 
 							}
@@ -33,14 +37,14 @@
 							{
 								<div class="text-danger">
 									<h1>Your Recipe Added Denied</h1>
-									<p></p>
+									<p><a href="/User/UserRecipeList">View your contribution</a></p>
 								</div>
 							}
 							else if (Model.Status == "pending")
 							{
 								<div class="text-warning">
 									<h1>Your Recipe Added Pending</h1>
-									<p><a href="">Edit it?</a></p>
+									<p><a href="/Recipe/EditRecipe/?id=@Model.RecipeId">Edit it?</a> or <a href="/User/UserRecipeList">View your contribution</a></p>
 								</div>
 							}
 							else if (Model.Status == "trash")
@@ -65,7 +69,7 @@
 							Updated on @Model.Date
 						</div>
 					</div>
-					<div class="card-img-top"><a href="#"><img src="http://placehold.it/1600x800" alt=""></a></div>
+					<div class="card-img-top"><img src="@Model.Img" alt="" ></div>
 					<div class="padding-lr-30px padding-tb-20px">
 						<div class="padding-tb-10px">
 							<h3>Ingredients</h3>
@@ -91,13 +95,13 @@
 								<p>
 									@foreach (var item in Model.Tags)
 									{
-										@if (item.ToString().Trim() != null)
+										if (!string.IsNullOrWhiteSpace(item?.TagName))
 										{
-											<a href="#">#@item.TagName</a>
-											@*@if (item != Model.Tags.Last())
-									{
-									<text>,</text>
-									}*@
+											@item.TagName.Trim()
+											if (item != Model.Tags.Last())
+											{
+												<text>, </text>
+											}
 										}
 									}
 								</p>

@@ -21,11 +21,10 @@ namespace Services.Data
 		public List<Direction> Directions { get; set; }
 		public string TagsInput { get; set; }
 		public List<Tag> Tags { get; set; }
-		public List<Media> MediaFiles { get; set; }
-		public string Img { get; set; }
+		public string? Img { get; set; }
+		public List<string> Imgs { get; set; }
 		public List<Category> categories { get; set; }
 		public double? AvgRate { get; set; }
-		public string? Image { get; set; }
 		public bool Collection { get; set; }
 		public string Author { get; set; }
 

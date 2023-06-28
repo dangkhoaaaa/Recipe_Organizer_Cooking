@@ -11,7 +11,7 @@ namespace Services.Repository
 {
 	public class MediaRepository : RepositoryBase<Media>
 	{
-		public void addMedia(string filePath)
+		public int addMedia(string filePath)
 		{
 			Media media = new Media
 			{
@@ -20,6 +20,8 @@ namespace Services.Repository
 			};
 			_dbSet.Add(media);
 			_context.SaveChanges();
+
+			return media.MediaId;
 		}
 	}
 }
