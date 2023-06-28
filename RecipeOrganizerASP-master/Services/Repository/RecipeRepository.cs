@@ -151,6 +151,15 @@ namespace Services.Repository
 			}
 		}
 
+		public void IncreaseNumberShare(int recipeId)
+		{
+			var recipe = _dbSet.FirstOrDefault(r => r.RecipeId == recipeId);
+			if (recipe != null)
+			{
+				recipe.NumberShare += 1;
+				_context.SaveChanges();
+			}
+		}
 
 		//public List<Recipe> GetUserCollection(string userId)
 		//{

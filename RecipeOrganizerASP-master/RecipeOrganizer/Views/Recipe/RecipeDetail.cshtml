@@ -19,6 +19,22 @@
 			behavior: "smooth"
 		});
 	}
+
+	function sendEmailAndIncreaseShare() {
+		var encodedTitle = encodeURIComponent("Recipe: " + "@Model.Title");
+		var encodedDescription = encodeURIComponent("@Model.Description");
+		var encodedIngredients = encodeURIComponent("@Model.Ingredients");
+		var encodedDirections = encodeURIComponent("@Model.Directions");
+		var recipeId = "@Model.RecipeId";
+
+		var mailtoLink = "mailto:?subject=" + encodedTitle + "&body=" + encodedDescription + "%0D%0A%0D%0AIngredients:%0D%0A" + encodedIngredients + "%0D%0A%0D%0ADirections:%0D%0A" + encodedDirections + "%0D%0AView%20more%20at%20https://localhost:7186/Recipe/RecipeDetail/?id=" + recipeId;
+		window.location.href = mailtoLink;
+
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", "/Recipe/IncreaseNumberShare?recipeId=" + recipeId, true);
+		xhr.send();
+	}
+
 </script>
 
 <body>
@@ -48,7 +64,7 @@
 					</div>
 					|
 					<div class="col-5">
-						<a href="#" onclick="scrollToSection('#addFeedback')">@Model.NumberShare reviews</a>
+						<a href="#" onclick="sendEmailAndIncreaseShare()">@Model.NumberShare share(s)</a>
 						<span class="margin-lr-5px">|</span>
 						<a href="#">55 photos</a>
 					</div>
@@ -83,14 +99,20 @@
 						<span class="margin-left-5px margin-right-5px">|</span>
 						<a href="@Url.Action("PrintRecipe", "Recipe", new { recipeId = Model.RecipeId })" target="_blank"><i class="fas fa-print"></i> Print</a>
 						<span class="margin-left-5px margin-right-5px">|</span>
-						@{
+
+						<a href="#" onclick="sendEmailAndIncreaseShare()">
+							<i class="fas fa-share"></i> Share via Email
+						</a>
+
+						@*@{
 							var encodedTitle = Uri.EscapeDataString("Recipe: " + @Model.Title);
 							var encodedDescription = Uri.EscapeDataString(@Model.Description);
 							var encodedIngredients = string.Join(Environment.NewLine, Model.Ingredients.Select(i => "- " + Uri.EscapeDataString(i.IngredientName)));
 							var encodedDirections = string.Join(Environment.NewLine, Model.Directions.Select(i => "- " + Uri.EscapeDataString(i.Direction1)));
 							//var encodedUrl = Uri.EscapeDataString($"https://localhost:7186/Recipe/RecipeDetail/?id={Model.RecipeId}");
 						}
-						<a href="mailto:?subject=@encodedTitle&amp;body=@Html.Raw(encodedDescription)%0D%0A%0D%0AIngredients:%0D%0A@{
+						<a 
+						   href="mailto:?subject=@encodedTitle&amp;body=@Html.Raw(encodedDescription)%0D%0A%0D%0AIngredients:%0D%0A@{
 					    foreach (var item in Model.Ingredients) {
 												@Html.Raw(Uri.EscapeDataString("- " + item.IngredientName + Environment.NewLine))
 }
@@ -100,7 +122,8 @@
 }
  }%0D%0AView%20more%20at%20https://localhost:7186/Recipe/RecipeDetail/?id=@Model.RecipeId">
 							<i class="fas fa-share"></i> Share via Email
-						</a>
+						</a>*@
+						
 					</form>
 				</div>
 

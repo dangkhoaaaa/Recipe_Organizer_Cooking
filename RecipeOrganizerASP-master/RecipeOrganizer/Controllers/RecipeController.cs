@@ -215,6 +215,7 @@ namespace RecipeOrganizer.Controllers
 				List<Tag> tags = _recipeHasTagRepository.GetTagsByRecipeId(recipe.RecipeId);
 				data.Tags = tags;
 				data.Img = recipe.Image;
+				data.NumberShare = recipe.NumberShare;
 
 				var user = await _userManager.GetUserAsync(User);
 				if (user != null)
@@ -274,6 +275,7 @@ namespace RecipeOrganizer.Controllers
 			data.Description = recipe.Description;
 			data.Status = recipe.Status;
 			data.Img = recipe.Image;
+			data.NumberShare = recipe.NumberShare;
 			if (recipe.AvgRate == null)
 			{
 				recipe.AvgRate = 0.0;
@@ -387,6 +389,23 @@ namespace RecipeOrganizer.Controllers
 			}
 
 			return RedirectToAction("Index", "Home");
+		}
+
+		[AllowAnonymous]
+		public IActionResult ShareRecipe(int recipeId)
+		{
+			_recipeRepository.IncreaseNumberShare(recipeId);
+
+			return View();
+		}
+
+		[AllowAnonymous]
+		[HttpGet]
+		public IActionResult IncreaseNumberShare(int recipeId)
+		{
+			_recipeRepository.IncreaseNumberShare(recipeId);
+
+			return Json(new { success = true });
 		}
 
 	}
