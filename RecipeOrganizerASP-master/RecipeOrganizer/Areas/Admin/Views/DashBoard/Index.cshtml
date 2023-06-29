@@ -1,21 +1,12 @@
 ﻿@using System.Data
-@model List<CategoryViewModel>
+@model DashBroadModel
 @inject UserManager<AppUser> _userManager
 @{
     ViewData["Title"] = "Admin";
     Layout = "_AdminLayout";
 }
   <body class="rtl">
-    <div class="main-wrapper" id="main-wrapper">
-      <!-- ============================================================== -->
-      <!-- Preloader - style you can find in spinners.css -->
-      <!-- ============================================================== -->
-      <div class="preloader">
-        <div class="loader">
-          <div class="loader__figure"></div>
-          <p class="loader__label">MatPress Admin</p>
-        </div>
-      </div>
+    
       <!-- ============================================================== -->
       <!-- Preloader - style you can find in spinners.css -->
       <!-- ============================================================== -->
@@ -29,7 +20,7 @@
 <!-- ============================================================== -->
 <!-- Page wrapper scss in scafholding.scss -->
 <!-- ============================================================== -->
-<div class="page-wrapper">
+
 <!-- ============================================================== -->
 <!-- Title and breadcrumb -->
 <!-- ============================================================== -->
@@ -39,7 +30,7 @@
 <!-- ============================================================== -->
 
 
-            <div class="container-fluid">
+            
                 <!-- ============================================================== -->
                 <!-- info box -->
                 <!-- ============================================================== -->
@@ -51,8 +42,8 @@
                                     <div class="col s12">
                                         <div class="d-flex no-block align-items-center">
                                             <div>
-                                                <h4>86%</h4>
-                                                <h6 class="card-subtitle">Total Product</h6>
+                                                <h4>@Model.totalRecipe</h4>
+                                                <h6 class="card-subtitle">Total Recipe</h6>
                                             </div>
                                             <div class="ml-auto">
                                                 <span class="blue-text display-6"><i class="ti-layout-slider-alt"></i></span>
@@ -75,8 +66,8 @@
                                     <div class="col s12">
                                         <div class="d-flex no-block align-items-center">
                                             <div>
-                                                <h4>40%</h4>
-                                                <h6 class="card-subtitle">Pending Product</h6>
+                                                <h4>@Model.totalAccount</h4>
+                                                <h6 class="card-subtitle">Total Account</h6>
                                             </div>
                                             <div class="ml-auto">
                                                 <span class="green-text display-6"><i class="ti-layout-media-left-alt"></i></span>
@@ -99,8 +90,8 @@
                                     <div class="col s12">
                                         <div class="d-flex no-block align-items-center">
                                             <div>
-                                                <h4>56%</h4>
-                                                <h6 class="card-subtitle">Selling</h6>
+                                                <h4>@Model.totalCategory</h4>
+                                                <h6 class="card-subtitle">Total Category</h6>
                                             </div>
                                             <div class="ml-auto">
                                                 <span class="orange-text display-6"><i class="ti-notepad"></i></span>
@@ -123,8 +114,8 @@
                                     <div class="col s12">
                                         <div class="d-flex no-block align-items-center">
                                             <div>
-                                                <h4>26%</h4>
-                                                <h6 class="card-subtitle">Buying</h6>
+                                                <h4>@Model.totalFeedback</h4>
+                                                <h6 class="card-subtitle">Total FeedBack</h6>
                                             </div>
                                             <div class="ml-auto">
                                                 <span class="black-text display-6"><i class="ti-panel"></i></span>
@@ -140,7 +131,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+               
                 <!-- ============================================================== -->
                 <!-- Active user - project- visitors -->
                 <!-- ============================================================== -->
@@ -154,35 +145,78 @@
             <div class="row">
                 <!-- column -->
                 <div class="col s12 m12 l4">
-                    <div class="card sticky-action">
-                        <div class="card-content">
-                            <h5 class="card-title activator">Active Users<i class="material-icons right">more_vert</i></h5>
-                            <div class="d-flex no-block">
-                                <h3 class="font-medium">356 <small><i class="ti-arrow-up green-text"></i></small></h3>
-                                <span class="ml-auto">Users per minute</span>
-                            </div>
-                            <div class="m-t-20 m-b-30 center-align">
-                                <div id="active-users"></div>
-                            </div>
-                            <h6 class="font-medium">Top Active Pages</h6>
-                            <div class="collection collection2 m-t-10 ">
-                                <a href="#!" class="collection-item "><span class="badge">1</span>/templates/matrix-admin/</a>
-                                <a href="#!" class="collection-item"><span class="new badge">4</span>/panel/home.asp</a>
-                                <a href="#!" class="collection-item">/demos/admin-t...e/index2.html</a>
-                                <a href="#!" class="collection-item"><span class="badge">14</span>/templates/adminwrap-lite/</a>
+
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card order-widget">
+                                <div class="card-content">
+                                    <div class="row">
+                                        <!-- column -->
+                                        <div class="col s12 m8">
+                                            <h5 class="card-title">Recipe Status</h5>
+                                            <h6 class="card-subtitle m-b-0">Total Earnings of the Month</h6>
+                                            <ul class="order list-inline m-t-20">
+                                                <li class="b-r order-category">
+                                                    <i class="fa fa-circle m-r-5 light-blue-text font-10"></i>
+                                                    <h4 class="font-bold font-20 m-b-0 m-t-5">@Model.recipePublic</h4>
+                                                    <h6 class="font-14 font-light">Success</h6>
+                                                </li>
+                                                <li class="b-r order-category">
+                                                    <i class="fa fa-circle m-r-5 blue-text font-10"></i>
+                                                    <h4 class="font-bold font-20 m-b-0 m-t-5">@Model.recipePending</h4>
+                                                    <h6 class="font-14 font-light">Pending</h6>
+                                                </li>
+                                                <li class="order-category">
+                                                    <i class="fa fa-circle m-r-5 orange-text text-darken-2 font-10"></i>
+                                                    <h4 class="font-bold font-20 m-b-0 m-t-5">@Model.recipeReject</h4>
+                                                    <h6 class="font-14 font-light">Failed</h6>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!-- column -->
+                                        <div class="col s12 m4">
+                                            <div id="visitor" class="m-t-20 chart-align" style="height:150px; width: 120px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-reveal">
-                            <span class="card-title grey-text text-darken-4">Top Active Pages<i class="material-icons right">close</i></span>
-                            <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                            <div class="collection collection2 m-t-10 ">
-                                <a href="#!" class="collection-item "><span class="badge">1</span>/templates/matrix-admin/</a>
-                                <a href="#!" class="collection-item"><span class="new badge">4</span>/panel/home.asp</a>
-                                <a href="#!" class="collection-item">/demos/admin-t...e/index2.html</a>
-                                <a href="#!" class="collection-item"><span class="badge">14</span>/templates/adminwrap-lite/</a>
+                        <!-- column -->
+                        <div class="col m12 s12 l6">
+                            <div class="card light-blue">
+                                <div class="card-content">
+                                    <h5 class="card-title white-text">Avage Access</h5>
+                                    <h4 class="font-medium white-text m-b-0"><i class="ti-arrow-up"></i>2 <span class="font-12 white-text op-5">2022  - 2023</span></h4>
+                                    <div class="m-t-20 center-align">
+                                        <div id="revenue"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- column -->
+                        <div class="col m12 s12 l6">
+                            <div class="card blue accent-4">
+                                <div class="card-content">
+                                    <h5 class="card-title white-text">Page Views</h5>
+                                    <div class="d-flex no-block align-items-center">
+                                        <div>
+                                            <h4 class="white-text m-b-0"><i class="ti-arrow-up"></i> @Model.totalView</h4>
+                                        </div>
+                                        <div class="ml-auto">
+                                            <ul class="m-b-0">
+                                                <li class="white-text font-12"><i class="fa fa-circle m-r-5 white-text font-12 op-3"></i> Visit </li>
+                                                <li class="white-text font-12"><i class="fa fa-circle m-r-5 white-text text-accent-4 font-12"></i> Page Views </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="m-t-20" id="views"></div>
                             </div>
                         </div>
                     </div>
+
+
+
                 </div>
                 <!-- column -->
                 <div class="col s12 m12 l4">
@@ -194,15 +228,15 @@
                             <div class="row m-t-30 m-b-20">
                                 <!-- column -->
                                 <div class="col s4 b-r left-align">
-                                    <h5 class="m-b-0 font-medium">60%<small><i class="ti-arrow-up green-text"></i></small></h5>Desktop
+                                    <h5 class="m-b-0 font-medium">60%<small><i class="ti-arrow-up green-text"></i></small></h5>Facebook
                                 </div>
                                 <!-- column -->
                                 <div class="col s4 b-r center-align">
-                                    <h5 class="m-b-0 font-medium">28%<small><i class="ti-arrow-down red-text"></i></small></h5>Mobile
+                                    <h5 class="m-b-0 font-medium">28%<small><i class="ti-arrow-down red-text"></i></small></h5>Google
                                 </div>
                                 <!-- column -->
                                 <div class="col s4 right-align">
-                                    <h5 class="m-b-0 font-medium">12%<small><i class="ti-arrow-up green-text"></i></small></h5>Tablet
+                                    <h5 class="m-b-0 font-medium">12%<small><i class="ti-arrow-up green-text"></i></small></h5>Account
                                 </div>
                             </div>
                         </div>
@@ -222,47 +256,47 @@
                 <div class="col s12 m12 l4">
                     <div class="card">
                         <div class="card-content">
-                            <h5 class="card-title">Visitors by countries</h5>
+                            <h5 class="card-title">Top Recipe Liked</h5>
                             <div id="visitfromworld" style="width:100%; height:232px"></div>
                             <!-- row -->
                             <div class="row m-b-10">
-                                <div class="col s5 right-align">India</div>
+                                <div class="col s5 right-align">@Model.Recipes[0].Title</div>
                                 <div class="col s5 left-align">
                                     <div class="progress white">
                                         <div class="determinate blue accent-4" style="width: 90%"></div>
                                     </div>
                                 </div>
-                                <div class="col s2 right-align">28%</div>
+                        <div class="col s2 right-align">@Model.Recipes[0].NumberShare</div>
                             </div>
                             <!-- row -->
                             <div class="row m-b-10">
-                                <div class="col s5 right-align">UK</div>
+                        <div class="col s5 right-align">@Model.Recipes[1].Title</div>
                                 <div class="col s5 left-align">
                                     <div class="progress white">
                                         <div class="determinate light-blue" style="width: 70%"></div>
                                     </div>
                                 </div>
-                                <div class="col s2 right-align">21%</div>
+                        <div class="col s2 right-align">@Model.Recipes[1].NumberShare</div>
                             </div>
                             <!-- row -->
                             <div class="row m-b-10">
-                                <div class="col s5 right-align">USA</div>
+                        <div class="col s5 right-align">@Model.Recipes[2].Title</div>
                                 <div class="col s5 left-align">
                                     <div class="progress white">
                                         <div class="determinate purple lighten-2 accent-4" style="width: 50%"></div>
                                     </div>
                                 </div>
-                                <div class="col s2 right-align">18%</div>
+                        <div class="col s2 right-align">@Model.Recipes[2].NumberShare</div>
                             </div>
                             <!-- row -->
                             <div class="row">
-                                <div class="col s5 right-align">China</div>
+                        <div class="col s5 right-align">@Model.Recipes[3].Title</div>
                                 <div class="col s5 left-align">
                                     <div class="progress white">
                                         <div class="determinate orange accent-4" style="width:30%"></div>
                                     </div>
                                 </div>
-                                <div class="col s2 right-align">12%</div>
+                        <div class="col s2 right-align">@Model.Recipes[3].NumberShare</div>
                             </div>
                         </div>
                     </div>
@@ -270,130 +304,6 @@
             </div>
 
 
-<div class="container-fluid">
-  <!-- ============================================================== -->
- 
-
-
-
-
-  <!-- ============================================================== -->
-  <div class="row">
-    <div class="col s12 l6">
-      <div class="card">
-        <div class="card-content">
-          <div class="d-flex align-items-center">
-            <div>
-              <h5 class="card-title">Sales Summary</h5>
-              <h6 class="card-subtitle">Overview of Latest Month</h6>
-            </div>
-            <div class="ml-auto">
-              <div class="input-field dl support-select">
-                <select>
-                  <option value="0" selected>10 Mar - 10 Apr</option>
-                  <option value="1">10 Apr - 10 May</option>
-                  <option value="2">10 May - 10 Jun</option>
-                  <option value="3">10 Jun - 10 Jul</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <!-- Sales Summery -->
-          <div class="p-t-20">
-            <div class="row">
-              <div class="col m12">
-                <div class="campaign ct-charts" style="height: 275px;"></div>
-              </div>
-              <div class="center-align">
-                <ul class="list-inline font-12 dl m-r-10">
-                  <li class="light-blue-text"><i class="fa fa-circle"></i> Earnings</li>
-                  <li class="blue-text text-accent-4"><i class="fa fa-circle"></i> Sales</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col s12 l6">
-      <div class="row">
-        <div class="col s12">
-          <div class="card order-widget">
-            <div class="card-content">
-              <div class="row">
-                <!-- column -->
-                <div class="col s12 m8">
-                  <h5 class="card-title">Order Status</h5>
-                  <h6 class="card-subtitle m-b-0">Total Earnings of the Month</h6>
-                  <ul class="order list-inline m-t-20">
-                    <li class="b-r order-category">
-                      <i class="fa fa-circle m-r-5 light-blue-text font-10"></i>
-                      <h4 class="font-bold font-20 m-b-0 m-t-5">5489</h4>
-                      <h6 class="font-14 font-light">Success</h6>
-                    </li>
-                    <li class="b-r order-category">
-                      <i class="fa fa-circle m-r-5 blue-text font-10"></i>
-                      <h4 class="font-bold font-20 m-b-0 m-t-5">954</h4>
-                      <h6 class="font-14 font-light">Pending</h6>
-                    </li>
-                    <li class="order-category">
-                      <i class="fa fa-circle m-r-5 orange-text text-darken-2 font-10"></i>
-                      <h4 class="font-bold font-20 m-b-0 m-t-5">736</h4>
-                      <h6 class="font-14 font-light">Failed</h6>
-                    </li>
-                  </ul>
-                </div>
-                <!-- column -->
-                <div class="col s12 m4">
-                  <div id="visitor" class="m-t-20 chart-align" style="height:150px; width: 120px;"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- column -->
-        <div class="col m12 s12 l6">
-          <div class="card light-blue">
-            <div class="card-content">
-              <h5 class="card-title white-text">Revenue Statistics</h5>
-              <h4 class="font-medium white-text m-b-0"><i class="ti-arrow-up"></i>$351 <span class="font-12 white-text op-5">Jan 10  - Jan  20</span></h4>
-              <div class="m-t-20 center-align">
-                <div id="revenue"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- column -->
-        <div class="col m12 s12 l6">
-          <div class="card blue accent-4">
-            <div class="card-content">
-              <h5 class="card-title white-text">Page Views</h5>
-              <div class="d-flex no-block align-items-center">
-                <div>
-                  <h4 class="white-text m-b-0"><i class="ti-arrow-up"></i> 6548</h4>
-                </div>
-                <div class="ml-auto">
-                  <ul class="m-b-0">
-                    <li class="white-text font-12"><i class="fa fa-circle m-r-5 white-text font-12 op-3"></i> Visit </li>
-                    <li class="white-text font-12"><i class="fa fa-circle m-r-5 white-text text-accent-4 font-12"></i> Page Views </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="m-t-20" id="views"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-   
-<div class="chat-windows "></div>
-<!-- ============================================================== -->
-<!-- Right Sidebar -->
-<!-- ============================================================== -->
-</div>
 <!-- ============================================================== -->
 <!-- All Required js -->
 <!-- ============================================================== -->
