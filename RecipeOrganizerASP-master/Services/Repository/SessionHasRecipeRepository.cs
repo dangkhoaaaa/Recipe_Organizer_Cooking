@@ -72,41 +72,66 @@ namespace Services.Repository
         public void addRecipeToSession(CartLine cartLine, Session session)
         {
             var sessionHasRecipe = _dbSet.Where(sr => sr.SessionId == session.SessionId).ToList();
-            Console.WriteLine("save Session");
-            if (sessionHasRecipe.Count != 0)
+            
+            if (cartLine.Recipes.Count == 0)
             {
-                foreach ( var recipe in sessionHasRecipe)
-                {
-                    Delete(recipe);
-                }
+                RemoveRecipeToSession(session);
             }
             else
             {
-                
-                foreach (var recipe in sessionHasRecipe)
+                List<Recipe> recipes = new List<Recipe>();
+                foreach (var recipe in cartLine.Recipes)
                 {
+                    List<SessionHasRecipe> hasRecipes = new List<SessionHasRecipe>();
+                    List<SessionHasRecipe> duplicate = new List<SessionHasRecipe>();
                     int count = 0;
-                    foreach ( var recipe2 in cartLine.Recipes)
+                    foreach ( var recipe2 in sessionHasRecipe)
                     {
-                        if (recipe.RecipeId != recipe2.RecipeId)
-                        {
-                            
-                        }
-                        else
+                        if (recipe.RecipeId == recipe2.RecipeId)
                         {
                             count++;
+                            if (count == 1)
+                            {
+                                recipes.Add(recipe);
+                                hasRecipes.Add(recipe2);
+                            }
                             if (count > 1)
                             {
-                                Delete(recipe);
-                            }
-                            else if (count == 1){
-                                cartLine.Recipes.Remove(recipe2 );
+                                duplicate.Add(recipe2);
                             }
                         }
+                        
                     }
-                    if (count == 0)
+                    if (duplicate.Count > 0)
                     {
-                        Delete(recipe);
+                        foreach( var recipe2 in duplicate)
+                        {
+                            Delete(recipe2 );
+                            sessionHasRecipe.Remove(recipe2);
+                        }
+                    }
+                    if (hasRecipes.Count > 0)
+                    {
+                        foreach ( var recipe2 in hasRecipes)
+                        {
+                            sessionHasRecipe.Remove(recipe2 );
+                            
+                        }
+                    }
+                    
+                }
+                if (sessionHasRecipe.Count > 0)
+                {
+                    foreach ( SessionHasRecipe recipe2 in sessionHasRecipe )
+                    {
+                        Delete(recipe2 );
+                    }
+                }
+                if (recipes.Count > 0)
+                {
+                    foreach (var recipe in recipes)
+                    {
+                        cartLine.Recipes.Remove(recipe);
                     }
                 }
                 SessionHasRecipe sessionHasRecipe1 = null;

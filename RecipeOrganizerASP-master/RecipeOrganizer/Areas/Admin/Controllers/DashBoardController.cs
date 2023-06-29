@@ -11,7 +11,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 {
     [Authorize(Roles = RoleName.Administrator)]
     [Area("Admin")]
-    [Route("/Admin/[action]")]
+    [Route("/DashBoard/[action]")]
     public class DashBoardController : Controller
     {
 

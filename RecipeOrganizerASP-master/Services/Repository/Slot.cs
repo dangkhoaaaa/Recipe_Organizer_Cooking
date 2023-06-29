@@ -31,8 +31,17 @@ namespace Services.Repository
 			}
 			else
 			{
-				if(line.Recipes.IndexOf(recipe) != -1)
+				
+				int count = 0;
+				foreach (var item in line.Recipes)
 				{
+					if (item.RecipeId == recipe.RecipeId)
+					{
+						count++;
+						break;
+					}
+				}
+				if (count == 0) {
 					line.Recipes.Add(recipe);
 				}
 			}
@@ -70,7 +79,12 @@ namespace Services.Repository
 			foreach (var line in Lines)
 			{
 				if (line.SlotID == slotNow && line.UserID == userID && line.Week == week) {
-					line.Recipes.Remove(recipe);
+					foreach(var item in line.Recipes)
+					{
+						if (item.RecipeId == recipe.RecipeId) {
+						line.Recipes.Remove(item);
+						break;}
+					}
                     if (line.Recipes.Count == 0)
                     {
 						RemoveSlot(slotNow, userID, week);

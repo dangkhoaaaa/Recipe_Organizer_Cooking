@@ -44,14 +44,14 @@ namespace RecipeOrganizer.Controllers
                     
                     weekNow = _mealPlaningRepository.WeekNow();
                     ViewBag.week = weekNow;
-                    Slot slotOld = _mealPlaningRepository.showPlan(weekNow, user.Id);
-                    Slot = slotOld;
+                    _mealPlaningRepository.showPlan(weekNow, user.Id);
+                    Slot = _mealPlaningRepository.showPlan(weekNow, user.Id);
 
                 } else
                 {
                     ViewBag.week = week;
-                    Slot slotOld = _mealPlaningRepository.showPlan(ViewBag.view, user.Id);
-                    Slot = slotOld;
+                     
+                    Slot = _mealPlaningRepository.showPlan(week, user.Id);
 
                 }
                 HttpContext.Session.SetJson("cart", Slot);
@@ -145,7 +145,7 @@ namespace RecipeOrganizer.Controllers
             //}
 
 
-            public async Task<IActionResult> RemoveFromCartAsync(int recipeID, int slotNow, string week)
+            public async Task<IActionResult> RemoveFromCart(int recipeID, int slotNow, string week)
 		{
 			var user = await _userManager.GetUserAsync(User);
             if (user != null)
@@ -176,9 +176,8 @@ namespace RecipeOrganizer.Controllers
 
 
                 Slot = HttpContext.Session.GetJson<Slot>("cart");
-                Slot slotOld = new Slot();
-                slotOld = _mealPlaningRepository.showPlan(week, user.Id);
-                Slot = slotOld;
+               
+                Slot = _mealPlaningRepository.showPlan(week, user.Id);
 
                 HttpContext.Session.SetJson("cart", Slot);
 
@@ -243,18 +242,13 @@ namespace RecipeOrganizer.Controllers
                     }
                 }
                 
-                if (cartLines.Count != 0)
-                {
+               
 
                     
                     _mealPlaningRepository.AddPlan(cartLines, week, user.Id);
 
-                    HttpContext.Session.SetJson("cart", Slot);
-                    return View("ViewPLan", Slot);
-                } else
-                {
-                    _mealPlaningRepository.AddPlan(cartLines, week, user.Id);
-                }
+                   Slot = _mealPlaningRepository.showPlan(week, user.Id);
+               
                 //    Recipe? recipe = _recipeRepository.GetAll()
                 //.FirstOrDefault(p => p.RecipeId == recipeID);
                 //    if (recipe != null)
