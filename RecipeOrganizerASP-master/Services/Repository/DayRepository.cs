@@ -2,6 +2,7 @@
 using Services.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -35,7 +36,7 @@ namespace Services.Repository
             //DayRepository _dayRepository = new DayRepository();
             var days = getDayByPlan(meal);
             Slot slot = new Slot();
-            
+            List<Day> daysList = new List<Day>();
             foreach (Day d in days)
             {
                 
@@ -45,7 +46,7 @@ namespace Services.Repository
                         {
                             if (!slot.AddSlot(_sessionRepository.showSessions(meal, 0, d))) 
                             { 
-                                Delete(d);
+                                daysList.Add(d);
                             }
                             break;
                         }
@@ -53,7 +54,7 @@ namespace Services.Repository
                         {
                             if (!slot.AddSlot(_sessionRepository.showSessions(meal, 1, d)))
                             {
-                                Delete(d);
+                                daysList.Add(d);
                             }
                             break;
                         }
@@ -61,7 +62,7 @@ namespace Services.Repository
                         {
                             if (!slot.AddSlot(_sessionRepository.showSessions(meal, 2, d)))
                             {
-                                Delete(d);
+                                daysList.Add(d);
                             }
                             break;
                         }
@@ -69,7 +70,7 @@ namespace Services.Repository
                         {
                             if (!slot.AddSlot(_sessionRepository.showSessions(meal, 3, d)))
                             {
-                                Delete(d);
+                                daysList.Add(d);
                             }
                             break;
                         }
@@ -77,7 +78,7 @@ namespace Services.Repository
                         {
                             if (!slot.AddSlot(_sessionRepository.showSessions(meal, 4, d)))
                             {
-                                Delete(d);
+                                daysList.Add(d);
                             }
                             break;
                         }
@@ -85,7 +86,7 @@ namespace Services.Repository
                         {
                             if (!slot.AddSlot(_sessionRepository.showSessions(meal, 5, d)))
                             {
-                                Delete(d);
+                                daysList.Add(d);
                             }
                             break;
                         }
@@ -93,12 +94,19 @@ namespace Services.Repository
                         {
                             if (!slot.AddSlot(_sessionRepository.showSessions(meal, 6, d)))
                             {
-                                Delete(d);
+                                daysList.Add(d);
                             }
                             break;
                         }
                 }
                 
+            }
+            if (daysList.Count > 0)
+            {
+                foreach (var d in daysList)
+                {
+                    Delete(d);
+                }
             }
             return slot;
         }
@@ -175,12 +183,236 @@ namespace Services.Repository
             }
             return true;
         }
+        public bool SaveDay(List<CartLine> cartLines, MealPlanning meal)
+        {
+            SessionRepository _sessionRepository = new SessionRepository();
+            //DayRepository _dayRepository = new DayRepository();
+            var days = getDayByPlan(meal);
+
+            List<Day> dayList = new List<Day>();
+            foreach (Day d in days)
+            {
+                List<CartLine> lines = new List<CartLine>();
+                switch (d.DayOfWeek)
+                {
+                    case "Mon":
+                        {
+                            foreach (var line in cartLines)
+                            {
+                                if ((line.SlotID - 1) / 3 == 0)
+                                {
+                                    lines.Add(line);
+                                     
+                                }
+                            }
+                            if (lines.Count > 0)
+                            {
+                                
+                                foreach (var line in lines) { 
+                                    cartLines.Remove(line);
+                                    
+                                }
+                                _sessionRepository.SaveSession(lines, d);
+
+                            } else {
+                                if (_sessionRepository.RemoveSession(d))
+                                {
+                                    Delete(d);
+                                }
+                            }
+                            
+                            break;
+                        }
+                    case "Tue":
+                        {
+                            foreach (var line in cartLines)
+                            {
+                                if ((line.SlotID - 1) / 3 == 1)
+                                {
+                                    lines.Add(line);
+                                   
+                                }
+                            }
+                            if (lines.Count > 0)
+                            {
+                                
+                                foreach (var line in lines)
+                                {
+                                    cartLines.Remove(line);
+                                }
+                                _sessionRepository.SaveSession(lines, d);
+                            }
+                            else
+                            {
+                                if (_sessionRepository.RemoveSession(d))
+                                {
+                                    Delete(d);
+                                }
+                            }
+                            break;
+                        }
+                    case "Wed":
+                        {
+                            foreach (var line in cartLines)
+                            {
+                                if ((line.SlotID - 1) / 3 == 2)
+                                {
+                                    lines.Add(line);
+                                    
+                                }
+                            }
+                            if (lines.Count > 0)
+                            {
+                                
+                                foreach (var line in lines)
+                                {
+                                    cartLines.Remove(line);
+                                }
+                                _sessionRepository.SaveSession(lines, d);
+                            }
+                            else
+                            {
+                                if (_sessionRepository.RemoveSession(d))
+                                {
+                                    Delete(d);
+                                }
+                            }
+                            break;
+                        }
+                    case "Thu":
+                        {
+                            foreach (var line in cartLines)
+                            {
+                                if ((line.SlotID - 1) / 3 == 3)
+                                {
+                                    lines.Add(line);
+                                    
+                                }
+                            }
+                            if (lines.Count > 0)
+                            {
+                                
+                                foreach (var line in lines)
+                                {
+                                    cartLines.Remove(line);
+                                }
+                                _sessionRepository.SaveSession(lines, d);
+                            }
+                            else
+                            {
+                                if (_sessionRepository.RemoveSession(d))
+                                {
+                                    Delete(d);
+                                }
+                            }
+                            break;
+                        }
+                    case "Fri":
+                        {
+                            foreach (var line in cartLines)
+                            {
+                                if ((line.SlotID - 1) / 3 == 4)
+                                {
+                                    lines.Add(line);
+                                    
+                                }
+                            }
+                            if (lines.Count > 0)
+                            {
+                                
+                                foreach (var line in lines)
+                                {
+                                    cartLines.Remove(line);
+                                }
+                                _sessionRepository.SaveSession(lines, d);
+                            }
+                            else
+                            {
+                                if (_sessionRepository.RemoveSession(d))
+                                {
+                                    Delete(d);
+                                }
+                            }
+                            break;
+                        }
+                    case "Sat":
+                        {
+                            foreach (var line in cartLines)
+                            {
+                                if ((line.SlotID - 1) / 3 == 5)
+                                {
+                                    lines.Add(line);
+                                    
+                                }
+                            }
+                            if (lines.Count > 0)
+                            {
+                                
+                                foreach (var line in lines)
+                                {
+                                    cartLines.Remove(line);
+                                }
+                                _sessionRepository.SaveSession(lines, d);
+                            }
+                            else
+                            {
+                                if (_sessionRepository.RemoveSession(d))
+                                {
+                                    Delete(d);
+                                }
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            foreach (var line in cartLines)
+                            {
+                                if ((line.SlotID - 1) / 3 == 6)
+                                {
+                                    lines.Add(line);
+                                    
+                                }
+                            }
+                            if (lines.Count > 0)
+                            {
+                                
+                                foreach (var line in lines)
+                                {
+                                    cartLines.Remove(line);
+                                }
+                                _sessionRepository.SaveSession(lines, d);
+                            }
+                            else
+                            {
+                                if (_sessionRepository.RemoveSession(d))
+                                {
+                                    Delete(d);
+                                }
+                            }
+                            break;
+                        }
+                }
+
+            }
+            if (cartLines.Count > 0)
+            {
+                addDay(cartLines, meal);
+            }
+            //if (dayList.Count > 0)
+            //{
+            //    foreach (var day in dayList)
+            //    {
+            //        Delete(day);
+            //    }
+            //}
+            return true;
+        }
         public void addDay(List<CartLine> cartLines, MealPlanning meal)
         {
             List<Day> days = _dbSet.Where(d => d.PlanId == meal.PlanId).ToList();
             Day newDay = null;
             SessionRepository _sessionRepository = new SessionRepository();
-            Console.WriteLine("save Day");
+            
             foreach (CartLine cartLine in cartLines)
             {
                 var count = 0;

@@ -32,7 +32,7 @@ namespace Services.Repository
             List<Session> sessions = _dbSet.Where(s => s.DayId == day.DayId).ToList();
             Session session = null;
             SessionHasRecipeRepository _sessionHasRecipeRepository = new SessionHasRecipeRepository();
-            Console.WriteLine("save S");
+            
             var count = 0;
             switch (cartLine.SlotID % 3)
             {
@@ -128,16 +128,17 @@ namespace Services.Repository
             
             SessionHasRecipeRepository _sessionHasRecipeRepository = new SessionHasRecipeRepository();
             //Console.WriteLine("save S");
-            
+            List<Session> sessions1 = new List<Session>();
             foreach (Session session in sessions)
             {
                 switch (session.SessionName)
                 {
                     case "breakfast":
                         {
+                            
                             if (_sessionHasRecipeRepository.RemoveRecipeToSession(session))
                             {
-                                Delete(session);
+                                sessions1.Add(session);
                             }
                             break;
                         }
@@ -145,7 +146,7 @@ namespace Services.Repository
                         {
                             if (_sessionHasRecipeRepository.RemoveRecipeToSession(session))
                             {
-                                Delete(session);
+                                sessions1.Add(session);
                             }
                             break;
                         }
@@ -153,10 +154,111 @@ namespace Services.Repository
                         {
                             if (_sessionHasRecipeRepository.RemoveRecipeToSession(session))
                             {
-                                Delete(session);
+                                sessions1.Add(session);
                             }
                             break;
                         }
+                }
+            }
+            if (sessions1.Count > 0)
+            {
+                foreach (Session session in sessions1)
+                {
+                    Delete(session);
+                }
+            }
+            return true;
+        }
+        public bool SaveSession(List<CartLine> cartLines, Day day)
+        {
+            List<Session> sessions = _dbSet.Where(s => s.DayId == day.DayId).ToList();
+
+            SessionHasRecipeRepository _sessionHasRecipeRepository = new SessionHasRecipeRepository();
+            //Console.WriteLine("save S");
+            bool flag = false;
+            List<Session> sessions1 = new List<Session>();
+            foreach (Session session in sessions)
+            {
+                switch (session.SessionName)
+                {
+                    case "breakfast":
+                        {
+                            foreach (CartLine cartLine in cartLines)
+                            {
+                                if (cartLine.SlotID % 3 == 1) {
+                                    _sessionHasRecipeRepository.addRecipeToSession(cartLine, session);
+                                    cartLines.Remove(cartLine);
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                            if (!flag)
+                            {
+                                if (_sessionHasRecipeRepository.RemoveRecipeToSession(session))
+                                {
+                                    sessions1.Add(session);
+                                }
+                            }
+                            
+                            break;
+                        }
+                    case "lunch":
+                        {
+                            foreach (CartLine cartLine in cartLines)
+                            {
+                                if (cartLine.SlotID % 3 == 2)
+                                {
+                                    _sessionHasRecipeRepository.addRecipeToSession(cartLine, session);
+                                    cartLines.Remove(cartLine);
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                            if (!flag)
+                            {
+                                if (_sessionHasRecipeRepository.RemoveRecipeToSession(session))
+                                {
+                                    sessions1.Add(session);
+                                }
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            foreach (CartLine cartLine in cartLines)
+                            {
+                                if (cartLine.SlotID % 3 == 0)
+                                {
+                                    _sessionHasRecipeRepository.addRecipeToSession(cartLine, session);
+                                    cartLines.Remove(cartLine);
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                            if (!flag)
+                            {
+                                if (_sessionHasRecipeRepository.RemoveRecipeToSession(session))
+                                {
+                                    sessions1.Add(session);
+                                }
+                            }
+                            break;
+                        }
+                }
+            }
+            if (cartLines.Count > 0)
+            {
+                foreach(CartLine cartLine in cartLines)
+                {
+                    addSession(cartLine, day);
+                }
+                
+            }
+            if (sessions1.Count > 0)
+            {
+                foreach (Session session in sessions1)
+                {
+                    Delete(session);
                 }
             }
             return true;
@@ -167,6 +269,7 @@ namespace Services.Repository
             //SessionRepository _sessionRepository = new SessionRepository();
             var sessions = getSessionByDay(day);
             Slot slot = new Slot();
+            List<Session> sessions2 = new List<Session>();
             foreach (Session session in sessions)
             {
                 switch (session.SessionName)
@@ -175,7 +278,7 @@ namespace Services.Repository
                         {
                             if (!slot.AddSlot(_sessionHasRecipeRepository.showRecipeToSession(meal, 3 * dayOfWeek + 1, session)))
                             {
-                                Delete(session);
+                                sessions2.Add(session);
                             }
                             break;
                         }
@@ -183,7 +286,7 @@ namespace Services.Repository
                         {
                             if (!slot.AddSlot(_sessionHasRecipeRepository.showRecipeToSession(meal, 3 * dayOfWeek + 2, session)))
                             {
-                                Delete(session);
+                                sessions2.Add(session);
                             }
                             break;
                         }
@@ -191,10 +294,17 @@ namespace Services.Repository
                         {
                             if (!slot.AddSlot(_sessionHasRecipeRepository.showRecipeToSession(meal, 3 * dayOfWeek + 3, session)))
                             {
-                                Delete(session);
+                                sessions2.Add(session);
                             }
                             break;
                         }
+                }
+            }
+            if (sessions2.Count > 0)
+            {
+                foreach (Session session in sessions2)
+                {
+                    Delete(session);
                 }
             }
             return slot;
