@@ -660,7 +660,8 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
-                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                //return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                return View("ForgotPasswordConfirmationFailure");
             }
             var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(model.Code));
 
