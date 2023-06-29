@@ -232,7 +232,7 @@
                                                     {
                                                         foreach (var recipe in item.Recipes)
                                                         {
-                                                            @recipe.Image
+                                                            @recipe.Title
                                                             <a href="/Plan/RemoveFromCart/?slotNow=@(3 * j + i)&recipeID=@recipe.RecipeId&week=@ViewBag.week">X</a>
                                                             count++;
                                                             <br />
