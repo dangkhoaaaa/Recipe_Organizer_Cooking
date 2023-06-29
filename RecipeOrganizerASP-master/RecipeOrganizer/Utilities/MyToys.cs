@@ -41,7 +41,7 @@
             }
             else
             {
-                displayText = "Last login ";
+                displayText = "No login last ";
             }
             return displayText;
         }
