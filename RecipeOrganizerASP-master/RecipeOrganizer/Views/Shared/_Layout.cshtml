@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="~/assets/img/logo-red.png">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/RecipeOrganizer_AspNetCore.styles.css" asp-append-version="true" />
+  
     <meta name="author" content="CaoCong">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="keywords" content="recipes food, recipes , chinese food, italian food">
@@ -91,9 +91,9 @@ background: linear-gradient(90deg, rgba(180,58,136,1) 0%, rgba(217,16,16,1) 54%,
             </div>
         </div>
     </header>
+   @* style="background: url('@Url.Content("~/assets/img/user-background-01.png")') no-repeat center center;"*@
 
-
-    <main style="background: url('@Url.Content("~/assets/img/user-background-01.png")') no-repeat center center;">
+    <main >
         @RenderBody()
     </main>
 
