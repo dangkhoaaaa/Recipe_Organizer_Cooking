@@ -54,6 +54,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                     parent_id = user.ParentId,
                     title = user.Title,
                     description = user.Description,
+                    IMG = user.Image,
                     parent_name = name,
                    
                 };
