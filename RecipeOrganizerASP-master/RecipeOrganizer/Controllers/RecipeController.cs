@@ -18,8 +18,9 @@ namespace RecipeOrganizer.Controllers
 		private readonly RecipeRepository _recipeRepository;
 		private readonly IngredientRepository _ingredientRepository;
 		private readonly DirectionRepository _directionRepository;
-		private readonly RecipeHasTagRepository _recipeHasTagRepository;
 		private readonly TagRepository _tagRepository;
+		private readonly RecipeHasTagRepository _recipeHasTagRepository;
+		private readonly CategoryRepository _categoryRepository;
 		private readonly RecipeHasCategoryRepository _recipeHasCategoryRepository;
 		private readonly MetadataRepository _metadataRepository;
 		private readonly MediaRepository _mediaRepository;
@@ -32,8 +33,9 @@ namespace RecipeOrganizer.Controllers
 			_recipeRepository = new RecipeRepository();
 			_ingredientRepository = new IngredientRepository();
 			_directionRepository = new DirectionRepository();
-			_recipeHasTagRepository = new RecipeHasTagRepository();
 			_tagRepository = new TagRepository();
+			_recipeHasTagRepository = new RecipeHasTagRepository();
+			_categoryRepository = new CategoryRepository();
 			_recipeHasCategoryRepository = new RecipeHasCategoryRepository();
 			_metadataRepository = new MetadataRepository();
 			_mediaRepository = new MediaRepository();
@@ -49,12 +51,16 @@ namespace RecipeOrganizer.Controllers
 
 		public IActionResult AddNewRecipe()
 		{
-			return View();
+			var categories = _categoryRepository.GetAllCategories();
+			RecipeData data = new RecipeData();
+			data.Categories = categories;
+			return View(data);
 		}
 
 		public IActionResult AccessDenied()
 		{
 			return View();
+			//return RedirectToAction("Index", "Home");
 		}
 
 		[HttpPost]
@@ -96,7 +102,7 @@ namespace RecipeOrganizer.Controllers
 				data.Status = recipe.Status;
 
 				// Media
-				if (files != null || files.Count > 0)
+				if (files != null && files.Count > 0)
 				{
 					var imageLinkTask = _fireBaseService.UploadImageSingle(files);
 					var imageLink = await imageLinkTask;
@@ -137,51 +143,25 @@ namespace RecipeOrganizer.Controllers
 					_directionRepository.addDirection(recipe.DirectionsInput, data.RecipeId);
 				}
 
+				// Categories
+				if (recipe.CategoryInput != null && recipe.CategoryInput.Any())
+				{
+					_recipeHasCategoryRepository.AddCategory(recipe.CategoryInput, data.RecipeId);
+				}
 
 				// Tags
 				if (!string.IsNullOrEmpty(recipe.TagsInput))
 				{
 					_tagRepository.AddTags(recipe.TagsInput, data.RecipeId);
-					//string[] tags = recipe.TagsInput.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					//foreach (string tagName in tags)
-					//{
-					//	// Check if the tag already exists in the Tag table
-					//	Tag existingTag = _tagRepository.GetByName(tagName.Trim());
-					//	if (existingTag != null)
-					//	{
-					//		// Tag already exists, add a record to RecipeHasTags table
-					//		RecipeHasTag recipeHasTag = new RecipeHasTag
-					//		{
-					//			RecipeId = data.RecipeId,
-					//			TagId = existingTag.TagId
-					//		};
-					//		_recipeHasTagRepository.Add(recipeHasTag);
-					//	}
-					//	else
-					//	{
-					//		// Tag does not exist, create a new tag and add a record to RecipeHasTags table
-					//		Tag newTag = new Tag
-					//		{
-					//			TagName = tagName.Trim()
-					//		};
-					//		_tagRepository.Add(newTag);
-
-					//		RecipeHasTag recipeHasTag = new RecipeHasTag
-					//		{
-					//			RecipeId = data.RecipeId,
-					//			TagId = newTag.TagId
-					//		};
-					//		_recipeHasTagRepository.Add(recipeHasTag);
-					//	}
-					//}
 				}
+
 				//}
-				return RedirectToAction("PendingRecipe", "Recipe", new { id = data.RecipeId });
+				return RedirectToAction("UsrPendingRecipe", "Recipe", new { id = data.RecipeId });
 			}
 			return View();
 		}
 
-		public async Task<IActionResult> PendingRecipe(int id)
+		public async Task<IActionResult> UsrPendingRecipe(int id)
 		{
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
@@ -216,6 +196,8 @@ namespace RecipeOrganizer.Controllers
 				data.Tags = tags;
 				data.Img = recipe.Image;
 				data.NumberShare = recipe.NumberShare;
+				var categories = _recipeHasCategoryRepository.GetCategoryByRecipeId(recipe.RecipeId);
+				data.Categories = categories;
 
 				var user = await _userManager.GetUserAsync(User);
 				if (user != null)
@@ -257,11 +239,34 @@ namespace RecipeOrganizer.Controllers
 				if (recipe != null)
 				{
 					RecipeData recipeData = ConvertToRecipeData(recipe);
+
+					// Retrieve the selected category IDs for the recipe
+					List<int> selectedCategoryIds = _recipeHasCategoryRepository.GetSelectedCategoryIds(recipe.RecipeId);
+
+					// Set the SelectedCategories property with the retrieved category IDs
+					recipeData.SelectedCategories = selectedCategoryIds;
+
 					return View(recipeData);
 				}
 				else
 				{
 					return RedirectToAction("RecipeDetail", "Recipe", new { recipeId = id });
+				}
+			}
+			return RedirectToAction("AccessDenied", "Recipe");
+		}
+
+
+		public async Task<IActionResult> TrashRecipe(int id)
+		{
+			var user = await _userManager.GetUserAsync(User);
+			if (user != null)
+			{
+				Recipe recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
+				if (recipe != null)
+				{
+					_recipeRepository.ChangeStatusRecipe(id, "trash");
+					return RedirectToAction("UserRecipeList", "User");
 				}
 			}
 			return RedirectToAction("AccessDenied", "Recipe");
@@ -276,6 +281,7 @@ namespace RecipeOrganizer.Controllers
 			data.Status = recipe.Status;
 			data.Img = recipe.Image;
 			data.NumberShare = recipe.NumberShare;
+
 			if (recipe.AvgRate == null)
 			{
 				recipe.AvgRate = 0.0;
@@ -285,6 +291,8 @@ namespace RecipeOrganizer.Controllers
 			List<Ingredient> ingredients = _ingredientRepository.GetByRecipeId(recipe.RecipeId);
 			List<Direction> directions = _directionRepository.GetByRecipeId(recipe.RecipeId);
 			List<Tag> tags = _recipeHasTagRepository.GetTagsByRecipeId(recipe.RecipeId);
+			var categories = _recipeHasCategoryRepository.GetCategoryByRecipeId(recipe.RecipeId);
+			data.Categories = categories;
 
 			if (ingredients != null)
 			{
@@ -352,7 +360,7 @@ namespace RecipeOrganizer.Controllers
 							};
 							_metadataRepository.Add(metadata);
 						}
-						
+
 						// Update the tags
 						if (!string.IsNullOrEmpty(recipe.TagsInput))
 						{
@@ -360,7 +368,7 @@ namespace RecipeOrganizer.Controllers
 						}
 
 						_recipeRepository.Update(existingRecipe);
-						return RedirectToAction("PendingRecipe", "Recipe", new { id = existingRecipe.RecipeId });
+						return RedirectToAction("UsrPendingRecipe", "Recipe", new { id = existingRecipe.RecipeId });
 
 					}
 					else if (Action == "trash")

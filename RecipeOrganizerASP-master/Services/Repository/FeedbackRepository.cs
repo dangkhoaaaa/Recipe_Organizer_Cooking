@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Firebase.Auth;
+using Microsoft.EntityFrameworkCore;
 using Services.Models;
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,7 @@ namespace Services.Repository
         protected DbSet<Feedback> _dbSetFeedBack;
         protected DbSet<Metadata> _dbSetMetadata;
 
-
         protected DbSet<Feedback> _dbSet1;
-   
-
-
 
         public FeedbackRepository()
         {
@@ -37,38 +34,6 @@ namespace Services.Repository
         }
 
         public ICollection<Feedback> Products { get; set; } = new List<Feedback>();
-
-            //_dbSetFeedBack = _context.Set<Feedback>();
-            //_dbSetMetadata = _context.Set<Metadata>();
-    
-        //    public double valueAvgRateRecipe(int recipeId)
-        //    {
-        //        List<Feedback> listmapCategory = new List<Feedback>();
-        //        var query = from fb in _dbSetFeedBack
-        //                    join md in _dbSetMetadata on fb.FeedbackId equals md.FeedbackId
-        //                    where md.RecipeId == recipeId
-        //                    select fb;
-
-        //        listmapCategory = query.DistinctBy( r => r.FeedbackId).ToList();
-        //        double result = 0;
-        //        if (listmapCategory.Count > 0 )
-        //        {
-
-        //            double totalRate = 0;
-        //            foreach (var item in listmapCategory)
-        //            {
-        //                totalRate += item.Rating;
-        //            }
-
-        //             result = totalRate / listmapCategory.Count;
-        //        }
-
-
-        //        return result;
-        //    }
-        //}
-
-
         
         public double valueAvgRateRecipe(int recipeId)
         {
@@ -88,14 +53,19 @@ namespace Services.Repository
                 {
                     totalRate += item.Rating;
                 }
-
                  result = totalRate / listmapCategory.Count;
             }
-           
-
             return result;
         }
 
+		public List<Feedback> GetByFeedbackByUser(string userId)
+		{
+			List<Feedback> feebackList = _dbSet.Where(r => r.MetaData.Any(md => md.UserId == userId && 
+                                                                                md.RecipeId != null && 
+                                                                                md.FeedbackId != null)).ToList();
+			return feebackList;
+		}
 
-    }
+
+	}
 }

@@ -18,6 +18,6 @@ namespace Services.Data
 		public double? AvgRate { get; set; }
 		public string? Image { get; set; }
 		public bool Collection { get; set; }
-
+	
 	}
 }
