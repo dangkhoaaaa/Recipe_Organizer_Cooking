@@ -172,9 +172,12 @@
 										class="btn box-shadow padding-lr-30px padding-tb-10px btn-sm border-2 border-radius-10 btn-inline-block background-main-color text-white margin-right-20px margin-tb-12px ">
 									I MADE IT <i class="fas fa-utensil-spoon"></i>
 								</button>
-								<button class="btn box-shadow padding-lr-30px padding-tb-10px btn-sm border-2 border-radius-10 btn-inline-block border-main-color text-main-color margin-right-20px margin-tb-12px ">
+								@*<button class="btn box-shadow padding-lr-30px padding-tb-10px btn-sm border-2 border-radius-10 btn-inline-block border-main-color text-main-color margin-right-20px margin-tb-12px ">
 									PRINT <i class="fas fa-print"></i>
-								</button>
+								</button>*@
+								<a class="btn box-shadow padding-lr-30px padding-tb-10px btn-sm border-2 border-radius-10 btn-inline-block border-main-color text-main-color margin-right-20px margin-tb-12px"
+								   href="@Url.Action("PrintRecipe", "Recipe", new { recipeId = Model.RecipeId })" >PRINT <i class="fas fa-print"></i></a>
+
 							</div>
 						</div>
 

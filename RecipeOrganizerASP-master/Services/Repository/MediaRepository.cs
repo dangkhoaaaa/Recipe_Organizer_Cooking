@@ -23,5 +23,27 @@ namespace Services.Repository
 
 			return media.MediaId;
 		}
+
+		public List<Media> GetImgsByFeedbackId(int feedbackId)
+		{
+			List<Media> medias = new List<Media>();
+
+			if (feedbackId != 0)
+			{
+				var metaDataList = _dbSet.Where(r => r.MetaData.Any(md => md.FeedbackId == feedbackId)).ToList();
+
+				foreach (var metaData in metaDataList)
+				{
+					var media = _dbSet.Find(metaData.MediaId);
+					if (media != null)
+					{
+						medias.Add(media);
+					}
+				}
+			}
+
+			return medias;
+		}
+
 	}
 }

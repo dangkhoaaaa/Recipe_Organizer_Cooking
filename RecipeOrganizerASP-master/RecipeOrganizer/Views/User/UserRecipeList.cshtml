@@ -40,7 +40,7 @@
 							}
 							else 
 							{
-								<a href="/Recipe/PendingRecipe/?id=@item.RecipeId"><img class="width-200px" src="@item.Image" alt=""></a>
+								<a href="/Recipe/UsrPendingRecipe/?id=@item.RecipeId"><img class="width-200px" src="@item.Image" alt=""></a>
 							}
 						</div>
 						<div class="padding-25px">
@@ -49,11 +49,11 @@
 									<h3>
 										@if (item.Status == "public")
 										{
-											<a class="text-dark" href="/Recipe/PendingRecipe/?id=@item.RecipeId">@item.Title</a>
+											<a class="text-dark" href="/Recipe/UsrPendingRecipe/?id=@item.RecipeId">@item.Title</a>
 										}
 										else
 										{
-											<a class="text-dark" href="/Recipe/PendingRecipe/?id=@item.RecipeId">@item.Title</a>
+											<a class="text-dark" href="/Recipe/UsrPendingRecipe/?id=@item.RecipeId">@item.Title</a>
 										}
 									</h3>
 								</div>
