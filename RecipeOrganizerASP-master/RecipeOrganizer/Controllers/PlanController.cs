@@ -12,6 +12,7 @@ namespace RecipeOrganizer.Controllers
 {
     public class PlanController : Controller
     {
+
         private readonly MealPlaningRepository _mealPlaningRepository;
         private readonly DayRepository _dayRepository;
         private readonly SessionRepository _sessionRepository;
@@ -19,7 +20,7 @@ namespace RecipeOrganizer.Controllers
         private readonly UserManager<AppUser> _userManager;
 		private readonly Slot _slot;
         private readonly RecipeRepository _recipeRepository;
-
+		private readonly CollectionRepository _collectionRepository;
 		public PlanController(UserManager<AppUser> userManager)
         {
             _mealPlaningRepository = new MealPlaningRepository();
@@ -29,8 +30,51 @@ namespace RecipeOrganizer.Controllers
             _hasRecipeRepository = new SessionHasRecipeRepository();
 			_slot = new Slot();
             _recipeRepository = new RecipeRepository();
+            _collectionRepository = new CollectionRepository();
 		}
-        public async Task<IActionResult> ViewPlan(string week)
+
+		public async Task<IActionResult> SearchKeyWordFitler(string keyword, string filter,string slotNow, string week, int productPage = 1)
+		{
+			ViewBag.slotNow = slotNow;
+			ViewBag.Week = week;
+			ViewBag.Keyword = keyword;
+			ViewBag.filter = filter;
+			List<Recipe> results = null;
+
+			List<Recipe> recipesSearchAll = _recipeRepository.SearchAllTitleWithFilter(filter, keyword);
+
+
+
+			if (keyword != null && recipesSearchAll.Count() > 0)
+			{
+				results = _recipeRepository.getRecipeByKeywordWitPaging(keyword, productPage, PageSize, recipesSearchAll);
+				var user = await _userManager.GetUserAsync(User);
+				if (user != null)
+				{
+					var checkRecipeSave = _collectionRepository.CollectionList(recipesSearchAll, user.Id);
+					ViewBag.CheckCollectionSave = checkRecipeSave;
+				}
+			}
+			else
+			{
+				ViewBag.notfound = "Not Found Recipe";
+			}
+
+
+			return View("ListRecipe", new RecipeListDisplayWithPaging
+			{
+				Recipes = results
+					,
+				PagingInfo = new PagingInfo
+				{
+					ItemsPerPage = PageSize,
+					CurrentPage = productPage,
+					TotalItems = recipesSearchAll.Count()
+
+				}
+			});
+		}
+		public async Task<IActionResult> ViewPlan(string week)
         {
             
 
@@ -194,7 +238,7 @@ namespace RecipeOrganizer.Controllers
     int PageSize = 8;
 		public IActionResult ListRecipe(string keyword, int productPage = 1, int slotNow=1, string week = "")
 		{
-			keyword = "Recipe";
+			keyword = "ga";
 			ViewBag.Keyword = keyword;
 			ViewBag.slotNow = slotNow;
 			ViewBag.Week = week;
