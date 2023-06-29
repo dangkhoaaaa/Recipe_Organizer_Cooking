@@ -172,12 +172,11 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     Image = DEFAULT_AVT_IMG
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
-                await _userManager.AddToRoleAsync(user, RoleName.Member);
-
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("New user have been created.");
+					await _userManager.AddToRoleAsync(user, RoleName.Member);
+					_logger.LogInformation("New user have been created.");
 
                     // Phát sinh token để xác nhận email
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -623,7 +622,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
 
                 await _emailSender.SendEmailAsync(
                     model.Email,
-                    "Reset Password", callbackUrl);
+                    "Forgot Password", callbackUrl);
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
             }
             return View(model);
@@ -661,7 +660,8 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
-                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                //return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                return View("ForgotPasswordConfirmationFailure");
             }
             var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(model.Code));
 
