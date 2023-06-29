@@ -19,28 +19,20 @@ namespace RecipeOrganizer.Controllers
 	public class UserController : Controller
 	{
 		private readonly RecipeRepository _recipeRepository;
-		private readonly IngredientRepository _ingredientRepository;
-		private readonly DirectionRepository _directionRepository;
-		private readonly RecipeHasTagRepository _recipeHasTagRepository;
-		private readonly TagRepository _tagRepository;
-		private readonly RecipeHasCategoryRepository _recipeHasCategoryRepository;
 		private readonly MetadataRepository _metadataRepository;
 		private readonly MediaRepository _mediaRepository;
 		private readonly CollectionRepository _collectionRepository;
+		private readonly FeedbackRepository _feedbackRepository;
 		private readonly UserManager<AppUser> _userManager;
 		private readonly FireBaseService _fireBaseService;
 
 		public UserController(UserManager<AppUser> userManager)
 		{
 			_recipeRepository = new RecipeRepository();
-			_ingredientRepository = new IngredientRepository();
-			_directionRepository = new DirectionRepository();
-			_recipeHasTagRepository = new RecipeHasTagRepository();
-			_tagRepository = new TagRepository();
-			_recipeHasCategoryRepository = new RecipeHasCategoryRepository();
 			_metadataRepository = new MetadataRepository();
 			_mediaRepository = new MediaRepository();
 			_collectionRepository = new CollectionRepository();
+			_feedbackRepository = new FeedbackRepository();
 			_userManager = userManager;
 			_fireBaseService = new FireBaseService();
 		}
@@ -124,7 +116,39 @@ namespace RecipeOrganizer.Controllers
 			return RedirectToAction("UserCollectionList", "User");
 		}
 
-
+		public async Task<IActionResult> UserFeedbackList()
+		{
+			var user = await _userManager.GetUserAsync(User);
+			if (user != null)
+			{
+				List<Feedback> feedbackList = _feedbackRepository.GetByFeedbackByUser(user.Id);
+				if (feedbackList != null)
+				{
+					List<FeedbackData> dataList = new List<FeedbackData>();
+                    foreach (var item in feedbackList)
+                    {
+						List<Media> images = _mediaRepository.GetImgsByFeedbackId(item.FeedbackId);
+						var recipe = _recipeRepository.GetRecipeByFeedBackId(item.FeedbackId, user.Id);
+						FeedbackData data = new FeedbackData
+						{
+							FeedbackId = item.FeedbackId,
+							Title = item.Title,
+							Description = item.Description,
+							Date = item.Date,
+							Rating = item.Rating,
+							Images = images,
+							Status = item.Status,
+							RecipeId = recipe.RecipeId,
+							RecipeTitle = recipe.Title
+						};
+						dataList.Add(data);
+                    }
+                    // Pass the feedbackList to the view
+                    return View(dataList);
+				}
+			}
+			return View(Index);
+		}
 	}
 }
 

@@ -1,0 +1,84 @@
+﻿@model List<Services.Data.FeedbackData>
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+	ViewBag.Title = "All Reviews Personal";
+	Layout = "~/Areas/Identity/Views/Shared/_ProfileLayout.cshtml";
+}
+
+
+<div class="row">
+	<div class="col-lg-12 margin-bottom-40px">
+		<div class="box-shadow border-radius-10 overflow-hidden">
+			<div class="padding-30px background-white">
+				<h2>Reviews</h2>
+				<p>The following are reviews you have added to content.</p>
+			</div>
+		</div>
+	</div>
+</div>
+@if (Model.Count > 0)
+{
+    <div class="container margin-bottom-100px">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <!-- item -->
+                <div class="col-lg-12 margin-bottom-20px">
+                    <div class="background-white thum-hover box-shadow hvr-float full-width">
+                        <div class="float-md-left margin-right-30px thum-xs">
+                        </div>
+                        <div class="padding-20px">
+                            <h3>
+                                <a href="#" class="d-block text-dark text-capitalize text-medium margin-tb-15px">
+                                    @item.RecipeTitle
+                                </a>
+                            </h3>
+                            <div class="rating">
+                                <ul>
+                                    <li class="active"></li>
+                                    <li class="active"></li>
+                                    <li class="active"></li>
+                                    <li class="active"></li>
+                                    <li class="active"></li>
+                                </ul>
+                            </div>
+                            <hr>
+                            <h3>@item.Title</h3>
+                            <p>@item.Description</p>
+                            @if (item.Images != null)
+                            {
+                                @foreach (var img in item.Images)
+                                {
+                                    <img class="width-100px" src="@img.Filelocation" alt="">
+                                }
+                            }
+                            else
+                            {
+                                <img class="width-100px" src="https://media.istockphoto.com/id/936385254/photo/tradition-northern-thai-food-on-a-wooden-table-top-view.jpg?s=612x612&w=0&k=20&c=pBHrgNbxu8tQ7EBoWzjFT12hMgkfxsuaBxwrvJmlIww=" alt="">
+                            }
+                            <hr>
+                            <div class="row no-gutters">
+                                <div class="col-4 text-left">Date: @item.Date</div>
+                                @*<div class="col-8 text-right">After 15 days, you can not edit it any more.</div>*@
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <!-- // item -->
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="col-lg-12 margin-bottom-40px">
+        <div class="text-center">
+            <h3>You haven't created any reviews yet.</h3>
+        </div>
+    </div>
+}

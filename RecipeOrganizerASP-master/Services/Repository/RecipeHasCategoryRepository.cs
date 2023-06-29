@@ -23,8 +23,6 @@ namespace Services.Repository
             _dbSetRecipe = _context.Set<Recipe>();
         }
 
-
-
         // public ICollection<Recipe> Products { get; set; } = new List<Recipe>();
 
         public List<Recipe> getRecipeByCategoryID(int categoryId)
@@ -37,38 +35,68 @@ namespace Services.Repository
             return query.ToList();
         }
 
+		public List<Category> GetCategoryByRecipeId(int recipeId)
+		{
+			var categories = _dbSet
+				.Where(rht => rht.RecipeId == recipeId)
+				.Select(rht => rht.Category)
+				.ToList();
+
+			return categories;
+		}
+
+		public List<int> GetSelectedCategoryIds(int recipeId)
+		{
+			return _context.RecipeHasCategories
+				.Where(rhc => rhc.RecipeId == recipeId)
+				.Select(rhc => rhc.CategoryId)
+				.ToList();
+		}
+
+		public void AddCategory(List<int> categoryIds, int recipeId)
+		{
+			foreach (int categoryId in categoryIds)
+			{
+				RecipeHasCategory recipeHasCategory = new RecipeHasCategory
+				{
+					RecipeId = recipeId,
+					CategoryId = categoryId
+				};
+				_context.RecipeHasCategories.Add(recipeHasCategory);
+			}
+			_context.SaveChanges();
+		}
+
+		//public List<Recipe> getRecipeByCategoryID(int categoryId)
+		//{
+		//    //var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
+		//    List<Recipe> listRecipe = new List<Recipe>();
+		//    foreach (RecipeHasCategory recipeCategory in _dbSetRecipeHasCategory)
+		//    {
+
+		//        if (recipeCategory.CategoryId==categoryId) {
 
 
-        //public List<Recipe> getRecipeByCategoryID(int categoryId)
-        //{
-        //    //var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
-        //    List<Recipe> listRecipe = new List<Recipe>();
-        //    foreach (RecipeHasCategory recipeCategory in _dbSetRecipeHasCategory)
-        //    {
+		//            foreach (Recipe recipe in _dbSetRecipe)
+		//            {
 
-        //        if (recipeCategory.CategoryId==categoryId) {
+		//                if (recipe.RecipeId==recipeCategory.RecipeId) {
 
 
-        //            foreach (Recipe recipe in _dbSetRecipe)
-        //            {
-
-        //                if (recipe.RecipeId==recipeCategory.RecipeId) {
-                            
-                            
-        //                    listRecipe.Add(recipe); 
-        //                }
+		//                    listRecipe.Add(recipe); 
+		//                }
 
 
-        //            }
-        //        }
+		//            }
+		//        }
 
 
-        //    }
+		//    }
 
-           
-        //    // return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
-        //    return listRecipe;
-        //}
 
-    }
+		//    // return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
+		//    return listRecipe;
+		//}
+
+	}
 }
