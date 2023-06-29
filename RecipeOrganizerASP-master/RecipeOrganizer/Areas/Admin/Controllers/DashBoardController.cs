@@ -18,6 +18,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         private readonly CategoryRepository _categoryRepository;
         private readonly Parent_CategoryRepository _parentCategoryRepository;
         private readonly RecipeHasCategoryRepository _recipeHasCategory;
+        private readonly DashBroadRepository _dashBroadRepository;
 
         public DashBoardController(UserManager<AppUser> userManager)
         {
@@ -25,6 +26,8 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             _parentCategoryRepository = new Parent_CategoryRepository();
             _categoryRepository = new CategoryRepository();
             _recipeHasCategory = new RecipeHasCategoryRepository();
+            _dashBroadRepository = new DashBroadRepository();
+            
 
         }
 
@@ -32,7 +35,17 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         public IActionResult Index()
         {
          
-            return View();
+            DashBroadModel model = new DashBroadModel();
+            model.recipePending = _dashBroadRepository.GetRecipebyPending();
+            model.recipePublic = _dashBroadRepository.GetRecipebyPublic();
+            model.recipeReject =_dashBroadRepository.GetRecipebyReject();
+            model.totalRecipe =_dashBroadRepository.TotalRecipe();
+            model.totalView = _dashBroadRepository.TotalView();
+            model.totalFeedback = _dashBroadRepository.TotalFeedback();
+            model.totalAccount = _dashBroadRepository.TotalAccount();
+            model.totalCategory = _dashBroadRepository.TotalCategiry();
+            model.Recipes = _dashBroadRepository.Top4Recipe();
+            return View(model);
         }
 
     }
