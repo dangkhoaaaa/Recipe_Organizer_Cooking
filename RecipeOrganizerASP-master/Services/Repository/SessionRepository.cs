@@ -32,7 +32,7 @@ namespace Services.Repository
             List<Session> sessions = _dbSet.Where(s => s.DayId == day.DayId).ToList();
             Session session = null;
             SessionHasRecipeRepository _sessionHasRecipeRepository = new SessionHasRecipeRepository();
-            Console.WriteLine("save S");
+            
             var count = 0;
             switch (cartLine.SlotID % 3)
             {
