@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Firebase.Auth;
 using System.Collections.Generic;
 using RecipeOrganizer.Areas.Admin.Models.Manage;
+using System.Security.Claims;
 
 namespace RecipeOrganizer.Areas.Admin.Controllers
 {
@@ -45,57 +46,6 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             _logger = logger;
             _recipeRepository = new RecipeRepository();
             _userRepository = new UserRepository();
-        }
-
-        public enum ManageMessageId
-        {
-            AddPhoneSuccess,
-            AddLoginSuccess,
-            ChangePasswordSuccess,
-            SetTwoFactorSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            RemovePhoneSuccess,
-            Error
-        }
-
-        [HttpGet("/manage/")]
-        public async Task<IActionResult> Index(ManageMessageId? message = null)
-        {
-            ViewData["StatusMessage"] =
-                message == ManageMessageId.ChangePasswordSuccess ? "Password has change"
-                : message == ManageMessageId.SetPasswordSuccess ? "Password has reset"
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "Error"
-                : message == ManageMessageId.AddPhoneSuccess ? "Phone number has added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Phone number has removed."
-                : "";
-
-            var listUser = _userRepository.GetAll();
-            List<IndexViewModel> list = new List<IndexViewModel>();
-            //get all user
-            foreach (var user in listUser)
-            {
-                var role = await _userManager.GetRolesAsync(user);
-                var isLockout = await _userManager.IsLockedOutAsync(user);
-                var externalLogins = (List<UserLoginInfo>) await _userManager.GetLoginsAsync(user);
-                var model = new IndexViewModel
-                {
-                    Member = user,
-                    Role = role.ToList(),
-                    TotalRecipe = _recipeRepository.GetByAuthor(user.Id).Count,
-                    //TotalRecipe = 2,
-                    Status = !isLockout,
-                    ExternalLogin = externalLogins,
-                };
-                list.Add(model);
-            }
-            return View(list);
-        }
-
-        private Task<AppUser> GetCurrentUserAsync()
-        {
-            return _userManager.GetUserAsync(HttpContext.User);
         }
 
         // GET: /Admin/Login
@@ -169,6 +119,56 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
+        public enum ManageMessageId
+        {
+            AddPhoneSuccess,
+            AddLoginSuccess,
+            ChangePasswordSuccess,
+            SetTwoFactorSuccess,
+            SetPasswordSuccess,
+            RemoveLoginSuccess,
+            RemovePhoneSuccess,
+            Error
+        }
+
+        [HttpGet("/Admin/")]
+        public async Task<IActionResult> Index(ManageMessageId? message = null)
+        {
+            ViewData["StatusMessage"] =
+                message == ManageMessageId.ChangePasswordSuccess ? "Password has change"
+                : message == ManageMessageId.SetPasswordSuccess ? "Password has reset"
+                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
+                : message == ManageMessageId.Error ? "Error"
+                : message == ManageMessageId.AddPhoneSuccess ? "Phone number has added."
+                : message == ManageMessageId.RemovePhoneSuccess ? "Phone number has removed."
+                : "";
+
+            var listUser = _userRepository.GetAll();
+            List<IndexViewModel> list = new List<IndexViewModel>();
+            //get all user
+            foreach (var user in listUser)
+            {
+                var role = await _userManager.GetRolesAsync(user);
+                var isLockout = await _userManager.IsLockedOutAsync(user);
+                var externalLogins = (List<UserLoginInfo>) await _userManager.GetLoginsAsync(user);
+                var model = new IndexViewModel
+                {
+                    Member = user,
+                    Role = role.ToList(),
+                    TotalRecipe = _recipeRepository.GetByAuthor(user.Id).Count,
+                    //TotalRecipe = 2,
+                    Status = !isLockout,
+                    ExternalLogin = externalLogins,
+                };
+                list.Add(model);
+            }
+            return View(list);
+        }
+
+        private Task<AppUser> GetCurrentUserAsync()
+        {
+            return _userManager.GetUserAsync(HttpContext.User);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -213,14 +213,14 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             if (keyword == null)
             {
                 ViewBag.NotFind = "";
-                return View("Index");
+                return RedirectToAction("Index");
             }
             var listSearchUser = listAllUsers.Where(p => p.Email.Contains(keyword.Trim()) || p.UserName.Contains(keyword.Trim())).ToList();
             if (listSearchUser.Count == 0)
             {
 
                 ViewBag.NotFind = "No result match the keyword";
-                return View("Index");
+                return RedirectToAction("Index");
             }
             foreach (var userSearch in listSearchUser)
             {
@@ -282,52 +282,226 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             return RedirectToAction("Login");
         }
 
-        public async Task<IActionResult> SeedDataAsync()
-        {
-            // Create Roles
-            var rolenames = typeof(RoleName).GetFields().ToList();
-            foreach (var r in rolenames)
-            {
-                var rolename = (string)r.GetRawConstantValue();
-                var rfound = await _roleManager.FindByNameAsync(rolename);
-                if (rfound == null)
-                {
-                    await _roleManager.CreateAsync(new IdentityRole(rolename));
-                }
-            }
-            // admin, pass=admin123, admin@example.com
-            var useradmin = await _userManager.FindByEmailAsync("recipeorganizert3@gmail.com");
-            if (useradmin == null)
-            {
-                useradmin = new AppUser()
-                {
-                    UserName = "admin",
-                    Email = "recipeorganizert3@gmail.com",
-                    EmailConfirmed = true,
-                };
-                await _userManager.CreateAsync(useradmin, "admin123");
-                await _userManager.AddToRoleAsync(useradmin, RoleName.Administrator);
-                await _signInManager.SignInAsync(useradmin, false);
+        //public async Task<IActionResult> SeedDataAsync()
+        //{
+        //    // Create Roles
+        //    var rolenames = typeof(RoleName).GetFields().ToList();
+        //    foreach (var r in rolenames)
+        //    {
+        //        var rolename = (string)r.GetRawConstantValue();
+        //        var rfound = await _roleManager.FindByNameAsync(rolename);
+        //        if (rfound == null)
+        //        {
+        //            await _roleManager.CreateAsync(new IdentityRole(rolename));
+        //        }
+        //    }
+        //    // admin, pass=admin123, admin@example.com
+        //    var useradmin = await _userManager.FindByEmailAsync("recipeorganizert3@gmail.com");
+        //    if (useradmin == null)
+        //    {
+        //        useradmin = new AppUser()
+        //        {
+        //            UserName = "admin",
+        //            Email = "recipeorganizert3@gmail.com",
+        //            EmailConfirmed = true,
+        //        };
+        //        await _userManager.CreateAsync(useradmin, "admin123");
+        //        await _userManager.AddToRoleAsync(useradmin, RoleName.Administrator);
+        //        await _signInManager.SignInAsync(useradmin, false);
 
-                return RedirectToAction("SeedData");
+        //        return RedirectToAction("SeedData");
+        //    }
+        //    else
+        //    {
+        //        var user = await _userManager.GetUserAsync(this.User);
+        //        if (user == null) return this.Forbid();
+        //        var roles = await _userManager.GetRolesAsync(user);
+
+        //        if (!roles.Any(r => r == RoleName.Administrator))
+        //        {
+        //            return this.Forbid();
+        //        }
+        //    }
+        //    //SeedPostCategory();
+        //    //SeedProductCategory();
+
+        //    //StatusMessage = "Vừa seed Database";
+        //    return RedirectToAction("Index");
+        //}
+
+        //
+        // POST: /Manage/ExternalLogin
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            returnUrl ??= Url.Content("~/");
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Admin", new { ReturnUrl = returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+        //
+        // GET: /Manage/ExternalLoginCallback
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        {
+            returnUrl ??= Url.Content("~/");
+            if (remoteError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+                return View(nameof(Login));
+            }
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+			var emailReg = info.Principal.FindFirstValue(ClaimTypes.Email);
+			//-----------------------------------------------------------------------------------//
+			//email luc nhap confirm so sanh xem da co ton tai trong DB chua
+			var userReg = await _userManager.FindByEmailAsync(emailReg);
+			//chỉ có admin mới được liên kết
+			var roleReq = await _userManager.GetRolesAsync(userReg);
+			if (!roleReq.Contains(RoleName.Administrator))
+			{
+				return View("AccessDenied");
+			}
+
+			// Sign in the user with this external login provider if the user already has a login.
+			var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
+            if (result.Succeeded)
+            {
+                //update login time
+                var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+                user.LastLoginTime = DateTime.Now;
+                await _userManager.UpdateAsync(user);
+
+                // Cập nhật lại token
+                await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+
+                _logger.LogInformation(5, "User logged in with {Name} provider.", info.LoginProvider);
+				//return LocalRedirect(returnUrl);
+				return RedirectToAction("Index");
+			}
+            if (result.IsLockedOut)
+            {
+                return View("Lockout");
             }
             else
             {
-                var user = await _userManager.GetUserAsync(this.User);
-                if (user == null) return this.Forbid();
-                var roles = await _userManager.GetRolesAsync(user);
+                // If the user does not have an account, then ask the user to create an account.
+                ViewData["ReturnUrl"] = returnUrl;
+                ViewData["ProviderDisplayName"] = info.ProviderDisplayName;
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                //-----------------------------------------------------------------------------------//
+                //email luc nhap confirm so sanh xem da co ton tai trong DB chua
+                var registeredUser = await _userManager.FindByEmailAsync(email);
+                string externalEmail = null;
+                AppUser externalEmailUser = null;
 
-                if (!roles.Any(r => r == RoleName.Administrator))
+                // Claim ~ Dac tinh mo ta mot doi tuong 
+                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
                 {
-                    return this.Forbid();
+                    externalEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
                 }
-            }
-            //SeedPostCategory();
-            //SeedProductCategory();
 
-            //StatusMessage = "Vừa seed Database";
-            return RedirectToAction("Index");
+                //email cua external
+                if (externalEmail != null)
+                {
+                    externalEmailUser = await _userManager.FindByEmailAsync(externalEmail);
+                }
+                //chỉ có admin mới được liên kết
+                var role = await _userManager.GetRolesAsync(registeredUser);
+                if (!role.Contains(RoleName.Administrator))
+                {
+                    return View("AccessDenied");
+                }
+
+                //email da dang ki vao app va email external cung da dang ki vao app
+                if ((registeredUser != null) && (externalEmailUser != null))
+                {
+                    // externalEmail  == Input.Email
+                    // email google or facebook == email da dang ky vao app
+                    if (registeredUser.Id == externalEmailUser.Id)
+                    {
+                        // Lien ket tai khoan, dang nhap
+                        var resultLink = await _userManager.AddLoginAsync(registeredUser, info);
+                        if (resultLink.Succeeded)
+                        {
+                            //await _userManager.AddLoginAsync(registeredUser, info);
+                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(registeredUser);
+                            await _userManager.ConfirmEmailAsync(registeredUser, code);
+
+                            await _signInManager.SignInAsync(registeredUser, isPersistent: false);
+                            registeredUser.LastLoginTime = DateTime.Now; // Update the LastLoginTime property
+                            await _userManager.UpdateAsync(registeredUser); // Save the changes to the user entity
+                            //return LocalRedirect(returnUrl);
+                            return RedirectToAction("Index");
+
+                        }
+                    }
+                    else
+                    {
+                        // registeredUser = externalEmailUser (externalEmail != Input.Email)
+                        /*
+                            info => user1 (mail1@abc.com)
+                                 => user2 (mail2@abc.com)
+                        */
+                        ModelState.AddModelError(string.Empty, "Account cannot be linked, please use another email account");
+                        return View("ExternalLoginFailure");
+                    }
+
+                }
+                return View("AccessDenied");
+                //return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
+            } //end else
         }
+
+        //
+        // GET: /Admin/ChangePassword
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Admin/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await GetCurrentUserAsync();
+            if (user != null)
+            {
+                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                if (result.Succeeded)
+                {
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    //_logger.LogInformation(3, "User changed their password successfully.");
+                    //return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangePasswordSuccess });
+                    _logger.LogInformation(3, "User changed their password successfully.");
+                    await _signInManager.SignOutAsync();
+                    _logger.LogInformation("User logged out");
+                    @TempData["ChangePasswordSuccess"] = "Change password success. You must login again!";
+                    return Redirect("/Admin/Login");
+                }
+                TempData["ChangeError"] = "Incorrect password";
+                return View(model);
+            }
+            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+        }
+
+
     }
+
+
 
 }

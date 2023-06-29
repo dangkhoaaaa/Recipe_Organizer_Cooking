@@ -56,120 +56,120 @@
 		<!-- item -->
 	@if (Model.Recipes != null && ViewBag.notfound != "")
 	{
-				<div class="recipes-masonry">
+					<div class="recipes-masonry">
 			@foreach (var item in Model.Recipes)
 			{
 
-							<!-- Recipe Item -->
-							<div class="col-xl-3 col-lg-4 col-md-6 recipe-item margin-bottom-40px hvr-buzz">
-								<div class="card border-0 box-shadow">
-									<div class="card-img-top"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img src="@item.Image" alt=""></a></div>
-									<div class="padding-lr-30px padding-tb-20px">
-										<h5 class="margin-bottom-20px margin-top-10px"><a class="text-dark" href="/Recipe/RecipeDetail/?id=@item.RecipeId">@item.Title</a></h5>
-										<div class="rating">
-											<ul>
-												<li class="active"></li>
-												<li class="active"></li>
-												<li class="active"></li>
-												<li class="active"></li>
-												<li></li>
-											</ul>
-										</div>
-										<hr>
-										<div class="row no-gutters">
-											<div class="col-4 text-left">
-												
-													<form method="get" action="/Recipe/ToggleCollection?recipeId=@item.RecipeId">
-														<input type="hidden" name="recipeId" value="@item.RecipeId" />
-											@if (SignInManager.IsSignedIn(User) && ViewBag.CheckCollectionSave[Model.Recipes.IndexOf(item)])
-											{
-																<button type="submit" class="text-red border-0 bg-transparent" id="saveButton">
-																	<i class="icon_heart"></i> Unsave
-																</button>
-											}
-											else
-											{
-																<button type="submit" class="text-red border-0 bg-transparent" id="saveButton">
-																	<i class="far fa-heart"></i> Save
-																</button>
-											}
-													</form>
-												
+									<!-- Recipe Item -->
+									<div class="col-xl-3 col-lg-4 col-md-6 recipe-item margin-bottom-40px hvr-buzz">
+										<div class="card border-0 box-shadow">
+											<div class="card-img-top"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img src="@item.Image" alt=""></a></div>
+											<div class="padding-lr-30px padding-tb-20px">
+												<h5 class="margin-bottom-20px margin-top-10px"><a class="text-dark" href="/Recipe/RecipeDetail/?id=@item.RecipeId">@item.Title</a></h5>
+												<div class="rating">
+													<ul>
+														<li class="active"></li>
+														<li class="active"></li>
+														<li class="active"></li>
+														<li class="active"></li>
+														<li></li>
+													</ul>
+												</div>
+												<hr>
+												<div class="row no-gutters">
+													<div class="col-4 text-left">
+
+															<form method="get" action="/Recipe/ToggleCollection?recipeId=@item.RecipeId">
+																<input type="hidden" name="recipeId" value="@item.RecipeId" />
+										@if (SignInManager.IsSignedIn(User) && ViewBag.CheckCollectionSave[Model.Recipes.IndexOf(item)])
+										{
+																			<button type="submit" class="text-red border-0 bg-transparent" id="saveButton">
+																				<i class="icon_heart"></i> Unsave
+																			</button>
+										}
+										else
+										{
+																			<button type="submit" class="text-red border-0 bg-transparent" id="saveButton">
+																				<i class="far fa-heart"></i> Save
+																			</button>
+										}
+															</form>
+
+													</div>
+													<div class="col-8 text-right"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="text-grey-2"><i class="fas fa-users"></i> @item.NumberShare</a></div>
+												</div>
 											</div>
-											<div class="col-8 text-right"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="text-grey-2"><i class="fas fa-users"></i> @item.NumberShare</a></div>
+											<div class="background-light-grey border-top-1 border-grey padding-lr-30px padding-tb-20px">
+												<a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="d-inline-block text-grey-3 h6 margin-bottom-0px margin-right-15px"> @item.Description.ToString().Substring(0,4)....<font color="red">(View More)</font> </a>
+											</div>
 										</div>
 									</div>
-									<div class="background-light-grey border-top-1 border-grey padding-lr-30px padding-tb-20px">
-										<a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="d-inline-block text-grey-3 h6 margin-bottom-0px margin-right-15px"> @item.Description.ToString().Substring(0,4)....<font color="red">(View More)</font> </a>
-									</div>
-								</div>
-							</div>
-							<!-- // Recipe Item -->
+									<!-- // Recipe Item -->
 			}
-				</div>
+					</div>
 
 
 
 
-				<div class="col-12 pb-1">
-					<nav aria-label="Page navigation">
-						<ul class="pagination justify-content-center mb-3">
+					<div class="col-12 pb-1">
+						<nav aria-label="Page navigation">
+							<ul class="pagination justify-content-center mb-3">
 
 
 					@if (Model.PagingInfo.CurrentPage != 1)
 					{
-									<li class="page-item ">
-										<a class="page-link" href="/Search/SearchKeyWordFitler/?productPage=@(Model.PagingInfo.CurrentPage-1)&keyword=@ViewBag.keyword&filter=@ViewBag.filter" aria-label="Previous">
-											<span aria-hidden="true">&laquo;</span>
-											<span class="sr-only">Previous</span>
-										</a>
-									</li>
+											<li class="page-item ">
+												<a class="page-link" href="/Search/SearchKeyWordFitler/?productPage=@(Model.PagingInfo.CurrentPage-1)&keyword=@ViewBag.keyword&filter=@ViewBag.filter" aria-label="Previous">
+													<span aria-hidden="true">&laquo;</span>
+													<span class="sr-only">Previous</span>
+												</a>
+											</li>
 					}
 					else
 					{
-									<li class="page-item disabled">
-										<a class="page-link" href="#" aria-label="Previous">
-											<span aria-hidden="true">&laquo;</span>
-											<span class="sr-only">Previous</span>
-										</a>
-									</li>
+											<li class="page-item disabled">
+												<a class="page-link" href="#" aria-label="Previous">
+													<span aria-hidden="true">&laquo;</span>
+													<span class="sr-only">Previous</span>
+												</a>
+											</li>
 					}
 
 					@for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
 					{
-									<li class="page-item">
-										<a class="page-link" href="/Search/SearchKeyWordFitler/?productPage=@i&keyword=@ViewBag.keyword&filter=@ViewBag.filter"
-										   style="@((Model.PagingInfo.CurrentPage == i) ? "background-color: blue; color: white;" : "")">@i</a>
-									</li>
+											<li class="page-item">
+												<a class="page-link" href="/Search/SearchKeyWordFitler/?productPage=@i&keyword=@ViewBag.keyword&filter=@ViewBag.filter"
+												   style="@((Model.PagingInfo.CurrentPage == i) ? "background-color: blue; color: white;" : "")">@i</a>
+											</li>
 
 					}
 					@if (Model.PagingInfo.CurrentPage != Model.PagingInfo.TotalPages)
 					{
-									<li class="page-item">
-										<a class="page-link" href="/Search/SearchKeyWordFitler/?productPage=@(Model.PagingInfo.CurrentPage+1)&keyword=@ViewBag.keyword&filter=@ViewBag.filter" aria-label="Next">
-											<span aria-hidden="true">&raquo;</span>
-											<span class="sr-only">Next</span>
-										</a>
-									</li>
+											<li class="page-item">
+												<a class="page-link" href="/Search/SearchKeyWordFitler/?productPage=@(Model.PagingInfo.CurrentPage+1)&keyword=@ViewBag.keyword&filter=@ViewBag.filter" aria-label="Next">
+													<span aria-hidden="true">&raquo;</span>
+													<span class="sr-only">Next</span>
+												</a>
+											</li>
 					}
 					else
 					{
-									<li class="page-item disabled">
-										<a class="page-link" href="#" aria-label="Next">
-											<span aria-hidden="true">&raquo;</span>
-											<span class="sr-only">Next</span>
-										</a>
-									</li>
+											<li class="page-item disabled">
+												<a class="page-link" href="#" aria-label="Next">
+													<span aria-hidden="true">&raquo;</span>
+													<span class="sr-only">Next</span>
+												</a>
+											</li>
 					}
 
-						</ul>
-					</nav>
-				</div>
+							</ul>
+						</nav>
+					</div>
 
 	}
 	else
 	{
-				<h1 color="red">@ViewBag.notfound</h1>
+					<h1 color="red">@ViewBag.notfound</h1>
 	}
 		<!-- // item -->
 		<!--
@@ -181,20 +181,20 @@
 
 	</div>
 @section Scripts {
-			<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-			<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-			<script>
+				<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+				<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+				<script>
 
-				(function ($) {
-					$(document).ready(function () {
-						$("#postTitle").autocomplete({
-							source: '/api/postapi/search1'
+					(function ($) {
+						$(document).ready(function () {
+							$("#postTitle").autocomplete({
+								source: '/api/postapi/search1'
+
+							});
 
 						});
-
-					});
-				})(jQuery);
-			</script>
+					})(jQuery);
+				</script>
 	}
 	<script>
 		// Lấy đối tượng button Previous
