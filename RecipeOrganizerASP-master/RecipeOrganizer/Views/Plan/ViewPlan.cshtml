@@ -103,7 +103,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-9">
+            <div class="col-lg-12">
 
                 <div class="row">
                     <div class="col-lg-5">
@@ -125,7 +125,7 @@
                 </div>
                 <hr>
                 <div class="text-center">
-                    <table class="text-center" style="width:100%">
+                    <table class="text-center " style="width:100%">
                         <tr>
                             <th>Session/Day</th>
 
@@ -193,8 +193,8 @@
                             int count = 0;
                             for (int i = 1; i <= 3; i++)
                             {
-                                <tr>
-                                    <td>
+                                <tr class="border-top-3">
+                                    <td class="text-center font-weight-bold" width="140px">
                                         @{
                                             string session = "";
                                             @switch (i)
@@ -219,7 +219,7 @@
                                     {
 
                                         count = 0;
-                                        <td>
+                                        <td class="text-center vertical-center" width="135px">
                                             @if (Model?.Lines != null)
                                             {
 
@@ -232,8 +232,13 @@
                                                     {
                                                         foreach (var recipe in item.Recipes)
                                                         {
-                                                            <img class="width-150px" src="@recipe.Image" alt=""> 
-                                                            <a href="/Plan/RemoveFromCart/?slotNow=@(3 * j + i)&recipeID=@recipe.RecipeId&week=@ViewBag.week">X</a>
+                                                            <a href="/Recipe/RecipeDetail/?id=@recipe.RecipeId">
+                                                                <img class="my-1 p-1 rounded-6" width="100px" height="95px" src="@recipe.Image" alt="@recipe.Title" title="@recipe.Title">
+                                                            </a>
+                                                            <button type="button" style="color : #bc5836" class="close btn btn-light " aria-label="Close" onclick="window.location.href='/Plan/RemoveFromCart/?slotNow=@(3*j+i)&recipeID=@recipe.RecipeId&week=@ViewBag.week'">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            //<a href="/Plan/RemoveFromCart/?slotNow=@(3 * j + i)&recipeID=@recipe.RecipeId&week=@ViewBag.week">X</a>
                                                             count++;
                                                             <br />
                                                         }
