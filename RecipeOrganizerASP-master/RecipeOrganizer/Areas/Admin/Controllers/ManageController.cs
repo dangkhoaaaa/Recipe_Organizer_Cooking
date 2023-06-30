@@ -266,11 +266,11 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             {
                 useradmin = new AppUser()
                 {
-                    UserName = "admin",
+                    UserName = "adminabc",
                     Email = "recipeorganizert3@gmail.com",
                     EmailConfirmed = true,
                 };
-                await _userManager.CreateAsync(useradmin, "admin123");
+                await _userManager.CreateAsync(useradmin, "Admin123");
                 await _userManager.AddToRoleAsync(useradmin, RoleName.Administrator);
                 await _signInManager.SignInAsync(useradmin, false);
                 return RedirectToAction("Login");
