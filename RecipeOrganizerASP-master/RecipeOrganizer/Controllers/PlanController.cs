@@ -238,7 +238,7 @@ namespace RecipeOrganizer.Controllers
     int PageSize = 8;
 		public IActionResult ListRecipe(string keyword, int productPage = 1, int slotNow=1, string week = "")
 		{
-			keyword = "ga";
+			keyword = "";
 			ViewBag.Keyword = keyword;
 			ViewBag.slotNow = slotNow;
 			ViewBag.Week = week;
