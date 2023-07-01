@@ -67,6 +67,26 @@ namespace Services.Repository
 			_context.SaveChanges();
 		}
 
+		public void UpdateRecipeCategories(List<int> categoryIds, int recipeId)
+		{
+			// First, remove the existing categories for the recipe
+			var existingCategories = _context.RecipeHasCategories.Where(rhc => rhc.RecipeId == recipeId);
+			_context.RecipeHasCategories.RemoveRange(existingCategories);
+
+			// Add the new categories
+			foreach (int categoryId in categoryIds)
+			{
+				RecipeHasCategory recipeHasCategory = new RecipeHasCategory
+				{
+					RecipeId = recipeId,
+					CategoryId = categoryId
+				};
+				_context.RecipeHasCategories.Add(recipeHasCategory);
+			}
+
+			_context.SaveChanges();
+		}
+
 		//public List<Recipe> getRecipeByCategoryID(int categoryId)
 		//{
 		//    //var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
