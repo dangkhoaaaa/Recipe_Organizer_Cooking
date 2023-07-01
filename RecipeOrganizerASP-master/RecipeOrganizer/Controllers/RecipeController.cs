@@ -6,9 +6,6 @@ using Services.Repository;
 using Services.Data;
 using Microsoft.AspNetCore.Authorization;
 using Services;
-using Microsoft.EntityFrameworkCore;
-using System.Drawing.Imaging;
-using RecipeOrganizer.Components;
 
 namespace RecipeOrganizer.Controllers
 {
@@ -166,7 +163,7 @@ namespace RecipeOrganizer.Controllers
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
 			{
-				Recipe recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
+				Recipe? recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
 				if (recipe != null)
 				{
 					RecipeData data = ConvertToRecipeData(recipe);
@@ -179,7 +176,7 @@ namespace RecipeOrganizer.Controllers
 		[AllowAnonymous]
 		public async Task<IActionResult> RecipeDetail(int id)
 		{
-			Recipe recipe = _recipeRepository.GetById(id, "public");
+			Recipe? recipe = _recipeRepository.GetById(id, "public");
 			if (recipe != null)
 			{
 				RecipeData data = new RecipeData();
@@ -235,7 +232,7 @@ namespace RecipeOrganizer.Controllers
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
 			{
-				Recipe recipe = _recipeRepository.GetByIdForEdit(id);
+				Recipe? recipe = _recipeRepository.GetByIdForEdit(id);
 				if (recipe != null)
 				{
 					RecipeData recipeData = ConvertToRecipeData(recipe);
@@ -265,7 +262,7 @@ namespace RecipeOrganizer.Controllers
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
 			{
-				Recipe recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
+				Recipe? recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
 				if (recipe != null)
 				{
 					_recipeRepository.ChangeStatusRecipe(id, "trash");
@@ -321,7 +318,7 @@ namespace RecipeOrganizer.Controllers
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
 			{
-				Recipe existingRecipe = _recipeRepository.GetByIdForEdit(recipe.RecipeId);
+				Recipe? existingRecipe = _recipeRepository.GetByIdForEdit(recipe.RecipeId);
 				if (existingRecipe != null)
 				{
 					if (Action == "save")
@@ -396,7 +393,7 @@ namespace RecipeOrganizer.Controllers
 		[AllowAnonymous]
 		public IActionResult PrintRecipe(int recipeId)
 		{
-			Recipe recipe = _recipeRepository.GetById(recipeId, "public");
+			Recipe? recipe = _recipeRepository.GetById(recipeId, "public");
 			if (recipe != null)
 			{
 				RecipeData data = ConvertToRecipeData(recipe);

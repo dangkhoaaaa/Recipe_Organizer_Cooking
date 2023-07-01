@@ -56,14 +56,14 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 		}
 
 		[HttpGet("/manage/recipe")]
-		public async Task<IActionResult> Index()
+		public ActionResult Index()
 		{
 			var model = _recipeRepository.GetRecipesWithMetadata();
 			return View(model);
 		}
 
 		[HttpPost]
-        public async Task<IActionResult> Index(int recipeID, string status, string searchRecipe)
+        public ActionResult Index(int recipeID, string status, string searchRecipe)
         {
             _recipeRepository.UpdateApprovalStatus(recipeID, status);
             return RedirectToAction("SearchRecipe", new { keyword = searchRecipe });
@@ -71,7 +71,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 
 
         //HttpGet Recipe/SearchRecipe
-        public async Task<IActionResult> SearchRecipe(string keyword)
+        public ActionResult SearchRecipe(string keyword)
 		{
 			ViewBag.RecipeKeyword = keyword;
 			var model = _recipeRepository.GetRecipesWithMetadata();
@@ -93,7 +93,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         }
 
         // GET: /Recipe/Censhorship
-        public async Task<IActionResult> PendingRecipe()
+        public ActionResult PendingRecipe()
         {
             var model = _recipeRepository.GetRecipesByStatusWithMetadata("pending");
             return View(model);
@@ -107,7 +107,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         }
 
 		//HttpGet Recipe/SearchPendingRecipe
-		public async Task<IActionResult> SearchPendingRecipe(string keyword)
+		public ActionResult SearchPendingRecipe(string keyword)
 		{
 			ViewBag.RecipeKeyword = keyword;
 			var model = _recipeRepository.GetRecipesByStatusWithMetadata("pending");
@@ -129,7 +129,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 		}
 
 		//HttpGet Recipe/RejectRecipe
-		public async Task<IActionResult> RejectRecipe()
+		public ActionResult RejectRecipe()
         {
             var model = _recipeRepository.GetRecipesByStatusWithMetadata("rejected");
             return View(model);
