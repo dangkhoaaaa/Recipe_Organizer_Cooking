@@ -154,14 +154,14 @@
 						<div class="form-group margin-bottom-20px">
 							<label><i class="far fa-flag margin-right-10px"></i> Categories</label>
 							<br>
-							<div id="categoryCheckboxList" class="form-control">
+							<div id="categoryCheckboxList" class="form-control text-center">
 								@foreach (var category in Model.Categories)
 								{
 									<span class="margin-lr-5px">
 										<input type="checkbox" name="CategoryInput" value="@category.CategoryId" id="category_@category.CategoryId">
 										<label for="category_@category.CategoryId">@category.Title</label>
 									</span>
-									@if ((Array.IndexOf(Model.Categories.ToArray(), category) + 1) % 10 == 0)
+									@if ((Array.IndexOf(Model.Categories.ToArray(), category) + 1) % 7 == 0)
 									{
 										<br />
 									}

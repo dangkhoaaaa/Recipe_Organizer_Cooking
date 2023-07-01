@@ -240,6 +240,9 @@ namespace RecipeOrganizer.Controllers
 				{
 					RecipeData recipeData = ConvertToRecipeData(recipe);
 
+					var categories = _categoryRepository.GetAllCategories();
+					recipeData.Categories = categories;
+
 					// Retrieve the selected category IDs for the recipe
 					List<int> selectedCategoryIds = _recipeHasCategoryRepository.GetSelectedCategoryIds(recipe.RecipeId);
 
@@ -266,7 +269,7 @@ namespace RecipeOrganizer.Controllers
 				if (recipe != null)
 				{
 					_recipeRepository.ChangeStatusRecipe(id, "trash");
-					return RedirectToAction("UserRecipeList", "User");
+					return RedirectToAction("UsrPendingRecipe", "Recipe");
 				}
 			}
 			return RedirectToAction("AccessDenied", "Recipe");
@@ -329,7 +332,10 @@ namespace RecipeOrganizer.Controllers
 						existingRecipe.Date = DateTime.Now;
 
 						// Update the recipe status
-						existingRecipe.Status = recipe.Status;
+						if (!string.IsNullOrEmpty(recipe.Status))
+						{
+							existingRecipe.Status = recipe.Status;
+						}
 
 						// Update the ingredients
 						if (!string.IsNullOrEmpty(recipe.IngredientsInput))
@@ -344,7 +350,7 @@ namespace RecipeOrganizer.Controllers
 						}
 
 						// Update the media
-						if (files != null || files.Count > 0)
+						if (files != null && files.Count > 0)
 						{
 							var imageLinkTask = _fireBaseService.UploadImageSingle(files);
 							var imageLink = await imageLinkTask;
@@ -375,6 +381,7 @@ namespace RecipeOrganizer.Controllers
 					{
 						existingRecipe.Status = "trash";
 						_recipeRepository.Update(existingRecipe);
+						return RedirectToAction("UsrPendingRecipe", "Recipe", new { id = existingRecipe.RecipeId });
 					}
 				}
 				else
@@ -383,7 +390,7 @@ namespace RecipeOrganizer.Controllers
 				}
 			}
 
-			return RedirectToAction("PageNotFound", "Home");
+			return RedirectToAction("AccessDenied", "Recipe");
 		}
 
 		[AllowAnonymous]
