@@ -364,6 +364,12 @@ namespace RecipeOrganizer.Controllers
 							_metadataRepository.Add(metadata);
 						}
 
+						// Update the categories
+						if (recipe.CategoryInput != null)
+						{
+							_recipeHasCategoryRepository.UpdateRecipeCategories(recipe.CategoryInput, recipe.RecipeId);
+						}
+
 						// Update the tags
 						if (!string.IsNullOrEmpty(recipe.TagsInput))
 						{
