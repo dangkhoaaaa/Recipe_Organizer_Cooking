@@ -45,5 +45,26 @@ namespace Services.Repository
 			return medias;
 		}
 
+		public List<Media> GetImgsByRecipeId(int recipeId)
+		{
+			List<Media> medias = new List<Media>();
+
+			if (recipeId != 0)
+			{
+				var metaDataList = _dbSet.Where(r => r.MetaData.Any(md => md.RecipeId == recipeId && md.FeedbackId == null)).ToList();
+
+				foreach (var metaData in metaDataList)
+				{
+					var media = _dbSet.Find(metaData.MediaId);
+					if (media != null)
+					{
+						medias.Add(media);
+					}
+				}
+			}
+
+			return medias;
+		}
+
 	}
 }

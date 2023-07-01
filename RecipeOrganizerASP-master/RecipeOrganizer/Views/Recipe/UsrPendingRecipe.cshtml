@@ -24,58 +24,59 @@
 							@if (Model.Status == "public")
 							{
 								<div class="text-success">
-									<h1>Your Recipe Added Approved</h1>
+									<h1>Your recipe added approved</h1>
 									<p>
 										Your recipe has been added successfully. <br />
 										Thank you for your contribution!
 									</p>
-									<p><a href="/Recipe/RecipeDetail/?id=@Model.RecipeId">View it publicly</a> or <a href="/User/UserRecipeList">View your contribution</a></p>
+									<p><a href="/Recipe/RecipeDetail/?id=@Model.RecipeId">View it publicly</a> or <a href="/User/UserRecipeList">View your contributions</a></p>
 								</div>
 
 							}
 							else if (Model.Status == "rejected")
 							{
 								<div class="text-danger">
-									<h1>Your Recipe Added Denied</h1>
-									<p><a href="/User/UserRecipeList">View your contribution</a></p>
+									<h1>Your recipe added is rejected</h1>
+									<p><a href="/User/UserRecipeList">View your contributions</a></p>
 								</div>
 							}
 							else if (Model.Status == "pending")
 							{
 								<div class="text-warning">
-									<h1>Your Recipe Added Pending</h1>
+									<h1>Your recipe added is pending</h1>
 									<p>
 										Thank you for your contribution! We will moderate your recipe, please be patient and wait for a while....
 									</p>
 									<p>
 										<a href="/Recipe/EditRecipe/?id=@Model.RecipeId">Edit it?</a> or
 										<a href="/Recipe/TrashRecipe/?id=@Model.RecipeId" class="text-danger">Trash it?</a> or
-										<a href="/User/UserRecipeList">View your contribution</a>
+										<a href="/User/UserRecipeList">View your contributions</a>
 									</p>
 								</div>
 							}
 							else if (Model.Status == "trash")
 							{
 								<div class="text-muted">
-									<h1>Your Recipe Added Delete</h1>
+									<h1>Your recipe has been moved to the trash</h1>
 								</div>
-							} esle if (Model.Status == "draft") 
+							}
+							else if (Model.Status == "draft")
 							{
 								<div class="text-muted">
-									<h1>Your Recipe drafted</h1>
+									<h1>Your recipe is drafted</h1>
 								</div>
 								<p>
 									<a href="/Recipe/EditRecipe/?id=@Model.RecipeId">Edit it?</a> or
 									<a href="/Recipe/TrashRecipe/?id=@Model.RecipeId" class="text-danger">Trash it?</a> or
-									<a href="/User/UserRecipeList">View your contribution</a>
+									<a href="/User/UserRecipeList">View your contributions</a>
 								</p>
-							} 
-							esle 
+							}
+							else
 							{
 								<p>
 									<a href="/Recipe/EditRecipe/?id=@Model.RecipeId">Edit it?</a> or
 									<a href="/Recipe/TrashRecipe/?id=@Model.RecipeId" class="text-danger">Trash it?</a> or
-									<a href="/User/UserRecipeList">View your contribution</a>
+									<a href="/User/UserRecipeList">View your contributions</a>
 								</p>
 							}
 						</div>
