@@ -59,7 +59,8 @@
 								<div class="text-muted">
 									<h1>Your Recipe Added Delete</h1>
 								</div>
-							} esle if (Model.Status == "draft") 
+							}
+							else if (Model.Status == "draft")
 							{
 								<div class="text-muted">
 									<h1>Your Recipe drafted</h1>
@@ -69,8 +70,8 @@
 									<a href="/Recipe/TrashRecipe/?id=@Model.RecipeId" class="text-danger">Trash it?</a> or
 									<a href="/User/UserRecipeList">View your contribution</a>
 								</p>
-							} 
-							esle 
+							}
+							else
 							{
 								<p>
 									<a href="/Recipe/EditRecipe/?id=@Model.RecipeId">Edit it?</a> or
