@@ -2,7 +2,7 @@
 {
     public static class MyToys
     {
-        public static string getLastLogin(DateTime? date)
+        public static string getLastTime(DateTime? date)
         {
             DateTime? lastLoginTime = date;
             string displayText = string.Empty;

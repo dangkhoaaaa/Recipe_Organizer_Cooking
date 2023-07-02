@@ -2,7 +2,10 @@
 
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
-
+@{
+    var user = await UserManager.GetUserAsync(User);
+    ManageNavViewModel ManageNav = new ManageNavViewModel();
+}
 <style>
     .dropdown-menu.show {
         position: absolute;
@@ -28,21 +31,136 @@
         background-color: #8e768e;
     }
 
+    .notification-dropdown {
+        position: relative;
+        display: inline-block;
+        top: 2px;
+    }
 
+    .notification-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+    }
 
-</style>
-@{
-    var user = await UserManager.GetUserAsync(User);
-    ManageNavViewModel ManageNav = new ManageNavViewModel();
-    if (user != null)
-    {
-        ManageNav.FirstName = user.FirstName;
+    .notification-icon {
+        display: block;
+        width: 24px;
+        height: 24px;
+        background-image: url('notification-icon.png'); /* Replace with your own icon */
+        background-size: cover;
+    }
+
+    .notification-content {
+        position: absolute;
+        top: 160%;
+        right: -255px;
+        width: 300px;
+        max-height: 400px;
+        overflow-y: auto;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        display: none;
+    }
+
+    .notification-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .notification-item {
+        padding: 12px;
+        border-bottom: 1px solid #ccc;
     }
     
-}
+    .notification-item:last-child {
+        border-bottom: none;
+    }
+
+    .fa-bell:before {
+        font-size: 22px;
+        color: white;
+    }
+
+    .notification-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .notification-info img {
+        width: 48px;
+        height: 48px;
+        object-fit: cover;
+        border-radius: 25%;
+        margin-bottom: 50px;
+    }
+
+    .notification-text {
+        flex: 1;
+    }
+
+    .notification-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: bold;
+        display:inline-block;
+    }
+
+    .notification-status {
+        margin-left: 8px;
+        padding: 2px 6px;
+        font-size: 12px;
+        border-radius: 2px;
+        float:right;
+    }
+
+    .status-pending {
+        background-color: yellow;
+        color: black;
+    }
+
+    .status-public {
+        background-color: green;
+        color: white;
+    }
+
+    .status-rejected {
+        background-color: red;
+        color: white;
+    }
+
+    .notification-message {
+        margin: 8px 0;
+        font-size: 14px;
+    }
+
+    .notification-author,
+    .notification-date {
+        margin: 0;
+        font-size: 12px;
+        color: #777;
+    }
+
+    .notification-author {
+        font-weight: bold;
+    }
+
+    .notification-date{
+        float:right;
+    }
+</style>
 
 @if (SignInManager.IsSignedIn(User))
 {
+    List<RecipeNotification> listNotification = new List<RecipeNotification>();
+    ManageNav.FirstName = user.FirstName;
+    NotificationRepository _notificationRepository = new NotificationRepository();
+    listNotification = _notificationRepository.GetNofiticationWithIsReadWithMetada(false).Where(p => p.user.Id == user.Id).ToList();
+   
    @* <hr class="margin-bottom-0px d-block d-sm-none">
     <a href="add-recipe.html" class="text-white ba-2 box-shadow float-right padding-lr-29px padding-tb-24px text-extra-large"><i class="fas fa-plus"></i></a>
     <a href="@Url.Action("Login", "Home")" class="text-white ba-1 box-shadow float-right padding-lr-29px padding-tb-24px text-extra-large"><i class="far fa-user"></i></a>*@
@@ -66,7 +184,83 @@
                 <button type="submit" class="dropdown-item nav-link btn btn-link text-dark">Logout</button>
             </form>
         </div>
-        <div class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large">
+        <div class="btn-add-recipe ba-2 box-shadow float-right padding-lr-27px padding-tb-24px" style="">
+            <div class="notification-dropdown">
+                <button class="notification-button">
+                    <i class="notification-icon fa fa-bell"></i>
+                </button>
+                <div class="notification-content">
+                    <ul class="notification-list">
+                        <!-- List of notification items -->
+                        @*Notification not more than 5*@
+                        @if (listNotification.Count <= 0 || listNotification == null)
+                        {
+                            <li class="notification-item" style="color:red;"><strong>No notification!!</strong></li>
+                        }
+                        else if (listNotification.Count < 5)
+                        {
+                            listNotification = listNotification.OrderByDescending(p => p.recipe.Date).ToList();
+                            foreach (RecipeNotification notify in listNotification)
+                            {
+                                <li class="notification-item">
+                                    <a href="/Recipe/UsrPendingRecipeNoti/?id=@notify.recipe.RecipeId&noti=@notify.notification.Id" class="notification-link">
+                                        <div class="notification-info">
+                                            <img src="@notify.recipe.Image" alt="Notification Image">
+                                            <div class="notification-text">
+                                                @*<div>
+                                                    <h4 class="notification-title">@notify.recipe.Title</h4>
+                                                    <span class="notification-status">@notify.recipe.Status</span>
+                                                </div>*@
+                                                <h4 class="notification-title">@notify.recipe.Title</h4>
+                                                <p class="notification-message">@notify.notification.Message</p>
+                                                <div>
+                                                    <span class="notification-author">@notify.user.UserName</span>
+                                                    <span class="notification-date">@MyToys.getLastTime(@notify.notification.Date)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                        }
+                        //lớn hơn thì chỉ hiện 5 recipe thôi
+                        else
+                        {
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                listNotification = listNotification.OrderByDescending(p => p.notification.Date).ToList();
+                                RecipeNotification notify = listNotification[i];
+                                <li class="notification-item">
+                                    <a href="/Recipe/UsrPendingRecipeNoti/?id=@notify.recipe.RecipeId&noti=@notify.notification.Id" class="notification-link">
+                                        <div class="notification-info">
+                                            <img src="@notify.recipe.Image" alt="Notification Image">
+                                            <div class="notification-text">
+                                                @*<div>
+                                                    <h4 class="notification-title">@notify.recipe.Title</h4>
+                                                    <span class="notification-status">@notify.recipe.Status</span>
+                                                </div>*@
+                                                <h4 class="notification-title">@notify.recipe.Title</h4>
+                                                <p class="notification-message">@notify.notification.Message</p>
+                                                <div>
+                                                    <span class="notification-author">@notify.user.UserName</span>
+                                                    <span class="notification-date">@MyToys.getLastTime(@notify.notification.Date)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                        }
+                        <li class="notification-item">
+                            <a class="center-align" href="#"> <strong>Check all notifications</strong></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    
+        <div class="text-white ba-1 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large">
             <span>Hi,</span>
             @if (string.IsNullOrEmpty(ManageNav.FirstName))
             {
@@ -94,9 +288,7 @@
         <span>@UserManager.GetUserName(User)</span>
         }*@
         </div>
-    </div>
-    
-    
+    </div> 
 }
 else
 {
@@ -104,4 +296,35 @@ else
     <a href="/register" class="text-white ba-1 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large btn-login" style="font-size:15px;">Signup</a>
     <a href="/login" class="text-white ba-2 box-shadow float-right padding-lr-27px padding-tb-24px text-extra-large btn-register" style="font-size:15px;">Login</a>
 }
+
+<script>
+    const dropdownButton = document.querySelector('.notification-button');
+    const dropdownContent = document.querySelector('.notification-content');
+
+    // Function to check if the clicked target is inside the notification dropdown
+    const isInsideDropdown = (target) => {
+        return dropdownButton.contains(target) || dropdownContent.contains(target);
+    };
+
+    // Event listener for the document click
+    document.addEventListener('click', function (event) {
+        if (!isInsideDropdown(event.target)) {
+            dropdownContent.style.display = 'none';
+        }
+    });
+
+    // Event listener for the dropdown button click
+    dropdownButton.addEventListener('click', function (event) {
+        event.stopPropagation();
+        dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+    });
+
+    //change status
+    const notificationStatuses = document.querySelectorAll('.notification-status');
+
+    notificationStatuses.forEach((status) => {
+        const statusValue = status.textContent.trim().toLowerCase();
+        status.classList.add(`status-${statusValue}`);
+    });
+</script>
 
