@@ -12,7 +12,7 @@ using Services.Models;
 namespace Services.Migrations
 {
     [DbContext(typeof(Recipe_OrganizerContext))]
-    [Migration("20230630094451_addNotificationTable")]
+    [Migration("20230702054542_addNotificationTable")]
     partial class addNotificationTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
