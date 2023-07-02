@@ -27,8 +27,9 @@ namespace RecipeOrganizer.Controllers
 		private readonly CollectionRepository _collectionRepository;
 		private readonly UserManager<AppUser> _userManager;
 		private readonly FireBaseService _fireBaseService;
+        private readonly NotificationRepository _notificationRepository;
 
-		public RecipeController(UserManager<AppUser> userManager)
+        public RecipeController(UserManager<AppUser> userManager)
 		{
 			_recipeRepository = new RecipeRepository();
 			_ingredientRepository = new IngredientRepository();
@@ -42,6 +43,7 @@ namespace RecipeOrganizer.Controllers
 			_collectionRepository = new CollectionRepository();
 			_userManager = userManager;
 			_fireBaseService = new FireBaseService();
+			_notificationRepository = new NotificationRepository();
 		}
 
 		public IActionResult Index()
@@ -100,14 +102,14 @@ namespace RecipeOrganizer.Controllers
 				data.Date = DateTime.Now;
 				data.NumberShare = recipe.NumberShare;
 				data.Status = recipe.Status;
+				int notificationId = _notificationRepository.addNotification("New recipe has been created");
 
-				// Media
-				if (files != null && files.Count > 0)
+                // Media
+                if (files != null && files.Count > 0)
 				{
 					var imageLinkTask = _fireBaseService.UploadImageSingle(files);
 					var imageLink = await imageLinkTask;
 					int mediaId = _mediaRepository.addMedia(imageLink);
-
 					data.Image = imageLink;
 					_recipeRepository.Add(data);
 
@@ -115,19 +117,21 @@ namespace RecipeOrganizer.Controllers
 					{
 						RecipeId = data.RecipeId,
 						UserId = user.Id,
-						MediaId = mediaId
+						MediaId = mediaId,
+						NotificationId = notificationId
 					};
 					_metadataRepository.Add(metadata);
 				}
-				else
+				else//danh dau
 				{
 					_recipeRepository.Add(data);
 					// If there is no media file, just create a new Metadata object
 					Metadata metadata = new Metadata
 					{
 						RecipeId = data.RecipeId,
-						UserId = user.Id
-					};
+						UserId = user.Id,
+                        NotificationId = notificationId
+                    };
 					_metadataRepository.Add(metadata);
 				}
 
@@ -176,7 +180,25 @@ namespace RecipeOrganizer.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
-		[AllowAnonymous]
+        public async Task<IActionResult> UsrPendingRecipeNoti(int id, int noti)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                Recipe recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
+                var notification = _notificationRepository.GetNotification(noti);
+
+                if (recipe != null && notification != null)
+                {
+					_notificationRepository.updateIsRead(notification);
+                    RecipeData data = ConvertToRecipeData(recipe);
+                    return View("UsrPendingRecipe", data);
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
 		public async Task<IActionResult> RecipeDetail(int id)
 		{
 			Recipe recipe = _recipeRepository.GetById(id, "public");

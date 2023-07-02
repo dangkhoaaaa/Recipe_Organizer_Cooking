@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -23,13 +25,18 @@ namespace Services.Repository
 		protected DbSet<RecipeHasCategory> _dbSet1;
 		protected DbSet<AppUser> _dbSetUser;
 		protected DbSet<Metadata> _dbSetMetadata;
-		public RecipeRepository()
+        protected DbSet<Notification> _dbSetNotification;
+		private NotificationRepository _notificationRepository;
+        public RecipeRepository()
 		{
+            _notificationRepository = new NotificationRepository();
 			_context = new Recipe_OrganizerContext();
 			_dbSet = _context.Set<Recipe>();
 			_dbSet1 = _context.Set<RecipeHasCategory>();
-			_dbSetUser = _context.Set<AppUser>();
-		}
+            _dbSetMetadata = _context.Set<Metadata>();
+            _dbSetUser = _context.Set<AppUser>();
+            _dbSetNotification = _context.Set<Notification>();
+        }
 
 		public ICollection<Recipe> Products { get; set; } = new List<Recipe>();
 
@@ -117,13 +124,17 @@ namespace Services.Repository
 			}
 			return pendingRecipes;
 		}
-
-		public void ChangeStatusRecipe(int recipeId, string newStatus)
+		public Recipe GetRecipe(int recipeId) { 
+			return GetAll().Where(p => p.RecipeId == recipeId).FirstOrDefault();
+		}
+		public bool ChangeStatusRecipe(int recipeId, string newStatus)
 		{
+			bool result = false;
 			var existingRecipe = _context.Recipes.Local.FirstOrDefault(r => r.RecipeId == recipeId);
 			if (existingRecipe != null)
 			{
 				existingRecipe.Status = newStatus;
+				result = true;
 			}
 			else
 			{
@@ -131,12 +142,11 @@ namespace Services.Repository
 				if (recipe != null)
 				{
 					recipe.Status = newStatus;
-					_dbSet.Attach(recipe);
-					_context.Entry(recipe).State = EntityState.Modified;
+					Update(recipe);
+					result = true;
 				}
 			}
-
-			_context.SaveChanges();
+			return result;
 		}
 
 		public Recipe GetById(int id)
@@ -161,7 +171,6 @@ namespace Services.Repository
 				{
 					return;
 				}
-
 				ChangeStatusRecipe(recipeId, status);
 			}
 		}
@@ -292,67 +301,113 @@ namespace Services.Repository
 
 		public List<RecipeViewModel> GetRecipesWithMetadata()
 		{
-			var query = from m in _context.MetaData
-						join r in _context.Recipes on m.RecipeId equals r.RecipeId
-						join u in _context.Users on m.UserId equals u.Id
-						//where r.Status.Equals("pending") && r.Status.Equals("draft")
-						select new RecipeViewModel
-						{
-							UserId = u.Id,
-							RecipeId = r.RecipeId,
-							UserName = u.UserName,
-							UserImage = u.Image,
-							RecipeTitle = r.Title,
-							RecipeDescription = r.Description,
-							CreateDate = r.Date,
-							Status = r.Status,
-							NumberShare = r.NumberShare,
-							RecipeImage = r.Image,
-							AvgRate = r.AvgRate,
-						};
-			return query.ToList();
+			//var query = from m in _context.MetaData
+			//			join r in _context.Recipes on m.RecipeId equals r.RecipeId
+			//			join u in _context.Users on m.UserId equals u.Id
+			//			//where r.Status.Equals("pending") && r.Status.Equals("draft")
+			//			select new RecipeViewModel
+			//			{
+			//				UserId = u.Id,
+			//				RecipeId = r.RecipeId,
+			//				UserName = u.UserName,
+			//				UserImage = u.Image,
+			//				RecipeTitle = r.Title,
+			//				RecipeDescription = r.Description,
+			//				CreateDate = r.Date,
+			//				Status = r.Status,
+			//				NumberShare = r.NumberShare,
+			//				RecipeImage = r.Image,
+			//				AvgRate = r.AvgRate,
+			//			};
+			
+
+
+            //var query2 = from u in _context.Users
+            //             join m in _context.MetaData on u.Id equals m.UserId
+            //             join r in _context.Recipes on m.RecipeId equals r.RecipeId
+            //             group new { u.Id, u.UserName, r.RecipeId } by new { u.Id, u.UserName, r.RecipeId } into g
+            //             orderby g.Key.RecipeId
+            //             select new RecipeViewModel
+            //             {
+            //                 UserId = g.Key.Id,
+            //                 UserName = g.Key.UserName,
+            //                 RecipeId = g.Key.RecipeId
+            //             };
+
+			var query3 = from u in _context.Users
+                         join m in _context.MetaData on u.Id equals m.UserId
+                         join r in _context.Recipes on m.RecipeId equals r.RecipeId
+                         group new { User = u, Recipe = r } by new { u.Id, r.RecipeId } into g
+                         select new RecipeViewModel
+                         {
+                             UserId = g.Key.Id,
+							 RecipeId = g.Key.RecipeId,
+							 User = g.Select(x => x.User).FirstOrDefault(),
+                             Recipe = g.Select(x => x.Recipe).FirstOrDefault()
+                         };
+            return query3.ToList();
 		}
 
 		public List<RecipeViewModel> GetRecipesByStatusWithMetadata(string status)
 		{
-			var query = from m in _context.MetaData
-						join r in _context.Recipes on m.RecipeId equals r.RecipeId
-						join u in _context.Users on m.UserId equals u.Id
-						where r.Status.Equals(status) //&& r.Status.Equals("draft")
-						select new RecipeViewModel
-						{
-							UserId = u.Id,
-							RecipeId = r.RecipeId,
-							UserName = u.UserName,
-							UserImage = u.Image,
-							RecipeTitle = r.Title,
-							RecipeDescription = r.Description,
-							CreateDate = r.Date,
-							Status = r.Status,
-							NumberShare = r.NumberShare,
-							RecipeImage = r.Image,
-							AvgRate = r.AvgRate,
-						};
-			return query.ToList();
+			//var query = from m in _context.MetaData
+			//			join r in _context.Recipes on m.RecipeId equals r.RecipeId
+			//			join u in _context.Users on m.UserId equals u.Id
+			//			where r.Status.Equals(status) //&& r.Status.Equals("draft")
+			//			select new RecipeViewModel
+			//			{
+			//				UserId = u.Id,
+			//				RecipeId = r.RecipeId,
+			//				UserName = u.UserName,
+			//				UserImage = u.Image,
+			//				RecipeTitle = r.Title,
+			//				RecipeDescription = r.Description,
+			//				CreateDate = r.Date,
+			//				Status = r.Status,
+			//				NumberShare = r.NumberShare,
+			//				RecipeImage = r.Image,
+			//				AvgRate = r.AvgRate,
+			//			};
+
+            var query2 = from m in _context.MetaData
+                        join r in _context.Recipes on m.RecipeId equals r.RecipeId
+                        join u in _context.Users on m.UserId equals u.Id
+                        where r.Status.Equals(status) //&& r.Status.Equals("draft")
+						group new { User = u, Recipe = r } by new { u.Id, r.RecipeId } into g
+                         select new RecipeViewModel
+                         {
+                             UserId = g.Key.Id,
+                             RecipeId = g.Key.RecipeId,
+                             User = g.Select(x => x.User).FirstOrDefault(),
+                             Recipe = g.Select(x => x.Recipe).FirstOrDefault()
+                         };
+            return query2.ToList();
 		}
 
 		public RecipeViewModel GetRecipesWithID(int recipeID)
 		{
-			var query = from r in _context.Recipes
-						where r.RecipeId == recipeID
-						select new RecipeViewModel
-						{
-							RecipeId = r.RecipeId,
-							RecipeTitle = r.Title,
-							RecipeDescription = r.Description,
-							CreateDate = r.Date,
-							Status = r.Status,
-							NumberShare = r.NumberShare,
-							RecipeImage = r.Image,
-							AvgRate = r.AvgRate,
-						};
-			return query.FirstOrDefault();
+			//var query = from r in _context.Recipes
+			//			where r.RecipeId == recipeID
+			//			select new RecipeViewModel
+			//			{
+			//				RecipeId = r.RecipeId,
+			//				RecipeTitle = r.Title,
+			//				RecipeDescription = r.Description,
+			//				CreateDate = r.Date,
+			//				Status = r.Status,
+			//				NumberShare = r.NumberShare,
+			//				RecipeImage = r.Image,
+			//				AvgRate = r.AvgRate,
+			//			};
+			var recipe = GetAll().Where(p => p.RecipeId == recipeID).FirstOrDefault();
+			RecipeViewModel recipeViewModel = new RecipeViewModel {
+				Recipe = recipe
+			};
+			return recipeViewModel;
 		}
-	}
+
+        
+
+    }
 }
 

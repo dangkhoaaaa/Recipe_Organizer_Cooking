@@ -2,7 +2,7 @@
 
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
-
+@model List<RecipeNotification>
 @{
     var user = await UserManager.GetUserAsync(User);
     bool hasPassword = await UserManager.HasPasswordAsync(user);
@@ -10,6 +10,29 @@
 <!-- ============================================================== -->
 <!-- Navbar scss in header.scss -->
 <!-- ============================================================== -->
+<style>
+    .nofitication-style{
+        box-shadow: -1px 3px 11px 4px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+    }
+
+    .nofitication-icon {
+        color: #ffeec0;
+    }
+
+    .circle-container {
+        width: 100px; /* Adjust the width and height as per your requirement */
+        height: 70px;
+        border-radius: 25%;
+        overflow: hidden;
+    }
+
+    .circle-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
 <nav style="background-color:#f44336;">
     <div class="nav-wrapper">
         <!-- ============================================================== -->
@@ -55,6 +78,68 @@
                     <span>@user.FirstName</span>
                 }
             <li/>
+            <!-- ============================================================== -->
+            <!-- Notification icon scss in header.scss -->
+            <!-- ============================================================== -->
+            <li>
+                <a class="dropdown-trigger" href="javascript: void(0);" data-target="noti_dropdown"><i class="material-icons nofitication-icon">notifications</i></a>
+                <ul id="noti_dropdown" class="mailbox dropdown-content nofitication-style" style="width: 308px;left: 1528px;">
+                    <li>
+                        <div class="drop-title">Notifications</div>
+                    </li>
+                    <li>
+                        <div class="message-center">
+                            <!-- Message -->
+                               @* @foreach (RecipeNotification notify in listNotification)
+                                {
+                                <a href="#">
+                                    <img src="~/admin/assets/images/users/5.jpg" class="circle" width="150">
+                                    <span class="mail-contnet">
+                                        <h5>@notify.recipe.Title</h5>
+                                        <span class="mail-desc">@notify.notification.Message</span>
+                                        <span>@notify.user.UserName</span>   <span class="time">@MyToys.getLastTime(@notify.notification.Date)</span>
+                                    </span>
+                                </a>
+                                }*@
+                                @*Notification not more than 5*@
+                                @if (Model.Count == 0)
+                                {
+                                    <strong>No result</strong>
+                                }
+                                else if (Model.Count < 5)
+                                {
+                                    Model.Reverse();
+                                    foreach (RecipeNotification notify in Model)
+                                    {
+                                        <a href="/Recipe/RecipeDetails/?recipeID=@notify.recipe.RecipeId" style="padding: 9px 7px;">
+                                            <img src="@notify.recipe.Image" class="circle circle-container">
+                                                <span class="mail-contnet">
+                                                    <h5 style="font-weight:bold;">@notify.recipe.Title</h5>
+                                                    <span class="mail-desc">@notify.notification.Message</span>
+                                                    <span>@notify.user.UserName</span>   <span class="time" style="display:inline-block;">@MyToys.getLastTime(@notify.notification.Date)</span>
+                                                </span>
+                                        </a>
+                                    }    
+                                } else
+                                @for(int i = 4; i >= 0; i--)
+                                {
+                                    RecipeNotification notify = Model[i];
+                                    <a href="/Recipe/RecipeDetails/?recipeID=@notify.recipe.RecipeId" style="padding: 9px 7px;">
+                                        <img src="@notify.recipe.Image" class="circle circle-container">
+                                        <span class="mail-contnet">
+                                            <h5 style="font-weight:bold;">@notify.recipe.Title</h5>
+                                            <span class="mail-desc">@notify.notification.Message</span>
+                                            <span>@notify.user.UserName</span>   <span class="time" style="display:inline-block;">@MyToys.getLastTime(@notify.notification.Date)</span>
+                                        </span>
+                                    </a>
+                                }
+                        </div>
+                    </li>
+                    <li>
+                        <a class="center-align" href="javascript:void(0);"> <strong>Check all notifications</strong> </a>
+                    </li>
+                </ul>
+            </li>
             <li>
                 <a class="dropdown-trigger" href="javascript: void(0);" data-target="user_dropdown"><img src="~/admin/assets/images/users/2.jpg" alt="user" class="circle profile-pic"></a>
                 <ul id="user_dropdown" class="mailbox dropdown-content dropdown-user">

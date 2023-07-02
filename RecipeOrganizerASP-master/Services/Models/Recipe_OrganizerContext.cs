@@ -29,6 +29,7 @@ namespace Services.Models
         public virtual DbSet<MealPlanning> MealPlannings { get; set; } = null!;
         public virtual DbSet<Media> Media { get; set; } = null!;
         public virtual DbSet<Metadata> MetaData { get; set; } = null!;
+        public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<ParentCategory> ParentCategories { get; set; } = null!;
         public virtual DbSet<Recipe> Recipes { get; set; } = null!;
         public virtual DbSet<RecipeHasCategory> RecipeHasCategories { get; set; } = null!;
@@ -42,7 +43,7 @@ namespace Services.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Recipe_Organizer;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=RecipeOrganizer_Notification_Test;Integrated Security=True");
             }
         }
 
@@ -240,6 +241,8 @@ namespace Services.Models
 
                 entity.Property(e => e.MediaId).HasColumnName("media_id");
 
+                entity.Property(e => e.NotificationId).HasColumnName("notification_id");
+
                 entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
@@ -254,6 +257,11 @@ namespace Services.Models
                     .HasForeignKey(d => d.MediaId)
                     .HasConstraintName("FK_MetaData_Media");
 
+                entity.HasOne(d => d.Notification)
+                    .WithMany(p => p.MetaData)
+                    .HasForeignKey(d => d.NotificationId)
+                    .HasConstraintName("FK_MetaData_Notification");
+
                 entity.HasOne(d => d.Recipe)
                     .WithMany(p => p.MetaData)
                     .HasForeignKey(d => d.RecipeId)
@@ -263,6 +271,24 @@ namespace Services.Models
                     .WithMany(p => p.MetaData)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_MetaData_User");
+            });
+
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.ToTable("Notification");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Date)
+                    .HasColumnType("datetime")
+                    .HasColumnName("date");
+
+                entity.Property(e => e.IsRead).HasColumnName("is_read");
+
+                entity.Property(e => e.Message)
+                    .HasMaxLength(500)
+                    .IsUnicode(false)
+                    .HasColumnName("message");
             });
 
             modelBuilder.Entity<ParentCategory>(entity =>

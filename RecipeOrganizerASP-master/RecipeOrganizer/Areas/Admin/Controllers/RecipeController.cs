@@ -6,9 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Core.Types;
 using RecipeOrganizer.Areas.Admin.Models.RecipeManage;
 using RecipeOrganizer.Areas.Data;
+using Services.Data;
 using Services.Models;
 using Services.Models.Authentication;
 using Services.Repository;
+using System;
 using System.Data;
 using System.Text.RegularExpressions;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
@@ -33,6 +35,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 		private readonly DirectionRepository _directionRepository;
 		private readonly TagRepository _tagRepository;
 		private readonly RecipeHasTagRepository _recipeHasTagRepository;
+		private readonly NotificationRepository _notificationRepository;
 
 		public RecipeController(
 		UserManager<AppUser> userManager,
@@ -53,7 +56,9 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 			_directionRepository = new DirectionRepository();
 			_tagRepository = new TagRepository();
 			_recipeHasTagRepository = new RecipeHasTagRepository();
-		}
+            _notificationRepository = new NotificationRepository();
+
+        }
 
 		[HttpGet("/manage/recipe")]
 		public async Task<IActionResult> Index()
@@ -81,7 +86,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 					return View("Index", model);
 
             }
-            var listSearchRecipe = model.Where(p => p.RecipeTitle.Contains(keyword.Trim()) || p.UserName.Contains(keyword.Trim())).ToList();
+            var listSearchRecipe = model.Where(p => p.Recipe.Title.Contains(keyword.Trim()) || p.User.UserName.Contains(keyword.Trim())).ToList();
             if (listSearchRecipe.Count == 0)
             {
 
@@ -117,7 +122,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 				return View("PendingRecipe", model);
 
 			}
-			var listSearchRecipe = model.Where(p => p.RecipeTitle.Contains(keyword.Trim()) || p.UserName.Contains(keyword.Trim())).ToList();
+			var listSearchRecipe = model.Where(p => p.Recipe.Title.Contains(keyword.Trim()) || p.User.UserName.Contains(keyword.Trim())).ToList();
 			if (listSearchRecipe.Count == 0)
 			{
 
@@ -153,7 +158,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 return View("RejectRecipe", model);
 
             }
-            var listSearchRecipe = model.Where(p => p.RecipeTitle.Contains(keyword.Trim()) || p.UserName.Contains(keyword.Trim())).ToList();
+            var listSearchRecipe = model.Where(p => p.Recipe.Title.Contains(keyword.Trim()) || p.User.UserName.Contains(keyword.Trim())).ToList();
             if (listSearchRecipe.Count == 0)
             {
 
@@ -170,7 +175,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 			var model = _recipeRepository.GetRecipesWithID(recipeID);
 			if (model == null)
 				return RedirectToAction("Index");
-			model.AvgRate = 76;
+			model.Recipe.AvgRate = 76;
 			model.Ingredients = _ingredientRepository.GetByRecipeId(recipeID);
 			model.Directions = _directionRepository.GetByRecipeId(recipeID);
 			model.Tags = _recipeHasTagRepository.GetTagsByRecipeId(recipeID);
@@ -182,13 +187,27 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         public async Task<IActionResult> RecipeDetails(int recipeID, string status)
 		{
 			_recipeRepository.UpdateApprovalStatus(recipeID, status);
+			sendNotification(recipeID, status);
 			var model = _recipeRepository.GetRecipesWithID(recipeID);
-			model.AvgRate = 76;
+			model.Recipe.AvgRate = 76;
 			model.Ingredients = _ingredientRepository.GetByRecipeId(recipeID);
 			model.Directions = _directionRepository.GetByRecipeId(recipeID);
 			model.Tags = _recipeHasTagRepository.GetTagsByRecipeId(recipeID);
 			return View(model);
 		}
+
+		public void sendNotification(int recipeID, string status)
+		{
+            int notificationId = _notificationRepository.addNotification("Your recipe has been " + status);
+            AppUser user = _userRepository.GetUserByRecipe(recipeID);
+            Metadata metadata = new Metadata
+            {
+                RecipeId = recipeID,
+                UserId = user.Id,
+                NotificationId = notificationId
+            };
+            _metadataRepository.Add(metadata);
+        }
 
 
 
