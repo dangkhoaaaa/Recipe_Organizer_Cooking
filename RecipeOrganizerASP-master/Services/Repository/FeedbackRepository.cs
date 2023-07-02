@@ -1,6 +1,8 @@
 ﻿using Firebase.Auth;
 using Microsoft.EntityFrameworkCore;
+using Services.Data;
 using Services.Models;
+using Services.Models.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +20,9 @@ namespace Services.Repository
 
         protected DbSet<Feedback> _dbSetFeedBack;
         protected DbSet<Metadata> _dbSetMetadata;
-
-        protected DbSet<Feedback> _dbSet1;
-
+		protected DbSet<Media> _dbSetMedia;
+		protected DbSet<Feedback> _dbSet1;
+        protected DbSet<AppUser> _dbSetAppUser;
         public FeedbackRepository()
         {
             _context = new Recipe_OrganizerContext();
@@ -30,7 +32,8 @@ namespace Services.Repository
             _dbSetFeedBack = _context.Set<Feedback>();
             _dbSetMetadata = _context.Set<Metadata>();
             _dbSet1 = _context.Set<Feedback>();
-
+            _dbSetMedia = _context.Set<Media>();
+            _dbSetAppUser = _context.Set<AppUser>(); 
         }
 
         public ICollection<Feedback> Products { get; set; } = new List<Feedback>();
@@ -65,6 +68,68 @@ namespace Services.Repository
                                                                                 md.FeedbackId != null)).ToList();
 			return feebackList;
 		}
+
+
+
+		//public List<Feedback> getAllFeedBackByRecipe(int recipeId)
+		//{
+		//	List<Feedback> listmapCategory = new List<Feedback>();
+		//	var query = from fb in _dbSetFeedBack
+		//				join md in _dbSetMetadata on fb.FeedbackId equals md.FeedbackId
+		//				where md.RecipeId == recipeId
+		//				select fb;
+  //          if(query.Count() > 0 )
+  //          {
+		//		listmapCategory = query.GroupBy(fb => fb.FeedbackId)
+		//			   .Select(group => group.First())
+		//			   .ToList();
+		//	}
+			
+			
+		//	return listmapCategory;
+		//}
+
+
+		public List<FeedBackOnOnceRecipeModel> getAllFeedBackByRecipe(int recipeId)
+		{
+			List<Feedback> listmapCategory = new List<Feedback>();
+			List<FeedBackOnOnceRecipeModel> listresult = new List<FeedBackOnOnceRecipeModel>();
+			var query = from fb in _dbSetFeedBack
+						join md in _dbSetMetadata on fb.FeedbackId equals md.FeedbackId
+						where md.RecipeId == recipeId
+						select fb;
+			listmapCategory = query.GroupBy(fb => fb.FeedbackId)
+				   .Select(group => group.First())
+				   .ToList();
+			if (query.Count() > 0)
+			{
+                FeedBackOnOnceRecipeModel feedBackOnOnceRecipeModel = new FeedBackOnOnceRecipeModel();
+                foreach(var fb in listmapCategory)
+                {
+                    feedBackOnOnceRecipeModel.FeedbackId = fb.FeedbackId;
+                    feedBackOnOnceRecipeModel.Title = fb.Title;
+                    feedBackOnOnceRecipeModel.Date = fb.Date;
+                    feedBackOnOnceRecipeModel.Status = fb.Status;
+                    feedBackOnOnceRecipeModel.Description = fb.Description;
+                    feedBackOnOnceRecipeModel.Rating = fb.Rating;
+
+					var query1 = from fb1 in _dbSetFeedBack
+								join md in _dbSetMetadata on fb1.FeedbackId equals md.FeedbackId
+                                join us in _dbSetAppUser on md.UserId equals us.Id
+								where md.RecipeId == recipeId && fb1.FeedbackId ==  fb.FeedbackId
+								select us.Image;
+
+                    string url = query1.FirstOrDefault().ToString();
+                    feedBackOnOnceRecipeModel.Images = url;
+                    listresult.Add(feedBackOnOnceRecipeModel);
+				}
+			
+			}
+
+
+			return listresult;
+		}
+
 
 
 	}
