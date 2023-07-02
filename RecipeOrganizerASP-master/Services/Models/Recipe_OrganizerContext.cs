@@ -43,7 +43,7 @@ namespace Services.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=RecipeOrganizer;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Recipe_Organizer;Integrated Security=True");
             }
         }
 
