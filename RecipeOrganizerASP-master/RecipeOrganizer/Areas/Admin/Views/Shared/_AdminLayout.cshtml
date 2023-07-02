@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    NotificationRepository _notificationRepository = new NotificationRepository();
+    var listNotification = _notificationRepository.GetAllNofiticationWithMetadata().Where(p => p.recipe.Status.Equals("pending")).ToList();
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -34,7 +38,7 @@
         <!--Login partial here -->
         <header class="topbar">
            @* @Html.Partial("_ManageNav", ManageNav)*@
-            @Html.Partial("_TopBar")
+            @Html.Partial("_TopBar", listNotification)
         </header>
         <aside class="left-sidebar">
             @*@Html.Partial("_ManageNav", ManageNav)*@

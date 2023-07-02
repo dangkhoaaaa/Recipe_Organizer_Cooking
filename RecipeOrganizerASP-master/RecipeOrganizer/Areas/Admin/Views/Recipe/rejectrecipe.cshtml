@@ -47,23 +47,23 @@
                                         <td>@counter</td>
                                         <td>
                                             <div class="chip">
-                                                <img src="@recipe.RecipeImage" alt="username">
-                                                <a class="a-text" href="/Recipe/RecipeDetails/?recipeID=@recipe.RecipeId">@recipe.RecipeTitle</a>
+                                                <img src="@recipe.Recipe.Image" alt="username">
+                                                <a class="a-text" href="/Recipe/RecipeDetails/?recipeID=@recipe.Recipe.RecipeId">@recipe.Recipe.Title</a>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="chip">
-                                                <img src="@recipe.UserImage" alt="username">
-                                                <a class="a-text" href="/Admin/UserRecipe/?userID=@recipe.UserId">@recipe.UserName</a>
+                                                <img src="@recipe.User.Image" alt="username">
+                                                <a class="a-text" href="/Admin/UserRecipe/?userID=@recipe.UserId">@recipe.User.UserName</a>
                                             </div>
                                         </td>
-                                        <td class="dateElement">@recipe.CreateDate</td>
-                                        <td>@recipe.Status</td>
+                                        <td class="dateElement">@recipe.Recipe.Date</td>
+                                        <td>@recipe.Recipe.Status</td>
                                         <td>
                                             <form asp-area="Admin" asp-controller="Recipe" asp-action="RejectRecipe" method="post">
                                                 <input id="status" name="status" type="hidden" value="Public" />
                                                 <input id="searchValue" name="searchValue" type="hidden" value="@ViewBag.RecipeKeyword" />
-                                                <input id="recipeID" name="recipeID" type="hidden" value="@recipe.RecipeId" />
+                                                <input id="recipeID" name="recipeID" type="hidden" value="@recipe.Recipe.RecipeId" />
                                                 <button type="submit" class="waves-effect waves-light btn green btn-sm">
                                                         Approve
                                                 </button>

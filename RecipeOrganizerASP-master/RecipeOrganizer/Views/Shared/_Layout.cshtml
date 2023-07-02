@@ -67,11 +67,8 @@
             opacity:0.2
         }*/
     </style>
-
-
 </head>
 <body>
-
     <header class="background-main-color" style="background: rgb(180,58,136);
 background: linear-gradient(90deg, rgba(180,58,136,1) 0%, rgba(217,16,16,1) 54%, rgba(255,127,63,1) 100%);">
         <div class="container">
@@ -82,26 +79,21 @@ background: linear-gradient(90deg, rgba(180,58,136,1) 0%, rgba(217,16,16,1) 54%,
                             <a id="logo" href=@Url.Action("Index", "Home") class="navbar-brand recipe-logo"><img src="~/assets/img/logo-color-01-01.png" alt="Recipe Organizer"></a>
                             <a class="mobile-toggle padding-10px background-main-color" href="#"><i class="fas fa-bars"></i></a>
                         </div>
-                        <div class="col-lg-6 col-md-12 position-inherit">
+                        <div class="col-lg-5 col-md-12 position-inherit">
                             <ul id="menu-main" class="white-link dropdown-dark text-lg-center nav-menu link-padding-tb-25px">
                                 <li class="">
                                     @Html.ActionLink("HOME", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
                                 </li>
-
-
-
                                 @await Component.InvokeAsync("Category_Ingredient")
                                 @await Component.InvokeAsync("Category_Meal")
                                 @await Component.InvokeAsync("Category_Occatision")
-
                                 <li><a href="@Url.Action("SendContact", "Contact")">CONTACT US</a></li>
                             </ul>
                         </div>
-                        <div class="col-lg-4 col-md-12 d-none d-lg-block">
+                        <div class="col-lg-5 col-md-12 d-none d-lg-block">
                             @await Html.PartialAsync("_LoginPartial")
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -111,7 +103,6 @@ background: linear-gradient(90deg, rgba(180,58,136,1) 0%, rgba(217,16,16,1) 54%,
     <main >
         @RenderBody()
     </main>
-
 
     <footer class="padding-top-100px padding-bottom-70px background-dark">
         <div class="container">
@@ -158,8 +149,7 @@ background: linear-gradient(90deg, rgba(180,58,136,1) 0%, rgba(217,16,16,1) 54%,
 
             </div>
         </div>
-    </footer>
-
+    </footer
 
     <div class="padding-tb-10px background-main-color">
         <div class="container">

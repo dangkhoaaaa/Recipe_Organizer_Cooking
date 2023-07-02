@@ -108,7 +108,7 @@
                                             }
                                         </td>
                                         <td>@user.Member.RegistrationTime</td>
-                                        <td>@MyToys.getLastLogin(user.Member.LastLoginTime)</td>
+                                        <td>@MyToys.getLastTime(user.Member.LastLoginTime)</td>
 
                                         <td>
                                             <form asp-area="Admin" asp-controller="Manage" asp-action="UpdateUserStatus" method="post">
