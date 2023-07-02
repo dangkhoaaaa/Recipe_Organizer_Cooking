@@ -47,11 +47,11 @@
 	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 </head>*@
-<section class="padding-tb-50px">
+<section class="padding-tb-10px">
 	<div class="container">
 		<div class="title text-center ">
 			<h2 class="font-weight-700 text-main-color hvr-bounce-to-top">New Recipes</h2>
-			<div class="row justify-content-center margin-bottom-45px ">
+			<div class="row justify-content-center margin-bottom-20px ">
 				<div class="col-md-7">
 					<p class="text-grey-2 hvr-underline-reveal">The food good hot became of new gameer since to uppersort hihiem intern ship rot phong van</p>
 				</div>
@@ -63,7 +63,7 @@
 			@foreach (var item in Model.Recipes)
 			{
 				<!-- Recipe Item -->
-				<div class="col-xl-12 col-lg-12 col-md-12 recipe-item margin-bottom-40px hvr-buzz">
+				<div class="col-xl-12 col-lg-12 col-md-12 recipe-item margin-bottom-20px hvr-buzz">
 					<div class="card border-0 box-shadow">
 						<div class="card-img-top"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img src="@item.Image" alt=""></a></div>
 						<div class="padding-lr-30px padding-tb-20px">
@@ -100,7 +100,7 @@
 							</div>
 						</div>
 						<div class="background-light-grey border-top-1 border-grey padding-lr-30px padding-tb-20px">
-							<a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="d-inline-block text-grey-3 h6 margin-bottom-0px margin-right-15px "> View more </a>
+							<a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="d-inline-block text-grey-3 h6 margin-right-15px "> View more </a>
 						</div>
 					</div>
 				</div>
@@ -117,7 +117,7 @@
 			@for (int i = Model.Recipes.Count - 1; i >= 0; i--)
 			{
 				var item = Model.Recipes[i];
-				<div class="col-xl-12 col-lg-12 col-md-12 recipe-item margin-bottom-40px hvr-buzz">
+				<div class="col-xl-12 col-lg-12 col-md-12 recipe-item margin-bottom-20px hvr-buzz">
 					<div class="card border-0 box-shadow">
 						<div class="card-img-top"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img src="@item.Image" alt=""></a></div>
 						<div class="padding-lr-30px padding-tb-20px">
@@ -154,7 +154,7 @@
 							</div>
 						</div>
 						<div class="background-light-grey border-top-1 border-grey padding-lr-30px padding-tb-20px">
-							<a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="d-inline-block text-grey-3 h6 margin-bottom-0px margin-right-15px "> View more </a>
+							<a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="d-inline-block text-grey-3 h6 margin-right-15px "> View more </a>
 						</div>
 					</div>
 				</div>
@@ -188,7 +188,7 @@
 		</nav>
 		</div>*@
 		<div class="text-center">
-			<a href="/Items/Display/?productPage=1" class="btn box-shadow margin-bottom-80px padding-tb-10px btn-sm border-2 border-radius-30 btn-inline-block width-210px background-dark text-white">Loading more</a>
+			<a href="/Items/Display/?productPage=1" class="btn box-shadow padding-tb-10px btn-sm border-2 border-radius-30 btn-inline-block width-210px background-dark text-white">Loading more</a>
 		</div>
 
 	</div>

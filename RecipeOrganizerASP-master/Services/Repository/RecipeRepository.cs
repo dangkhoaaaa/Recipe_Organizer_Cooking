@@ -65,17 +65,23 @@ namespace Services.Repository
 			return listRecipe;
 		}
 
-		public Recipe GetById(int id, string status)
+		public Recipe? GetById(int id, string status)
 		{
 			return _dbSet.Where(r => r.RecipeId == id && r.Status.Equals(status)).FirstOrDefault();
 		}
-		public Recipe GetByIdForEdit(int id)
+		public Recipe? GetByIdForEdit(int id)
 		{
-			return _dbSet.Where(r => r.RecipeId == id).FirstOrDefault();
+			var recipe = _dbSet.Where(r => r.RecipeId == id).FirstOrDefault();
+			if (recipe != null && recipe.Status != "trash" && recipe.Status != "rejected")
+			{
+				return recipe;
+			}
+			return null;
 		}
-		public Recipe GetRecipeByAuthor(int recipeId, string userId)
+
+		public Recipe? GetRecipeByAuthor(int recipeId, string userId)
 		{
-			Recipe recipe = null;
+			Recipe? recipe = null;
 			if (!string.IsNullOrEmpty(userId) && recipeId != 0)
 			{
 				recipe = _dbSet.FirstOrDefault(r => r.MetaData.Any(md => md.UserId == userId
@@ -84,9 +90,9 @@ namespace Services.Repository
 			}
 			return recipe;
 		}
-		public Recipe GetRecipeByFeedBackId(int feedBackId, string userId)
+		public Recipe? GetRecipeByFeedBackId(int feedBackId, string userId)
 		{
-			Recipe recipe = null;
+			Recipe? recipe = null;
 			if (!string.IsNullOrEmpty(userId) && feedBackId != 0)
 			{
 				recipe = _dbSet.FirstOrDefault(r => r.MetaData.Any(md => md.UserId == userId && md.FeedbackId == feedBackId));
@@ -108,7 +114,7 @@ namespace Services.Repository
 			{
 				foreach (var item in listRecipe)
 				{
-					Recipe pendingRecipe = _dbSet.FirstOrDefault(r => r.RecipeId == item.RecipeId && r.Status.Equals("pending"));
+					Recipe? pendingRecipe = _dbSet.FirstOrDefault(r => r.RecipeId == item.RecipeId && r.Status.Equals("pending"));
 					if (pendingRecipe != null)
 					{
 						pendingRecipes.Add(pendingRecipe);
@@ -139,7 +145,7 @@ namespace Services.Repository
 			_context.SaveChanges();
 		}
 
-		public Recipe GetById(int id)
+		public Recipe? GetById(int id)
 		{
 			return GetAll().Where(r => r.RecipeId == id).FirstOrDefault();
 		}

@@ -6,9 +6,6 @@ using Services.Repository;
 using Services.Data;
 using Microsoft.AspNetCore.Authorization;
 using Services;
-using Microsoft.EntityFrameworkCore;
-using System.Drawing.Imaging;
-using RecipeOrganizer.Components;
 
 namespace RecipeOrganizer.Controllers
 {
@@ -166,7 +163,7 @@ namespace RecipeOrganizer.Controllers
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
 			{
-				Recipe recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
+				Recipe? recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
 				if (recipe != null)
 				{
 					RecipeData data = ConvertToRecipeData(recipe);
@@ -179,7 +176,7 @@ namespace RecipeOrganizer.Controllers
 		[AllowAnonymous]
 		public async Task<IActionResult> RecipeDetail(int id)
 		{
-			Recipe recipe = _recipeRepository.GetById(id, "public");
+			Recipe? recipe = _recipeRepository.GetById(id, "public");
 			if (recipe != null)
 			{
 				RecipeData data = new RecipeData();
@@ -235,10 +232,13 @@ namespace RecipeOrganizer.Controllers
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
 			{
-				Recipe recipe = _recipeRepository.GetByIdForEdit(id);
+				Recipe? recipe = _recipeRepository.GetByIdForEdit(id);
 				if (recipe != null)
 				{
 					RecipeData recipeData = ConvertToRecipeData(recipe);
+
+					var categories = _categoryRepository.GetAllCategories();
+					recipeData.Categories = categories;
 
 					// Retrieve the selected category IDs for the recipe
 					List<int> selectedCategoryIds = _recipeHasCategoryRepository.GetSelectedCategoryIds(recipe.RecipeId);
@@ -262,11 +262,11 @@ namespace RecipeOrganizer.Controllers
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
 			{
-				Recipe recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
+				Recipe? recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
 				if (recipe != null)
 				{
 					_recipeRepository.ChangeStatusRecipe(id, "trash");
-					return RedirectToAction("UserRecipeList", "User");
+					return RedirectToAction("UsrPendingRecipe", "Recipe");
 				}
 			}
 			return RedirectToAction("AccessDenied", "Recipe");
@@ -318,7 +318,7 @@ namespace RecipeOrganizer.Controllers
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
 			{
-				Recipe existingRecipe = _recipeRepository.GetByIdForEdit(recipe.RecipeId);
+				Recipe? existingRecipe = _recipeRepository.GetByIdForEdit(recipe.RecipeId);
 				if (existingRecipe != null)
 				{
 					if (Action == "save")
@@ -329,7 +329,10 @@ namespace RecipeOrganizer.Controllers
 						existingRecipe.Date = DateTime.Now;
 
 						// Update the recipe status
-						existingRecipe.Status = recipe.Status;
+						if (!string.IsNullOrEmpty(recipe.Status))
+						{
+							existingRecipe.Status = recipe.Status;
+						}
 
 						// Update the ingredients
 						if (!string.IsNullOrEmpty(recipe.IngredientsInput))
@@ -344,7 +347,7 @@ namespace RecipeOrganizer.Controllers
 						}
 
 						// Update the media
-						if (files != null || files.Count > 0)
+						if (files != null && files.Count > 0)
 						{
 							var imageLinkTask = _fireBaseService.UploadImageSingle(files);
 							var imageLink = await imageLinkTask;
@@ -361,6 +364,12 @@ namespace RecipeOrganizer.Controllers
 							_metadataRepository.Add(metadata);
 						}
 
+						// Update the categories
+						if (recipe.CategoryInput != null)
+						{
+							_recipeHasCategoryRepository.UpdateRecipeCategories(recipe.CategoryInput, recipe.RecipeId);
+						}
+
 						// Update the tags
 						if (!string.IsNullOrEmpty(recipe.TagsInput))
 						{
@@ -375,6 +384,7 @@ namespace RecipeOrganizer.Controllers
 					{
 						existingRecipe.Status = "trash";
 						_recipeRepository.Update(existingRecipe);
+						return RedirectToAction("UsrPendingRecipe", "Recipe", new { id = existingRecipe.RecipeId });
 					}
 				}
 				else
@@ -383,13 +393,13 @@ namespace RecipeOrganizer.Controllers
 				}
 			}
 
-			return RedirectToAction("PageNotFound", "Home");
+			return RedirectToAction("AccessDenied", "Recipe");
 		}
 
 		[AllowAnonymous]
 		public IActionResult PrintRecipe(int recipeId)
 		{
-			Recipe recipe = _recipeRepository.GetById(recipeId, "public");
+			Recipe? recipe = _recipeRepository.GetById(recipeId, "public");
 			if (recipe != null)
 			{
 				RecipeData data = ConvertToRecipeData(recipe);
