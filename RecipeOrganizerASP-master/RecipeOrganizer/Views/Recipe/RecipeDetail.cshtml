@@ -184,12 +184,13 @@
 					</div>
 				</div>
 
+
 				<div class="margin-bottom-40px box-shadow">
 					<div class="padding-30px background-white">
 						<h3><i class="far fa-star margin-right-10px text-main-color"></i> Add Review </h3>
 						<hr>
-						<form id="addFeedback" method="post" action="">
-							<div class="form-row">
+						<form id="addFeedback" method="post" action="Feedback//">
+							@*<div class="form-row">
 								<div class="form-group col-md-6">
 									<label for="inputName">Full Name</label>
 									<input type="text" class="form-control" id="inputName" placeholder="Name">
@@ -198,7 +199,20 @@
 									<label for="inputEmail4">Email</label>
 									<input type="email" class="form-control" id="inputEmail4" placeholder="Email">
 								</div>
+							</div>*@
+							<div class="form-row">
+								<div class="rating">
+									<ul>
+										<li data-value="1">&#9733;</li>
+										<li data-value="2">&#9733;</li>
+										<li data-value="3">&#9733;</li>
+										<li data-value="4">&#9733;</li>
+										<li data-value="5">&#9733;</li>
+									</ul>
+									<p id="rating-value">0 sao</p>
+								</div>
 							</div>
+
 							<div class="form-group">
 								<label for="exampleFormControlTextarea1">Feedback</label>
 								<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
@@ -211,6 +225,8 @@
 						</form>
 					</div>
 				</div>
+
+
 				<div class="margin-bottom-80px box-shadow">
 					<div class="padding-30px background-white">
 						<h3><i class="far fa-star margin-right-10px text-main-color"></i> Review &amp; Rating</h3>
@@ -341,5 +357,41 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		const rating = document.querySelector('.rating');
+		const stars = rating.querySelectorAll('li');
+		const ratingValue = rating.querySelector('#rating-value');
 
+		stars.forEach((star) => {
+			star.addEventListener('click', () => {
+				ratingValue.textContent = `${star.getAttribute('data-value')} sao`;
+				stars.forEach((s, index) => {
+					if (index < star.getAttribute('data-value')) {
+						s.classList.add('active');
+					} else {
+						s.classList.remove('active');
+					}
+				});
+			});
+		});
+	</script>
+
+	<style>
+		.rating ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+		}
+
+		.rating li {
+			font-size: 24px;
+			margin-right: 10px;
+			cursor: pointer;
+		}
+
+			.rating li.active {
+				color: #ffd700;
+			}
+	</style>
 </body>

@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800");
+/*Boxed layout width*/
+/**
+ * Table Of Content
+ *
+ * 	1. Colors
+ *	2. Typography
+ *	3. Forms
+ *	4. Tabs
+ */
+#zero_config {
+  border: 1px solid rgba(120, 130, 140, 0.13); }
+  #zero_config td {
+    padding: 10px 10px; }
+    #zero_config td .cc {
+      font-size: 30px; }
+  #zero_config td:first-child, #zero_config th:first-child {
+    padding-left: 20px; }
+  #zero_config h6 {
+    margin-bottom: 0px; }
+  #zero_config a {
+    font-weight: 700;
+    color: #414755; }
+
+.btc-rpl.c3 line,
+.btc-rpl.c3 path {
+  stroke: #e9ecef;
+  stroke-width: 2px; }
