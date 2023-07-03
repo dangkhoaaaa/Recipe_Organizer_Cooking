@@ -17,6 +17,7 @@ namespace Services.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("dbo")
                 .HasAnnotation("ProductVersion", "6.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -46,7 +47,7 @@ namespace Services.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("Role", "dbo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -71,7 +72,7 @@ namespace Services.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
+                    b.ToTable("UserRoleClaims", "dbo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -96,7 +97,7 @@ namespace Services.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
+                    b.ToTable("UserClaim", "dbo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -118,7 +119,7 @@ namespace Services.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
+                    b.ToTable("UserLogin", "dbo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -133,7 +134,7 @@ namespace Services.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
+                    b.ToTable("UserRole", "dbo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -152,7 +153,7 @@ namespace Services.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens", (string)null);
+                    b.ToTable("UserTokens", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.Authentication.AppUser", b =>
@@ -240,7 +241,7 @@ namespace Services.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("AspNetUsers", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.Category", b =>
@@ -277,7 +278,7 @@ namespace Services.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Category", (string)null);
+                    b.ToTable("Category", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.Collection", b =>
@@ -304,7 +305,7 @@ namespace Services.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Collection", (string)null);
+                    b.ToTable("Collection", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.Day", b =>
@@ -331,7 +332,7 @@ namespace Services.Migrations
 
                     b.HasIndex("PlanId");
 
-                    b.ToTable("Day", (string)null);
+                    b.ToTable("Day", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.Direction", b =>
@@ -362,7 +363,7 @@ namespace Services.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("Direction", (string)null);
+                    b.ToTable("Direction", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.Feedback", b =>
@@ -402,7 +403,7 @@ namespace Services.Migrations
 
                     b.HasKey("FeedbackId");
 
-                    b.ToTable("Feedback", (string)null);
+                    b.ToTable("Feedback", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.Ingredient", b =>
@@ -429,7 +430,7 @@ namespace Services.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("Ingredient", (string)null);
+                    b.ToTable("Ingredient", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.MealPlanning", b =>
@@ -457,7 +458,7 @@ namespace Services.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MealPlanning", (string)null);
+                    b.ToTable("MealPlanning", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.Media", b =>
@@ -480,7 +481,7 @@ namespace Services.Migrations
 
                     b.HasKey("MediaId");
 
-                    b.ToTable("Media");
+                    b.ToTable("Media", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.Metadata", b =>
@@ -501,7 +502,6 @@ namespace Services.Migrations
                         .HasColumnName("media_id");
 
                     b.Property<int?>("NotificationId")
-                        .IsRequired()
                         .HasColumnType("int")
                         .HasColumnName("notification_id");
 
@@ -525,7 +525,7 @@ namespace Services.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MetaData");
+                    b.ToTable("MetaData", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.Notification", b =>
@@ -554,7 +554,7 @@ namespace Services.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notification", (string)null);
+                    b.ToTable("Notification", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.ParentCategory", b =>
@@ -582,7 +582,7 @@ namespace Services.Migrations
                     b.HasKey("ParentId")
                         .HasName("PK_Sub_Category");
 
-                    b.ToTable("Parent_Category", (string)null);
+                    b.ToTable("Parent_Category", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.Recipe", b =>
@@ -633,7 +633,7 @@ namespace Services.Migrations
 
                     b.HasKey("RecipeId");
 
-                    b.ToTable("Recipe", (string)null);
+                    b.ToTable("Recipe", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.RecipeHasCategory", b =>
@@ -659,7 +659,7 @@ namespace Services.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("Recipe_has_Category", (string)null);
+                    b.ToTable("Recipe_has_Category", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.RecipeHasTag", b =>
@@ -685,7 +685,7 @@ namespace Services.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("Recipe_has_Tags", (string)null);
+                    b.ToTable("Recipe_has_Tags", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.Session", b =>
@@ -712,7 +712,7 @@ namespace Services.Migrations
 
                     b.HasIndex("DayId");
 
-                    b.ToTable("Session", (string)null);
+                    b.ToTable("Session", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.SessionHasRecipe", b =>
@@ -738,7 +738,7 @@ namespace Services.Migrations
 
                     b.HasIndex("SessionId");
 
-                    b.ToTable("Session_has_Recipe", (string)null);
+                    b.ToTable("Session_has_Recipe", "dbo");
                 });
 
             modelBuilder.Entity("Services.Models.Tag", b =>
@@ -759,7 +759,7 @@ namespace Services.Migrations
 
                     b.HasKey("TagId");
 
-                    b.ToTable("Tag", (string)null);
+                    b.ToTable("Tag", "dbo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -902,8 +902,6 @@ namespace Services.Migrations
                     b.HasOne("Services.Models.Notification", "Notification")
                         .WithMany("MetaData")
                         .HasForeignKey("NotificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("FK_MetaData_Notification");
 
                     b.HasOne("Services.Models.Recipe", "Recipe")

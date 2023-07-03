@@ -196,7 +196,6 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             });
         }
 
-
         //
         // POST: /Manage/LinkLogin
         [HttpPost]
@@ -229,7 +228,6 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
 
-
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]
@@ -250,6 +248,8 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             }
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
+
+        //
         //GET: /Manage/ManagePhoneNumber
         public async Task<IActionResult> ManagePhoneNumber()
         {
@@ -318,6 +318,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             ModelState.AddModelError(string.Empty, "Error when added Phonenumber");
             return View(model);
         }
+
         //
         // GET: /Manage/RemovePhoneNumber
         [HttpPost]
@@ -337,7 +338,6 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
         }
 
-
         //
         // POST: /Manage/EnableTwoFactorAuthentication
         [HttpPost]
@@ -353,7 +353,6 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             return RedirectToAction(nameof(Index), "Manage");
         }
 
-        //
         // POST: /Manage/DisableTwoFactorAuthentication
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -368,7 +367,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             }
             return RedirectToAction(nameof(Index), "Manage");
         }
-        //
+        
         // POST: /Manage/ResetAuthenticatorKey
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -415,9 +414,6 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             return View(model);
         }
 
-    
-
-
         [HttpPost]
         public async Task<IActionResult> EditProfileAsync(IndexViewModel model)
         {
@@ -455,8 +451,5 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
 
             return RedirectToAction(nameof(Index), "Manage");
         }
-
-
-     
     }
 }

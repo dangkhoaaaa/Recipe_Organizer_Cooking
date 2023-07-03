@@ -251,6 +251,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             var model = new UserReipceViewModel {
                 User = user,
                 UserRecipe = listUserRecipe,
+                TotalRecipe = listUserRecipe.Count(),
             };
             if (listUserRecipe == null)
                 ViewBag.NoRecipe = "No recipe";

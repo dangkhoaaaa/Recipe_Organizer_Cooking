@@ -23,6 +23,7 @@ using RecipeOrganizer.Areas.Data;
 using System.Data;
 using Firebase.Auth;
 using Services;
+using System.Security.Principal;
 
 namespace RecipeOrganizer.Areas.Identity.Controllers
 {
@@ -313,13 +314,17 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                 //email luc nhap confirm so sanh xem da co ton tai trong DB chua
                 var registeredUser = await _userManager.FindByEmailAsync(email);
                 string externalEmail = null;
-                AppUser externalEmailUser = null;
+                string lastNameClaim = null;
+				string givenNameClaim = null;
+				AppUser externalEmailUser = null;
 
                 // Claim ~ Dac tinh mo ta mot doi tuong 
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
                 {
                     externalEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
-                }
+					lastNameClaim = info.Principal.FindFirstValue(ClaimTypes.Surname);
+					givenNameClaim = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+				}
 
                 //email cua external
                 if (externalEmail != null)
@@ -338,7 +343,6 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                         var resultLink = await _userManager.AddLoginAsync(registeredUser, info);
                         if (resultLink.Succeeded)
                         {
-
                             //await _userManager.AddLoginAsync(registeredUser, info);
                             var code = await _userManager.GenerateEmailConfirmationTokenAsync(registeredUser);
                             await _userManager.ConfirmEmailAsync(registeredUser, code);
@@ -384,6 +388,8 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     {
                         UserName = externalEmail,
                         Email = externalEmail,
+                        FirstName = givenNameClaim,
+                        LastName = lastNameClaim,
                         Status = true,
                         RegistrationTime = DateTime.Now,
                         Image = DEFAULT_AVT_IMG
@@ -416,7 +422,9 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                 {
                     UserName = email,
                     Email = email,
-                    Status = true,
+					FirstName = givenNameClaim,
+					LastName = lastNameClaim,
+					Status = true,
                     RegistrationTime = DateTime.Now,
                     Image = DEFAULT_AVT_IMG
                 };
@@ -444,7 +452,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             } //end else
         }
 
-        //
+        //Update later
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]

@@ -18,7 +18,7 @@ namespace RecipeOrganizer.Areas.Identity.Models.ManageViewModels
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm email")]
+        [Display(Name = "Confirm password")]
         [Compare("NewPassword", ErrorMessage = "Confirmation password must match the new password")]
         public string ConfirmPassword { get; set; }
     }

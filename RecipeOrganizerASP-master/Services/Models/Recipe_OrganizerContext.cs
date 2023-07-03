@@ -51,6 +51,29 @@ namespace Services.Models
         {
             base.OnModelCreating(modelBuilder);
 
+
+            modelBuilder.HasDefaultSchema("dbo");
+            //Now Comment the below Statements
+            //modelBuilder.Entity<ApplicationUser>().ToTable("User", "dbo");
+            //modelBuilder.Entity<IdentityRole>().ToTable("Role", "dbo");
+            //modelBuilder.Entity<IdentityUserRole>().ToTable("UserRole", "dbo");
+            //modelBuilder.Entity<IdentityUserClaim>().ToTable("Claim", "dbo");
+            //modelBuilder.Entity<IdentityUserLogin>().ToTable("Login", "dbo");
+            
+            //Use the below Statements
+            //modelBuilder.Entity<AppUser>().ToTable("User");
+            //modelBuilder.Entity<IdentityRole>().ToTable("Role");
+            //modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRole");
+            //modelBuilder.Entity<IdentityUserClaim<int>>().ToTable("UserClaim");
+            //modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogin");
+
+            modelBuilder.Entity<IdentityRole>().ToTable("Role");
+            modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UserRole");
+            modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("UserClaim");
+            modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogin");
+            modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("UserRoleClaims");
+            modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
+
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.ToTable("Category");

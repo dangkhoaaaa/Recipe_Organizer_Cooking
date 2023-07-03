@@ -214,7 +214,33 @@
                                                 <h4 class="notification-title">@notify.recipe.Title</h4>
                                                 <p class="notification-message">@notify.notification.Message</p>
                                                 <div>
-                                                    <span class="notification-author">@notify.user.UserName</span>
+                                                    <span class="notification-author">
+                                                        @if (string.IsNullOrEmpty(notify.user.FirstName))
+                                                        {
+                                                            if (@notify.user.UserName.Contains("@"))
+                                                            {
+                                                                string username = @notify.user.UserName.Split("@")[0];
+                                                                <span>@username</span>
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <span>@notify.user.UserName</span>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (@notify.user.LastName != null)
+                                                            {
+                                                                string fullName = @notify.user.FirstName + " " + @notify.user.LastName;
+                                                                <span>@fullName</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>@notify.user.FirstName</span>
+                                                            }
+                                                        }
+                                                    </span>
                                                     <span class="notification-date">@MyToys.getLastTime(@notify.notification.Date)</span>
                                                 </div>
                                             </div>
@@ -242,7 +268,33 @@
                                                 <h4 class="notification-title">@notify.recipe.Title</h4>
                                                 <p class="notification-message">@notify.notification.Message</p>
                                                 <div>
-                                                    <span class="notification-author">@notify.user.UserName</span>
+                                                    <span class="notification-author">
+                                                        @if (string.IsNullOrEmpty(notify.user.FirstName))
+                                                        {
+                                                            if (@notify.user.UserName.Contains("@"))
+                                                            {
+                                                                string username = @notify.user.UserName.Split("@")[0];
+                                                                <span>@username</span>
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <span>@notify.user.UserName</span>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (@notify.user.LastName != null)
+                                                            {
+                                                                string fullName = @notify.user.FirstName + " " + @notify.user.LastName;
+                                                                <span>@fullName</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>@notify.user.FirstName</span>
+                                                            }
+                                                        }
+                                                    </span>
                                                     <span class="notification-date">@MyToys.getLastTime(@notify.notification.Date)</span>
                                                 </div>
                                             </div>
