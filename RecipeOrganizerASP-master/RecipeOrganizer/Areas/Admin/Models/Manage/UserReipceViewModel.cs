@@ -7,5 +7,6 @@ namespace RecipeOrganizer.Areas.Admin.Models.Manage
     {
         public AppUser User { get; set; }
         public List<Recipe> UserRecipe { get; set; }
+        public int TotalRecipe { get; set; }
     }
 }

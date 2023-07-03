@@ -14,11 +14,11 @@ namespace RecipeOrganizer.Areas.Identity.Models.ManageViewModels
         [Display(Name = "Phone number")]
         public string? PhoneNumber { get; set; }
 
-        [Display(Name = "Firstname")]
+        [Display(Name = "First name")]
         [StringLength(100)]
         public string? FirstName { get; set; }
 
-        [Display(Name = "Lastname")]
+        [Display(Name = "Last name")]
         [StringLength(100)]
         public string? LastName { get; set; }
 
@@ -26,7 +26,7 @@ namespace RecipeOrganizer.Areas.Identity.Models.ManageViewModels
         [Display(Name = "Birthday")]
         public DateTime? Birthday { get; set; }
 
-        [Display(Name = "Imagee")]
+        [Display(Name = "Image")]
         public string? Img { get; set; }
     }
 }

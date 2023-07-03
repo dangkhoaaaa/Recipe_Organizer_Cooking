@@ -20,6 +20,6 @@ namespace Services.Models
         public virtual Media? Media { get; set; }
         public virtual Recipe? Recipe { get; set; }
         public virtual AppUser? User { get; set; }
-        public virtual Notification Notification { get; set; }
+        public virtual Notification? Notification { get; set; }
     }
 }

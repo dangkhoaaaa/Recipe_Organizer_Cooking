@@ -93,11 +93,13 @@
                                                 }
                                             }
                                         </td>
-                                        <td>@user.TotalRecipe</td>
+                                        <td>
+                                            <a class="a-text" href="/Admin/UserRecipe/?userID=@user.Member.Id">@user.TotalRecipe</a>
+                                        </td>
                                         <td>
                                             @if (user.ExternalLogin != null){
                                             foreach (var provide in user.ExternalLogin)
-                                                {
+                                            {
                                                     if (provide.LoginProvider.Contains("Google"))
                                                     {
                                                         <span class="label label-danger">@provide.LoginProvider</span>
