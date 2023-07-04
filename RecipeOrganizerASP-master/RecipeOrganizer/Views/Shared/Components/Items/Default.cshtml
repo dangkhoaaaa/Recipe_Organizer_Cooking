@@ -69,13 +69,13 @@
 						<div class="padding-lr-30px padding-tb-20px">
 							<h5 class="margin-bottom-20px margin-top-10px"><a class="text-dark" href="/Recipe/RecipeDetail/?id=@item.RecipeId">@item.Title</a></h5>
 							<div class="rating">
-								@*<ul>
-									<li class="active"></li>
-									<li class="active"></li>
-									<li class="active"></li>
-									<li class="active"></li>
-									<li></li>
-								</ul>*@
+								<ul>
+									<li class="@((item.AvgRate >= 1) ? "active" : "")"></li>
+									<li class="@((item.AvgRate >= 2) ? "active" : "")"></li>
+									<li class="@((item.AvgRate >= 3) ? "active" : "")"></li>
+									<li class="@((item.AvgRate >= 4) ? "active" : "")"></li>
+									<li class="@((item.AvgRate >= 5) ? "active" : "")"></li>
+								</ul>
 							</div>
 							<hr>
 							<div class="row no-gutters">
