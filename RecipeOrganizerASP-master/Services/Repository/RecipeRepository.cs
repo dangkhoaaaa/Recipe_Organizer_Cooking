@@ -43,10 +43,11 @@ namespace Services.Repository
 		public List<Recipe> getRecipeByKeyword(string keyword)
 		{
 			List<Recipe> listRecipe = new List<Recipe>();
+			if (keyword.Equals("")) return _dbSet.ToList();
 			if (keyword != null && keyword.Length > 0 && keyword.Trim() != "")
 			{
 				//var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
-
+				
 				foreach (Recipe recipe in _dbSet)
 				{
 					if (recipe.Title.ToUpper().Contains(keyword.ToUpper()) && recipe.Status.Equals("public")) { listRecipe.Add(recipe); }

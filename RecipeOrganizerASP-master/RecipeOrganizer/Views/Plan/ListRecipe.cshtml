@@ -68,11 +68,11 @@
 					<div class="padding-25px">
 						<div class="rating">
 							<ul>
-								<li class="active"></li>
-								<li class="active"></li>
-								<li class="active"></li>
-								<li class="active"></li>
-								<li></li>
+								<li class="@((item.AvgRate >= 1) ? "active" : "")"></li>
+								<li class="@((item.AvgRate >= 2) ? "active" : "")"></li>
+								<li class="@((item.AvgRate >= 3) ? "active" : "")"></li>
+								<li class="@((item.AvgRate >= 4) ? "active" : "")"></li>
+								<li class="@((item.AvgRate >= 5) ? "active" : "")"></li>
 							</ul>
 						</div>
 						<h3><a href="" class="d-block text-dark text-capitalize text-medium margin-tb-15px">@item.Title</a></h3>

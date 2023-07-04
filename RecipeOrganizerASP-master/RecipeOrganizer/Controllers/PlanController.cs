@@ -33,7 +33,7 @@ namespace RecipeOrganizer.Controllers
             _collectionRepository = new CollectionRepository();
 		}
 
-		public async Task<IActionResult> SearchKeyWordFitler(string keyword, string filter,string slotNow, string week, int productPage = 1)
+		public async Task<IActionResult> SearchKeyWordFitler( string filter,string slotNow, string week, string keyword = "", int productPage = 1)
 		{
 			ViewBag.slotNow = slotNow;
 			ViewBag.Week = week;
@@ -236,9 +236,9 @@ namespace RecipeOrganizer.Controllers
     }
 
     int PageSize = 8;
-		public IActionResult ListRecipe(string keyword, int productPage = 1, int slotNow=1, string week = "")
+		public IActionResult ListRecipe(string keyword="", int productPage = 1, int slotNow=1, string week = "")
 		{
-			keyword = "";
+			
 			ViewBag.Keyword = keyword;
 			ViewBag.slotNow = slotNow;
 			ViewBag.Week = week;
