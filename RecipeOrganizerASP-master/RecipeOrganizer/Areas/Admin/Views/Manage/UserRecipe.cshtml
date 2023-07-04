@@ -54,7 +54,7 @@
         <div class="row">
             <div class="col s12">
                 <ul class="tabs">
-                    <li class="tab col s3"><a class="active" href="#timeline">Timeline</a></li>
+                    <li class="tab col s3"><a class="active" href="#timeline">Personal recipe</a></li>
                     @*<li class="tab col s3"><a href="#profile">Profile</a></li>
                     <li class="tab col s3"><a href="#settings1">Settings</a></li>*@
                 </ul>
@@ -62,9 +62,13 @@
             <div id="timeline" class="col s12">
                 <div class="card-content">
                     <div class="profiletimeline">
-                        <h1>@ViewBag.NoRecipe</h1>
-                        @if (Model.UserRecipe != null)
+                        @if (Model.UserRecipe.Count == 0)
                         {
+                            <h2 style="color:red; font-weight:bold;">No recipe!!</h2>  
+                        }
+                        else
+                        {
+                            <h2 style="color:blue; font-weight:bold;">Number of recipe: @Model.TotalRecipe</h2>
                             @foreach (var recipe in Model.UserRecipe)
                             {
                                 <div class="sl-item">

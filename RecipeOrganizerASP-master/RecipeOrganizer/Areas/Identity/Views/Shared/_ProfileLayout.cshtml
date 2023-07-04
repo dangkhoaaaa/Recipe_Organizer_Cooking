@@ -133,28 +133,29 @@
                         <h4 class="padding-lr-30px padding-tb-20px background-white box-shadow border-radius-10">
                             <i class="far fa-user margin-right-10px text-main-color"></i> 
                             Hi, @if (string.IsNullOrEmpty(ManageNav.FirstName))
-                            {
-                                if (@UserManager.GetUserName(User).Contains("@"))
                                 {
-                                    string username = @UserManager.GetUserName(User).Split("@")[0];
-                                    <span>@username</span>
-                                }
+                                    if (@UserManager.GetUserName(User).Contains("@"))
+                                    {
+                                        string username = @UserManager.GetUserName(User).Split("@")[0];
+                                        <span>@username</span>
+                                    }
+                                    else
+                                    {
+
+                                        <span>@UserManager.GetUserName(User)</span>
+                                    }
+                                } 
                                 else
                                 {
-
-                                    <span>@UserManager.GetUserName(User)</span>
+                                    if (ManageNav.LastName != null)
+                                    {
+                                        string fullName = ManageNav.FirstName + " " + ManageNav.LastName;
+                                        <span>@fullName</span>
+                                    } else
+                                    {
+                                        <span>@ManageNav.FirstName</span>
+                                    }
                                 }
-                            } else
-                            {
-                                if (ManageNav.LastName != null)
-                                {
-                                    string fullName = ManageNav.FirstName + " " + ManageNav.LastName;
-                                    <span>@fullName</span>
-                                } else
-                                {
-                                    <span>@ManageNav.FirstName</span>
-                                }
-                            }
 
                         </h4>
                          @Html.Partial("~/Areas/Identity/Views/Shared/_ManageNav.cshtml", ManageNav)

@@ -108,28 +108,83 @@
                                 }
                                 else if (Model.Count < 5)
                                 {
-                                    Model.Reverse();
-                                    foreach (RecipeNotification notify in Model)
+                                    var listNotification = Model.OrderByDescending(p => p.recipe.Date).ToList();
+                                    foreach (RecipeNotification notify in listNotification)
                                     {
                                         <a href="/Recipe/RecipeDetails/?recipeID=@notify.recipe.RecipeId" style="padding: 9px 7px;">
                                             <img src="@notify.recipe.Image" class="circle circle-container">
                                                 <span class="mail-contnet">
                                                     <h5 style="font-weight:bold;">@notify.recipe.Title</h5>
                                                     <span class="mail-desc">@notify.notification.Message</span>
-                                                    <span>@notify.user.UserName</span>   <span class="time" style="display:inline-block;">@MyToys.getLastTime(@notify.notification.Date)</span>
+                                                    <span>
+                                                    @if (string.IsNullOrEmpty(notify.user.FirstName))
+                                                    {
+                                                        if (@notify.user.UserName.Contains("@"))
+                                                        {
+                                                            string username = @notify.user.UserName.Split("@")[0];
+                                                        <span>@username</span>
+                                                        }
+                                                        else
+                                                        {
+
+                                                        <span>@notify.user.UserName</span>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (@notify.user.LastName != null)
+                                                        {
+                                                            string fullName = @notify.user.FirstName + " " + @notify.user.LastName;
+                                                        <span>@fullName</span>
+                                                        }
+                                                        else
+                                                        {
+                                                        <span>@notify.user.FirstName</span>
+                                                        }
+                                                    }
+                                                    </span>   
+                                                    <span class="time" style="display:inline-block;">@MyToys.getLastTime(@notify.notification.Date)</span>
                                                 </span>
                                         </a>
                                     }    
                                 } else
                                 @for(int i = 4; i >= 0; i--)
                                 {
-                                    RecipeNotification notify = Model[i];
+                                    var listNotification = Model.OrderByDescending(p => p.recipe.Date).ToList();
+                                    RecipeNotification notify = listNotification[i];
                                     <a href="/Recipe/RecipeDetails/?recipeID=@notify.recipe.RecipeId" style="padding: 9px 7px;">
                                         <img src="@notify.recipe.Image" class="circle circle-container">
                                         <span class="mail-contnet">
                                             <h5 style="font-weight:bold;">@notify.recipe.Title</h5>
                                             <span class="mail-desc">@notify.notification.Message</span>
-                                            <span>@notify.user.UserName</span>   <span class="time" style="display:inline-block;">@MyToys.getLastTime(@notify.notification.Date)</span>
+                                            <span>
+                                                    @if (string.IsNullOrEmpty(notify.user.FirstName))
+                                                    {
+                                                        if (@notify.user.UserName.Contains("@"))
+                                                        {
+                                                            string username = @notify.user.UserName.Split("@")[0];
+                                                        <span>@username</span>
+                                                        }
+                                                        else
+                                                        {
+
+                                                        <span>@notify.user.UserName</span>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (@notify.user.LastName != null)
+                                                        {
+                                                            string fullName = @notify.user.FirstName + " " + @notify.user.LastName;
+                                                        <span>@fullName</span>
+                                                        }
+                                                        else
+                                                        {
+                                                        <span>@notify.user.FirstName</span>
+                                                        }
+                                                    }
+                                            </span>   
+                                            <span class="time" style="display:inline-block;">@MyToys.getLastTime(@notify.notification.Date)</span>
                                         </span>
                                     </a>
                                 }
