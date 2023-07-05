@@ -10,8 +10,8 @@ namespace Services.Data
 {
     public class RecipeNotification
     {
-        public AppUser user { get; set; }
-        public Recipe recipe {get; set;}
-        public Notification notification { get; set;}
+        public AppUser User { get; set; }
+        public Recipe Recipe {get; set;}
+        public Notification Notification { get; set;}
     }
 }

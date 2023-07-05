@@ -6,7 +6,7 @@ using Services.Models;
 using Services.Models.Authentication;
 using System;
 using Services.Repository;
-using RecipeOrganizer.Utilities;
+using Services.Utilities;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Firebase.Auth;
 using System.Collections.Generic;

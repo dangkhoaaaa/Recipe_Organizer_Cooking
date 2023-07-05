@@ -108,83 +108,83 @@
                                 }
                                 else if (Model.Count < 5)
                                 {
-                                    var listNotification = Model.OrderByDescending(p => p.recipe.Date).ToList();
+                                    var listNotification = Model.OrderByDescending(p => p.Recipe.Date).ToList();
                                     foreach (RecipeNotification notify in listNotification)
                                     {
-                                        <a href="/Recipe/RecipeDetails/?recipeID=@notify.recipe.RecipeId" style="padding: 9px 7px;">
-                                            <img src="@notify.recipe.Image" class="circle circle-container">
+                                    <a href="/Recipe/RecipeDetails/?recipeID=@notify.Recipe.RecipeId" style="padding: 9px 7px;">
+                                        <img src="@notify.Recipe.Image" class="circle circle-container">
                                                 <span class="mail-contnet">
-                                                    <h5 style="font-weight:bold;">@notify.recipe.Title</h5>
-                                                    <span class="mail-desc">@notify.notification.Message</span>
+                                            <h5 style="font-weight:bold;">@notify.Recipe.Title</h5>
+                                                    <span class="mail-desc">@notify.Notification.Message</span>
                                                     <span>
-                                                    @if (string.IsNullOrEmpty(notify.user.FirstName))
+                                                    @if (string.IsNullOrEmpty(notify.User.FirstName))
                                                     {
-                                                        if (@notify.user.UserName.Contains("@"))
+                                                        if (@notify.User.UserName.Contains("@"))
                                                         {
-                                                            string username = @notify.user.UserName.Split("@")[0];
+                                                            string username = @notify.User.UserName.Split("@")[0];
                                                         <span>@username</span>
                                                         }
                                                         else
                                                         {
 
-                                                        <span>@notify.user.UserName</span>
+                                                        <span>@notify.User.UserName</span>
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        if (@notify.user.LastName != null)
+                                                        if (@notify.User.LastName != null)
                                                         {
-                                                            string fullName = @notify.user.FirstName + " " + @notify.user.LastName;
+                                                            string fullName = @notify.User.FirstName + " " + @notify.User.LastName;
                                                         <span>@fullName</span>
                                                         }
                                                         else
                                                         {
-                                                        <span>@notify.user.FirstName</span>
+                                                        <span>@notify.User.FirstName</span>
                                                         }
                                                     }
-                                                    </span>   
-                                                    <span class="time" style="display:inline-block;">@MyToys.getLastTime(@notify.notification.Date)</span>
+                                                    </span>
+                                            <span class="time" style="display:inline-block;">@MyToys.getLastTime(@notify.Notification.Date)</span>
                                                 </span>
                                         </a>
                                     }    
                                 } else
                                 @for(int i = 4; i >= 0; i--)
                                 {
-                                    var listNotification = Model.OrderByDescending(p => p.recipe.Date).ToList();
+                                        var listNotification = Model.OrderByDescending(p => p.Recipe.Date).ToList();
                                     RecipeNotification notify = listNotification[i];
-                                    <a href="/Recipe/RecipeDetails/?recipeID=@notify.recipe.RecipeId" style="padding: 9px 7px;">
-                                        <img src="@notify.recipe.Image" class="circle circle-container">
+                                    <a href="/Recipe/RecipeDetails/?recipeID=@notify.Recipe.RecipeId" style="padding: 9px 7px;">
+                                        <img src="@notify.Recipe.Image" class="circle circle-container">
                                         <span class="mail-contnet">
-                                            <h5 style="font-weight:bold;">@notify.recipe.Title</h5>
-                                            <span class="mail-desc">@notify.notification.Message</span>
+                                            <h5 style="font-weight:bold;">@notify.Recipe.Title</h5>
+                                            <span class="mail-desc">@notify.Notification.Message</span>
                                             <span>
-                                                    @if (string.IsNullOrEmpty(notify.user.FirstName))
+                                                    @if (string.IsNullOrEmpty(notify.User.FirstName))
                                                     {
-                                                        if (@notify.user.UserName.Contains("@"))
+                                                        if (@notify.User.UserName.Contains("@"))
                                                         {
-                                                            string username = @notify.user.UserName.Split("@")[0];
+                                                            string username = @notify.User.UserName.Split("@")[0];
                                                         <span>@username</span>
                                                         }
                                                         else
                                                         {
 
-                                                        <span>@notify.user.UserName</span>
+                                                        <span>@notify.User.UserName</span>
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        if (@notify.user.LastName != null)
+                                                        if (@notify.User.LastName != null)
                                                         {
-                                                            string fullName = @notify.user.FirstName + " " + @notify.user.LastName;
+                                                            string fullName = @notify.User.FirstName + " " + @notify.User.LastName;
                                                         <span>@fullName</span>
                                                         }
                                                         else
                                                         {
-                                                        <span>@notify.user.FirstName</span>
+                                                        <span>@notify.User.FirstName</span>
                                                         }
                                                     }
                                             </span>   
-                                            <span class="time" style="display:inline-block;">@MyToys.getLastTime(@notify.notification.Date)</span>
+                                            <span class="time" style="display:inline-block;">@MyToys.getLastTime(@notify.Notification.Date)</span>
                                         </span>
                                     </a>
                                 }

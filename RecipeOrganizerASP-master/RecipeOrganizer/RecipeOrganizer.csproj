@@ -24,7 +24,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Error\" />
     <Folder Include="wwwroot\admin\assets\libs\materialize-css\dist\fonts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\assets\img\404error.jpg" />
   </ItemGroup>
 
 </Project>
