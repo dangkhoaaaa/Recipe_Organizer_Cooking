@@ -43,7 +43,7 @@ namespace RecipeOrganizer.Controllers
 			}
 			else if (statusCode >= 500)
 			{
-				ViewBag.ErrorMessage = "Oops something went wrong, Try to refresh this page or </br> feel free to contact us if the problem presistes!!";
+				ViewBag.ErrorMessage = "Oops something went wrong, Try to refresh this page or feel free to contact us if the problem presistes!!";
 				errorPage = "500Page";
 			}
             return View(errorPage);
