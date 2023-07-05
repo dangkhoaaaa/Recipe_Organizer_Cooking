@@ -116,10 +116,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Error\" />
     <Folder Include="wwwroot\admin\assets\libs\materialize-css\dist\fonts\" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\assets\img\404error.jpg" />
     <None Include="wwwroot\assets1\fonts\flexslider-icon.svg" />
     <None Include="wwwroot\assets1\fonts\fontawesome-webfont.svg" />
     <None Include="wwwroot\assets1\fonts\fontawesome-webfont.woff2" />

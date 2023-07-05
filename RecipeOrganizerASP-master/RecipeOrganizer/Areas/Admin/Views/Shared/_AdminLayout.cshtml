@@ -1,6 +1,6 @@
 ﻿@{
     NotificationRepository _notificationRepository = new NotificationRepository();
-    var listNotification = _notificationRepository.GetAllNofiticationWithMetadata().Where(p => p.recipe.Status.Equals("pending")).ToList();
+    var listNotification = _notificationRepository.GetAllNofiticationWithMetadata().Where(p => p.Recipe.Status.Equals("pending")).ToList();
 }
 <!DOCTYPE html>
 <html lang="en">

@@ -11,7 +11,7 @@ using RecipeOrganizer.Areas.Identity.Models.AccountViewModels;
 using RecipeOrganizer.ExtendMethods;
 using Services.Models;
 //using Services.Services;
-using RecipeOrganizer.Utilities;
+using Services.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -172,6 +172,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                     Status = true,
                     Image = DEFAULT_AVT_IMG
                 };
+                //tạo tài khoản trong DB
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)

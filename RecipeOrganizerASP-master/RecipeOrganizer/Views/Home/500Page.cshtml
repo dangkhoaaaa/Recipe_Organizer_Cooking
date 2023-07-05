@@ -1,0 +1,23 @@
+﻿@{
+	ViewData["Title"] = "Server error";
+}
+
+<div id="page-title" class="padding-tb-30px gradient-white">
+	<div class="container text-center">
+		<ol class="breadcrumb opacity-5">
+			<li><a href=@Url.Action("Index", "Home")>Home</a></li>
+			<span>>></span>
+			<li class="active">@ViewData["Title"]</li>
+		</ol>
+	</div>
+</div>
+
+<div class="container margin-bottom-100px">
+	<div class="text-center">
+		<img src="~/assets/img/500-error.jpg" alt="" style="width:15%;">
+		<h2 class="text-center" style="color:red; margin:20px;">@ViewData["Title"]</h2>
+		<h3 class="text-center ">@ViewBag.ErrorMessage</h3>
+
+		<a href="@Url.Action("Index", "Home")" class="btn btn-sm border-radius-30 margin-tb-15px text-white background-second-color  box-shadow padding-lr-25px"><i class="fas fa-home  margin-right-7px"></i>  Go Home</a>
+	</div>
+</div>

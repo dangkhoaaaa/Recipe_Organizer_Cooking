@@ -53,14 +53,30 @@ namespace Services.Repository
                         join n in _context.Notifications on m.NotificationId equals n.Id
                         select new RecipeNotification
                         {
-                            user = u,
-                            recipe = r,
-                            notification = n
+                            User = u,
+                            Recipe = r,
+                            Notification = n
                         };
             return query.ToList();
         }
 
-        public List<RecipeNotification> GetNofiticationWithIsReadWithMetada(bool IsRead)
+		public List<RecipeNotification> GetAllNofiticationOfUserWithMetadata(string userID)
+		{
+			var query = from m in _context.MetaData
+						join r in _context.Recipes on m.RecipeId equals r.RecipeId
+						join u in _context.Users on m.UserId equals u.Id
+						join n in _context.Notifications on m.NotificationId equals n.Id
+                        where u.Id == userID
+						select new RecipeNotification
+						{
+							User = u,
+							Recipe = r,
+							Notification = n
+						};
+			return query.ToList();
+		}
+
+		public List<RecipeNotification> GetNofiticationWithIsReadWithMetada(bool IsRead)
         {
             var query = from m in _context.MetaData
                         join r in _context.Recipes on m.RecipeId equals r.RecipeId
@@ -69,9 +85,9 @@ namespace Services.Repository
                         where n.IsRead == IsRead
                         select new RecipeNotification
                         {
-                            user = u,
-                            recipe = r,
-                            notification = n
+                            User = u,
+                            Recipe = r,
+                            Notification = n
                         };
             return query.ToList();
         }
