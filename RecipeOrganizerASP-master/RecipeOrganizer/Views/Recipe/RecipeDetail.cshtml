@@ -8,7 +8,16 @@
 	ViewBag.Title = Model.Title;
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-pUA-Compatible" content="ie=edge" />
+	<title>Star Rating in HTML CSS & JavaScript</title>
+	<link rel="stylesheet" href="style.css" />
+	<!-- Fontawesome CDN Link -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+	<script src="script.js" defer></script>
+</head>
 <script>
 	function scrollToSection(sectionId) {
 		var targetElement = document.querySelector(sectionId);
@@ -184,12 +193,13 @@
 					</div>
 				</div>
 
+
 				<div class="margin-bottom-40px box-shadow">
 					<div class="padding-30px background-white">
 						<h3><i class="far fa-star margin-right-10px text-main-color"></i> Add Review </h3>
 						<hr>
-						<form id="addFeedback" method="post" action="">
-							<div class="form-row">
+						<form id="addFeedback" method="post" action="Feedback/AddFeedback1">
+							@*<div class="form-row">
 								<div class="form-group col-md-6">
 									<label for="inputName">Full Name</label>
 									<input type="text" class="form-control" id="inputName" placeholder="Name">
@@ -198,112 +208,58 @@
 									<label for="inputEmail4">Email</label>
 									<input type="email" class="form-control" id="inputEmail4" placeholder="Email">
 								</div>
+							</div>*@
+							<input type="hidden" name="user" value="@User.Identity.Name"/>
+							<div class="rating-box" >
+								<div class="stars">
+									<input hidden type="radio" name="rating" value="1" id="rating-1">
+									<label for="rating-1"><i class="fa-solid fa-star"></i></label>
+									<input hidden type="radio" name="rating" value="2" id="rating-2">
+									<label for="rating-2"><i class="fa-solid fa-star"></i></label>
+									<input hidden type="radio" name="rating" value="3" id="rating-3">
+									<label for="rating-3"><i class="fa-solid fa-star"></i></label>
+									<input hidden type="radio" name="rating" value="4" id="rating-4">
+									<label for="rating-4"><i class="fa-solid fa-star"></i></label>
+									<input hidden type="radio" name="rating" value="5" id="rating-5">
+									<label for="rating-5"><i class="fa-solid fa-star"></i></label>
+								</div>
+
 							</div>
+						@*	<div class="form-row">
+								<div class="rating">
+									<ul>
+										<li data-value="1">&#9733;</li>
+										<li data-value="2">&#9733;</li>
+										<li data-value="3">&#9733;</li>
+										<li data-value="4">&#9733;</li>
+										<li data-value="5">&#9733;</li>
+									</ul>
+									<p id="rating-value">0 sao</p>
+								</div>
+							</div>*@
+
 							<div class="form-group">
 								<label for="exampleFormControlTextarea1">Feedback</label>
 								<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
 										  placeholder="Feedback"></textarea>
 							</div>
-							<a href="#"
+							<button type="submit"
 							   class="btn-sm btn-lg btn-block background-main-color text-white text-center font-weight-bold text-uppercase border-radius-10 padding-10px">
 								Add Now!
-							</a>
+							</button>
 						</form>
 					</div>
 				</div>
+
+
 				<div class="margin-bottom-80px box-shadow">
 					<div class="padding-30px background-white">
 						<h3><i class="far fa-star margin-right-10px text-main-color"></i> Review &amp; Rating</h3>
 						<hr>
 
 						<ul class="commentlist padding-0px margin-0px list-unstyled text-grey-3">
-							<li class="border-bottom-1 border-grey-1 margin-bottom-20px">
-								<img src="http://placehold.it/60x60"
-									 class="float-left margin-right-20px border-radius-60 margin-bottom-20px" alt="">
-								<div class="margin-left-85px">
-									<a class="d-inline-block text-dark text-medium margin-right-20px" href="#">
-										Bakhita
-										alrawi
-									</a>
-									<span class="text-extra-small">
-										Date: <a href="#" class="text-main-color">
-											July 15,
-											2016
-										</a>
-									</span>
-									<div class="rating">
-										<ul>
-											<li class="active"></li>
-											<li class="active"></li>
-											<li class="active"></li>
-											<li class="active"></li>
-											<li></li>
-										</ul>
-									</div>
-									<p class="margin-top-15px text-grey-2">
-										It is a long established fact that a reader
-										will be distracted by the readable content of a page when looking at its layout.
-									</p>
-								</div>
-							</li>
-							<li class="border-bottom-1 border-grey-1 margin-bottom-20px">
-								<img src="http://placehold.it/60x60"
-									 class="float-left margin-right-20px border-radius-60 margin-bottom-20px" alt="">
-								<div class="margin-left-85px">
-									<a class="d-inline-block text-dark text-medium margin-right-20px" href="#">
-										Rabie
-										Elkheir
-									</a>
-									<span class="text-extra-small">
-										Date: <a href="#" class="text-main-color">
-											July 15,
-											2016
-										</a>
-									</span>
-									<div class="rating">
-										<ul>
-											<li class="active"></li>
-											<li class="active"></li>
-											<li></li>
-											<li></li>
-											<li></li>
-										</ul>
-									</div>
-									<p class="margin-top-15px text-grey-2">
-										It is a long established fact that a reader
-										will be distracted by the readable content of a page when looking at its layout.
-									</p>
-								</div>
-							</li>
-							<li class="border-bottom-1 border-grey-1 margin-bottom-20px">
-								<img src="http://placehold.it/60x60"
-									 class="float-left margin-right-20px border-radius-60 margin-bottom-20px" alt="">
-								<div class="margin-left-85px">
-									<a class="d-inline-block text-dark text-medium margin-right-20px" href="#">
-										Adel
-										Alsaeed
-									</a>
-									<span class="text-extra-small">
-										Date: <a href="#" class="text-main-color">
-											July 15,
-											2016
-										</a>
-									</span>
-									<div class="rating">
-										<ul>
-											<li class="active"></li>
-											<li class="active"></li>
-											<li class="active"></li>
-											<li class="active"></li>
-											<li class="active"></li>
-										</ul>
-									</div>
-									<p class="margin-top-15px text-grey-2">
-										It is a long established fact that a reader
-										will be distracted by the readable content of a page when looking at its layout.
-									</p>
-								</div>
-							</li>
+							@await Component.InvokeAsync("LoadFeedback", new { recipeID = Model.RecipeId });
+							
 						</ul>
 					</div>
 				</div>
@@ -341,5 +297,90 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		const rating = document.querySelector('.rating');
+		const stars = rating.querySelectorAll('li');
+		const ratingValue = rating.querySelector('#rating-value');
 
+		stars.forEach((star) => {
+			star.addEventListener('click', () => {
+				ratingValue.textContent = `${star.getAttribute('data-value')} sao`;
+				stars.forEach((s, index) => {
+					if (index < star.getAttribute('data-value')) {
+						s.classList.add('active');
+					} else {
+						s.classList.remove('active');
+					}
+				});
+			});
+		});
+	</script>
+
+	<style>
+	
+	    /* Import Google font - Poppins */
+
+.rating-box {
+  position: relative;
+  background: #fff;
+  padding: 25px 50px 35px;
+  border-radius: 25px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font-family: "Poppins", sans-serif;
+}
+.rating-box header {
+  font-size: 22px;
+  color: #dadada;
+  font-weight: 500;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.rating-box .stars {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.stars i {
+  color: #e6e6e6;
+  font-size: 35px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.stars i.active {
+  color: #ff9c1a;
+}
+
+		.rating ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+		}
+
+		.rating li {
+			font-size: 24px;
+			margin-right: 10px;
+			cursor: pointer;
+		}
+
+			.rating li.active {
+				color: #ffd700;
+			}
+	</style>
+	<script>
+		document.addEventListener("DOMContentLoaded", function (event) {
+			const stars = document.querySelectorAll(".stars i");
+
+			stars.forEach((star, index1) => {
+				star.addEventListener("click", () => {
+					stars.forEach((star, index2) => {
+						index1 >= index2 ? star.classList.add("active") : star.classList.remove("active");
+					});
+				});
+			});
+		});
+	</script>
 </body>

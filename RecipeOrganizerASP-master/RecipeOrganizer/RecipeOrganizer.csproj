@@ -8,6 +8,98 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\assets\css\animated.css" />
+    <Content Remove="wwwroot\assets\css\fontawesome.css" />
+    <Content Remove="wwwroot\assets\css\owl.css" />
+    <Content Remove="wwwroot\assets\css\templatemo-seo-dream.css" />
+    <Content Remove="wwwroot\assets\fonts\Flaticon.woff" />
+    <Content Remove="wwwroot\assets\fonts\flexslider-icon.eot" />
+    <Content Remove="wwwroot\assets\fonts\flexslider-icon.svg" />
+    <Content Remove="wwwroot\assets\fonts\flexslider-icon.ttf" />
+    <Content Remove="wwwroot\assets\fonts\flexslider-icon.woff" />
+    <Content Remove="wwwroot\assets\fonts\fontawesome-webfont.eot" />
+    <Content Remove="wwwroot\assets\fonts\fontawesome-webfont.svg" />
+    <Content Remove="wwwroot\assets\fonts\fontawesome-webfont.ttf" />
+    <Content Remove="wwwroot\assets\fonts\fontawesome-webfont.woff" />
+    <Content Remove="wwwroot\assets\fonts\fontawesome-webfont.woff2" />
+    <Content Remove="wwwroot\assets\fonts\FontAwesome.otf" />
+    <Content Remove="wwwroot\assets\fonts\slick.eot" />
+    <Content Remove="wwwroot\assets\fonts\slick.svg" />
+    <Content Remove="wwwroot\assets\fonts\slick.ttf" />
+    <Content Remove="wwwroot\assets\fonts\slick.woff" />
+    <Content Remove="wwwroot\assets\images\about-left-image.png" />
+    <Content Remove="wwwroot\assets\images\banner-dec-left.png" />
+    <Content Remove="wwwroot\assets\images\banner-dec-right.png" />
+    <Content Remove="wwwroot\assets\images\banner-right-image.png" />
+    <Content Remove="wwwroot\assets\images\contact-bg.jpg" />
+    <Content Remove="wwwroot\assets\images\contact-icon-01.png" />
+    <Content Remove="wwwroot\assets\images\contact-icon-02.png" />
+    <Content Remove="wwwroot\assets\images\contact-icon-03.png" />
+    <Content Remove="wwwroot\assets\images\features-icon-black-01.png" />
+    <Content Remove="wwwroot\assets\images\features-icon-black-02.png" />
+    <Content Remove="wwwroot\assets\images\features-icon-white-01.png" />
+    <Content Remove="wwwroot\assets\images\features-icon-white-02.png" />
+    <Content Remove="wwwroot\assets\images\features-number-01.png" />
+    <Content Remove="wwwroot\assets\images\features-number-02.png" />
+    <Content Remove="wwwroot\assets\images\features-number-03.png" />
+    <Content Remove="wwwroot\assets\images\features-number-04.png" />
+    <Content Remove="wwwroot\assets\images\logo-icon.png" />
+    <Content Remove="wwwroot\assets\images\portfolio-01.jpg" />
+    <Content Remove="wwwroot\assets\images\portfolio-02.jpg" />
+    <Content Remove="wwwroot\assets\images\portfolio-03.jpg" />
+    <Content Remove="wwwroot\assets\images\portfolio-04.jpg" />
+    <Content Remove="wwwroot\assets\images\portfolio-05.jpg" />
+    <Content Remove="wwwroot\assets\images\portfolio-06.jpg" />
+    <Content Remove="wwwroot\assets\images\service-icon-01.png" />
+    <Content Remove="wwwroot\assets\images\service-icon-02.png" />
+    <Content Remove="wwwroot\assets\images\service-icon-03.png" />
+    <Content Remove="wwwroot\assets\js\animation.js" />
+    <Content Remove="wwwroot\assets\js\custom.js" />
+    <Content Remove="wwwroot\assets\js\imagesloaded.js" />
+    <Content Remove="wwwroot\assets\js\isotope.js" />
+    <Content Remove="wwwroot\assets\js\owl-carousel.js" />
+    <Content Remove="wwwroot\assets\js\tabs.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\animated.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\fontawesome.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\owl.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\templatemo-seo-dream.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\Flaticon.woff" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\flexslider-icon.eot" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\flexslider-icon.svg" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\flexslider-icon.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\flexslider-icon.woff" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome-webfont.eot" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome-webfont.svg" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome-webfont.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome-webfont.woff" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome-webfont.woff2" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\FontAwesome.otf" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\slick.eot" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\slick.svg" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\slick.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\slick.woff" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\about-left-image.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\banner-dec-left.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\banner-dec-right.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\banner-right-image.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\contact-bg.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\contact-icon-01.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\contact-icon-02.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\contact-icon-03.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\features-icon-black-01.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\features-icon-black-02.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\features-icon-white-01.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\features-icon-white-02.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\features-number-01.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\features-number-02.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\features-number-03.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\images\features-number-04.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.16">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -30,6 +122,78 @@
 
   <ItemGroup>
     <None Include="wwwroot\assets\img\404error.jpg" />
+    <None Include="wwwroot\assets1\fonts\flexslider-icon.svg" />
+    <None Include="wwwroot\assets1\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\assets1\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\assets1\fonts\slick.svg" />
+    <None Include="wwwroot\assets1\js\animation.js" />
+    <None Include="wwwroot\assets1\js\custom.js" />
+    <None Include="wwwroot\assets1\js\imagesloaded.js" />
+    <None Include="wwwroot\assets1\js\isotope.js" />
+    <None Include="wwwroot\assets1\js\owl-carousel.js" />
+    <None Include="wwwroot\assets1\js\tabs.js" />
+    <None Include="wwwroot\assets\css\animated.css" />
+    <None Include="wwwroot\assets\css\fontawesome.css" />
+    <None Include="wwwroot\assets\css\owl.css" />
+    <None Include="wwwroot\assets\css\templatemo-seo-dream.css" />
+    <None Include="wwwroot\assets\fonts\Flaticon.woff" />
+    <None Include="wwwroot\assets\fonts\flexslider-icon.eot" />
+    <None Include="wwwroot\assets\fonts\flexslider-icon.svg" />
+    <None Include="wwwroot\assets\fonts\flexslider-icon.ttf" />
+    <None Include="wwwroot\assets\fonts\flexslider-icon.woff" />
+    <None Include="wwwroot\assets\fonts\fontawesome-webfont.eot" />
+    <None Include="wwwroot\assets\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\assets\fonts\fontawesome-webfont.ttf" />
+    <None Include="wwwroot\assets\fonts\fontawesome-webfont.woff" />
+    <None Include="wwwroot\assets\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\assets\fonts\FontAwesome.otf" />
+    <None Include="wwwroot\assets\fonts\slick.eot" />
+    <None Include="wwwroot\assets\fonts\slick.svg" />
+    <None Include="wwwroot\assets\fonts\slick.ttf" />
+    <None Include="wwwroot\assets\fonts\slick.woff" />
+    <None Include="wwwroot\assets\images\about-left-image.png" />
+    <None Include="wwwroot\assets\images\banner-dec-left.png" />
+    <None Include="wwwroot\assets\images\banner-dec-right.png" />
+    <None Include="wwwroot\assets\images\banner-right-image.png" />
+    <None Include="wwwroot\assets\images\contact-bg.jpg" />
+    <None Include="wwwroot\assets\images\contact-icon-01.png" />
+    <None Include="wwwroot\assets\images\contact-icon-02.png" />
+    <None Include="wwwroot\assets\images\contact-icon-03.png" />
+    <None Include="wwwroot\assets\images\features-icon-black-01.png" />
+    <None Include="wwwroot\assets\images\features-icon-black-02.png" />
+    <None Include="wwwroot\assets\images\features-icon-white-01.png" />
+    <None Include="wwwroot\assets\images\features-icon-white-02.png" />
+    <None Include="wwwroot\assets\images\features-number-01.png" />
+    <None Include="wwwroot\assets\images\features-number-02.png" />
+    <None Include="wwwroot\assets\images\features-number-03.png" />
+    <None Include="wwwroot\assets\images\features-number-04.png" />
+    <None Include="wwwroot\assets\images\logo-icon.png" />
+    <None Include="wwwroot\assets\images\portfolio-01.jpg" />
+    <None Include="wwwroot\assets\images\portfolio-02.jpg" />
+    <None Include="wwwroot\assets\images\portfolio-03.jpg" />
+    <None Include="wwwroot\assets\images\portfolio-04.jpg" />
+    <None Include="wwwroot\assets\images\portfolio-05.jpg" />
+    <None Include="wwwroot\assets\images\portfolio-06.jpg" />
+    <None Include="wwwroot\assets\images\service-icon-01.png" />
+    <None Include="wwwroot\assets\images\service-icon-02.png" />
+    <None Include="wwwroot\assets\images\service-icon-03.png" />
+    <None Include="wwwroot\assets\js\animation.js" />
+    <None Include="wwwroot\assets\js\custom.js" />
+    <None Include="wwwroot\assets\js\imagesloaded.js" />
+    <None Include="wwwroot\assets\js\isotope.js" />
+    <None Include="wwwroot\assets\js\owl-carousel.js" />
+    <None Include="wwwroot\assets\js\tabs.js" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap.min.css" />
+    <None Include="wwwroot\vendor\bootstrap\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\vendor\bootstrap\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\vendor\bootstrap\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\vendor\bootstrap\js\bootstrap.min.js" />
+    <None Include="wwwroot\vendor\jquery\jquery.js" />
+    <None Include="wwwroot\vendor\jquery\jquery.min.js" />
+    <None Include="wwwroot\vendor\jquery\jquery.min.map" />
+    <None Include="wwwroot\vendor\jquery\jquery.slim.js" />
+    <None Include="wwwroot\vendor\jquery\jquery.slim.min.js" />
+    <None Include="wwwroot\vendor\jquery\jquery.slim.min.map" />
   </ItemGroup>
 
 </Project>

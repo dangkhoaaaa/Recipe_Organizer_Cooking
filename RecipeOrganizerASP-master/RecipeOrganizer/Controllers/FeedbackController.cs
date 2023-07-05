@@ -12,6 +12,7 @@ using Services.Models;
 using Services.Models.Authentication;
 using Services.Repository;
 using System.Net;
+using Microsoft.VisualBasic;
 
 namespace RecipeOrganizer.Controllers
 {
@@ -193,5 +194,54 @@ namespace RecipeOrganizer.Controllers
 
             return View(feedbackViewModel);
         }
-    }
+
+
+		//[HttpPost]
+		//public async Task<IActionResult> AddFeedback1( var user,  )
+		//{
+		//	if (ModelState.IsValid)
+		//	{
+		//		var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+
+		//		if (user.UserName != feedbackViewModel.UserName || user.Email != feedbackViewModel.Email)
+		//		{
+		//			ModelState.AddModelError(string.Empty, "Username or email does not match the ones in your Personal Profile.");
+		//			return View(feedbackViewModel);
+		//		}
+
+		//		var feedback = new Feedback
+		//		{
+		//			Title = feedbackViewModel.Title,
+		//			Description = feedbackViewModel.Description,
+		//			Date = DateTime.Now,
+		//			Rating = feedbackViewModel.Rating,
+		//			Status = feedbackViewModel.Status,
+		//		};
+
+		//		_feedbackRepository.Add(feedback);
+
+		//		var listRecipe = _recipeRepository.GetAll().ToList();
+
+		//		var metadata = new Metadata
+		//		{
+		//			UserId = user.Id,
+		//			RecipeId = feedbackViewModel.RecipeId,
+		//			FeedbackId = feedback.FeedbackId,
+		//		};
+
+		//		_metadataRepository.Add(metadata);
+
+		//		await _context.SaveChangesAsync();
+
+		//		TempData["SuccessMessage"] = "Thank you for your feedback! We will review it shortly.";
+
+		//		return RedirectToAction("RecipeDetail", "Recipe", new { recipeId = feedbackViewModel.RecipeId });
+		//	}
+
+		//	return View(feedbackViewModel);
+		//}
+
+
+
+	}
 }
