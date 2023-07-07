@@ -24,9 +24,9 @@ namespace RecipeOrganizer.Controllers
 		private readonly CollectionRepository _collectionRepository;
 		private readonly UserManager<AppUser> _userManager;
 		private readonly FireBaseService _fireBaseService;
-        private readonly NotificationRepository _notificationRepository;
+		private readonly NotificationRepository _notificationRepository;
 
-        public RecipeController(UserManager<AppUser> userManager)
+		public RecipeController(UserManager<AppUser> userManager)
 		{
 			_recipeRepository = new RecipeRepository();
 			_ingredientRepository = new IngredientRepository();
@@ -101,8 +101,8 @@ namespace RecipeOrganizer.Controllers
 				data.Status = recipe.Status;
 				int notificationId = _notificationRepository.addNotification("New recipe has been created");
 
-                // Media
-                if (files != null && files.Count > 0)
+				// Media
+				if (files != null && files.Count > 0)
 				{
 					var imageLinkTask = _fireBaseService.UploadImageSingle(files);
 					var imageLink = await imageLinkTask;
@@ -127,8 +127,8 @@ namespace RecipeOrganizer.Controllers
 					{
 						RecipeId = data.RecipeId,
 						UserId = user.Id,
-                        NotificationId = notificationId
-                    };
+						NotificationId = notificationId
+					};
 					_metadataRepository.Add(metadata);
 				}
 
@@ -177,25 +177,25 @@ namespace RecipeOrganizer.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
-        public async Task<IActionResult> UsrPendingRecipeNoti(int id, int noti)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user != null)
-            {
-                Recipe recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
-                var notification = _notificationRepository.GetNotification(noti);
+		public async Task<IActionResult> UsrPendingRecipeNoti(int id, int noti)
+		{
+			var user = await _userManager.GetUserAsync(User);
+			if (user != null)
+			{
+				Recipe? recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
+				var notification = _notificationRepository.GetNotification(noti);
 
-                if (recipe != null && notification != null)
-                {
+				if (recipe != null && notification != null)
+				{
 					_notificationRepository.updateIsRead(notification);
-                    RecipeData data = ConvertToRecipeData(recipe);
-                    return View("UsrPendingRecipe", data);
-                }
-            }
-            return RedirectToAction("Index", "Home");
-        }
+					RecipeData data = ConvertToRecipeData(recipe);
+					return View("UsrPendingRecipe", data);
+				}
+			}
+			return RedirectToAction("Index", "Home");
+		}
 
-        [AllowAnonymous]
+		[AllowAnonymous]
 		public async Task<IActionResult> RecipeDetail(int id)
 		{
 			Recipe? recipe = _recipeRepository.GetById(id, "public");
@@ -214,6 +214,7 @@ namespace RecipeOrganizer.Controllers
 				List<Tag> tags = _recipeHasTagRepository.GetTagsByRecipeId(recipe.RecipeId);
 				data.Tags = tags;
 				data.Img = recipe.Image;
+				data.Imgs = GetImgs(recipe.RecipeId);
 				data.NumberShare = recipe.NumberShare;
 				var categories = _recipeHasCategoryRepository.GetCategoryByRecipeId(recipe.RecipeId);
 				data.Categories = categories;
@@ -221,14 +222,28 @@ namespace RecipeOrganizer.Controllers
 				var user = await _userManager.GetUserAsync(User);
 				if (user != null)
 				{
-					var checkCollectionSave = _collectionRepository.IsRecipeSaved(id, user.Id);
-					if (checkCollectionSave)
+					bool isSavedInCollection = _collectionRepository.IsRecipeSaved(id, user.Id);
+					bool hasReviewed = _metadataRepository.IsReviewed(id, user.Id);
+
+					if (isSavedInCollection && hasReviewed)
 					{
 						data.Collection = true;
+						data.Review = true;
+					}
+					else if (isSavedInCollection)
+					{
+						data.Collection = true;
+						data.Review = false;
+					}
+					else if (hasReviewed)
+					{
+						data.Collection = false;
+						data.Review = true;
 					}
 					else
 					{
 						data.Collection = false;
+						data.Review = false;
 					}
 				}
 
@@ -303,6 +318,7 @@ namespace RecipeOrganizer.Controllers
 			data.Status = recipe.Status;
 			data.Img = recipe.Image;
 			data.NumberShare = recipe.NumberShare;
+			data.Imgs = GetImgs(recipe.RecipeId);
 
 			if (recipe.AvgRate == null)
 			{
@@ -446,6 +462,19 @@ namespace RecipeOrganizer.Controllers
 			_recipeRepository.IncreaseNumberShare(recipeId);
 
 			return Json(new { success = true });
+		}
+
+		public List<string> GetImgs(int id)
+		{
+			List<Media> imgList = _mediaRepository.GetImgsByRecipeId(id);
+			List<string> imgs = new List<string>();
+
+			foreach (var img in imgList)
+			{
+				imgs.Add(img.Filelocation);
+			}
+
+			return imgs;
 		}
 
 	}
