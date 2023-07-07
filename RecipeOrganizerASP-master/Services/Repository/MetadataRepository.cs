@@ -12,7 +12,7 @@ namespace Services.Repository
 	{
 		Recipe_OrganizerContext _context;
 		protected DbSet<Metadata> _dbSet;
-		
+
 
 		protected DbSet<Feedback> _dbSetFeedBack;
 		protected DbSet<Metadata> _dbSetMetadata;
@@ -24,5 +24,10 @@ namespace Services.Repository
 		}
 
 		public ICollection<Metadata> Products { get; set; } = new List<Metadata>();
+
+		public bool IsReviewed(int recipeId, string userId)
+		{
+			return _dbSet.Any(x => x.RecipeId == recipeId && x.UserId == userId && x.FeedbackId != null);
+		}
 	}
 }

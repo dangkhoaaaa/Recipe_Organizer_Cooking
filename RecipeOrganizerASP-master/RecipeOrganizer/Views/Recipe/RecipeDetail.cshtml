@@ -68,7 +68,7 @@
 							<li class="active"></li>
 							<li class="active"></li>
 							<li></li>
-							<a href="#" onclick="scrollToSection('#addFeedback')">@Model.AvgRate (99)</a>
+							<a href="#" onclick="scrollToSection('#addFeedback')">@Model.AvgRate </a>
 						</ul>
 					</div>
 					|
@@ -83,7 +83,7 @@
 					@Model.Description
 				</div>
 				<div class="margin-bottom-10px">
-					Recipe by Cook 
+					Recipe by Cook
 					<span class="margin-lr-5px">|</span>
 					Updated on @Model.Date
 				</div>
@@ -113,26 +113,6 @@
 							<i class="fas fa-share"></i> Share via Email
 						</a>
 
-						@*@{
-							var encodedTitle = Uri.EscapeDataString("Recipe: " + @Model.Title);
-							var encodedDescription = Uri.EscapeDataString(@Model.Description);
-							var encodedIngredients = string.Join(Environment.NewLine, Model.Ingredients.Select(i => "- " + Uri.EscapeDataString(i.IngredientName)));
-							var encodedDirections = string.Join(Environment.NewLine, Model.Directions.Select(i => "- " + Uri.EscapeDataString(i.Direction1)));
-							//var encodedUrl = Uri.EscapeDataString($"https://localhost:7186/Recipe/RecipeDetail/?id={Model.RecipeId}");
-						}
-						<a 
-						   href="mailto:?subject=@encodedTitle&amp;body=@Html.Raw(encodedDescription)%0D%0A%0D%0AIngredients:%0D%0A@{
-					    foreach (var item in Model.Ingredients) {
-												@Html.Raw(Uri.EscapeDataString("- " + item.IngredientName + Environment.NewLine))
-}
- }%0D%0A%0D%0ADirections:%0D%0A%0D%0A@{
-					    foreach (var item in Model.Directions) {
-												@Html.Raw(Uri.EscapeDataString("Step " + @item.Step + ": " + item.Direction1 + Environment.NewLine + Environment.NewLine))
-}
- }%0D%0AView%20more%20at%20https://localhost:7186/Recipe/RecipeDetail/?id=@Model.RecipeId">
-							<i class="fas fa-share"></i> Share via Email
-						</a>*@
-						
 					</form>
 				</div>
 
@@ -167,9 +147,9 @@
 										{
 											<a href="#">#@item.TagName</a>
 											@*@if (item != Model.Tags.Last())
-											{
-												<text>,</text>
-											}*@
+									{
+									<text>,</text>
+									}*@
 										}
 									}
 								</p>
@@ -182,10 +162,10 @@
 									I MADE IT <i class="fas fa-utensil-spoon"></i>
 								</button>
 								@*<button class="btn box-shadow padding-lr-30px padding-tb-10px btn-sm border-2 border-radius-10 btn-inline-block border-main-color text-main-color margin-right-20px margin-tb-12px ">
-									PRINT <i class="fas fa-print"></i>
+								PRINT <i class="fas fa-print"></i>
 								</button>*@
 								<a class="btn box-shadow padding-lr-30px padding-tb-10px btn-sm border-2 border-radius-10 btn-inline-block border-main-color text-main-color margin-right-20px margin-tb-12px"
-								   href="@Url.Action("PrintRecipe", "Recipe", new { recipeId = Model.RecipeId })" >PRINT <i class="fas fa-print"></i></a>
+								   href="@Url.Action("PrintRecipe", "Recipe", new { recipeId = Model.RecipeId })">PRINT <i class="fas fa-print"></i></a>
 
 							</div>
 						</div>
@@ -193,64 +173,92 @@
 					</div>
 				</div>
 
-
-				<div class="margin-bottom-40px box-shadow">
-					<div class="padding-30px background-white">
-						<h3><i class="far fa-star margin-right-10px text-main-color"></i> Add Review </h3>
-						<hr>
-						<form id="addFeedback" method="post" action="Feedback/AddFeedback1">
-							@*<div class="form-row">
-								<div class="form-group col-md-6">
-									<label for="inputName">Full Name</label>
-									<input type="text" class="form-control" id="inputName" placeholder="Name">
-								</div>
-								<div class="form-group col-md-6">
-									<label for="inputEmail4">Email</label>
-									<input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-								</div>
-							</div>*@
-							<input type="hidden" name="user" value="@User.Identity.Name"/>
-							<div class="rating-box" >
-								<div class="stars">
-									<input hidden type="radio" name="rating" value="1" id="rating-1">
-									<label for="rating-1"><i class="fa-solid fa-star"></i></label>
-									<input hidden type="radio" name="rating" value="2" id="rating-2">
-									<label for="rating-2"><i class="fa-solid fa-star"></i></label>
-									<input hidden type="radio" name="rating" value="3" id="rating-3">
-									<label for="rating-3"><i class="fa-solid fa-star"></i></label>
-									<input hidden type="radio" name="rating" value="4" id="rating-4">
-									<label for="rating-4"><i class="fa-solid fa-star"></i></label>
-									<input hidden type="radio" name="rating" value="5" id="rating-5">
-									<label for="rating-5"><i class="fa-solid fa-star"></i></label>
-								</div>
-
-							</div>
-						@*	<div class="form-row">
+				@if (SignInManager.IsSignedIn(User) && Model.Review)
+				{
+					<div class="margin-bottom-40px box-shadow">
+						<div class="padding-30px background-white">
+							<h3><i class="far fa-star margin-right-10px text-main-color"></i> Add Review </h3>
+							<hr>
+							<form id="addFeedback" method="post" action="/Feedback/AddFeedback/@Model.RecipeId" enctype="multipart/form-data">
+								<input type="hidden" name="RecipeId" value="@Model.RecipeId" />
 								<div class="rating">
-									<ul>
-										<li data-value="1">&#9733;</li>
-										<li data-value="2">&#9733;</li>
-										<li data-value="3">&#9733;</li>
-										<li data-value="4">&#9733;</li>
-										<li data-value="5">&#9733;</li>
-									</ul>
-									<p id="rating-value">0 sao</p>
+									<div class="stars">
+										<input hidden type="radio" name="Rating" value="1" id="rating-1">
+										<label for="rating-1"><i class="fa-solid fa-star"></i></label>
+										<input hidden type="radio" name="Rating" value="2" id="rating-2">
+										<label for="rating-2"><i class="fa-solid fa-star"></i></label>
+										<input hidden type="radio" name="Rating" value="3" id="rating-3">
+										<label for="rating-3"><i class="fa-solid fa-star"></i></label>
+										<input hidden type="radio" name="Rating" value="4" id="rating-4">
+										<label for="rating-4"><i class="fa-solid fa-star"></i></label>
+										<input hidden type="radio" name="Rating" value="5" id="rating-5">
+										<label for="rating-5"><i class="fa-solid fa-star"></i></label>
+									</div>
 								</div>
-							</div>*@
-
-							<div class="form-group">
-								<label for="exampleFormControlTextarea1">Feedback</label>
-								<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
-										  placeholder="Feedback"></textarea>
-							</div>
-							<button type="submit"
-							   class="btn-sm btn-lg btn-block background-main-color text-white text-center font-weight-bold text-uppercase border-radius-10 padding-10px">
-								Add Now!
-							</button>
-						</form>
+								<div class="form-group">
+									<label for="inputName">Title</label>
+									<input type="text" class="form-control" id="inputName" placeholder="Title" name="Title" required>
+								</div>
+								<div class="form-group">
+									<label for="exampleFormControlTextarea1">Feedback</label>
+									<textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="Description"
+											  placeholder="Feedback" required></textarea>
+								</div>
+								<div class="form-group">
+									<label for="photoUploadFile">Images</label>
+									<input type="file" id="photoUploadFile" name="files" multiple class="form-control" />
+									<span id="imageFormatError" class="text-danger" style="display: none;">
+										<b>Invalid image format.</b><br> Only JPG, PNG formats are allowed.
+									</span>
+								</div>
+								<button type="submit" class="btn-sm btn-lg btn-block background-main-color text-white text-center font-weight-bold text-uppercase border-radius-10 padding-10px border-0">
+									Add Now!
+								</button>
+							</form>
+						</div>
 					</div>
-				</div>
+				}
 
+				<script>
+					// JavaScript code to validate image format and clear input value on error
+					var inputElement = document.getElementById("photoUploadFile");
+					var imageFormatError = document.getElementById("imageFormatError");
+					var ratingInputs = document.querySelectorAll('input[name="Rating"]');
+
+					document.getElementById("addFeedback").addEventListener("submit", function (event) {
+						var ratingChecked = false;
+
+						// Check if any rating option is selected
+						for (var i = 0; i < ratingInputs.length; i++) {
+							if (ratingInputs[i].checked) {
+								ratingChecked = true;
+								break;
+							}
+						}
+
+						if (!ratingChecked) {
+							// Display an error message or prevent form submission
+							event.preventDefault();
+							alert("Please select a rating.");
+						}
+					});
+
+					inputElement.addEventListener("change", function () {
+						var file = this.files[0];
+						var allowedFormats = ["image/jpeg", "image/png"];
+
+						if (file && !allowedFormats.includes(file.type)) {
+							// Display error message
+							imageFormatError.style.display = "block";
+
+							// Clear input value on error
+							inputElement.value = "";
+						} else {
+							// Hide error message
+							imageFormatError.style.display = "none";
+						}
+					});
+				</script>
 
 				<div class="margin-bottom-80px box-shadow">
 					<div class="padding-30px background-white">
@@ -258,8 +266,8 @@
 						<hr>
 
 						<ul class="commentlist padding-0px margin-0px list-unstyled text-grey-3">
-							@await Component.InvokeAsync("LoadFeedback", new { recipeID = Model.RecipeId });
-							
+							@await Component.InvokeAsync("LoadFeedback", new { recipeID = Model.RecipeId })
+
 						</ul>
 					</div>
 				</div>
@@ -280,20 +288,6 @@
 					</form>
 				</div>
 
-				@*<div class="margin-tb-40px text-center">
-					<h1 class="font-weight-500 margin-bottom-20px">Related Recipes</h1>
-					<hr />
-
-					<div class="col-lg-3 col-md-3 text-center margin-bottom-40px">
-						<div class="hvr-float">
-							<div class="thum"><a href="#"><img class="border-radius-8 box-shadow" src="http://placehold.it/270x270" alt=""></a></div>
-							<a class="h4 d-block margin-top-20px" href="#">M.Salman ali</a>
-							<small class="text-grey-2">(145 Recipes)</small>
-						</div>
-					</div>
-
-
-				</div>*@
 			</div>
 		</div>
 	</div>
@@ -317,41 +311,16 @@
 	</script>
 
 	<style>
-	
-	    /* Import Google font - Poppins */
+		.stars i {
+			color: #e6e6e6;
+			font-size: 30px;
+			cursor: pointer;
+			transition: color 0.2s ease;
+		}
 
-.rating-box {
-  position: relative;
-  background: #fff;
-  padding: 25px 50px 35px;
-  border-radius: 25px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-			font-family: "Poppins", sans-serif;
-}
-.rating-box header {
-  font-size: 22px;
-  color: #dadada;
-  font-weight: 500;
-  margin-bottom: 20px;
-  text-align: center;
-}
-.rating-box .stars {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-}
-.stars i {
-  color: #e6e6e6;
-  font-size: 35px;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-.stars i.active {
-  color: #ff9c1a;
-}
+			.stars i.active {
+				color: #ff9c1a;
+			}
 
 		.rating ul {
 			list-style: none;

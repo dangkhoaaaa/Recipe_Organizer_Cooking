@@ -29,6 +29,6 @@ namespace Services.Data
 		public double? AvgRate { get; set; }
 		public bool Collection { get; set; }
 		public string? Author { get; set; }
-
+		public bool Review { get; set; }
 	}
 }
