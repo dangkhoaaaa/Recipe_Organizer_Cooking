@@ -182,7 +182,7 @@ namespace RecipeOrganizer.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
-                Recipe recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
+                Recipe? recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
                 var notification = _notificationRepository.GetNotification(noti);
 
                 if (recipe != null && notification != null)
@@ -221,14 +221,28 @@ namespace RecipeOrganizer.Controllers
 				var user = await _userManager.GetUserAsync(User);
 				if (user != null)
 				{
-					var checkCollectionSave = _collectionRepository.IsRecipeSaved(id, user.Id);
-					if (checkCollectionSave)
+					bool isSavedInCollection = _collectionRepository.IsRecipeSaved(id, user.Id);
+					bool hasReviewed = _metadataRepository.IsReviewed(id, user.Id);
+
+					if (isSavedInCollection && hasReviewed)
 					{
 						data.Collection = true;
+						data.Review = true;
+					}
+					else if (isSavedInCollection)
+					{
+						data.Collection = true;
+						data.Review = false;
+					}
+					else if (hasReviewed)
+					{
+						data.Collection = false;
+						data.Review = true;
 					}
 					else
 					{
 						data.Collection = false;
+						data.Review = false;
 					}
 				}
 
