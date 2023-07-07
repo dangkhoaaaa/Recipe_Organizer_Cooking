@@ -1,0 +1,51 @@
+﻿@model List<FeedBackOnOnceRecipeModel>
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+
+@if (Model !=null && Model.Count>0)
+{
+
+	@foreach( var item in Model)
+	{
+
+	
+		<li class="border-bottom-1 border-grey-1 margin-bottom-20px">
+			<img src="@item.Images"
+				 class="float-left margin-right-20px border-radius-60 margin-bottom-20px" alt="" width="50" height="50">
+			<div class="margin-left-85px">
+				<a class="d-inline-block text-dark text-medium margin-right-20px" href="#">
+					@item.Title
+				</a>
+				<span class="text-extra-small">
+					Date: <a href="#" class="text-main-color">
+						@item.Date
+					</a>
+				</span>
+				<div class="rating">
+					<ul>
+						<li class="@((item.Rating >= 1) ? "active" : "")"></li>
+						<li class="@((item.Rating >= 2) ? "active" : "")"></li>
+						<li class="@((item.Rating >= 3) ? "active" : "")"></li>
+						<li class="@((item.Rating >= 4) ? "active" : "")"></li>
+						<li class="@((item.Rating >= 5) ? "active" : "")"></li>
+					</ul>
+				</div>
+				<p class="margin-top-15px text-grey-2">
+					@item.Description
+				</p>
+			</div>
+		</li>
+
+	}
+	
+
+}
+else
+{
+	<h2> Not Have FeedBack</h2>
+}
+
+

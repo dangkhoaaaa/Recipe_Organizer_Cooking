@@ -2,274 +2,505 @@
 @model DashBroadModel
 @inject UserManager<AppUser> _userManager
 @{
-	ViewData["Title"] = "Admin";
-	Layout = "_AdminLayout";
+    ViewData["Title"] = "Admin";
+    Layout = "_AdminLayout";
 }
-<div id="donut-chart"></div>
-<div class="row">
-	<div class="col l3 m6 s12">
-		<div class="card">
-			<div class="card-content">
-				<div class="row">
-					<div class="col s12">
-						<div class="d-flex no-block align-items-center">
-							<div>
-								<h4>@Model.totalRecipe</h4>
-								<h6 class="card-subtitle">Total Recipe</h6>
-							</div>
-							<div class="ml-auto">
-								<span class="blue-text display-6"><i class="ti-layout-slider-alt"></i></span>
-							</div>
-						</div>
-					</div>
-					<div class="col s12">
-						<div class="progress">
-							<div class="determinate indigo darken-1" style="width:70%;"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col l3 m6 s12">
-		<div class="card">
-			<div class="card-content">
-				<div class="row">
-					<div class="col s12">
-						<div class="d-flex no-block align-items-center">
-							<div>
-								<h4>@Model.totalAccount</h4>
-								<h6 class="card-subtitle">Total Account</h6>
-							</div>
-							<div class="ml-auto">
-								<span class="green-text display-6"><i class="ti-layout-media-left-alt"></i></span>
-							</div>
-						</div>
-					</div>
-					<div class="col s12">
-						<div class="progress">
-							<div class="determinate teal darken-2" style="width:70%;"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col l3 m6 s12">
-		<div class="card">
-			<div class="card-content">
-				<div class="row">
-					<div class="col s12">
-						<div class="d-flex no-block align-items-center">
-							<div>
-								<h4>@Model.totalCategory</h4>
-								<h6 class="card-subtitle">Total Category</h6>
-							</div>
-							<div class="ml-auto">
-								<span class="orange-text display-6"><i class="ti-notepad"></i></span>
-							</div>
-						</div>
-					</div>
-					<div class="col s12">
-						<div class="progress">
-							<div class="determinate amber darken-3" style="width:70%;"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col l3 m6 s12">
-		<div class="card">
-			<div class="card-content">
-				<div class="row">
-					<div class="col s12">
-						<div class="d-flex no-block align-items-center">
-							<div>
-								<h4>@Model.totalFeedback</h4>
-								<h6 class="card-subtitle">Total FeedBack</h6>
-							</div>
-							<div class="ml-auto">
-								<span class="black-text display-6"><i class="ti-panel"></i></span>
-							</div>
-						</div>
-					</div>
-					<div class="col s12">
-						<div class="progress">
-							<div class="determinate grey darken-3" style="width:70%;"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="16x16" href="../Areas/Admin/Views/DashBoard/assets/images/favicon.png">
+    <title>MatPress - Material Design Demo</title>
+    <!-- This page CSS -->
+    <!--c3 CSS -->
+    <link href="../Areas/Admin/Views/DashBoard/assets/extra-libs/c3/c3.min.css" rel="stylesheet">
 
-	<!-- ============================================================== -->
-	<!-- Active user - project- visitors -->
-	<!-- ============================================================== -->
-	<!-- ============================================================== -->
-	<!-- Personal profile and timeline-->
-	<!-- ============================================================== -->
+    <link href="../Areas/Admin/Views/DashBoard/assets/libs/jvectormap/jquery-jvectormap.css" rel="stylesheet" />
+    <link href="../Areas/Admin/Views/DashBoard/dist/css/style.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Your custom JavaScript file -->
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/c3/c3.min.css">
+  
 
-</div>
+</head>
+<body class="container-fluid" id="main-wrapper">
+    
+      <!-- ============================================================== -->
+      <!-- Preloader - style you can find in spinners.css -->
+      <!-- ============================================================== -->
+ 
+<!-- ============================================================== -->
+<!-- Sidebar scss in sidebar.scss -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Sidebar scss in sidebar.scss -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Page wrapper scss in scafholding.scss -->
+<!-- ============================================================== -->
 
-<div class="row">
-	<!-- column -->
-	<div class="col s12 m12 l4">
+<!-- ============================================================== -->
+<!-- Title and breadcrumb -->
+<!-- ============================================================== -->
 
-		<div class="row">
-			<div class="col s12">
-				<div class="card order-widget">
-					<div class="card-content">
-						<div class="row">
-							<!-- column -->
-							<div class="col s12 m8">
-								<h5 class="card-title">Recipe Status</h5>
-								<h6 class="card-subtitle m-b-0">Total Earnings of the Month</h6>
-								<ul class="order list-inline m-t-20">
-									<li class="b-r order-category">
-										<i class="fa fa-circle m-r-5 light-blue-text font-10"></i>
-										<h4 class="font-bold font-20 m-b-0 m-t-5">@Model.recipePublic</h4>
-										<h6 class="font-14 font-light">Success</h6>
-									</li>
-									<li class="b-r order-category">
-										<i class="fa fa-circle m-r-5 blue-text font-10"></i>
-										<h4 class="font-bold font-20 m-b-0 m-t-5">@Model.recipePending</h4>
-										<h6 class="font-14 font-light">Pending</h6>
-									</li>
-									<li class="order-category">
-										<i class="fa fa-circle m-r-5 orange-text text-darken-2 font-10"></i>
-										<h4 class="font-bold font-20 m-b-0 m-t-5">@Model.recipeReject</h4>
-										<h6 class="font-14 font-light">Failed</h6>
-									</li>
-								</ul>
-							</div>
-							<!-- column -->
-							<div class="col s12 m4">
-								<div id="visitor" class="m-t-20 chart-align" style="height:150px; width: 120px;"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- column -->
-			<div class="col m12 s12 l6">
-				<div class="card light-blue">
-					<div class="card-content">
-						<h5 class="card-title white-text">Avage Access</h5>
-						<h4 class="font-medium white-text m-b-0"><i class="ti-arrow-up"></i>2 <span class="font-12 white-text op-5">2022  - 2023</span></h4>
-						<div class="m-t-20 center-align">
-							<div id="revenue"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- column -->
-			<div class="col m12 s12 l6">
-				<div class="card blue accent-4">
-					<div class="card-content">
-						<h5 class="card-title white-text">Page Views</h5>
-						<div class="d-flex no-block align-items-center">
-							<div>
-								<h4 class="white-text m-b-0"><i class="ti-arrow-up"></i> @Model.totalView</h4>
-							</div>
-							<div class="ml-auto">
-								<ul class="m-b-0">
-									<li class="white-text font-12"><i class="fa fa-circle m-r-5 white-text font-12 op-3"></i> Visit </li>
-									<li class="white-text font-12"><i class="fa fa-circle m-r-5 white-text text-accent-4 font-12"></i> Page Views </li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div class="m-t-20" id="views"></div>
-				</div>
-			</div>
-		</div>
+<!-- ============================================================== -->
+<!-- Container fluid scss in scafholding.scss -->
+<!-- ============================================================== -->
 
 
+            
+                <!-- ============================================================== -->
+                <!-- info box -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col l3 m6 s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="d-flex no-block align-items-center">
+                                            <div>
+                                                <h4>@Model.totalRecipe</h4>
+                                                <h6 class="card-subtitle">Total Recipe</h6>
+                                            </div>
+                                            <div class="ml-auto">
+                                                <span class="blue-text display-6"><i class="ti-layout-slider-alt"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col s12">
+                                        <div class="progress">
+                                            <div class="determinate indigo darken-1" style="width:70%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col l3 m6 s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="d-flex no-block align-items-center">
+                                            <div>
+                                                <h4>@Model.totalAccount</h4>
+                                                <h6 class="card-subtitle">Total Account</h6>
+                                            </div>
+                                            <div class="ml-auto">
+                                                <span class="green-text display-6"><i class="ti-layout-media-left-alt"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col s12">
+                                        <div class="progress">
+                                            <div class="determinate teal darken-2" style="width:70%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col l3 m6 s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="d-flex no-block align-items-center">
+                                            <div>
+                                                <h4>@Model.totalCategory</h4>
+                                                <h6 class="card-subtitle">Total Category</h6>
+                                            </div>
+                                            <div class="ml-auto">
+                                                <span class="orange-text display-6"><i class="ti-notepad"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col s12">
+                                        <div class="progress">
+                                            <div class="determinate amber darken-3" style="width:70%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col l3 m6 s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="d-flex no-block align-items-center">
+                                            <div>
+                                                <h4>@Model.totalFeedback</h4>
+                                                <h6 class="card-subtitle">Total FeedBack</h6>
+                                            </div>
+                                            <div class="ml-auto">
+                                                <span class="black-text display-6"><i class="ti-panel"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col s12">
+                                        <div class="progress">
+                                            <div class="determinate grey darken-3" style="width:70%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+               
+                <!-- ============================================================== -->
+                <!-- Active user - project- visitors -->
+                <!-- ============================================================== -->
+          
+                <!-- ============================================================== -->
+                <!-- Personal profile and timeline-->
+                <!-- ============================================================== -->
+               
+            </div>
 
-	</div>
-	<!-- column -->
-	<div class="col s12 m12 l4">
-		<div class="card sticky-action">
-			<div class="card-content">
-				<h5 class="card-title activator">Device Visit<i class="material-icons right">more_vert</i></h5>
-				<div id="visitor" style="height:267px; width:100%;" class="m-t-20"></div>
-				<!-- row -->-
-				<div class="row m-t-30 m-b-20">
-					<!-- column -->
-					<div class="col s4 b-r left-align">
-						<h5 class="m-b-0 font-medium">60%<small><i class="ti-arrow-up green-text"></i></small></h5>Facebook
-					</div>
-					<!-- column -->
-					<div class="col s4 b-r center-align">
-						<h5 class="m-b-0 font-medium">28%<small><i class="ti-arrow-down red-text"></i></small></h5>Google
-					</div>
-					<!-- column -->
-					<div class="col s4 right-align">
-						<h5 class="m-b-0 font-medium">12%<small><i class="ti-arrow-up green-text"></i></small></h5>Account
-					</div>
-				</div>
-			</div>
-			<div class="card-reveal">
-				<span class="card-title grey-text text-darken-4">Top Visits Pages<i class="material-icons right">close</i></span>
-				<p>Here is some more information about this product that is only revealed once clicked on.</p>
-				<div class="collection collection2 m-t-10 ">
-					<a href="#!" class="collection-item "><span class="badge">100</span>/templates/matrix-admin/</a>
-					<a href="#!" class="collection-item"><span class="new badge">400</span>/panel/home.asp</a>
-					<a href="#!" class="collection-item">/demos/admin-t...e/index2.html</a>
-					<a href="#!" class="collection-item"><span class="badge">104</span>/templates/adminwrap-lite/</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- column -->
-	<div class="col s12 m12 l4">
-		<div class="card">
-			<div class="card-content">
-				<h5 class="card-title">Top Recipe Liked</h5>
-				<div id="visitfromworld" style="width:100%; height:232px"></div>
-				<!-- row -->
-				<div class="row m-b-10">
-					<div class="col s5 right-align">@Model.Recipes[0].Title</div>
-					<div class="col s5 left-align">
-						<div class="progress white">
-							<div class="determinate blue accent-4" style="width: 90%"></div>
-						</div>
-					</div>
-					<div class="col s2 right-align">@Model.Recipes[0].NumberShare</div>
-				</div>
-				<!-- row -->
-				<div class="row m-b-10">
-					<div class="col s5 right-align">@Model.Recipes[1].Title</div>
-					<div class="col s5 left-align">
-						<div class="progress white">
-							<div class="determinate light-blue" style="width: 70%"></div>
-						</div>
-					</div>
-					<div class="col s2 right-align">@Model.Recipes[1].NumberShare</div>
-				</div>
-				<!-- row -->
-				<div class="row m-b-10">
-					<div class="col s5 right-align">@Model.Recipes[2].Title</div>
-					<div class="col s5 left-align">
-						<div class="progress white">
-							<div class="determinate purple lighten-2 accent-4" style="width: 50%"></div>
-						</div>
-					</div>
-					<div class="col s2 right-align">@Model.Recipes[2].NumberShare</div>
-				</div>
-				<!-- row -->
-				<div class="row">
-					<div class="col s5 right-align">@Model.Recipes[3].Title</div>
-					<div class="col s5 left-align">
-						<div class="progress white">
-							<div class="determinate orange accent-4" style="width:30%"></div>
-						</div>
-					</div>
-					<div class="col s2 right-align">@Model.Recipes[3].NumberShare</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+            <div class="row">
+                <!-- column -->
+                <div class="col s12 m12 l4">
+
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card order-widget">
+                                <div class="card-content">
+                                    <div class="row">
+                                        <!-- column -->
+                                        <div class="col s12 m8">
+                                            <h5 class="card-title">Recipe Status</h5>
+                                            <h6 class="card-subtitle m-b-0">Total Earnings of the Month</h6>
+                                            <ul class="order list-inline m-t-20">
+                                                <li class="b-r order-category">
+                                                    <i class="fa fa-circle m-r-5 light-blue-text font-10"></i>
+                                                    <h4 class="font-bold font-20 m-b-0 m-t-5">@Model.recipePublic</h4>
+                                                    <h6 class="font-14 font-light">Success</h6>
+                                                </li>
+                                                <li class="b-r order-category">
+                                                    <i class="fa fa-circle m-r-5 blue-text font-10"></i>
+                                                    <h4 class="font-bold font-20 m-b-0 m-t-5">@Model.recipePending</h4>
+                                                    <h6 class="font-14 font-light">Pending</h6>
+                                                </li>
+                                                <li class="order-category">
+                                                    <i class="fa fa-circle m-r-5 orange-text text-darken-2 font-10"></i>
+                                                    <h4 class="font-bold font-20 m-b-0 m-t-5">@Model.recipeReject</h4>
+                                                    <h6 class="font-14 font-light">Failed</h6>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!-- column -->
+                                        <div class="col s12 m4">
+                                            <div id="visitor" class="m-t-20 chart-align" style="height:150px; width: 120px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- column -->
+                        <div class="col m12 s12 l6">
+                            <div class="card light-blue">
+                                <div class="card-content">
+                                    <h5 class="card-title white-text">Avage Access</h5>
+                                    <h4 class="font-medium white-text m-b-0"><i class="ti-arrow-up"></i>2 <span class="font-12 white-text op-5">2022  - 2023</span></h4>
+                                    <div class="m-t-20 center-align">
+                                        <div id="revenue"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- column -->
+                        <div class="col m12 s12 l6">
+                            <div class="card blue accent-4">
+                                <div class="card-content">
+                                    <h5 class="card-title white-text">Page Views</h5>
+                                    <div class="d-flex no-block align-items-center">
+                                        <div>
+                                            <h4 class="white-text m-b-0"><i class="ti-arrow-up"></i> @Model.totalView</h4>
+                                        </div>
+                                        <div class="ml-auto">
+                                            <ul class="m-b-0">
+                                                <li class="white-text font-12"><i class="fa fa-circle m-r-5 white-text font-12 op-3"></i> Visit </li>
+                                                <li class="white-text font-12"><i class="fa fa-circle m-r-5 white-text text-accent-4 font-12"></i> Page Views </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="m-t-20" id="views"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <!-- column -->
+                <div class="col s12 m12 l4">
+                    <div class="card sticky-action">
+                        <div class="card-content">
+                            <h5 class="card-title activator">Device Visit<i class="material-icons right">more_vert</i></h5>
+                            <div id="visitor" style="height:267px; width:100%;" class="m-t-20"></div>
+                            <!-- row -->-
+                            <div class="row m-t-30 m-b-20">
+                                <!-- column -->
+                                <div class="col s4 b-r left-align">
+                                    <h5 class="m-b-0 font-medium">60%<small><i class="ti-arrow-up green-text"></i></small></h5>Facebook
+                                </div>
+                                <!-- column -->
+                                <div class="col s4 b-r center-align">
+                                    <h5 class="m-b-0 font-medium">28%<small><i class="ti-arrow-down red-text"></i></small></h5>Google
+                                </div>
+                                <!-- column -->
+                                <div class="col s4 right-align">
+                                    <h5 class="m-b-0 font-medium">12%<small><i class="ti-arrow-up green-text"></i></small></h5>Account
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-reveal">
+                            <span class="card-title grey-text text-darken-4">Top Visits Pages<i class="material-icons right">close</i></span>
+                            <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                            <div class="collection collection2 m-t-10 ">
+                                <a href="#!" class="collection-item "><span class="badge">100</span>/templates/matrix-admin/</a>
+                                <a href="#!" class="collection-item"><span class="new badge">400</span>/panel/home.asp</a>
+                                <a href="#!" class="collection-item">/demos/admin-t...e/index2.html</a>
+                                <a href="#!" class="collection-item"><span class="badge">104</span>/templates/adminwrap-lite/</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- column -->
+                <div class="col s12 m12 l4">
+                    <div class="card">
+                        <div class="card-content">
+                            <h5 class="card-title">Top Recipe Liked</h5>
+                            <div id="visitfromworld" style="width:100%; height:232px"></div>
+                            <!-- row -->
+                            <div class="row m-b-10">
+                                <div class="col s5 right-align" name="india" >@Model.Recipes[0].Title</div>
+                                <div class="col s5 left-align">
+                                    <div class="progress white">
+                                        <div class="determinate blue accent-4" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                        <div class="col s2 right-align">@Model.Recipes[0].NumberShare</div>
+                            </div>
+                            <!-- row -->
+                            <div class="row m-b-10">
+                        <div class="col s5 right-align">@Model.Recipes[1].Title</div>
+                                <div class="col s5 left-align">
+                                    <div class="progress white">
+                                        <div class="determinate light-blue" style="width: 70%"></div>
+                                    </div>
+                                </div>
+                        <div class="col s2 right-align">@Model.Recipes[1].NumberShare</div>
+                            </div>
+                            <!-- row -->
+                            <div class="row m-b-10">
+                        <div class="col s5 right-align">@Model.Recipes[2].Title</div>
+                                <div class="col s5 left-align">
+                                    <div class="progress white">
+                                        <div class="determinate purple lighten-2 accent-4" style="width: 50%"></div>
+                                    </div>
+                                </div>
+                        <div class="col s2 right-align">@Model.Recipes[2].NumberShare</div>
+                            </div>
+                            <!-- row -->
+                            <div class="row">
+                        <div class="col s5 right-align">@Model.Recipes[3].Title</div>
+                                <div class="col s5 left-align">
+                                    <div class="progress white">
+                                        <div class="determinate orange accent-4" style="width:30%"></div>
+                                    </div>
+                                </div>
+                        <div class="col s2 right-align">@Model.Recipes[3].NumberShare</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+<!-- ============================================================== -->
+<!-- All Required js -->
+<!-- ============================================================== -->
+    <script src="../Areas/Admin/Views/DashBoard/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../Areas/Admin/Views/DashBoard/dist/js/materialize.min.js"></script>
+    <script src="../Areas/Admin/Views/DashBoard/assets/libs/perfect-scrollbar/dist/js/perfect-scrollbar.jquery.min.js"></script>
+<!-- ============================================================== -->
+<!-- Apps -->
+<!-- ============================================================== -->
+    <script src="../Areas/Admin/Views/DashBoard/dist/js/app.js"></script>
+    <script src="../Areas/Admin/Views/DashBoard/dist/js/app.init.js"></script>
+    <script src="../Areas/Admin/Views/DashBoard/dist/js/app-style-switcher.js"></script>
+<!-- ============================================================== -->
+<!-- Custom js -->
+<!-- ============================================================== -->
+    <script src="../Areas/Admin/Views/DashBoard/dist/js/custom.min.js"></script>
+
+<!-- ============================================================== -->
+<!-- This page plugin js -->
+<!-- ============================================================== -->
+    <script src="../Areas/Admin/Views/DashBoard/assets/libs/chartist/dist/chartist.min.js"></script>
+    <script src="../Areas/Admin/Views/DashBoard/assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+<!--c3 JavaScript -->
+    <script src="../Areas/Admin/Views/DashBoard/assets/extra-libs/c3/d3.min.js"></script>
+    <script src="../Areas/Admin/Views/DashBoard/assets/extra-libs/c3/c3.min.js"></script>
+    <script src="../Areas/Admin/Views/DashBoard/assets/libs/chart.js/dist/Chart.min.js"></script>
+    <script src="../Areas/Admin/Views/DashBoard/dist/js/pages/dashboards/dashboard2.js"></script>
+    <script src="../Areas/Admin/Views/DashBoard/assets/extra-libs/sparkline/sparkline.js"></script>
+    <script >
+        $(function () {
+            "use strict";
+            // ==============================================================
+            // our visitor
+            // ==============================================================
+
+            var chart = c3.generate({
+                bindto: '#visitor',
+                data: {
+                    columns: [
+                        ['desktop', 60],
+                        ['tablet', 12],
+                        ['mobile', 28],
+
+                    ],
+                    type: 'donut',
+                    onclick: function (d, i) {
+                        console.log("onclick", d, i);
+                    },
+                    onmouseover: function (d, i) {
+                        console.log("onmouseover", d, i);
+                    },
+                    onmouseout: function (d, i) {
+                        console.log("onmouseout", d, i);
+                    }
+                },
+                donut: {
+                    label: {
+                        show: false
+                    },
+                    title: "visits",
+                    width: 35,
+
+                },
+                legend: {
+                    hide: true
+                    //or hide: 'data1'
+                    //or hide: ['data1', 'data2']
+                },
+                color: {
+                    pattern: ['#40c4ff', '#2961ff', '#ff821c', '#7e74fb']
+                }
+            });
+            // ==============================================================
+            // our visitor
+            // ==============================================================
+            var sparklinelogin = function () {
+                $('#active-users').sparkline([6, 10, 9, 11, 9, 10, 12, 10, 9, 11, 9, 10, 12, 10, 9, 11, 9, 10, 12], {
+                    type: 'bar',
+                    height: '60',
+                    barwidth: '4',
+                    width: '100%',
+                    resize: true,
+                    barspacing: '8',
+                    barcolor: '#2961ff'
+                });
+
+            };
+            var sparkresize;
+
+            $(window).resize(function (e) {
+                cleartimeout(sparkresize);
+                sparkresize = settimeout(sparklinelogin, 500);
+            });
+            sparklinelogin();
+
+            // ==============================================================
+            // world map
+            // ==============================================================
+            jquery('#visitfromworld').vectormap({
+                map: 'world_mill_en',
+                backgroundcolor: 'transparent',
+                bordercolor: '#000',
+                borderopacity: 0,
+                borderwidth: 0,
+                zoomonscroll: false,
+                color: '#93d5ed',
+                regionstyle: {
+                    initial: {
+                        fill: '#93d5ed',
+                        'stroke-width': 1,
+                        'stroke': '#fff'
+                    }
+                },
+                markerstyle: {
+                    initial: {
+                        r: 5,
+                        'fill': '#93d5ed',
+                        'fill-opacity': 1,
+                        'stroke': '#93d5ed',
+                        'stroke-width': 1,
+                        'stroke-opacity': 1
+                    },
+                },
+                enablezoom: true,
+                hovercolor: '#79e580',
+                markers: [{
+                    latlng: [21.00, 78.00],
+                    name: 'india : 9347',
+                    style: {
+                        fill: '#2961ff'
+                    }
+                }, {
+                    latlng: [-33.00, 151.00],
+                    name: 'australia : 250',
+                    style: {
+                        fill: '#ff821c'
+                    }
+                }, {
+                    latlng: [36.77, -119.41],
+                    name: 'usa : 250',
+                    style: {
+                        fill: '#40c4ff'
+                    }
+                }, {
+                    latlng: [55.37, -3.41],
+                    name: 'uk   : 250',
+                    style: {
+                        fill: '#398bf7'
+                    }
+                }, {
+                    latlng: [25.20, 55.27],
+                    name: 'uae : 250',
+                    style: {
+                        fill: '#6fc826'
+                    }
+                }],
+                hoveropacity: null,
+                normalizefunction: 'linear',
+                scalecolors: ['#93d5ed', '#93d5ee'],
+                selectedcolor: '#c9dfaf',
+                selectedregions: [],
+                showtooltip: true,
+                onregionclick: function (element, code, region) {
+                    var message = 'you clicked "' + region + '" which has the code: ' + code.touppercase();
+                    alert(message);
+                }
+            });
+        });
+
+    </script>
+      <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://unpkg.com/c3/c3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
+</body>
+
