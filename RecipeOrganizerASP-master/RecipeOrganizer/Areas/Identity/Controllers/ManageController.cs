@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using Services.Models.Authentication;
 using RecipeOrganizer.Areas.Identity.Models;
 using Services;
+using Services.Repository;
+using Services.Data;
 
 namespace RecipeOrganizer.Areas.Identity.Controllers
 {
@@ -27,6 +29,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ManageController> _logger;
         private readonly FireBaseService _fireBaseService;
+        private readonly NotificationRepository _notificationRepository;
         private readonly string USER_NAV = "UserNav";
         private readonly string ACCOUNT_NAV = "AccountNav";
 
@@ -43,6 +46,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _notificationRepository = new NotificationRepository();
            
         }
 
@@ -61,14 +65,18 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                 : "";
 
             var user = await GetCurrentUserAsync();
+            if (user == null)
+            {
+                RedirectToAction("Login", "Account");
+            }
             var model = new IndexViewModel
             {
                 HasPassword = await _userManager.HasPasswordAsync(user),
-                PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
-                TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
+                //PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
+                //TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
                 Logins = await _userManager.GetLoginsAsync(user),
-                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
-                AuthenticatorKey = await _userManager.GetAuthenticatorKeyAsync(user),
+                //BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
+                //AuthenticatorKey = await _userManager.GetAuthenticatorKeyAsync(user),
                 profile = new EditExtraProfileModel()
                 {
                     Img = user.Image,
@@ -451,5 +459,15 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
 
             return RedirectToAction(nameof(Index), "Manage");
         }
-    }
+
+		//
+		// GET: /Manage/AllNotification
+		public IActionResult AllNotification()
+		{
+            var user = GetCurrentUserAsync();
+            var userID = user.Result.Id;
+            var model = _notificationRepository.GetAllNofiticationOfUserWithMetadata(userID);
+			return View(model);
+		}
+	}
 }

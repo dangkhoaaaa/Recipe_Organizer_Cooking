@@ -116,10 +116,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Error\" />
     <Folder Include="wwwroot\admin\assets\libs\materialize-css\dist\fonts\" />
   </ItemGroup>
 
   <ItemGroup>
+
+
     <None Include="wwwroot\assets\css\animated.css" />
     <None Include="wwwroot\assets\css\fontawesome.css" />
     <None Include="wwwroot\assets\css\owl.css" />

@@ -1,0 +1,132 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model List<RecipeNotification>
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+	ViewBag.Title = "All Notification";
+	Layout = "_ProfileLayout";
+}
+
+@{
+	//List<RecipeNotification> listNotification = new List<RecipeNotification>();
+	//NotificationRepository _notificationRepository = new NotificationRepository();
+	//listNotification = _notificationRepository.GetNofiticationWithIsReadWithMetada(false).Where(p => p.user.Id == user.Id).ToList();
+}
+
+<div class="row">
+	<div class="col-lg-12 margin-bottom-40px">
+		<div class="box-shadow border-radius-10 overflow-hidden">
+			<div class="padding-30px background-white">
+				<h2>@ViewBag.Title</h2>
+				<p>Your nofitication</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+@if (Model.Count > 0)
+{
+	var listNotification = Model.OrderByDescending(p => p.Recipe.Date).ToList();
+	<!-- have -->
+	<div class="container margin-bottom-100px">
+		<div class="row">
+			@foreach (var item in listNotification)
+			{
+				<!-- item -->
+				<div class="col-lg-12 margin-bottom-20px">
+					<div class="background-white thum-hover box-shadow hvr-float full-width">
+
+						<div class="float-md-left margin-right-30px thum-xs">
+							@if (item.Recipe.Status == "public")
+							{
+								<a href="/Recipe/RecipeDetail/?id=@item.Recipe.RecipeId"><img class="width-200px" src="@item.Recipe.Image" alt=""></a>
+							}
+							else
+							{
+								<a href="/Recipe/UsrPendingRecipe/?id=@item.Recipe.RecipeId"><img class="width-200px" src="@item.Recipe.Image" alt=""></a>
+							}
+						</div>
+						<div class="padding-25px">
+							<div class="row">
+								<div class="col-10">
+									<h3>
+										@if (@item.Recipe.Status == "public")
+										{
+											<a class="text-dark" href="/Recipe/UsrPendingRecipe/?id=@item.Recipe.RecipeId">@item.Recipe.Title</a>
+										}
+										else
+										{
+											<a class="text-dark" href="/Recipe/UsrPendingRecipe/?id=@item.Recipe.RecipeId">@item.Recipe.Title</a>
+										}
+									</h3>
+									<h4>
+										@item.Notification.Message
+									</h4>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-8 text-left">@MyToys.getLastTime(@item.Recipe.Date)</div>
+								<div class="col-4 text-right">
+									@if (@item.Recipe.Status == "public")
+									{
+										<span class="text-success">Public</span>
+										<span> - </span>
+										<a href="/Recipe/RecipeDetail/?id=@item.Recipe.RecipeId" class="text-grey-4">View</a>
+									}
+									else if (@item.Recipe.Status == "pending")
+									{
+										<span class="text-warning">Pending</span>
+										<span> - </span>
+										<a href="/Recipe/EditRecipe/?id=@item.Recipe.RecipeId" class="text-grey-4">Edit</a>
+									}
+									else if (@item.Recipe.Status == "draft")
+									{
+										<span class="text-dark">Draft</span>
+										<span> - </span>
+										<a href="/Recipe/EditRecipe/?id=@item.Recipe.RecipeId" class="text-grey-4">Edit</a>
+									}
+									else if (@item.Recipe.Status == "trash")
+									{
+										<span class="text-dark">Trash</span>
+									}
+									else if (@item.Recipe.Status == "rejected")
+									{
+										<span class="text-danger">Rejected</span>
+									}
+									else
+									{
+										<span class="">@item.Recipe.Status</span>
+									}
+								</div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+				<!-- // item -->
+			}
+		</div>
+	</div>
+	<!-- // have -->
+}
+else
+{
+	<div class="col-lg-12 margin-bottom-40px">
+		<div class="box-shadow border-radius-10 overflow-hidden">
+			<div class="padding-30px background-white">
+				<div class="text-center">
+					<h3>You haven't created any recipes yet.</h3>
+					<p>To add a recipe click the button below</p>
+					<a href="@Url.Action("AddNewRecipe", "Recipe")"
+					   class="btn box-shadow margin-top-50px padding-tb-10px btn-sm border-2 border-radius-30 btn-inline-block width-210px background-second-color text-white">
+						<i class="fas fa-plus"></i> Add A Recipes
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+

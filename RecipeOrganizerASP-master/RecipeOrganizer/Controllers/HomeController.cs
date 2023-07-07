@@ -23,13 +23,35 @@ namespace RecipeOrganizer.Controllers
 			return View();
 		}
 
-		public ActionResult Error()
+		public IActionResult Error()
 		{
 			return View();
 		}
+		[Route("/StatusCodeError/{statusCode}")]
+        public IActionResult Error(int statusCode)
+        {
+			string errorPage = "defaultErrorPage";
+			if (statusCode == 404)
+			{
+				ViewBag.ErrorMessage = "404 Page Not Found.";
+				errorPage = "404Page";
+			}
+			else if (statusCode == 408) 
+			{
+				ViewBag.ErrorMessage = "Server request timed out.";
+				errorPage = "408Page";
+			}
+			else if (statusCode >= 500)
+			{
+				ViewBag.ErrorMessage = "Oops something went wrong, Try to refresh this page or </br> feel free to contact us if the problem presistes!!";
+				errorPage = "500Page";
+			}
+            return View(errorPage);
+        }
 
 
-		[HttpGet]
+
+        [HttpGet]
 		public ActionResult Search()
 		{
 			return RedirectToAction("SearchKeyWord", "Search");
