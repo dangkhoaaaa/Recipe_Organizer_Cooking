@@ -1,0 +1,37 @@
+﻿@model List<Category>
+
+
+<div class="">
+
+    <div class="title text-center ">
+        <h2 class="font-weight-700 text-main-color hvr-bounce-to-top">All Category</h2>
+        <div class="row justify-content-center margin-bottom-20px ">
+            <div class="col-md-7">
+                <p class="text-grey-2 hvr-underline-reveal">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+      
+        <div class="row autoplay1">
+
+            @foreach (var item in Model)
+            {
+
+                <div class="col-xl-3 col-lg-4 col-md-6 hvr-bounce-to-top  ">
+                    <a href="/Items/DisplayCategoryIngredient/?categoryId=@item.CategoryId" class="d-block box-shadow background-main-color text-white hvr-buzz ">
+                        <div class="thum hvr-float "><img src="@item.Image" alt=""></div>
+                        <h4 class="text-center padding-15px  "> @item.Title</h4>
+                    </a>
+                </div>
+
+            }
+
+
+        </div>
+    </div>
+</div>
+
+

@@ -72,7 +72,7 @@ namespace RecipeOrganizer.Controllers
 		//         return View(results);
 		//     }
 
-		public async Task<IActionResult> SearchKeyWord(string keyword, int productPage = 1)
+		public async Task<IActionResult> SearchKeyWord(string keyword="", int productPage = 1)
 		{
 			ViewBag.Keyword = keyword;
 			List<Recipe> results = null;
