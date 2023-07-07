@@ -10,16 +10,15 @@ namespace RecipeOrganizerTest
 {
     [TestFixture]
     // attribute denotes a class that contains unit tests
-    public class LoginTest
+    public class UtilityTest
     {
         [Test]
         // attribute indicates a method is a test method.
-        public void LoginTest_COM1_Returns1()
+        public void LastLoginTest_COM1_Returns1()
         {
             const string expected = "Just now";
             var result = MyToys.getLastTime(DateTime.Now);
             Assert.AreEqual(expected, result);
-            
         }
     }
 }
