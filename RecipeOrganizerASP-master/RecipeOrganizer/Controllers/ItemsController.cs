@@ -70,7 +70,16 @@ namespace RecipeOrganizer.Controllers
 				);
 		}
 
-		public async Task<IActionResult> SearchKeyWordFitler(string keyword, string filter, int productPage = 1)
+        public async Task<IActionResult> GetCategorybyIdParent(int categoryId)
+        {
+			List<Category> categories = _categoryRepository.getListCategoryAll();
+            return View("DisplayCategoybyParent",
+           categories
+                );
+        }
+
+
+        public async Task<IActionResult> SearchKeyWordFitler(string keyword, string filter, int productPage = 1)
 		{
 			ViewBag.Keyword = keyword;
 			ViewBag.filter = filter;

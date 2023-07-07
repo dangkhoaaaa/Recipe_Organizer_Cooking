@@ -121,17 +121,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\assets\img\404error.jpg" />
-    <None Include="wwwroot\assets1\fonts\flexslider-icon.svg" />
-    <None Include="wwwroot\assets1\fonts\fontawesome-webfont.svg" />
-    <None Include="wwwroot\assets1\fonts\fontawesome-webfont.woff2" />
-    <None Include="wwwroot\assets1\fonts\slick.svg" />
-    <None Include="wwwroot\assets1\js\animation.js" />
-    <None Include="wwwroot\assets1\js\custom.js" />
-    <None Include="wwwroot\assets1\js\imagesloaded.js" />
-    <None Include="wwwroot\assets1\js\isotope.js" />
-    <None Include="wwwroot\assets1\js\owl-carousel.js" />
-    <None Include="wwwroot\assets1\js\tabs.js" />
+
+
     <None Include="wwwroot\assets\css\animated.css" />
     <None Include="wwwroot\assets\css\fontawesome.css" />
     <None Include="wwwroot\assets\css\owl.css" />
