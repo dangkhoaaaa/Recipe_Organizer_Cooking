@@ -56,7 +56,7 @@
 		<!-- item -->
 	@if (Model.Recipes != null && ViewBag.notfound != "")
 	{
-					<div class="recipes-masonry">
+					<div class="recipes-masonry padding-10px">
 			@foreach (var item in Model.Recipes)
 			{
 
@@ -171,12 +171,7 @@
 	{
 					<h1 color="red">@ViewBag.notfound</h1>
 	}
-		<!-- // item -->
-		<!--
-				<div class="text-center">
-			<a href="#" class="btn box-shadow margin-bottom-80px padding-tb-10px btn-sm border-2 border-radius-30 btn-inline-block width-210px background-dark text-white">Loading more</a>
-		</div>
-			-->
+	
 
 
 	</div>

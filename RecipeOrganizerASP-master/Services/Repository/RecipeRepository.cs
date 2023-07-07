@@ -43,7 +43,7 @@ namespace Services.Repository
 		public List<Recipe> getRecipeByKeyword(string keyword)
 		{
 			List<Recipe> listRecipe = new List<Recipe>();
-			if (keyword.Equals("")) return _dbSet.ToList();
+		   //	if (keyword.Equals("")) return _dbSet.ToList();
 			if (keyword != null && keyword.Length > 0 && keyword.Trim() != "")
 			{
 				//var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
