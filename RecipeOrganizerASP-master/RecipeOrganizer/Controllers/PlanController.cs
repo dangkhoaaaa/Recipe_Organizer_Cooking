@@ -194,16 +194,21 @@ namespace RecipeOrganizer.Controllers
 			var user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
-                Recipe? recipe = _recipeRepository.GetAll()
-            .FirstOrDefault(p => p.RecipeId == recipeID);
-                if (recipe != null)
+                Slot = HttpContext.Session.GetJson<Slot>("cart");
+                if(week != null)
                 {
-					ViewBag.week = week;
-					Slot = HttpContext.Session.GetJson<Slot>("cart");
-                    Slot.RemoveRecipe(slotNow, recipe, user.Id, week);
-                    HttpContext.Session.SetJson("cart", Slot);
+                    Recipe? recipe = _recipeRepository.GetAll()
+            .FirstOrDefault(p => p.RecipeId == recipeID);
+                    if (recipe != null)
+                    {
+                        ViewBag.week = week;
+
+                        Slot.RemoveRecipe(slotNow, recipe, user.Id, week);
+                        HttpContext.Session.SetJson("cart", Slot);
+                    }
+                    return View("ViewPLan", Slot);
                 }
-                return View("ViewPLan", Slot);
+                
             }
 			return RedirectToAction("Index", "Home");
 		}
@@ -213,17 +218,20 @@ namespace RecipeOrganizer.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user != null)
             {
-                
-                
-
-                ViewBag.week = week;
-
-
                 Slot = HttpContext.Session.GetJson<Slot>("cart");
-               
-                Slot = _mealPlaningRepository.showPlan(week, user.Id);
+                if (week != null)
+                {
+                    ViewBag.week = week;
 
-                HttpContext.Session.SetJson("cart", Slot);
+
+                    
+
+                    Slot = _mealPlaningRepository.showPlan(week, user.Id);
+
+                    HttpContext.Session.SetJson("cart", Slot);
+                }
+
+               
 
 
 
@@ -277,33 +285,38 @@ namespace RecipeOrganizer.Controllers
             if (user != null)
             {
                 Slot = HttpContext.Session.GetJson<Slot>("cart");
-                List<CartLine> cartLines = new List<CartLine>();
-                foreach (var line in Slot.Lines)
+                if (week != null)
                 {
-                    if (line.Week == week && line.UserID == user.Id)
-                    {
-                        cartLines.Add(line);
-                    }
-                }
-                
-               
-
                     
+                    List<CartLine> cartLines = new List<CartLine>();
+                    foreach (var line in Slot.Lines)
+                    {
+                        if (line.Week == week && line.UserID == user.Id)
+                        {
+                            cartLines.Add(line);
+                        }
+                    }
+
+
+
+
                     _mealPlaningRepository.AddPlan(cartLines, week, user.Id);
 
-                   Slot = _mealPlaningRepository.showPlan(week, user.Id);
-               
-                //    Recipe? recipe = _recipeRepository.GetAll()
-                //.FirstOrDefault(p => p.RecipeId == recipeID);
-                //    if (recipe != null)
-                //    {
-                //        ViewBag.week = week;
-                //        Slot = HttpContext.Session.GetJson<Slot>("cart");
-                //        Slot.RemoveSlot(slotNow, recipe, user.Id, week);
-                //        HttpContext.Session.SetJson("cart", Slot);
-                //    }
+                    Slot = _mealPlaningRepository.showPlan(week, user.Id);
 
-                HttpContext.Session.SetJson("cart", Slot);
+                    //    Recipe? recipe = _recipeRepository.GetAll()
+                    //.FirstOrDefault(p => p.RecipeId == recipeID);
+                    //    if (recipe != null)
+                    //    {
+                    //        ViewBag.week = week;
+                    //        Slot = HttpContext.Session.GetJson<Slot>("cart");
+                    //        Slot.RemoveSlot(slotNow, recipe, user.Id, week);
+                    //        HttpContext.Session.SetJson("cart", Slot);
+                    //    }
+
+                    HttpContext.Session.SetJson("cart", Slot);
+                }
+                
 
                 return View("ViewPLan", Slot);
             }

@@ -234,7 +234,7 @@
                                                         {
                                                             
                                                             <a href="/Recipe/RecipeDetail/?id=@recipe.RecipeId">
-                                                                <img class="my-1 p-1 rounded-6" width="100px" height="95px" src="@recipe.Image" alt="@recipe.Title" title="@recipe.Title">
+                                                                <img class="my-1 p-1 rounded-6" style=" max-width: 100px; height: 95px" src="@recipe.Image" alt="@recipe.Title" title="@recipe.Title">
                                                             </a>
                                                             <button type="button" style="color : #bc5836;float: initial;" class="close btn btn-light " aria-label="Close" onclick="window.location.href='/Plan/RemoveFromCart/?slotNow=@(3*j+i)&recipeID=@recipe.RecipeId&week=@ViewBag.week'">
                                                                 <span aria-hidden="true">&times;</span>
