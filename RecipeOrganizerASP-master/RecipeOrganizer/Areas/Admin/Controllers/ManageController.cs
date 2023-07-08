@@ -248,7 +248,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 return View("Index");
             }
             var listUserRecipe = _recipeRepository.GetByAuthor(userID);
-            var model = new UserReipceViewModel {
+            var model = new UserRecipeViewModel {
                 User = user,
                 UserRecipe = listUserRecipe,
                 TotalRecipe = listUserRecipe.Count(),

@@ -36,6 +36,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 		private readonly TagRepository _tagRepository;
 		private readonly RecipeHasTagRepository _recipeHasTagRepository;
 		private readonly NotificationRepository _notificationRepository;
+		private readonly MediaRepository _mediaRepository;
 
 		public RecipeController(
 		UserManager<AppUser> userManager,
@@ -57,6 +58,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 			_tagRepository = new TagRepository();
 			_recipeHasTagRepository = new RecipeHasTagRepository();
             _notificationRepository = new NotificationRepository();
+			_mediaRepository = new MediaRepository();
 
         }
 
@@ -190,6 +192,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 			sendNotification(recipeID, status);
 			var model = _recipeRepository.GetRecipesWithID(recipeID);
 			model.Recipe.AvgRate = 76;
+			model.Medias = _mediaRepository.GetImgsByRecipeId(recipeID);
 			model.Ingredients = _ingredientRepository.GetByRecipeId(recipeID);
 			model.Directions = _directionRepository.GetByRecipeId(recipeID);
 			model.Tags = _recipeHasTagRepository.GetTagsByRecipeId(recipeID);

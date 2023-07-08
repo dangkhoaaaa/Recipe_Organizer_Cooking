@@ -18,6 +18,7 @@ namespace Services.Data
         //public double? AvgRate { get; set; } 
         public Recipe Recipe { get; set; }
         public AppUser User { get; set; }
+        public List<Media> Medias { get; set; }
         public List<Ingredient> Ingredients { get; set; }
         public List<Direction> Directions { get; set; }
         public List<Tag> Tags { get; set; }
