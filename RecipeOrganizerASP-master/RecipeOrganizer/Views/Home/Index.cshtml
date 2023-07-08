@@ -1,33 +1,11 @@
 ﻿@{
 	ViewData["Title"] = "Home Page";
 }
-<head>
+@{
 
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="">
-	<meta name="author" content="">
+	Layout = "_Layout";
+}
 
-
-
-
-	<!-- Bootstrap core CSS -->
-	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-
-	<!-- Additional CSS Files -->
-
-	<link rel="stylesheet" href="/assets/css/templatemo-seo-dream.css">
-	<link rel="stylesheet" href="/assets/css/animated.css">
-	<link rel="stylesheet" href="/assets/css/owl.css">
-	<!--
-
-	TemplateMo 563 SEO Dream
-
-
-	-->
-
-</head>
 
 	<div class="autoplayBanner">
 
@@ -90,7 +68,7 @@
 				<div class="position-relative" style="z-index: 1;">
 					<h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>
 					<h1 class="mb-4 font-weight-semi-bold " style="color: #ff8ac4;">Spring Collection</h1>
-					<a href="" class="btn btn-outline-primary py-md-2 px-md-3">View Now</a>
+					<a href="/Items/DisplayCategoryIngredient/?categoryId=1" class="btn btn-outline-primary py-md-2 px-md-3">View Now</a>
 				</div>
 			</div>
 		</div>
@@ -101,7 +79,7 @@
 				<div class="position-relative" style="z-index: 1;">
 					<h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>
 					<h1 class="mb-4 font-weight-semi-bold">Winter Collection</h1>
-					<a href="" class="btn btn-outline-primary py-md-2 px-md-3">View Now</a>
+					<a href="/Items/DisplayCategoryIngredient/?categoryId=12" class="btn btn-outline-primary py-md-2 px-md-3">View Now</a>
 				</div>
 			</div>
 		</div>
@@ -175,7 +153,7 @@
 
 
 <div id="features" class="features section">
-	<div class="container">
+	<div class="padding-lr-50px">
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="features-content">
@@ -228,11 +206,11 @@
 				</div>
 			</div>
 			<div class="col-lg-12">
-				<div class="skills-content">
-					<div class="row">
+				<div class="skills-content align-self-stretch">
+					<div class="row ">
 						<div class="col-lg-3">
 							<div class="skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0s">
-								<div class="progress" data-percentage="80">
+								<div class="progress" style="height: 100px; width:100px; border-radius: 50px; transform: scale(1.5);" data-percentage="80" " data-percentage="80">
 									<span class="progress-left">
 										<span class="progress-bar"></span>
 									</span>
@@ -250,7 +228,7 @@
 						</div>
 						<div class="col-lg-3">
 							<div class="skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0.2s">
-								<div class="progress" data-percentage="60">
+								<div class="progress" style="height: 100px; width:100px; border-radius: 50px; transform: scale(1.5);" data-percentage="60">
 									<span class="progress-left">
 										<span class="progress-bar"></span>
 									</span>
@@ -268,7 +246,7 @@
 						</div>
 						<div class="col-lg-3">
 							<div class="skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0.4s">
-								<div class="progress" data-percentage="90">
+								<div class="progress" style="height: 100px; width:100px; border-radius: 50px; transform: scale(1.5);" data-percentage="90">
 									<span class="progress-left">
 										<span class="progress-bar"></span>
 									</span>
@@ -286,7 +264,7 @@
 						</div>
 						<div class="col-lg-3">
 							<div class="skill-item last-skill-item wow fadeIn" data-wow-duration="1s" data-wow-delay="0.6s">
-								<div class="progress" data-percentage="70">
+								<div class="progress" style="height: 100px; width:100px; border-radius: 50px; transform: scale(1.5);" data-percentage="70">
 									<span class="progress-left">
 										<span class="progress-bar"></span>
 									</span>
@@ -497,11 +475,5 @@
 	]
 		});
 	</script>
-	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="/vendor/jquery/jquery.min.js"></script>
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/js/owl-carousel.js"></script>
-<script src="/assets/js/animation.js"></script>
-<script src="/assets/js/imagesloaded.js"></script>
-<script src="/assets/js/custom.js"></script>
+
 
