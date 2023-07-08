@@ -25,15 +25,35 @@ namespace Services.Repository
 		{
 			//var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
 			List<Category> listRecipe = new List<Category>();
+			int count = 0;
 			foreach (Category category in _dbSet1)
 			{
-				if (category.ParentId == categoryID) { listRecipe.Add(category); }
+				if ((category.ParentId == categoryID)&&(count<10)) { listRecipe.Add(category);
+					count++;
+				}
 			}
 			// return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
 			return listRecipe;
 		}
 
-		public Category getInfCategory(int categoryID)
+        public List<Category> getListCategoryAll()
+        {
+            //var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
+            List<Category> listRecipe = new List<Category>();
+            
+            foreach (Category category in _dbSet1)
+            {
+                
+                    listRecipe.Add(category);
+                 
+            }
+            // return _dbSet.Where(p => p.Title.Contains(keyword)).ToList();
+            return listRecipe;
+        }
+
+
+
+        public Category getInfCategory(int categoryID)
 		{
 			//var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
 			List<Category> listRecipe = new List<Category>();

@@ -51,7 +51,7 @@ namespace Services.Repository
 
 			if (recipeId != 0)
 			{
-				var metaDataList = _dbSet.Where(r => r.MetaData.Any(md => md.RecipeId == recipeId && md.FeedbackId == null)).ToList();
+				var metaDataList = _dbSet.Where(r => r.MetaData.Any(md => md.RecipeId == recipeId)).ToList();
 
 				foreach (var metaData in metaDataList)
 				{

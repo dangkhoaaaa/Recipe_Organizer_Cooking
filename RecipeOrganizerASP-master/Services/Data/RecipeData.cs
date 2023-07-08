@@ -23,12 +23,12 @@ namespace Services.Data
 		public List<Tag>? Tags { get; set; }
 		public string? Img { get; set; }
 		public List<string>? Imgs { get; set; }
-		public List<int> CategoryInput { get; set; }
-		public List<int> SelectedCategories { get; set; }
+		public List<int>? CategoryInput { get; set; }
+		public List<int>? SelectedCategories { get; set; }
 		public List<Category>? Categories { get; set; }
 		public double? AvgRate { get; set; }
 		public bool Collection { get; set; }
 		public string? Author { get; set; }
-
+		public bool Review { get; set; }
 	}
 }
