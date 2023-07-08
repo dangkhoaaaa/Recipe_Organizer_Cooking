@@ -182,7 +182,52 @@
 					</div>
 				</div>
 				<div id="addFeedback">
-					@if (SignInManager.IsSignedIn(User) && Model.Review)
+					@if (SignInManager.IsSignedIn(User) && !Model.Review)
+					{
+						<div class="margin-bottom-40px box-shadow">
+							<div class="padding-30px background-white">
+								<h3><i class="far fa-star margin-right-10px text-main-color"></i> Add Review </h3>
+								<hr>
+								<form method="post" action="/Feedback/AddFeedback/@Model.RecipeId" enctype="multipart/form-data">
+									<input type="hidden" name="RecipeId" value="@Model.RecipeId" />
+									<div class="rating">
+										<div class="stars">
+											<input hidden type="radio" name="Rating" value="1" id="rating-1">
+											<label for="rating-1"><i class="fa-solid fa-star"></i></label>
+											<input hidden type="radio" name="Rating" value="2" id="rating-2">
+											<label for="rating-2"><i class="fa-solid fa-star"></i></label>
+											<input hidden type="radio" name="Rating" value="3" id="rating-3">
+											<label for="rating-3"><i class="fa-solid fa-star"></i></label>
+											<input hidden type="radio" name="Rating" value="4" id="rating-4">
+											<label for="rating-4"><i class="fa-solid fa-star"></i></label>
+											<input hidden type="radio" name="Rating" value="5" id="rating-5">
+											<label for="rating-5"><i class="fa-solid fa-star"></i></label>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="inputName">Title</label>
+										<input type="text" class="form-control" id="inputName" placeholder="Title" name="Title" required>
+									</div>
+									<div class="form-group">
+										<label for="exampleFormControlTextarea1">Feedback</label>
+										<textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="Description"
+												  placeholder="Feedback" required></textarea>
+									</div>
+									<div class="form-group">
+										<label for="photoUploadFile">Images</label>
+										<input type="file" id="photoUploadFile" name="files" multiple class="form-control" />
+										<span id="imageFormatError" class="text-danger" style="display: none;">
+											<b>Invalid image format.</b><br> Only JPG, PNG formats are allowed.
+										</span>
+									</div>
+									<button type="submit" class="btn-sm btn-lg btn-block background-main-color text-white text-center font-weight-bold text-uppercase border-radius-10 padding-10px border-0">
+										Add Now!
+									</button>
+								</form>
+							</div>
+						</div>
+					}
+					else if (!SignInManager.IsSignedIn(User) && !Model.Review)
 					{
 						<div class="margin-bottom-40px box-shadow">
 							<div class="padding-30px background-white">
