@@ -49,7 +49,9 @@
                   
 			<div class="col-xl-12 col-lg-30 col-md-30 col-30 sm-mb-25px hvr-bounce-to-top  ">
 					<a href="/Items/DisplayCategoryIngredient/?categoryId=@item.CategoryId" class="d-block box-shadow background-main-color text-white hvr-buzz ">
-					<div class="thum hvr-float "><img src="@item.Image" alt=""></div>
+                        <div class="thum hvr-float" style="width: 100%; height: 100px;">
+                            <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;">
+                        </div>
 					<h4 class="text-center padding-15px  "> @item.Title</h4>
 				</a>
 			</div>

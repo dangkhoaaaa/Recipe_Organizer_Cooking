@@ -47,8 +47,8 @@
 	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 </head>*@
-<section class="padding-tb-10px">
-	<div class="container">
+<section class="padding-lr-50px">
+	<div class="">
 		<div class="title text-center ">
 			<h2 class="font-weight-700 text-main-color hvr-bounce-to-top">New Recipes</h2>
 			<div class="row justify-content-center margin-bottom-20px ">
@@ -65,7 +65,11 @@
 				<!-- Recipe Item -->
 				<div class="col-xl-12 col-lg-12 col-md-12 recipe-item margin-bottom-20px hvr-buzz">
 					<div class="card border-0 box-shadow">
-						<div class="card-img-top"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img src="@item.Image" alt=""></a></div>
+						<div class="card-img-top" style="width: 100%; height: 200px;">
+							<a href="/Recipe/RecipeDetail/?id=@item.RecipeId">
+								<img src="@item.Image" alt="" style="max-width: 100%; max-height: 100%; object-fit: cover;">
+							</a>
+						</div>
 						<div class="padding-lr-30px padding-tb-20px">
 							<h5 class="margin-bottom-20px margin-top-10px"><a class="text-dark" href="/Recipe/RecipeDetail/?id=@item.RecipeId">@item.Title</a></h5>
 							<div class="rating">
@@ -119,7 +123,11 @@
 				var item = Model.Recipes[i];
 				<div class="col-xl-12 col-lg-12 col-md-12 recipe-item margin-bottom-20px hvr-buzz">
 					<div class="card border-0 box-shadow">
-						<div class="card-img-top"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img src="@item.Image" alt=""></a></div>
+						<div class="card-img-top" style="width: 100%; height: 200px;">
+							<a href="/Recipe/RecipeDetail/?id=@item.RecipeId">
+								<img src="@item.Image" alt="" style="max-width: 100%; max-height: 100%; object-fit: cover;">
+							</a>
+						</div>
 						<div class="padding-lr-30px padding-tb-20px">
 							<h5 class="margin-bottom-20px margin-top-10px"><a class="text-dark" href="/Recipe/RecipeDetail/?id=@item.RecipeId">@item.Title</a></h5>
 							<div class="rating">
@@ -200,10 +208,11 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js" integrity="sha512-eP8DK17a+MOcKHXC5Yrqzd8WI5WKh6F1TIk5QZ/8Lbv+8ssblcz7oGC8ZmQ/ZSAPa7ZmsCU4e/hcovqR8jfJqA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script type="text/javascript">
 		$('.autoplay12').slick({
-			slidesToShow: 4,
+			slidesToShow: 5,
 			slidesToScroll: 1,
 			autoplay: true,
 			autoplaySpeed: 2000,
+			arrows: false,
 			responsive: [
 				{
 					breakpoint: 1200,
