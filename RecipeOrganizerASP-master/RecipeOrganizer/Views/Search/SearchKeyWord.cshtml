@@ -15,7 +15,7 @@
 
 	</div>
 
-
+<section class="padding-tb-100px"> 
 	<div class="container">
 		<div class="margin-bottom-60px">
 			<div class="listing-search box-shadow">
@@ -31,7 +31,7 @@
 								<option value="1">Top Share</option>
 								<option value="2">Date Recent</option>
 								<option value="3">A-Z</option>
-								<option value="4">hong biet</option>
+								
 							</select>
 						</div>
 						<script>
@@ -56,17 +56,20 @@
 		<!-- item -->
 	@if (Model.Recipes != null && ViewBag.notfound != "")
 	{
-					<div class="recipes-masonry padding-10px">
+					<div class="recipes-masonry row">
 			@foreach (var item in Model.Recipes)
 			{
 
 									<!-- Recipe Item -->
 									<div class="col-xl-3 col-lg-4 col-md-6 recipe-item margin-bottom-40px hvr-buzz">
 										<div class="card border-0 box-shadow">
-											<div class="card-img-top"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId"><img src="@item.Image" alt=""></a></div>
-											<div class="padding-lr-30px padding-tb-20px">
+							<div class="card-img-top" style="width: 100%; height: 200px;">
+								<a href="/Recipe/RecipeDetail/?id=@item.RecipeId">
+									<img src="@item.Image" alt="" style="max-width: 100%; max-height: 100%; object-fit: cover;">
+								</a>
+							</div>	<div class="padding-lr-30px padding-tb-20px">
 												<h5 class="margin-bottom-20px margin-top-10px"><a class="text-dark" href="/Recipe/RecipeDetail/?id=@item.RecipeId">@item.Title</a></h5>
-							<div class="rating">
+							                       <div class="rating">
 								<ul>
 									<li class="@((item.AvgRate >= 1) ? "active" : "")"></li>
 									<li class="@((item.AvgRate >= 2) ? "active" : "")"></li>
@@ -74,7 +77,7 @@
 									<li class="@((item.AvgRate >= 4) ? "active" : "")"></li>
 									<li class="@((item.AvgRate >= 5) ? "active" : "")"></li>
 								</ul>
-							</div>
+						                               	</div>
 												<hr>
 												<div class="row no-gutters">
 													<div class="col-4 text-left">
@@ -204,3 +207,4 @@
 			}
 		});
 	</script>
+</section>

@@ -32,8 +32,10 @@
                           
                             @if (Model.profile.Img != null)
                             {
-                                <img src="@Model.profile.Img" class="user-avt" style="">
-                            }
+                            <div class="thum hvr-float" style="width: 100%; height: 140px;">
+                                <img src="@Model.profile.Img" class="user-avt" style="object-fit: cover; width: 100%; height: 100%;">
+                            </div>
+                             }
                             else
                             {
                                 <img src="~/assets/img/chef-avt-default.png" class="user-avt" style="">
