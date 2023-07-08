@@ -17,81 +17,82 @@ namespace RecipeOrganizerTest
 	// attribute denotes a class that contains unit tests
 	public class AddRecipeTest
 	{
-		private readonly RecipeRepository _recipeRepository;
-		private readonly IngredientRepository _ingredientRepository;
-		private readonly DirectionRepository _directionRepository;
-		private readonly RecipeHasTagRepository _recipeHasTagRepository;
-		private readonly TagRepository _tagRepository;
-		private readonly RecipeHasCategoryRepository _recipeHasCategoryRepository;
-		private readonly MetadataRepository _metadataRepository;
-		private readonly MediaRepository _mediaRepository;
-		private readonly CategoryRepository _categoryRepository;
-		private readonly UserManager<AppUser> _userManager;
-		private readonly CollectionRepository _collectionRepository;
+		private  RecipeRepository _recipeRepository;
+		private  IngredientRepository _ingredientRepository;
+		private  DirectionRepository _directionRepository;
+		private  RecipeHasTagRepository _recipeHasTagRepository;
+		private  TagRepository _tagRepository;
+		private  RecipeHasCategoryRepository _recipeHasCategoryRepository;
+		private  MetadataRepository _metadataRepository;
+		private  MediaRepository _mediaRepository;
+		private  CategoryRepository _categoryRepository;
+		private  UserManager<AppUser> _userManager;
+		private  CollectionRepository _collectionRepository;
 
-		public AddRecipeTest(UserManager<AppUser> userManager)
-		{
-			_recipeRepository = new RecipeRepository();
-			_ingredientRepository = new IngredientRepository();
-			_directionRepository = new DirectionRepository();
-			_recipeHasTagRepository = new RecipeHasTagRepository();
-			_tagRepository = new TagRepository();
-			_recipeHasCategoryRepository = new RecipeHasCategoryRepository();
-			_metadataRepository = new MetadataRepository();
-			_mediaRepository = new MediaRepository();
-			_categoryRepository = new CategoryRepository();
-			_userManager = userManager;
-			_collectionRepository = new CollectionRepository();
-		}
-
-
-		//[Test]
-		//// attribute indicates a method is a test method.
-		//public void TestAddRecipeSuccess()
-		//{
-		//	// Lấy danh sách tất cả các công thức hiện có.
-		//	List<Recipe> recipes = _recipeRepository.getAllRecipe();
-
-		//	// Đếm số lượng công thức hiện có.
-		//	int beforeNumberOfRecipes = recipes.Count;
-
-		//	// Thêm một công thức mới vào repository.
-		//	_recipeRepository.addRecipe(new Recipe());
-
-		//	// Lấy danh sách tất cả các công thức sau khi đã thêm công thức mới.
-		//	[Test]
-		//	// attribute indicates a method is a test method.
-		//	public void TestAddRecipeSuccess()
-		//	{
-		//		// Lấy danh sách tất cả các công thức hiện có.
-		//		List<Recipe> recipes = _recipeRepository.getAllRecipe();
-
-		//		// Đếm số lượng công thức hiện có.
-		//		int beforeNumberOfRecipes = recipes.Count;
-
-		//		// Thêm một công thức mới vào repository.
-		//		_recipeRepository.addRecipe(new Recipe());
-
-		//		// Lấy danh sách tất cả các công thức sau khi đã thêm công thức mới.
-		//		List<Recipe> updatedRecipes = _recipeRepository.getAllRecipe();
-
-		//		// Đếm số lượng công thức sau khi đã thêm công thức mới.
-		//		int afterNumberOfRecipes = updatedRecipes.Count;
-
-		//		// Kiểm tra xem số lượng công thức đã tăng lên chính xác một đơn vị hay không, sử dụng phương thức Assert.AreEqual().
-		//		Assert.AreEqual(beforeNumberOfRecipes + 1, afterNumberOfRecipes);
-		//	}
-		//	List<Recipe> updatedRecipes = _recipeRepository.getAllRecipe();
-
-		//	// Đếm số lượng công thức sau khi đã thêm công thức mới.
-		//	int afterNumberOfRecipes = updatedRecipes.Count;
-
-		//	// Kiểm tra xem số lượng công thức đã tăng lên chính xác một đơn vị hay không, sử dụng phương thức Assert.AreEqual().
-		//	Assert.AreEqual(beforeNumberOfRecipes + 1, afterNumberOfRecipes);
-		//}
+		
+        [SetUp]
+        public void SetUp()
+        {
+            _recipeRepository = new RecipeRepository();
+            _ingredientRepository = new IngredientRepository();
+            _directionRepository = new DirectionRepository();
+            _recipeHasTagRepository = new RecipeHasTagRepository();
+            _tagRepository = new TagRepository();
+            _recipeHasCategoryRepository = new RecipeHasCategoryRepository();
+            _metadataRepository = new MetadataRepository();
+            _mediaRepository = new MediaRepository();
+            _categoryRepository = new CategoryRepository();
+            _collectionRepository = new CollectionRepository();
+        }
 
 
-		[Test]
+        //[Test]
+        //// attribute indicates a method is a test method.
+        //public void TestAddRecipeSuccess()
+        //{
+        //	// Lấy danh sách tất cả các công thức hiện có.
+        //	List<Recipe> recipes = _recipeRepository.getAllRecipe();
+
+        //	// Đếm số lượng công thức hiện có.
+        //	int beforeNumberOfRecipes = recipes.Count;
+
+        //	// Thêm một công thức mới vào repository.
+        //	_recipeRepository.addRecipe(new Recipe());
+
+        //	// Lấy danh sách tất cả các công thức sau khi đã thêm công thức mới.
+        //	[Test]
+        //	// attribute indicates a method is a test method.
+        //	public void TestAddRecipeSuccess()
+        //	{
+        //		// Lấy danh sách tất cả các công thức hiện có.
+        //		List<Recipe> recipes = _recipeRepository.getAllRecipe();
+
+        //		// Đếm số lượng công thức hiện có.
+        //		int beforeNumberOfRecipes = recipes.Count;
+
+        //		// Thêm một công thức mới vào repository.
+        //		_recipeRepository.addRecipe(new Recipe());
+
+        //		// Lấy danh sách tất cả các công thức sau khi đã thêm công thức mới.
+        //		List<Recipe> updatedRecipes = _recipeRepository.getAllRecipe();
+
+        //		// Đếm số lượng công thức sau khi đã thêm công thức mới.
+        //		int afterNumberOfRecipes = updatedRecipes.Count;
+
+        //		// Kiểm tra xem số lượng công thức đã tăng lên chính xác một đơn vị hay không, sử dụng phương thức Assert.AreEqual().
+        //		Assert.AreEqual(beforeNumberOfRecipes + 1, afterNumberOfRecipes);
+        //	}
+        //	List<Recipe> updatedRecipes = _recipeRepository.getAllRecipe();
+
+        //	// Đếm số lượng công thức sau khi đã thêm công thức mới.
+        //	int afterNumberOfRecipes = updatedRecipes.Count;
+
+        //	// Kiểm tra xem số lượng công thức đã tăng lên chính xác một đơn vị hay không, sử dụng phương thức Assert.AreEqual().
+        //	Assert.AreEqual(beforeNumberOfRecipes + 1, afterNumberOfRecipes);
+        //}
+
+
+        [Test]
 		public void SearchKeyWordMethod()
 		{
 			// Arrange
