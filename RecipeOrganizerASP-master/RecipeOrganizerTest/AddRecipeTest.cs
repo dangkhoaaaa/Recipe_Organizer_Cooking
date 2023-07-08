@@ -90,6 +90,38 @@ namespace RecipeOrganizerTest
 		//	Assert.AreEqual(beforeNumberOfRecipes + 1, afterNumberOfRecipes);
 		//}
 
+
+		[Test]
+		public void SearchKeyWordMethod()
+		{
+			// Arrange
+			RecipeRepository repository = new RecipeRepository();
+			string keyword = "chicken";
+
+			// Act
+			List<Recipe> recipes = repository.SearchAllTitleWithFilter(string.Empty, keyword);
+
+			// Assert
+			foreach (Recipe recipe in recipes)
+			{
+				Assert.IsTrue(recipe.Title.ToLower().Contains(keyword.ToLower()));
+			}
+		}
+
+		[Test]
+		public void SearchKeyWordMethodwithValueNull()
+		{
+			// Arrange
+			RecipeRepository repository = new RecipeRepository();
+			string keyword = null;
+
+			// Act
+			List<Recipe> recipes = repository.SearchAllTitleWithFilter(string.Empty,keyword);
+
+			// Assert
+			Assert.IsEmpty(recipes);
+		}
+
 		[Test]
 		// attribute indicates a method is a test method.
 		public void TestAddRecipeSuccess()
@@ -143,7 +175,7 @@ namespace RecipeOrganizerTest
 		public void TestNumberOfCategories()
 		{
 			// Arrange
-			int expectedNumberOfCategories = 5; // Số lượng danh mục mong đợi.
+			int expectedNumberOfCategories = 5; // vo vong 
 
 			// Act
 			List<Category> categories = _categoryRepository.GetAllCategories();
