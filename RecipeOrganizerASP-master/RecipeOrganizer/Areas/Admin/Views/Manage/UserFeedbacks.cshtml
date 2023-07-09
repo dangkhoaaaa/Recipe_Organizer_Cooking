@@ -3,7 +3,7 @@
 @inject UserManager<AppUser> _userManager
 
 @{
-    ViewData["Title"] = "User Recipe";
+    ViewData["Title"] = "User Feedback";
     Layout = "_AdminLayout";
 }
 
@@ -64,7 +64,7 @@
                     <div class="profiletimeline">
                         @if (Model.UserFeedback.Count == 0)
                         {
-                            <h2 style="color:red; font-weight:bold;">No recipe!!</h2>
+                            <h2 style="color:red; font-weight:bold;">No Feedbacj!!</h2>
                         }
                         else
                         {
@@ -76,29 +76,13 @@
                                     <div class="sl-right">
                                         <div>
                                             <div>
-                                                <h4 style="display:inline-block;"><a href="/Recipe/RecipeDetails/?recipeID=@recipe.RecipeId" style="margin-right:20px;">@recipe.Title</a></h4>
-                                                @if (recipe.Status.Contains("rejected"))
-                                                {
-                                                    <span class="label label-danger" style="font-size: 15px;">@recipe.Status</span>
-                                                }
-                                                else if (recipe.Status.Contains("public"))
-                                                {
-                                                    <span class="label label-success" style="font-size: 15px;">@recipe.Status</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="label label-default" style="color:black; font-size: 15px;">@recipe.Status</span>
-                                                }
+                                                <h4 style="display:inline-block;">
+                                                    <a href="/Recipe/RecipeDetails/?recipeID=@feedback.feedbackId" style="margin-right:20px;">@feedback.Title</a>
+                                                    </h4>
                                             </div>
-                                            <p style="margin: 20px; font-size: 16px;">@recipe.Description</p>
-
-                                            <div class="row">
-                                                <div class="col l3 m6 m-b-20"><img src="@recipe.Image" class="responsive-img radius" alt="image" /></div>
-                                                <div class="col l3 m6 m-b-20"><img src="~/admin/assets/images/big/img2.jpg" class="responsive-img radius" alt="image" /></div>
-                                                <div class="col l3 m6 m-b-20"><img src="~/admin/assets/images/big/img3.jpg" class="responsive-img radius" alt="image" /></div>
-                                                <div class="col l3 m6 m-b-20"><img src="~/admin/assets/images/big/img4.jpg" class="responsive-img radius" alt="image" /></div>
-                                            </div>
-                                            <div> <h5><i class="material-icons">date_range</i>Date create: @recipe.Date</h5></div>
+                                            <p style="margin: 20px; font-size: 16px;">@feedback.Description</p>
+                                            <div> <h5><i class="material-icons">date_range</i>Date create: @feedback.Rating</h5></div>
+                                            <div> <h5><i class="material-icons">date_range</i>Date create: @MyToys.getLastTime(feedback.Date)</h5></div>
                                         </div>
                                     </div>
                                 </div>

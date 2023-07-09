@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Areas\Admin\Views\Manage\UserFeedbacks.cshtml" />
     <Content Remove="wwwroot\assets\css\animated.css" />
     <Content Remove="wwwroot\assets\css\fontawesome.css" />
     <Content Remove="wwwroot\assets\css\owl.css" />
@@ -63,7 +62,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Areas\Admin\Views\Manage\UserFeedbacks.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\assets\css\animated.css" />
     <_ContentIncludedByDefault Remove="wwwroot\assets\css\fontawesome.css" />
     <_ContentIncludedByDefault Remove="wwwroot\assets\css\owl.css" />
@@ -123,9 +121,6 @@
   </ItemGroup>
 
   <ItemGroup>
-
-
-    <None Include="Areas\Admin\Views\Manage\UserFeedbacks.cshtml" />
 
 
     <None Include="wwwroot\assets\css\animated.css" />
@@ -190,10 +185,6 @@
     <None Include="wwwroot\vendor\jquery\jquery.slim.js" />
     <None Include="wwwroot\vendor\jquery\jquery.slim.min.js" />
     <None Include="wwwroot\vendor\jquery\jquery.slim.min.map" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Areas\Admin\Views\Manage\UserFeedbacks.cshtml" />
   </ItemGroup>
 
 </Project>

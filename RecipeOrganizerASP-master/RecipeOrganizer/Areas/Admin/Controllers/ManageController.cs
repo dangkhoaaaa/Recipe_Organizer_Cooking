@@ -29,6 +29,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 
         private UserRepository _userRepository;
         private RecipeRepository _recipeRepository;
+        private FeedbackRepository _feedbackRepository;
 
 
         public ManageController(
@@ -46,7 +47,9 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             _logger = logger;
             _recipeRepository = new RecipeRepository();
             _userRepository = new UserRepository();
-        }
+			_feedbackRepository = new FeedbackRepository();
+
+		}
 
         // GET: /Admin/Login
         //[HttpGet("/login/")]
@@ -258,7 +261,28 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
+		//GET: Admin/UserFeedbacks/{id}
+		public async Task<IActionResult> UserFeedbacks(string userID)
+		{
+			var user = await _userManager.FindByIdAsync(userID);
+			if (user == null)
+			{
+				ViewBag.UserError = "Can not find user";
+				return View("Index");
+			}
+			var listUserFeedback = _feedbackRepository.GetByFeedbackByUser(userID);
+			var model = new UserFeedbackViewModel
+			{
+				User = user,
+				UserFeedback = listUserFeedback,
+				TotalFeedback = listUserFeedback.Count(),
+			};
+			if (listUserFeedback == null)
+				ViewBag.NoRecipe = "No feedback";
+			return View(model);
+		}
+
+		[AllowAnonymous]
         public async Task<IActionResult> CreateAdminAsync()
         {
             // admin, pass=admin123, admin@example.com

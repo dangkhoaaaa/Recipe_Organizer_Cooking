@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RecipeOrganizer.Data;
 using Services.Models;
 using Services.Models.Authentication;
 using Services.Repository;
