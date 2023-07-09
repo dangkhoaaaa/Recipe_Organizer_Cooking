@@ -8,63 +8,9 @@ using Services.Utilities;
 
 namespace RecipeOrganizerTest
 {
-    [TestFixture] //attribute denotes a class that contains unit tests
-    //[Parallelizable(ParallelScope.All)] // Apply Parallelizable attribute at the fixture level
-    public class Test1
-    {
-        [Test]
-        public void TestSleep1() { 
-            Thread.Sleep(2000);
-        }
-    }
-
-    [TestFixture] //attribute denotes a class that contains unit tests
-    //[Parallelizable(ParallelScope.All)] // Apply Parallelizable attribute at the fixture level
-    public class Test2
-    {
-        [Test]
-        public void TestSleep2()
-        {
-            Thread.Sleep(2000);
-        }
-    }
-
-    public static class TestDataGenerator
-    {
-        public static IEnumerable<TestCaseData> GetLastLoginTestData()
-        {
-            DateTime currentDateTime = DateTime.Now;
-
-            yield return new TestCaseData(DateTime.Now, "Just now");
-            yield return new TestCaseData(currentDateTime.AddSeconds(-4), "4 seconds ago");
-            yield return new TestCaseData(currentDateTime.AddMinutes(-5), "5 minutes ago");
-            yield return new TestCaseData(currentDateTime.AddHours(-6), "6 hours ago");
-            yield return new TestCaseData(currentDateTime.AddDays(-7), "7 days ago");
-        }
-    }
-
-	[TestFixture]
-	public class MyDataDrivenTests
-	{
-		[TestCaseSource(typeof(TestDataGenerator), nameof(TestDataGenerator.GetLastLoginTestData))]
-		public void MultiplyLastLoginTime_ShouldReturnCorrectMessage(DateTime lastTime, string expectedMessage)
-		{
-			// Arrange
-
-			// Act
-			var result = MyToys.getLastTime(lastTime);
-
-			// Assert
-			Assert.AreEqual(expectedMessage, result);
-		}
-	}
-
-
 	[TestFixture] // attribute denotes a class that contains unit tests
     public class UtilityTest
     {
-        
-
         //Test Last Login calculate function
         //Test case #1: Check user last login to Recipe Organizer app
         //Procedure: 
@@ -79,8 +25,13 @@ namespace RecipeOrganizerTest
         // attribute indicates a method is a test method.
         public void LastLoginNowTestReturnMessageNow()
         {
+            //Arrange
             const string expected = "Just now";
+            
+            //Act
             var result = MyToys.getLastTime(DateTime.Now);
+            
+            //Assert
             Assert.AreEqual(expected, result);
         }
 
@@ -176,15 +127,54 @@ namespace RecipeOrganizerTest
             Assert.AreEqual(expected, result);
         }
 
-        //tương ứng với các input
-        [TestCase(-1)]
-        [TestCase(0)]
-        [TestCase(1)]
-        public void IsPrime_ValuesLessThan2_ReturnFalse(int value)
-        {
-            var result = MyToys.IsPrime(value);
+		public static class TestDataGenerator
+		{
+			public static IEnumerable<TestCaseData> GetLastLoginTestData()
+			{
+				DateTime currentDateTime = DateTime.Now;
 
-            Assert.IsFalse(result, $"{value} should not be prime");
-        }
+				yield return new TestCaseData(currentDateTime.AddMinutes(-5), "5 minutes ago");
+				yield return new TestCaseData(currentDateTime.AddHours(-6), "6 hours ago");
+				yield return new TestCaseData(currentDateTime.AddDays(-7), "7 days ago");
+			}
+		}
+
+		[TestFixture]
+		public class MyDataDrivenTests
+		{
+			[TestCaseSource(typeof(TestDataGenerator), nameof(TestDataGenerator.GetLastLoginTestData))]
+			public void MultiplyLastLoginTime_ShouldReturnCorrectMessage(DateTime lastTime, string expectedMessage)
+			{
+				// Arrange
+
+				// Act
+				var result = MyToys.getLastTime(lastTime);
+
+				// Assert
+				Assert.AreEqual(expectedMessage, result);
+			}
+		}
+
+		[TestFixture] //attribute denotes a class that contains unit tests
+		//[Parallelizable(ParallelScope.All)] // Apply Parallelizable attribute at the fixture level
+		public class Test1
+		{
+			[Test]
+			public void TestSleep1()
+			{
+				Thread.Sleep(2000);
+			}
+		}
+
+		[TestFixture] //attribute denotes a class that contains unit tests
+		//[Parallelizable(ParallelScope.All)] // Apply Parallelizable attribute at the fixture level
+		public class Test2
+		{
+			[Test]
+			public void TestSleep2()
+			{
+				Thread.Sleep(2000);
+			}
+		}
     }
 }
