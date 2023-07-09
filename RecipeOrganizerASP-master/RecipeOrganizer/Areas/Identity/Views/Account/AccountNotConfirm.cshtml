@@ -6,7 +6,7 @@
 <div id="page-title" class="padding-tb-30px gradient-white text-center">
 	<div class="container">
 		<ol class="breadcrumb opacity-5">
-			<li><a href=@Url.Action("Index", "Home")>Home</a></li><span>>></span>
+			<li><a href=@Url.Action("Index", "Home")>Home</a></li>
 			<span>>></span>
 			<li class="active">@ViewData["Title"]</li>
 		</ol>
@@ -15,9 +15,14 @@
 
 
 <div class="container margin-bottom-100px">
-	@if (ViewData["ConfirmError"] != null) {
-			<h3>ViewData["ConfirmError"]</h3>
-	}
+	
+
+	<div class="alert alert-danger" ">
+		@if (ViewData["ConfirmError"] != null)
+		{
+			<h3 style="padding:0px;">@ViewData["ConfirmError"]</h3>
+		}
+    </div>
 	<h2 class="text-center" style="color:red; margin:20px;">@ViewData["Title"]</h2>
 	<h3 class="text-center " style="margin-bottom:20px;">
 		Your account was not comfirmed yet. Click below button to confirm again
@@ -25,7 +30,6 @@
 	<div id="log-in" class="site-form log-in-form box-shadow border-radius-10">
 		<div class="form-output">
 			<form asp-area="Identity" asp-controller="Account" asp-action="ResendEmailConfirm">
-				<div asp-validation-summary="All" class="text-danger"></div>
 				<div class="form-group label-floating">
 					<label asp-for="Email" class="control-label"></label>
 					<input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" />
