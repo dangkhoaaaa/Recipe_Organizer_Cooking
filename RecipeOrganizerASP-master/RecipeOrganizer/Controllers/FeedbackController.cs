@@ -84,53 +84,60 @@ namespace RecipeOrganizer.Controllers
 					ModelState.AddModelError(string.Empty, "Please enter a title and description.");
 					return View(feedback);
 				}
-				// Create a new instance of Feedback
-				var newFeedback = new Feedback
+				bool hasReviewed = _metadataRepository.IsReviewed(id, user.Id);
+				if (!hasReviewed)
 				{
-					Title = feedback.Title,
-					Description = feedback.Description,
-					Date = DateTime.Now,
-					Rating = feedback.Rating,
-					Status = true
-				};
-
-				// Save the new feedback to the database
-				_feedbackRepository.Add(newFeedback);
-
-				int notificationId = _notificationRepository.addNotification("New review has been added");
-
-				// Media
-				if (files != null && files.Count > 0)
-				{
-					var imageLinkTask = _fireBaseService.UploadImageSingle(files);
-					var imageLink = await imageLinkTask;
-					int mediaId = _mediaRepository.addMedia(imageLink);
-
-					Metadata metadata = new Metadata
+					// Create a new instance of Feedback
+					var newFeedback = new Feedback
 					{
-						RecipeId = id,
-						UserId = user.Id,
-						MediaId = mediaId,
-						FeedbackId = newFeedback.FeedbackId,
-						NotificationId = notificationId
+						Title = feedback.Title,
+						Description = feedback.Description,
+						Date = DateTime.Now,
+						Rating = feedback.Rating,
+						Status = true
 					};
-					_metadataRepository.Add(metadata);
+
+					// Save the new feedback to the database
+					_feedbackRepository.Add(newFeedback);
+
+					int notificationId = _notificationRepository.addNotification("New review has been added");
+
+					// Media
+					if (files != null && files.Count > 0)
+					{
+						var imageLinkTask = _fireBaseService.UploadImageSingle(files);
+						var imageLink = await imageLinkTask;
+						int mediaId = _mediaRepository.addMedia(imageLink);
+
+						Metadata metadata = new Metadata
+						{
+							RecipeId = id,
+							UserId = user.Id,
+							MediaId = mediaId,
+							FeedbackId = newFeedback.FeedbackId,
+							NotificationId = notificationId
+						};
+						_metadataRepository.Add(metadata);
+					}
+					else
+					{
+						// If there is no media file, just create a new Metadata object
+						Metadata metadata = new Metadata
+						{
+							RecipeId = id,
+							UserId = user.Id,
+							FeedbackId = newFeedback.FeedbackId,
+							NotificationId = notificationId
+						};
+						_metadataRepository.Add(metadata);
+					}
+
+					// Redirect to a success page or perform other actions
+					return RedirectToAction("RecipeDetail", "Recipe", new { id }); // Redirect to a success page
 				}
 				else
 				{
-					// If there is no media file, just create a new Metadata object
-					Metadata metadata = new Metadata
-					{
-						RecipeId = id,
-						UserId = user.Id,
-						FeedbackId = newFeedback.FeedbackId,
-						NotificationId = notificationId
-					};
-					_metadataRepository.Add(metadata);
 				}
-
-				// Redirect to a success page or perform other actions
-				return RedirectToAction("RecipeDetail", "Recipe", new { id }); // Redirect to a success page
 			}
 
 			return RedirectToAction("Index", "Recipe");
