@@ -3,9 +3,9 @@
     ViewData["Title"] = "SendContact";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@model Services.Repository.ContactFormModel
 <!-- Map -->
-<div class="map-distributors-in">
+@* <div class="map-distributors-in">
 	<div id="map-distributors">
 
 		<script>
@@ -87,7 +87,96 @@
 			</div>
 		</div>
 	</section>
+</div> *@
+<div class="map-distributors-in">
+	<div id="map-distributors">
+		<script>
+			$(function () {
+				$("#map-distributors").goMap({
+					zoom: 6,
+					maptype: 'ROADMAP',
+					markers: [
+						{
+							address: '39.605247,-104.615413',
+							icon: 'assets/img/icon_marker_1.png'
+						}
+					],
+					hideByClick: true
+				});
+
+				$("#default").click(function () {
+					$("#dump").html($.dump($.goMap.getMarkers()));
+				});
+
+				$("#clearall").click(function () {
+					$.goMap.clearMarkers();
+				});
+
+				$("#json").click(function () {
+					$("#dump").html($.goMap.getMarkers("json"));
+				});
+
+				$("#data").click(function () {
+					$("#dump").html($.goMap.getMarkers("data"));
+				});
+
+				$('.gm-style-iw').parent().css('width', 'auto');
+			});
+		</script>
+	</div>
 </div>
+
+<!-- Page Output -->
+<div class="container">
+	<section class="padding-tb-100px">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-md-6">
+					@using (Html.BeginForm("SendEmail", "Contact", FormMethod.Post))
+					{
+						<div class="form-group">
+							@Html.LabelFor(m => m.Name)
+							@Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name" })
+							@Html.ValidationMessageFor(m => m.Name)
+						</div>
+
+						<div class="form-group">
+							@Html.LabelFor(m => m.Email)
+							@Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+							@Html.ValidationMessageFor(m => m.Email)
+						</div>
+
+						<div class="form-group">
+							@Html.LabelFor(m => m.Address)
+							@Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
+							@Html.ValidationMessageFor(m => m.Address)
+						</div>
+
+						<div class="form-group">
+							@Html.LabelFor(m => m.Message)
+							@Html.TextAreaFor(m => m.Message, new { @class = "form-control", rows = "3", placeholder = "Message" })
+							@Html.ValidationMessageFor(m => m.Message)
+						</div>
+
+						<button type="submit" class="btn btn-primary">Send</button>
+					}
+				</div>
+
+				<div class="col-lg-6 col-md-6">
+					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+					<h6>Phone:</h6>
+					<span class="d-block"><i class="fa fa-phone text-main-color margin-right-10px" aria-hidden="true"></i> +222 333 019</span>
+					<span class="d-block"><i class="fa fa-mobile text-main-color margin-right-10px" aria-hidden="true"></i> +222 333 019</span>
+					<h6 class="margin-top-20px">Address:</h6>
+					<span class="d-block"><i class="fa fa-map text-main-color margin-right-10px" aria-hidden="true"></i> NewYork 1234 Main St</span>
+					<h6 class="margin-top-20px">Email:</h6>
+					<span class="d-block"><i class="fa fa-envelope-open text-main-color margin-right-10px" aria-hidden="true"></i> info@yoursite.com</span>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
 
 <!-- // Page Output -->
 
