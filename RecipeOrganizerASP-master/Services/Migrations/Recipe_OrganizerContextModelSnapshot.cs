@@ -308,6 +308,49 @@ namespace Services.Migrations
                     b.ToTable("Collection", "dbo");
                 });
 
+            modelBuilder.Entity("Services.Models.Contact", b =>
+                {
+                    b.Property<int>("ContactId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("contact_id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ContactId"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)")
+                        .HasColumnName("contact_address");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime")
+                        .HasColumnName("contact_date");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(250)")
+                        .HasColumnName("contact_email");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnName("contact_message");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("contact_name");
+
+                    b.HasKey("ContactId");
+
+                    b.ToTable("Contact", "dbo");
+                });
+
             modelBuilder.Entity("Services.Models.Day", b =>
                 {
                     b.Property<int>("DayId")

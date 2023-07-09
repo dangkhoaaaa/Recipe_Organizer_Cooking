@@ -83,7 +83,7 @@
                                                 <div style="display:inline-block">
                                                     <form asp-area="Admin" asp-controller="Recipe" asp-action="Index" method="post">
                                                         <input id="Status" name="Status" type="hidden" value="Rejected" />
-                                                        <input id="SearchValue" name="SearchValue" type="hidden" value="@ViewBag.RecipeKeyword" />
+                                                        <input id="searchRecipe" name="searchRecipe" type="hidden" value="@ViewBag.RecipeKeyword" />
                                                         <input id="recipeID" name="recipeID" type="hidden" value="@recipe.Recipe.RecipeId" />
                                                         <button type="submit" class="waves-effect waves-light btn red btn-sm">
                                                             Reject
@@ -99,7 +99,7 @@
                                                 <div style="display:inline-block">
                                                     <form asp-area="Admin" asp-controller="Recipe" asp-action="Index" method="post">
                                                         <input id="Status" name="Status" type="hidden" value="Public" />
-                                                        <input id="SearchValue" name="SearchValue" type="hidden" value="@ViewBag.RecipeKeyword" />
+                                                        <input id="searchRecipe" name="searchRecipe" type="hidden" value="@ViewBag.RecipeKeyword" />
                                                         <input id="recipeID" name="recipeID" type="hidden" value="@recipe.Recipe.RecipeId" />
                                                         <button type="submit" class="waves-effect waves-light btn  green btn-sm">
                                                             Approve
@@ -116,6 +116,7 @@
                                                 <div style="display:inline-block">
                                                     <form asp-area="Admin" asp-controller="Recipe" asp-action="Index" method="post">
                                                         <input id="Status" name="Status" type="hidden" value="Public" />
+                                                        <input id="searchRecipe" name="searchRecipe" type="hidden" value="@ViewBag.RecipeKeyword" />
                                                         <input id="recipeID" name="recipeID" type="hidden" value="@recipe.Recipe.RecipeId" />
                                                         <button type="submit" class="waves-effect waves-light btn green btn-sm">
                                                             Approve
@@ -128,6 +129,7 @@
                                                 <div style="display:inline-block">
                                                     <form asp-area="Admin" asp-controller="Recipe" asp-action="Index" method="post">
                                                         <input id="Status" name="Status" type="hidden" value="Rejected" />
+                                                        <input id="searchRecipe" name="searchRecipe" type="hidden" value="@ViewBag.RecipeKeyword" />
                                                         <input id="recipeID" name="recipeID" type="hidden" value="@recipe.Recipe.RecipeId" />
                                                         <button type="submit" class="waves-effect waves-light btn red btn-sm">
                                                             Reject

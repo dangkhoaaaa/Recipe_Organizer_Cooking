@@ -36,7 +36,6 @@
     <meta name="keywords" content="recipes food, recipes , chinese food, italian food">
     <meta name="description" content="Recipe Organizer - Food & Recipes Food">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/assets/css/mystyle.css" />
     <!-- google fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,800%7CPoppins:100,200,300i,300,400,700,400i,500%7CDancing+Script:700" rel="stylesheet">
     <!-- animate -->
@@ -70,6 +69,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/assets/css/mystyle.css" />
 
     @RenderSection("Css", required:false)
     <style>
@@ -89,16 +89,17 @@
         body::before {
             opacity:0.2
         }*/
+        
     </style>
 </head>
 <body>
-    <header class="background-main-color" style="background: rgb(180,58,136);
+    <header class="background-main-color " style="background: rgb(180,58,136);
 background: linear-gradient(90deg, rgba(180,58,136,1) 0%, rgba(217,16,16,1) 54%, rgba(255,127,63,1) 100%);">
-        <div class="container">
+        <div class="container header-container">
             <div class="header-output">
                 <div class="header-in">
                     <div class="row">
-                        <div class="col-lg-2 col-md-12">
+                        <div class="col-lg-2 col-md-12 logo-img">
                             <a id="logo" href=@Url.Action("Index", "Home") class="navbar-brand recipe-logo"><img src="~/assets/img/logo-color-01-01.png" alt="Recipe Organizer"></a>
                             <a class="mobile-toggle padding-10px background-main-color" href="#"><i class="fas fa-bars"></i></a>
                         </div>

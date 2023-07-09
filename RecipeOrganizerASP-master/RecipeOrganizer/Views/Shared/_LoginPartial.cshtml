@@ -304,13 +304,15 @@
                                 </li>
                             }
                         }
-                        <li class="notification-item">
-                            <hr>
-                            <p>Read notification</p>
-                        </li>
                         <!-- List of Read notification items -->
-                        @if (readListNotification.Count < 5)
+                        @if (readListNotification.Count == 0) {
+                        }
+                        else if (readListNotification.Count < 5)
                         {
+                            <li class="notification-item">
+                                <hr>
+                                <p>Read notification</p>
+                            </li>
                             readListNotification = readListNotification.OrderByDescending(p => p.Recipe.Date).ToList();
                             foreach (RecipeNotification notify in readListNotification)
                             {

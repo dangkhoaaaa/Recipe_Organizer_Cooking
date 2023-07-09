@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using RecipeOrganizer.Data;
+using Services.Models;
 using Services.Models.Authentication;
 using Services.Repository;
 
@@ -35,9 +35,9 @@ namespace RecipeOrganizer.Controllers
 		}
 		public Slot? slot { get; set; }
 
-		private readonly ApplicationDbContext _context;
+		private readonly Recipe_OrganizerContext _context;
 
-		public SlotController(ApplicationDbContext context)
+		public SlotController(Recipe_OrganizerContext context)
 		{
 			_context = context;
 		}
