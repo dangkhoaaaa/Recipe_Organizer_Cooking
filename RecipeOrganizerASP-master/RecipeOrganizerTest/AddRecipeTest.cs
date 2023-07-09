@@ -46,52 +46,6 @@ namespace RecipeOrganizerTest
         }
 
 
-        //[Test]
-        //// attribute indicates a method is a test method.
-        //public void TestAddRecipeSuccess()
-        //{
-        //	// Lấy danh sách tất cả các công thức hiện có.
-        //	List<Recipe> recipes = _recipeRepository.getAllRecipe();
-
-        //	// Đếm số lượng công thức hiện có.
-        //	int beforeNumberOfRecipes = recipes.Count;
-
-        //	// Thêm một công thức mới vào repository.
-        //	_recipeRepository.addRecipe(new Recipe());
-
-        //	// Lấy danh sách tất cả các công thức sau khi đã thêm công thức mới.
-        //	[Test]
-        //	// attribute indicates a method is a test method.
-        //	public void TestAddRecipeSuccess()
-        //	{
-        //		// Lấy danh sách tất cả các công thức hiện có.
-        //		List<Recipe> recipes = _recipeRepository.getAllRecipe();
-
-        //		// Đếm số lượng công thức hiện có.
-        //		int beforeNumberOfRecipes = recipes.Count;
-
-        //		// Thêm một công thức mới vào repository.
-        //		_recipeRepository.addRecipe(new Recipe());
-
-        //		// Lấy danh sách tất cả các công thức sau khi đã thêm công thức mới.
-        //		List<Recipe> updatedRecipes = _recipeRepository.getAllRecipe();
-
-        //		// Đếm số lượng công thức sau khi đã thêm công thức mới.
-        //		int afterNumberOfRecipes = updatedRecipes.Count;
-
-        //		// Kiểm tra xem số lượng công thức đã tăng lên chính xác một đơn vị hay không, sử dụng phương thức Assert.AreEqual().
-        //		Assert.AreEqual(beforeNumberOfRecipes + 1, afterNumberOfRecipes);
-        //	}
-        //	List<Recipe> updatedRecipes = _recipeRepository.getAllRecipe();
-
-        //	// Đếm số lượng công thức sau khi đã thêm công thức mới.
-        //	int afterNumberOfRecipes = updatedRecipes.Count;
-
-        //	// Kiểm tra xem số lượng công thức đã tăng lên chính xác một đơn vị hay không, sử dụng phương thức Assert.AreEqual().
-        //	Assert.AreEqual(beforeNumberOfRecipes + 1, afterNumberOfRecipes);
-        //}
-
-
         [Test]
 		public void SearchKeyWordMethod()
 		{
@@ -153,32 +107,6 @@ namespace RecipeOrganizerTest
 			Assert.AreEqual(beforeNumberOfRecipes, afterNumberOfRecipes);
 		}
 
-
-		//	private CategoryRepository _categoryRepository;
-
-		//[Test]
-		//public void TestCategoryRecipe()
-		//{
-		//	// Arrange
-		//	RecipeRepository repository = new RecipeRepository();
-		//	string categoryName = "New category";
-		//	int expectedCount = 3;
-
-		//	// Tạo danh mục mới và thêm vào đó một số công thức.
-		//	Category category = new Category(categoryName);
-		//	Recipe recipe1 = new Recipe("Recipe 1", category);
-		//	Recipe recipe2 = new Recipe("Recipe 2", category);
-		//	Recipe recipe3 = new Recipe("Recipe 3", category);
-		//	repository.addRecipe(recipe1);
-		//	repository.addRecipe(recipe2);
-		//	repository.addRecipe(recipe3);
-
-		//	// Act
-		//	List<Recipe> recipes = repository.GetRecipesByCategory(categoryName);
-
-		//	// Assert
-		//	Assert.AreEqual(expectedCount, recipes.Count);
-		//}
 		[Test]
 		public void TestNumberOfCategories()
 		{

@@ -42,8 +42,6 @@ public class SendMailService : IEmailSender
 		logger.LogInformation("Create SendMailService");
 	}
 
-
-
 	public Task SendSmsAsync(string number, string message)
 	{
 		// Cài đặt dịch vụ gửi SMS tại đây
@@ -94,8 +92,6 @@ public class SendMailService : IEmailSender
         smtp.Disconnect(true);
 
         logger.LogInformation("send mail to " + email);
-
-
     }
 
     public async Task SendEmailOTPAsync(string email, string subject, string htmlMessage)

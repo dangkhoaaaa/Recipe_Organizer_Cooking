@@ -37,6 +37,8 @@ namespace Services.Models
         public virtual DbSet<Session> Sessions { get; set; } = null!;
         public virtual DbSet<SessionHasRecipe> SessionHasRecipes { get; set; } = null!;
         public virtual DbSet<Tag> Tags { get; set; } = null!;
+
+        public virtual DbSet<Contact> Contacts { get; set; } = null!;
         //public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -73,6 +75,34 @@ namespace Services.Models
             modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogin");
             modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("UserRoleClaims");
             modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
+
+            modelBuilder.Entity<Contact>(entity =>
+            {
+                entity.ToTable("Contact");
+
+                entity.Property(e => e.ContactId).HasColumnName("contact_id");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(100)
+                    .HasColumnName("contact_name");
+
+                entity.Property(e => e.Email)
+                    .IsUnicode(false)
+                    .HasMaxLength(250)
+                    .HasColumnName("contact_email");
+
+                entity.Property(e => e.Address)
+                    .HasMaxLength(300)
+                    .HasColumnName("contact_address");
+
+                entity.Property(e => e.Message)
+                    .HasMaxLength(1000)
+                    .HasColumnName("contact_message");
+
+                entity.Property(e => e.Date)
+                    .HasColumnType("datetime")
+                    .HasColumnName("contact_date");
+            });
 
             modelBuilder.Entity<Category>(entity =>
             {

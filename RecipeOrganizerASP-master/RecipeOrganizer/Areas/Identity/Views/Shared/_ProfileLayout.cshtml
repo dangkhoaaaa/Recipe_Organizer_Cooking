@@ -25,7 +25,6 @@
     <meta name="keywords" content="recipes food, recipes , chinese food, italian food">
     <meta name="description" content="Recipe Organizer - Food & Recipes Food">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/assets/css/mystyle.css" />
     <!-- google fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,800%7CPoppins:100,200,300i,300,400,700,400i,500%7CDancing+Script:700" rel="stylesheet">
     <!-- animate -->
@@ -47,60 +46,31 @@
     <link rel="stylesheet" href="~/assets/css/elegant_icon.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="~/assets/css/fontawesome-all.min.css">
+    <!-- Custom css -->
+    <link rel="stylesheet" href="~/assets/css/mystyle.css" />
     @RenderSection("Css", required:false)
 </head>
 <body>
 
     <header class="background-main-color" style="background: rgb(180,58,136);
             background: linear-gradient(90deg, rgba(180,58,136,1) 0%, rgba(217,16,16,1) 54%, rgba(255,127,63,1) 100%);">
-        <div class="container">
+        <div class="container header-container">
             <div class="header-output">
                 <div class="header-in">
 
                     <div class="row">
-                        <div class="col-lg-2 col-md-12">
+                        <div class="col-lg-2 col-md-12 logo-img">
                             <a id="logo" href=@Url.Action("Index", "Home") class="navbar-brand recipe-logo"><img src="~/assets/img/logo-color-01-01.png" alt="Recipe Organizer"></a>
                             <a class="mobile-toggle padding-10px background-main-color" href="#"><i class="fas fa-bars"></i></a>
-
                         </div>
                         <div class="col-lg-5 col-md-12 position-inherit">
-                            <ul id="menu-main" class="white-link dropdown-dark text-lg-center nav-menu link-padding-tb-25px" style="color:white;">
+                            <ul id="menu-main" class="white-link dropdown-dark text-lg-center nav-menu link-padding-tb-25px">
                                 <li class="">
                                     @Html.ActionLink("HOME", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
                                 </li>
-                                <li class="has-dropdown">
-                                    <a href="#">INGREDIENTS</a>
-                                    <ul class="sub-menu text-left">
-                                        <li><a href="recipes-grid-layout.html">Chicken </a></li>
-                                        <li><a href="recipes-list-layout.html">Pork</a></li>
-                                        <li><a href="authors-layout-1.html">Beef</a></li>
-                                        <li><a href="authors-layout-2.html">Seafood</a></li>
-                                        <li><a href="single-recipe.html">Noodle</a></li>
-                                        <li><a href="single-recipe.html">Vegetable</a></li>
-                                    </ul>
-                                </li>
-                                <li class="has-dropdown">
-                                    <a href="#">OCCASIONS</a>
-                                    <ul class="sub-menu text-left">
-                                        <li><a href="blog-grid.html">Birthday</a></li>
-                                        <li><a href="blog-list.html">Christmas</a></li>
-                                        <li><a href="blog-classic.html">Tet</a></li>
-                                        <li><a href="blog-single.html">Mid-Autumn</a></li>
-                                    </ul>
-                                </li>
-                                <li class="has-dropdown">
-                                    <a href="#">MEALS</a>
-                                    <ul class="sub-menu text-left">
-                                        <li><a href="page-about.html">Breakfast</a></li>
-                                        <li><a href="add-recipe.html">Lunch</a></li>
-                                        @*<li>@Html.ActionLink("Login", "Login", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                                        <li>@Html.ActionLink("Register", "Register", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
-                                        <li><a href="search-page.html">Dinner</a></li>
-                                        <li><a href="page-contact-us.html">Salads</a></li>
-                                        <li><a href="page-404.html">Desserts</a></li>
-                                        <li><a href="page-404.html">Soups</a></li>
-                                    </ul>
-                                </li>
+                                @await Component.InvokeAsync("Category_Ingredient")
+                                @await Component.InvokeAsync("Category_Meal")
+                                @await Component.InvokeAsync("Category_Occatision")
                                 <li><a href="@Url.Action("SendContact", "Contact")">CONTACT US</a></li>
                             </ul>
                         </div>
