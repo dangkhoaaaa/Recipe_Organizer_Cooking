@@ -914,7 +914,11 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                 ViewData["ConfirmError"] = "Email has not register yet";
                 return View("AccountNotConfirm");
             }
-
+            if (user.EmailConfirmed == true)
+            {
+                ViewData["ConfirmError"] = "Email are confirmed";
+                return View("AccountNotConfirm");
+            }
             var userId = await _userManager.GetUserIdAsync(user);
             //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
