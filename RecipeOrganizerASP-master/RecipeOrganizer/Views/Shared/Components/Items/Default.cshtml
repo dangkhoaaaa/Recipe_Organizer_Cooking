@@ -106,7 +106,15 @@
 							<a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="d-inline-block text-green-3 h6 margin-right-15px "> @item.Date </a>
 						</div>
 						<div class="background-light-black  padding-lr-30px ">
-							<a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="d-inline-block text-grey-3 h6 margin-right-15px "> <em>@item.Description.Substring(0,50).....</em>  </a>
+							<a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="d-inline-block text-grey-3 h6 margin-right-15px ">
+								@if (item.Description.Length <= 52)
+								{
+									<em>@item.Description......</em>
+								}
+								else
+								{
+									<em>@item.Description.Substring(0,50).....</em>
+								}   </a>
 						</div>
 						<div class="background-light-grey border-top-1 border-grey padding-lr-30px padding-tb-20px">
 							<a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="d-inline-block text-pink h6 margin-right-15px "> View Detail </a>
