@@ -1,9 +1,9 @@
 ﻿@using System.Data
-@model UserRecipeViewModel
+@model UserFeedbackViewModel
 @inject UserManager<AppUser> _userManager
 
 @{
-    ViewData["Title"] = "User Recipe";
+    ViewData["Title"] = "User Feedback";
     Layout = "_AdminLayout";
 }
 
@@ -21,7 +21,7 @@
                         var tag = Model.User.FirstName + " " + Model.User.LastName;
                         @tag
                     }
-                    </h6>
+                </h6>
                 <p class="white-text">Best cook in the world!!!</p>
                 <p class="white-text" id="date">Last login: @MyToys.getLastTime(Model.User.LastLoginTime)</p>
             </div>
@@ -40,7 +40,7 @@
             <small>Birthday</small>
             <h6 style="margin-bottom: 3.5px;">@Model.User.Birthday</h6>
             @*<div class="map-box m-t-20">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d470029.1604841957!2d72.29955005258641!3d23.019996818380896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fcedd11614f6516!2sAhmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1493204785508" height="150" style="border:0;width: 100%" allowfullscreen></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d470029.1604841957!2d72.29955005258641!3d23.019996818380896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fcedd11614f6516!2sAhmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1493204785508" height="150" style="border:0;width: 100%" allowfullscreen></iframe>
             </div>
             <small class="db m-t-20">Social Profile</small>
             <a href="javascript:void(0)" class="btn-floating indigo darken-2 m-t-10"><i class="fab fa-facebook"></i></a>
@@ -62,43 +62,27 @@
             <div id="timeline" class="col s12">
                 <div class="card-content">
                     <div class="profiletimeline">
-                        @if (Model.UserRecipe.Count == 0)
+                        @if (Model.UserFeedback.Count == 0)
                         {
-                            <h2 style="color:red; font-weight:bold;">No recipe!!</h2>  
+                            <h2 style="color:red; font-weight:bold;">No Feedbacj!!</h2>
                         }
                         else
                         {
-                            <h2 style="color:blue; font-weight:bold;">Number of recipe: @Model.TotalRecipe</h2>
-                            @foreach (var recipe in Model.UserRecipe)
+                            <h2 style="color:blue; font-weight:bold;">Number of recipe: @Model.TotalFeedback</h2>
+                            @foreach (var feedback in Model.UserFeedback)
                             {
                                 <div class="sl-item">
                                     <div class="sl-left"> <img src="~/assets/img/chef-avt-default.png" alt="user" class="circle" /> </div>
                                     <div class="sl-right">
                                         <div>
                                             <div>
-                                                <h4 style="display:inline-block;"><a href="/Recipe/RecipeDetails/?recipeID=@recipe.RecipeId" style="margin-right:20px;">@recipe.Title</a></h4>
-                                                @if (recipe.Status.Contains("rejected"))
-                                                {
-                                                    <span class="label label-danger" style="font-size: 15px;">@recipe.Status</span>
-                                                }
-                                                else if (recipe.Status.Contains("public"))
-                                                {
-                                                    <span class="label label-success" style="font-size: 15px;">@recipe.Status</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="label label-default" style="color:black; font-size: 15px;">@recipe.Status</span>
-                                                }
+                                                <h4 style="display:inline-block;">
+                                                    <a href="/Recipe/RecipeDetails/?recipeID=@feedback.feedbackId" style="margin-right:20px;">@feedback.Title</a>
+                                                    </h4>
                                             </div>
-                                            <p style="margin: 20px; font-size: 16px;">@recipe.Description</p>
-
-                                            <div class="row">
-                                                <div class="col l3 m6 m-b-20"><img src="@recipe.Image" class="responsive-img radius" alt="image" /></div>
-                                                <div class="col l3 m6 m-b-20"><img src="~/admin/assets/images/big/img2.jpg" class="responsive-img radius" alt="image" /></div>
-                                                <div class="col l3 m6 m-b-20"><img src="~/admin/assets/images/big/img3.jpg" class="responsive-img radius" alt="image" /></div>
-                                                <div class="col l3 m6 m-b-20"><img src="~/admin/assets/images/big/img4.jpg" class="responsive-img radius" alt="image" /></div>
-                                            </div>
-                                            <div> <h5><i class="material-icons">date_range</i>Date create: @recipe.Date</h5></div>
+                                            <p style="margin: 20px; font-size: 16px;">@feedback.Description</p>
+                                            <div> <h5><i class="material-icons">date_range</i>Date create: @feedback.Rating</h5></div>
+                                            <div> <h5><i class="material-icons">date_range</i>Date create: @MyToys.getLastTime(feedback.Date)</h5></div>
                                         </div>
                                     </div>
                                 </div>

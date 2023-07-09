@@ -3,7 +3,7 @@ using Services.Models.Authentication;
 
 namespace RecipeOrganizer.Areas.Admin.Models.Manage
 {
-    public class UserReipceViewModel
+    public class UserRecipeViewModel
     {
         public AppUser User { get; set; }
         public List<Recipe> UserRecipe { get; set; }
