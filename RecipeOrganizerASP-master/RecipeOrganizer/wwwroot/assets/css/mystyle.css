@@ -1,7 +1,19 @@
-﻿
+﻿.password-toggle-container {
+    position: relative;
+}
+
+.password-toggle-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
 .max-width-set {
     max-width: 100%;
 }
+
 .header ul.white-link > li > a {
     opacity: 1;
 }

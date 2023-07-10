@@ -42,15 +42,14 @@
         color: #ffffff;
         margin-bottom: 6px;
     }
-
-        .facebook-login-button:hover {
-            background-color: #ffffff; /* Background color on hover */
-            color: #000810;
-            border: 1px solid #000810;
-        }
+    
+    .facebook-login-button:hover {
+        background-color: #ffffff; /* Background color on hover */
+        color: #000810;
+        border: 1px solid #000810;
+    }
 </style>
 
-<body>
     @if (TempData["ChangePasswordSuccess"] != null)
     {
          <div class="alert alert-success">
@@ -87,7 +86,15 @@
                     </div>
                     <label asp-for="Password" class="form-label"></label>
                     <div class="mb-3">
-                        <input asp-for="Password" class="form-control" autocomplete="current-password" aria-required="true" />
+                        <!--
+                            input asp-for="Password" class="form-control" autocomplete="current-password" aria-required="true" />
+                        --><
+                        <div class="password-toggle-container">
+                            <input asp-for="Password" id="txtPassword" class="form-control password-input" autocomplete="current-password" aria-required="true" />
+                            <span class="password-toggle-icon">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     
@@ -132,5 +139,20 @@
             </div>
         </div>
     </div>
-</body>
 
+<script>
+    $(document).ready(function () {
+        $('.password-toggle-icon').click(function () {
+            var passwordField = $(this).prev('.password-input');
+            var eyeIcon = $(this).find('i');
+
+            if (passwordField.attr('type') === 'password') {
+                passwordField.attr('type', 'text');
+                eyeIcon.removeClass('fa-eye').addClass('fa-eye-slash');
+            } else {
+                passwordField.attr('type', 'password');
+                eyeIcon.removeClass('fa-eye-slash').addClass('fa-eye');
+            }
+        });
+    });
+</script>
