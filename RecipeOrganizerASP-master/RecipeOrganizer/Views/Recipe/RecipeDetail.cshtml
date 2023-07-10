@@ -362,17 +362,10 @@
 						});
 					</script>
 
-					<div class="margin-bottom-80px box-shadow">
-						<div class="padding-30px background-white">
-							<h3><i class="far fa-star margin-right-10px text-main-color"></i> Review &amp; Rating</h3>
-							<hr>
-
-							<ul class="commentlist padding-0px margin-0px list-unstyled text-grey-3">
+				
 								@await Component.InvokeAsync("LoadFeedback", new { recipeID = Model.RecipeId })
 
-							</ul>
-						</div>
-					</div>
+							
 				</div>
 			</div>
 
