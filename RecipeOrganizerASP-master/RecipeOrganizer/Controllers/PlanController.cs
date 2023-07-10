@@ -154,7 +154,22 @@ namespace RecipeOrganizer.Controllers
 		{
 			return View("ViewPlan", HttpContext.Session.GetJson<Slot>("cart"));
 		}
-        public async Task<IActionResult> AddToSlotAsync(int recipeID, int slotNow, string week)
+
+        public async Task<IActionResult> PrintPlan()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+				Slot = HttpContext.Session.GetJson<Slot>("cart");
+                if (Slot != null)
+                {
+                    return View(Slot);
+                }
+				return View("ViewPLan", Slot);
+			}
+			return RedirectToAction("Index", "Home");
+		}
+		public async Task<IActionResult> AddToSlotAsync(int recipeID, int slotNow, string week)
         {
             //lay recipe co id giong id can tim
             var user = await _userManager.GetUserAsync(User);

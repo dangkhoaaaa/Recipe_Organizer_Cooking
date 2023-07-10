@@ -3,7 +3,7 @@
     ViewData["Title"] = "SendContact";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model Services.Repository.ContactFormModel
+@model Services.Data.ShowContact
 <!-- Map -->
 @* <div class="map-distributors-in">
 	<div id="map-distributors">
@@ -88,6 +88,7 @@
 		</div>
 	</section>
 </div> *@
+<p>numError = @Model.ErrorNum.Count</p>
 <div class="map-distributors-in">
 	<div id="map-distributors">
 		<script>
@@ -135,27 +136,27 @@
 					@using (Html.BeginForm("SendEmail", "Contact", FormMethod.Post))
 					{
 						<div class="form-group">
-							@Html.LabelFor(m => m.Name)
-							@Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name" })
-							@Html.ValidationMessageFor(m => m.Name)
+							@Html.LabelFor(m => m.Contact.Name)
+							@Html.TextBoxFor(m => m.Contact.Name, new { @class = "form-control", placeholder = "Name" })
+							@Html.ValidationMessageFor(m => m.Contact.Name)
 						</div>
 
 						<div class="form-group">
-							@Html.LabelFor(m => m.Email)
-							@Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
-							@Html.ValidationMessageFor(m => m.Email)
+							@Html.LabelFor(m => m.Contact.Name)
+							@Html.TextBoxFor(m => m.Contact.Email, new { @class = "form-control", placeholder = "Email" })
+							@Html.ValidationMessageFor(m => m.Contact.Email)
 						</div>
 
 						<div class="form-group">
-							@Html.LabelFor(m => m.Address)
-							@Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
-							@Html.ValidationMessageFor(m => m.Address)
+							@Html.LabelFor(m => m.Contact.Address)
+							@Html.TextBoxFor(m => m.Contact.Address, new { @class = "form-control", placeholder = "Address" })
+							@Html.ValidationMessageFor(m => m.Contact.Address)
 						</div>
 
 						<div class="form-group">
-							@Html.LabelFor(m => m.Message)
-							@Html.TextAreaFor(m => m.Message, new { @class = "form-control", rows = "3", placeholder = "Message" })
-							@Html.ValidationMessageFor(m => m.Message)
+							@Html.LabelFor(m => m.Contact.Message)
+							@Html.TextAreaFor(m => m.Contact.Message, new { @class = "form-control", rows = "3", placeholder = "Message" })
+							@Html.ValidationMessageFor(m => m.Contact.Message)
 						</div>
 
 						<button type="submit" class="btn btn-primary">Send</button>

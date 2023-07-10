@@ -1,32 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Services.Data;
+using Services.Models;
 using Services.Repository;
 
 namespace RecipeOrganizer.Controllers
 {
 	public class ContactController : Controller
 	{
+		public ContactFormModel _contactFormModel = new ContactFormModel(); 
 
 		public IActionResult SendContact()
 		{
 			return View();
 		}
 		[HttpPost]
-		public ActionResult SendEmail(ContactFormModel model)
+		public ActionResult SendEmail(ShowContact model)
 		{
-			if (ModelState.IsValid)
-			{
-				// Access the form data from the model
-				string name = model.Name;
-				string email = model.Email;
-				string address = model.Address;
-				string message = model.Message;
+			model.Contact.Date = DateTime.Now;
+			model.ErrorNum = _contactFormModel.CheckForm(model.Contact);
 
-				// Send email using your preferred email sending method or library
-
-				return RedirectToAction("Success"); // Redirect to a success page
-			}
-
-			// If the model state is not valid, return to the same view to show validation errors
 			return View("SendContact", model);
 		}
 	}
