@@ -63,19 +63,26 @@
 				<div class="row">
 					<div class="rating col-3">
 						<ul>
+							@*<li class="active"></li>
 							<li class="active"></li>
 							<li class="active"></li>
 							<li class="active"></li>
-							<li class="active"></li>
-							<li></li>
-							<a href="#" onclick="scrollToSection('#addFeedback')">@Model.AvgRate </a>
+							<li></li>*@
+
+							<li class="@((Model.AvgRate >= 1) ? "active" : "")"></li>
+							<li class="@((Model.AvgRate >= 2) ? "active" : "")"></li>
+							<li class="@((Model.AvgRate >= 3) ? "active" : "")"></li>
+							<li class="@((Model.AvgRate >= 4) ? "active" : "")"></li>
+							<li class="@((Model.AvgRate >= 5) ? "active" : "")"></li>
+
+							<a href="#" onclick="scrollToSection('#addFeedback')">@((Model.AvgRate != null) ? Model.AvgRate : "0")</a>
 						</ul>
 					</div>
 					|
 					<div class="col-5">
 						<a href="#" onclick="sendEmailAndIncreaseShare()">@Model.NumberShare share(s)</a>
 						<span class="margin-lr-5px">|</span>
-						<a href="#">@Model.Imgs.Count() photo(s)</a>
+						<a href="#" onclick="scrollToSection('#imgsssss')">@Model.Imgs.Count() photo(s)</a>
 					</div>
 				</div>
 
@@ -115,18 +122,59 @@
 
 					</form>
 				</div>
+				<script>
+					document.addEventListener("DOMContentLoaded", function () {
+						var thumbImgs = document.querySelectorAll(".thumb-img");
 
+						if (thumbImgs.length > 6) {
+							for (var i = 0; i < 6; i++) {
+								thumbImgs[i].style.display = "inline-block";
+							}
+
+							var showMore = document.createElement("a");
+							showMore.href = "#";
+							showMore.classList.add("show-more");
+							showMore.innerHTML = "Show more +" + (thumbImgs.length - 6);
+
+							showMore.addEventListener("click", function () {
+								for (var i = 6; i < thumbImgs.length; i++) {
+									thumbImgs[i].style.display = "inline-block";
+								}
+
+								showMore.style.display = "none";
+							});
+
+							document.getElementById("imgsssss").appendChild(showMore);
+						}
+					});
+				</script>
 				<div class="margin-bottom-40px card border-0 box-shadow">
-					<div class="card-img-top"><a href="#"><img src="@Model.Img" alt=""></a></div>
-					<div class="padding-top-20px padding-lr-40px">
+					<div class="card-img-top"><a href="#"><img style="height: 450px;" id="mainImg" src="@Model.Img" alt=""></a></div>
+					<div class="padding-top-20px padding-lr-40px" id="imgsssss">
+						<a href="#"><img class="width-100px thumb-img" style="height:70px" src="@Model.Img" alt=""></a>
 						@if (@Model.Imgs != null)
 						{
-							@foreach (var img in Model.Imgs)
+							var imgCount = 0;
+							foreach (var img in Model.Imgs)
 							{
-								<a href="#"><img class="width-100px" src="@img" alt=""></a>
+								<a href="#"><img class="width-100px thumb-img" style="height:70px" src="@img" alt=""></a>
+								imgCount++;
+								if (imgCount >= 6)
+								{
+									break;
+								}
 							}
 						}
 					</div>
+
+					<script>
+						$(document).ready(function () {
+							$('.thumb-img').hover(function () {
+								var newImgSrc = $(this).attr('src');
+								$('#mainImg').attr('src', newImgSrc);
+							});
+						});
+					</script>
 					<div class="padding-lr-30px padding-tb-20px">
 						<div class="padding-tb-10px">
 							<h3>Ingredients</h3>
@@ -314,17 +362,10 @@
 						});
 					</script>
 
-					<div class="margin-bottom-80px box-shadow">
-						<div class="padding-30px background-white">
-							<h3><i class="far fa-star margin-right-10px text-main-color"></i> Review &amp; Rating</h3>
-							<hr>
-
-							<ul class="commentlist padding-0px margin-0px list-unstyled text-grey-3">
+				
 								@await Component.InvokeAsync("LoadFeedback", new { recipeID = Model.RecipeId })
 
-							</ul>
-						</div>
-					</div>
+							
 				</div>
 			</div>
 

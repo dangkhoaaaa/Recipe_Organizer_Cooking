@@ -444,7 +444,7 @@ namespace RecipeOrganizer.Controllers
 				return View(data);
 			}
 
-			return RedirectToAction("Index", "Home");
+			return RedirectToAction("AccessDenied", "Recipe");
 		}
 
 		[AllowAnonymous]
