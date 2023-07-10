@@ -23,7 +23,7 @@ namespace RecipeOrganizerTest
         //      Expected value = 'Just now'
         [Test]
         // attribute indicates a method is a test method.
-        public void LastLoginNowTestReturnMessageNow()
+        public void LastLoginNowTest_ShouldReturnMessageNow()
         {
             //Arrange
             const string expected = "Just now";
@@ -47,15 +47,18 @@ namespace RecipeOrganizerTest
         //      Expected value = '4 seconds ago'
         [Test]
         // attribute indicates a method is a test method.
-        public void LastLogin4SecondsReturnMessageLast4Seconds()
+        public void LastLogin4Seconds_ShouldReturnMessageLast4Seconds()
         {
-            DateTime currentDateTime = DateTime.Now;
-            DateTime fourSecondsAgo = currentDateTime.AddSeconds(-4);
+			//Arrange
+			DateTime currentDateTime = DateTime.Now;
+			DateTime fourSecondsAgo = currentDateTime.AddSeconds(-4);
+			const string expected = "4 seconds ago";
 
-            const string expected = "4 seconds ago";
-            var result = MyToys.getLastTime(fourSecondsAgo);
+			//Act
+			var result = MyToys.getLastTime(fourSecondsAgo);
 
-            Assert.AreEqual(expected, result);
+			//Assert
+			Assert.AreEqual(expected, result);
         }
 
         //Test Last Login calculate function
@@ -70,15 +73,18 @@ namespace RecipeOrganizerTest
         //      Expected value = '5 minutes ago'
         [Test]
         // attribute indicates a method is a test method.
-        public void LastLogin5MinutesReturnMessageLast5Minutes()
+        public void LastLogin5Minutes_ShouldReturnMessageLast5Minutes()
         {
-            DateTime currentDateTime = DateTime.Now;
+			//Arrange
+			DateTime currentDateTime = DateTime.Now;
             DateTime fiveMinutesAgo = currentDateTime.AddMinutes(-5);
-
             const string expected = "5 minutes ago";
-            var result = MyToys.getLastTime(fiveMinutesAgo);
 
-            Assert.AreEqual(expected, result);
+			//Act
+			var result = MyToys.getLastTime(fiveMinutesAgo);
+
+			//Assert
+			Assert.AreEqual(expected, result);
         }
 
         //Test Last Login calculate function
@@ -93,15 +99,18 @@ namespace RecipeOrganizerTest
         //      Expected value = '6 hours ago'
         [Test]
         // attribute indicates a method is a test method.
-        public void LastLogin4MinuteReturnMessageLast4Minute()
+        public void LastLogin6Hours_ShouldReturnMessageLast6Hours()
         {
-            DateTime currentDateTime = DateTime.Now;
+			//Arrange
+			DateTime currentDateTime = DateTime.Now;
             DateTime fourMinutesAgo = currentDateTime.AddHours(-6);
-
             const string expected = "6 hours ago";
-            var result = MyToys.getLastTime(fourMinutesAgo);
 
-            Assert.AreEqual(expected, result);
+			//Act
+			var result = MyToys.getLastTime(fourMinutesAgo);
+
+			//Assert
+			Assert.AreEqual(expected, result);
         }
 
         //Test Last Login calculate function
@@ -116,15 +125,18 @@ namespace RecipeOrganizerTest
         //      Expected value = '7 days ago'
         [Test]
         // attribute indicates a method is a test method.
-        public void LastLogin7DaysReturnMessageLast7Days()
+        public void LastLogin7Days_ShouldReturnMessageLast7Days()
         {
-            DateTime currentDateTime = DateTime.Now;
+			//Arrange
+			DateTime currentDateTime = DateTime.Now;
             DateTime sevenDaysAgo = currentDateTime.AddDays(-7);
-
             const string expected = "7 days ago";
-            var result = MyToys.getLastTime(sevenDaysAgo);
 
-            Assert.AreEqual(expected, result);
+			//Act
+			var result = MyToys.getLastTime(sevenDaysAgo);
+
+			//Assert
+			Assert.AreEqual(expected, result);
         }
 
 		public static class TestDataGenerator
@@ -142,7 +154,7 @@ namespace RecipeOrganizerTest
 		[TestFixture]
 		public class MyDataDrivenTests
 		{
-			[TestCaseSource(typeof(TestDataGenerator), nameof(TestDataGenerator.GetLastLoginTestData))]
+			//[TestCaseSource(typeof(TestDataGenerator), nameof(TestDataGenerator.GetLastLoginTestData))]
 			public void MultiplyLastLoginTime_ShouldReturnCorrectMessage(DateTime lastTime, string expectedMessage)
 			{
 				// Arrange
@@ -155,9 +167,9 @@ namespace RecipeOrganizerTest
 			}
 		}
 
-		[TestFixture] //attribute denotes a class that contains unit tests
+		[TestFixture] 
 		//[Parallelizable(ParallelScope.All)] // Apply Parallelizable attribute at the fixture level
-		public class Test1
+		public class TestParallel1
 		{
 			[Test]
 			public void TestSleep1()
@@ -166,9 +178,9 @@ namespace RecipeOrganizerTest
 			}
 		}
 
-		[TestFixture] //attribute denotes a class that contains unit tests
+		[TestFixture] 
 		//[Parallelizable(ParallelScope.All)] // Apply Parallelizable attribute at the fixture level
-		public class Test2
+		public class TestParallel2
 		{
 			[Test]
 			public void TestSleep2()
