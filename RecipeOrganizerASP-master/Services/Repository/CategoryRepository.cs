@@ -18,9 +18,9 @@ namespace Services.Repository
 			_context = new Recipe_OrganizerContext();
 			_dbSet1 = _context.Set<Category>();
 		}
-
+		
 		public ICollection<Category> Products { get; set; } = new List<Category>();
-
+		public ICollection<Category> Categories { get; set; } = new List<Category>();
 		public List<Category> getListCategoryById(int categoryID)
 		{
 			//var list = _dbSet.Where(Entity => Entity.Title.Contains(keyword)).ToList();
@@ -72,6 +72,15 @@ namespace Services.Repository
 		}
 
 		public List<Category> GetAllCategories ()
+		{
+			return _dbSet1.ToList();
+		}
+		public void Add1( Category a)
+		{
+			_dbSet1.Add(a);
+			_context.SaveChanges();
+		}
+		public List<Category> GetAll1()
 		{
 			return _dbSet1.ToList();
 		}

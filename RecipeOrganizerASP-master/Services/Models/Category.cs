@@ -12,5 +12,10 @@ namespace Services.Models
         public string? Image { get; set; }
 
         public virtual ParentCategory Parent { get; set; } = null!;
-    }
+
+		public static implicit operator global::Moq.Mock<object>(Category v)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }
