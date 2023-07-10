@@ -31,25 +31,29 @@ namespace Services.Repository
 			} else
 			{
 				
-				if (contact.Name.Length < 1 || contact.Name.Length > 100)
+				if (contact.Name == null || contact.Name.Length < 1 || contact.Name.Length > 100)
 				{
 					l.Add(1);
 				}
-				if (contact.Email.Length < 1 || contact.Email.Length >= 250) {
+				if (contact.Email == null || contact.Email.Length < 1 || contact.Email.Length >= 250 ) {
 					l.Add(2);
 				}
-				if (contact.Address.Length > 300)
+				if (contact.Address != null && contact.Address.Length > 300 )
 				{
 					l.Add(3);
+				} else if (contact.Address == null)
+				{
+					contact.Address = "";
 				}
-				if (contact.Message.Length < 1 || contact.Message.Length > 1000) {
+				if (contact.Message == null || contact.Message.Length < 1 || contact.Message.Length > 1000 ) {
 					l.Add(4);
 				}
 				
 			}
 			if (l.Count == 0)
 			{
-				_dbSet.Add(contact);
+				contact.Date = DateTime.Now;
+				Add(contact);
 				contact = null;
 				return l;
 			}
