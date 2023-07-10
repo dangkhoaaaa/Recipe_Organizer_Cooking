@@ -1,5 +1,5 @@
 ﻿@using System.Data
-@model UserFeedbackViewModel
+@model List<UserFeedback>
 @inject UserManager<AppUser> _userManager
 
 @{
@@ -14,31 +14,31 @@
         <img class="responsive-img" src="~/assets/img/user-background-01.png" height="456" alt="Card image">
         <div class="card-img-overlay white-text social-profile d-flex justify-content-center">
             <div class="align-self-center">
-                <img src="@Model.User.Image" class="circle" width="100" alt="user-image">
-                <h4 class="card-title white-text">@Model.User.UserName</h4>
+                <img src="@Model[0].User.Image" class="circle" width="100" alt="user-image">
+                <h4 class="card-title white-text">Model[0].User.UserName</h4>
                 <h6 class="card-subtitle" style="color: #e5e500; font-weight: bold;">
                     @{
-                        var tag = Model.User.FirstName + " " + Model.User.LastName;
+                        var tag = Model[0].User.FirstName + " " + Model[0].User.LastName;
                         @tag
                     }
                 </h6>
                 <p class="white-text">Best cook in the world!!!</p>
-                <p class="white-text" id="date">Last login: @MyToys.getLastTime(Model.User.LastLoginTime)</p>
+                <p class="white-text" id="date">Last login: @MyToys.getLastTime(Model[0].User.LastLoginTime)</p>
             </div>
         </div>
     </div>
     <div class="card">
         <div class="card-content">
             <small>Email address </small>
-            <h6 style="margin-bottom: 3.5px;">@Model.User.Email</h6>
+            <h6 style="margin-bottom: 3.5px;">@Model[0].User.Email</h6>
             <small>Registe account date</small>
-            <h6 style="margin-bottom: 3.5px;" class="dateElement">@Model.User.RegistrationTime</h6>
+            <h6 style="margin-bottom: 3.5px;" class="dateElement">@Model[0].User.RegistrationTime</h6>
             <small>First name</small>
-            <h6 style="margin-bottom: 3.5px;">@Model.User.FirstName</h6>
+            <h6 style="margin-bottom: 3.5px;">@Model[0].User.FirstName</h6>
             <small>Last name</small>
-            <h6 style="margin-bottom: 3.5px;">@Model.User.LastName</h6>
+            <h6 style="margin-bottom: 3.5px;">@Model[0].User.LastName</h6>
             <small>Birthday</small>
-            <h6 style="margin-bottom: 3.5px;">@Model.User.Birthday</h6>
+            <h6 style="margin-bottom: 3.5px;">@Model[0].User.Birthday</h6>
             @*<div class="map-box m-t-20">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d470029.1604841957!2d72.29955005258641!3d23.019996818380896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fcedd11614f6516!2sAhmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1493204785508" height="150" style="border:0;width: 100%" allowfullscreen></iframe>
             </div>
@@ -62,14 +62,14 @@
             <div id="timeline" class="col s12">
                 <div class="card-content">
                     <div class="profiletimeline">
-                        @if (Model.UserFeedback.Count == 0)
+                        @if (Model.Count == 0)
                         {
-                            <h2 style="color:red; font-weight:bold;">No Feedbacj!!</h2>
+                            <h2 style="color:red; font-weight:bold;">No Feedback!!</h2>
                         }
                         else
                         {
-                            <h2 style="color:blue; font-weight:bold;">Number of recipe: @Model.TotalFeedback</h2>
-                            @foreach (var feedback in Model.UserFeedback)
+                            <h2 style="color:blue; font-weight:bold;">Number of feedbacks: @Model.Count</h2>
+                            @foreach (var feedback in Model)
                             {
                                 <div class="sl-item">
                                     <div class="sl-left"> <img src="~/assets/img/chef-avt-default.png" alt="user" class="circle" /> </div>
@@ -77,12 +77,12 @@
                                         <div>
                                             <div>
                                                 <h4 style="display:inline-block;">
-                                                    <a href="/Recipe/RecipeDetails/?recipeID=@feedback.feedbackId" style="margin-right:20px;">@feedback.Title</a>
+                                                    <a href="/Recipe/RecipeDetail/?id=@feedback.Recipe.RecipeId" style="margin-right:20px;">@feedback.Feedback.Title</a>
                                                     </h4>
                                             </div>
-                                            <p style="margin: 20px; font-size: 16px;">@feedback.Description</p>
-                                            <div> <h5><i class="material-icons">date_range</i>Date create: @feedback.Rating</h5></div>
-                                            <div> <h5><i class="material-icons">date_range</i>Date create: @MyToys.getLastTime(feedback.Date)</h5></div>
+                                            <p style="margin: 20px; font-size: 16px;">@feedback.Feedback.Description</p>
+                                            <div> <h5><i class="material-icons">date_range</i>Date create: @feedback.Feedback..Rating</h5></div>
+                                            <div> <h5><i class="material-icons">date_range</i>Date create: @MyToys.getLastTime(feedback.Feedback.Date)</h5></div>
                                         </div>
                                     </div>
                                 </div>
