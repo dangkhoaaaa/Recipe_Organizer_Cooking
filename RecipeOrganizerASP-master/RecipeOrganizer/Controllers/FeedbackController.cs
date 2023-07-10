@@ -100,6 +100,14 @@ namespace RecipeOrganizer.Controllers
 					// Save the new feedback to the database
 					_feedbackRepository.Add(newFeedback);
 
+					double AvgRating = _feedbackRepository.valueAvgRateRecipe(id);
+					var recipe = _recipeRepository.GetById(id);
+					if (recipe != null)
+					{
+						recipe.AvgRate = AvgRating;
+						_recipeRepository.Update(recipe);
+					}
+
 					int notificationId = _notificationRepository.addNotification("New review has been added");
 
 					// Media

@@ -24,7 +24,9 @@ namespace Services.Repository
 		protected DbSet<Media> _dbSetMedia;
 		protected DbSet<Feedback> _dbSet1;
         protected DbSet<AppUser> _dbSetAppUser;
-        public FeedbackRepository()
+		private RecipeRepository _recipeRepository;
+
+		public FeedbackRepository()
         {
             _context = new Recipe_OrganizerContext();
 
@@ -35,6 +37,7 @@ namespace Services.Repository
             _dbSet1 = _context.Set<Feedback>();
             _dbSetMedia = _context.Set<Media>();
             _dbSetAppUser = _context.Set<AppUser>(); 
+			_recipeRepository = new RecipeRepository();
         }
 
         public ICollection<Feedback> Products { get; set; } = new List<Feedback>();
@@ -70,7 +73,30 @@ namespace Services.Repository
 			return feebackList;
 		}
 
+		public double CalculateAverageRating(int recipeId)
+		{
+			var query = from fb in _dbSetFeedBack
+						join md in _dbSetMetadata on fb.FeedbackId equals md.FeedbackId
+						where md.RecipeId == recipeId
+						select fb;
 
+			List<Feedback> distinctFeedbacks = query.ToList().DistinctBy(r => r.FeedbackId).ToList();
+
+			double averageRating = 0;
+			if (distinctFeedbacks.Count > 0)
+			{
+				double totalRating = distinctFeedbacks.Sum(f => f.Rating);
+				averageRating = totalRating / distinctFeedbacks.Count;
+			}
+			var recipe = _recipeRepository.GetById(recipeId);
+			if (recipe != null)
+			{
+				recipe.AvgRate = averageRating;
+				_recipeRepository.Update(recipe);
+			}
+
+			return averageRating;
+		}
 
 		//public List<Feedback> getAllFeedBackByRecipe(int recipeId)
 		//{
@@ -79,14 +105,14 @@ namespace Services.Repository
 		//				join md in _dbSetMetadata on fb.FeedbackId equals md.FeedbackId
 		//				where md.RecipeId == recipeId
 		//				select fb;
-  //          if(query.Count() > 0 )
-  //          {
+		//          if(query.Count() > 0 )
+		//          {
 		//		listmapCategory = query.GroupBy(fb => fb.FeedbackId)
 		//			   .Select(group => group.First())
 		//			   .ToList();
 		//	}
-			
-			
+
+
 		//	return listmapCategory;
 		//}
 
