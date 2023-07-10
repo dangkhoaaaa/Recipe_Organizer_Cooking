@@ -1,0 +1,140 @@
+﻿@model Services.Repository.Slot
+@{
+	ViewBag.Title = "Plan";
+	Layout = "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Recipe Organizer</title>
+	
+	<meta name="author" content="CaoCong">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/img/logo-red.png">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="keywords" content="recipes food, recipes , chinese food, italian food">
+	<meta name="description" content="Recipe Organizer - Food & Recipes Food">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/templatemo-seo-dream.css">
+    <link rel="stylesheet" href="/assets/css/animated.css">
+    <link rel="stylesheet" href="/assets/css/owl.css">
+
+    <link href="~/assets/css/content.css" rel="stylesheet">
+    <link href="~/assets/css/style.css" rel="stylesheet">
+
+	<script>
+		function printPage() {
+			window.print();
+		}
+		window.onload = function () {
+			printPage();
+		};
+	</script>
+</head>
+<body class="layout-print">
+    <div class="layout-print-header">
+        <a class="logo" rel="home" href="/" aria-label="Home">
+            <img src="../../assets/img/logo-red.png" class="icon-logo" />
+            <div class="is-screenreader-only">
+                Recipe Ogranization
+            </div>
+        </a>
+    </div>
+    <div class="text-center" >
+        <table class="text-center " style="width:100%">
+            <tr>
+                <th>Session/Day</th>
+
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+                <th>Sunday</th>
+            </tr>
+
+
+            
+            @{
+                int count = 0;
+                for (int i = 1; i <= 3; i++)
+                {
+                    <tr class="border-top-3">
+                        <td class="text-center font-weight-bold" width="140px">
+                            @{
+                                string session = "";
+                                @switch (i)
+                                {
+                                    case 1:
+                                        session = "Breakfar";
+                                        break;
+                                    case 2:
+                                        session = "Lunch";
+                                        break;
+                                    default:
+                                        session = "Dinner";
+                                        break;
+                                }
+                            }
+                            @session
+
+                        </td>
+
+
+                        @for (int j = 0; j < 7; j++)
+                        {
+
+                            count = 0;
+                            <td class="text-center vertical-center" width="135px">
+                                @if (Model?.Lines != null)
+                                {
+
+                                    @foreach (var item in Model.Lines)
+                                    {
+
+
+
+                                        if (item.SlotID == (3 * j + i))
+                                        {
+                                            foreach (var recipe in item.Recipes)
+                                            {
+
+                                                <a href="/Recipe/RecipeDetail/?id=@recipe.RecipeId">
+                                                    <img class="my-1 p-1 rounded-6" style=" height: 95px" src="@recipe.Image" alt="@recipe.Title" title="@recipe.Title">
+                                                </a>
+                                                
+                                                <br />
+                                                <span>@recipe.Title</span>
+                                            }
+                                           
+                                        }
+
+
+                                    }
+
+
+
+
+                                }
+                                
+                            </td>
+
+
+                        }
+
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+
+</body>
+</html>
