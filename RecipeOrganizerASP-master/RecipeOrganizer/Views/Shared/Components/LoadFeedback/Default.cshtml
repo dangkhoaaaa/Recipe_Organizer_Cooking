@@ -4,48 +4,70 @@
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 
+<div class="margin-bottom-80px box-shadow">
+	<div class="padding-30px background-white">
+		<h3><i class="far fa-star margin-right-10px text-main-color"></i> Review &amp; Rating</h3>
+		<hr>
 
-@if (Model !=null && Model.Count>0)
-{
+		<ul class="commentlist padding-0px margin-0px list-unstyled text-grey-3">
+			@if (Model != null && Model.Count > 0)
+			{
 
-	@foreach( var item in Model)
-	{
+				@foreach (var item in Model)
+				{
 
-	
-		<li class="border-bottom-1 border-grey-1 margin-bottom-20px">
-			<img src="@item.Images"
-				 class="float-left margin-right-20px border-radius-60 margin-bottom-20px" alt="" width="50" height="50">
-			<div class="margin-left-85px">
-				<a class="d-inline-block text-dark text-medium margin-right-20px" href="#">
-					@item.Title
-				</a>
-				<span class="text-extra-small">
-					Date: <a href="#" class="text-main-color">
-						@item.Date
-					</a>
-				</span>
-				<div class="rating">
-					<ul>
-						<li class="@((item.Rating >= 1) ? "active" : "")"></li>
-						<li class="@((item.Rating >= 2) ? "active" : "")"></li>
-						<li class="@((item.Rating >= 3) ? "active" : "")"></li>
-						<li class="@((item.Rating >= 4) ? "active" : "")"></li>
-						<li class="@((item.Rating >= 5) ? "active" : "")"></li>
-					</ul>
-				</div>
-				<p class="margin-top-15px text-grey-2">
-					@item.Description
-				</p>
-			</div>
-		</li>
 
-	}
-	
+					<li class="border-bottom-1 border-grey-1 margin-bottom-100px">
+						<img src="@item.Avatar" class="float-left margin-right-20px border-radius-60 margin-bottom-20px" alt="" width="50"
+							 height="50" style="max-width: 50px; max-height: 50px; min-width: 50px; min-height: 50px; border-radius: 50%;">
+						<div class="margin-left-85px">
+							<a class="d-inline-block text-dark text-medium margin-right-20px" href="#">
+								@item.name
+							</a>
+							<span class="text-extra-small">
+								Date: <a href="#" class="text-main-color">
+									@item.Date
+								</a>
+							</span>
 
-}
-else
-{
-	<h2> Not Have FeedBack</h2>
-}
+							<div class="rating">
+								<ul>
+									<li class="@((item.Rating >= 1) ? "active" : "")"></li>
+									<li class="@((item.Rating >= 2) ? "active" : "")"></li>
+									<li class="@((item.Rating >= 3) ? "active" : "")"></li>
+									<li class="@((item.Rating >= 4) ? "active" : "")"></li>
+									<li class="@((item.Rating >= 5) ? "active" : "")"></li>
+								</ul>
+							</div>
+							<p class="margin-top-15px text-grey-2">
+								@item.Title
+							</p>
+							<p class="margin-top-15px text-grey-2">
+								@item.Description
+							</p>
+							@if (item.Images != null && item.Images != "")
+							{
+								<div style="width: 100%; max-width: 500px; height: 200px; overflow: hidden;">
+									<img src="@item.Images" style="width: 100%; height: 100%; object-fit: cover;">
+								</div>
+							}
+							
+						</div>
+					</li>
+
+				}
+
+
+			}
+			else
+			{
+				<h2> Not Have FeedBack</h2>
+			}
+
+
+
+		</ul>
+	</div>
+</div>
 
 
