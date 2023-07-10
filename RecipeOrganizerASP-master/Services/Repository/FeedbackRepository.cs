@@ -175,7 +175,21 @@ namespace Services.Repository
 			return listresult;
 		}
 
-
+		public List<UserFeedback> GetAllFeedbackUserWithMetadata(string userID)
+		{
+			var query = from m in _context.MetaData
+						join r in _context.Recipes on m.RecipeId equals r.RecipeId
+						join u in _context.Users on m.UserId equals u.Id
+						join f in _context.Feedbacks on m.FeedbackId equals f.FeedbackId
+						where u.Id == userID
+						select new UserFeedback
+						{
+							User = u,
+							Recipe = r,
+							Feedback = f
+						};
+			return query.ToList();
+		}
 
 	}
 }

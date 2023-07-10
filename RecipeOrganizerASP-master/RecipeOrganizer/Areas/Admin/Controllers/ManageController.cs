@@ -12,6 +12,7 @@ using Firebase.Auth;
 using System.Collections.Generic;
 using RecipeOrganizer.Areas.Admin.Models.Manage;
 using System.Security.Claims;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace RecipeOrganizer.Areas.Admin.Controllers
 {
@@ -241,7 +242,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             return View("Index", index);
         }
 
-        //GET: Admin/UserRecipe/{id}
+        //GET: Admin/UserRecipe/?userID={id}
         public async Task<IActionResult> UserRecipe(string userID)
         {
             var user = await _userManager.FindByIdAsync(userID);
@@ -261,8 +262,8 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             return View(model);
         }
 
-		//GET: Admin/UserFeedbacks/{id}
-		public async Task<IActionResult> UserFeedbacks(string userID)
+        //GET: Admin/UserFeedbacks/?userID={id}
+        public async Task<IActionResult> UserFeedbacks(string userID)
 		{
 			var user = await _userManager.FindByIdAsync(userID);
 			if (user == null)
@@ -270,14 +271,9 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 				ViewBag.UserError = "Can not find user";
 				return View("Index");
 			}
-			var listUserFeedback = _feedbackRepository.GetByFeedbackByUser(userID);
-			var model = new UserFeedbackViewModel
-			{
-				User = user,
-				UserFeedback = listUserFeedback,
-				TotalFeedback = listUserFeedback.Count(),
-			};
-			if (listUserFeedback == null)
+            var model = _feedbackRepository.GetAllFeedbackUserWithMetadata(userID);
+
+			if (model == null)
 				ViewBag.NoRecipe = "No feedback";
 			return View(model);
 		}
