@@ -11,7 +11,7 @@ namespace Services.Repository
 {
 	public class RecipeHasCategoryRepository : RepositoryBase<RecipeHasCategory>
     {
-        Recipe_OrganizerContext _context;
+        private new readonly Recipe_OrganizerContext _context;
 
         protected DbSet<RecipeHasCategory> _dbSetRecipeHasCategory;
         protected DbSet<Recipe> _dbSetRecipe;

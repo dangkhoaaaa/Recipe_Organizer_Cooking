@@ -10,7 +10,7 @@ namespace Services.Repository
 {
     public class Parent_CategoryRepository : RepositoryBase<ParentCategory>
     {
-        Recipe_OrganizerContext _context;
+        private new readonly Recipe_OrganizerContext _context;
         protected DbSet<ParentCategory> _dbSet1;
         public Parent_CategoryRepository()
         {
