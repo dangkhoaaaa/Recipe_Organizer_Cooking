@@ -33,5 +33,16 @@ namespace Services.Repository
 			_dbSet.RemoveRange(recipeHasTags);
 			_context.SaveChanges();
 		}
+
+		public List<Recipe> GetRecipesByTags(List<string> tags)
+		{
+			List<Recipe> recipes = _dbSet
+				.Where(rht => tags.Contains(rht.Tag.TagName))
+				.Select(rht => rht.Recipe)
+				.ToList();
+
+			return recipes;
+		}
+
 	}
 }
