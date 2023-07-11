@@ -362,10 +362,10 @@
 						});
 					</script>
 
-				
-								@await Component.InvokeAsync("LoadFeedback", new { recipeID = Model.RecipeId })
 
-							
+					@await Component.InvokeAsync("LoadFeedback", new { recipeID = Model.RecipeId })
+
+
 				</div>
 			</div>
 
@@ -386,6 +386,7 @@
 			</div>
 		</div>
 	</div>
+	@await Component.InvokeAsync("Items")
 	<script>
 		const rating = document.querySelector('.rating');
 		const stars = rating.querySelectorAll('li');

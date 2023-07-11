@@ -220,8 +220,9 @@ namespace RecipeOrganizer.Controllers
 				data.NumberShare = recipe.NumberShare;
 				var categories = _recipeHasCategoryRepository.GetCategoryByRecipeId(recipe.RecipeId);
 				data.Categories = categories;
-				var AvgRating = _feedbackRepository.CalculateAverageRating(recipe.RecipeId);
-				data.AvgRate = AvgRating;
+				//var AvgRating = _feedbackRepository.CalculateAverageRating(recipe.RecipeId);
+				//data.AvgRate = AvgRating;
+				data.AvgRate = recipe.AvgRate;
 
 				var user = await _userManager.GetUserAsync(User);
 				if (user != null)
@@ -323,8 +324,9 @@ namespace RecipeOrganizer.Controllers
 			data.Img = recipe.Image;
 			data.NumberShare = recipe.NumberShare;
 			data.Imgs = GetImgs(recipe.RecipeId);
-			var AvgRating = _feedbackRepository.CalculateAverageRating(recipe.RecipeId);
-			data.AvgRate = AvgRating;
+			//var AvgRating = _feedbackRepository.CalculateAverageRating(recipe.RecipeId);
+			//data.AvgRate = AvgRating;
+			data.AvgRate = recipe.AvgRate;
 
 			if (recipe.AvgRate == null)
 			{
