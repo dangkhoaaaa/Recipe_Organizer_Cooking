@@ -1,0 +1,29 @@
+name: CI with GitHub Actions using NUnit | © 2023 by uyentramle
+
+on:
+  push:
+    branches: [ main ] # Lấy code từ nhánh main nếu có ai push code lên  
+  pull_request:
+    branches: [ main ] # Lấy code từ nhánh main nếu có ai gửi pull request  
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore ./src/RecipeOrganizer.csproj
+
+      - name: Build
+        run: dotnet build ./src/RecipeOrganizer.csproj --configuration Release
+
+      - name: Run NUnit tests
+        run: dotnet test ./tests/RecipeOrganizer.Tests.csproj --configuration Release --no-build
