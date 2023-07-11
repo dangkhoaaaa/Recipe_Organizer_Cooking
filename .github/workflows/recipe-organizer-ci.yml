@@ -1,0 +1,32 @@
+name: CI with GitHub Actions using NUnit | © 2023 by uyentramle
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore dependencies
+        working-directory: ./RecipeOrganizerASP-master/RecipeOrganizer
+        run: dotnet restore
+
+      - name: Build
+        working-directory: ./RecipeOrganizerASP-master/RecipeOrganizer
+        run: dotnet build --configuration Release
+
+      - name: Run NUnit tests
+        working-directory: ./RecipeOrganizerASP-master/RecipeOrganizerTest
+        run: dotnet test --configuration Release --no-build
