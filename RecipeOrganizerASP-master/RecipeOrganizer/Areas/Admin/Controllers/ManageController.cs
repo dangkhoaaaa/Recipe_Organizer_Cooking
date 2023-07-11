@@ -271,8 +271,11 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 				ViewBag.UserError = "Can not find user";
 				return View("Index");
 			}
-            var model = _feedbackRepository.GetAllFeedbackUserWithMetadata(userID);
-
+            var feedbackUser = _feedbackRepository.GetAllFeedbackUserWithMetadata(userID);
+            var model = new UserFeedbackViewModel {
+                User = await _userManager.FindByIdAsync(userID),
+                UserFeedback = feedbackUser
+            };
 			if (model == null)
 				ViewBag.NoRecipe = "No feedback";
 			return View(model);
@@ -290,6 +293,8 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                     UserName = "adminabc",
                     Email = "recipeorganizert3@gmail.com",
                     EmailConfirmed = true,
+                    FirstName = "Admin",
+                    RegistrationTime = DateTime.Now,
                 };
                 await _userManager.CreateAsync(useradmin, "Admin123");
                 await _userManager.AddToRoleAsync(useradmin, RoleName.Administrator);
