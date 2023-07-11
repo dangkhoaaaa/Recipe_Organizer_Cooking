@@ -34,10 +34,11 @@ namespace Services.Repository
 			_context.SaveChanges();
 		}
 
-		public List<Recipe> GetRecipesByTags(List<string> tags)
+		public List<Recipe> GetRecipesByTags(int id)
 		{
+			var tags = GetTagsByRecipeId(id);
 			List<Recipe> recipes = _dbSet
-				.Where(rht => tags.Contains(rht.Tag.TagName))
+				.Where(rht => tags.Contains(rht.Tag))
 				.Select(rht => rht.Recipe)
 				.ToList();
 
