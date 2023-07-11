@@ -50,7 +50,8 @@ namespace Services.Repository
 						where md.RecipeId == recipeId
 						select fb;
 
-			listmapCategory = query.DistinctBy(r => r.FeedbackId).ToList();
+			//listmapCategory = query.DistinctBy(r => r.FeedbackId).ToList();
+			listmapCategory = query.AsEnumerable().DistinctBy(r => r.FeedbackId).ToList();
 			double result = 0;
 			if (listmapCategory.Count > 0)
 			{
