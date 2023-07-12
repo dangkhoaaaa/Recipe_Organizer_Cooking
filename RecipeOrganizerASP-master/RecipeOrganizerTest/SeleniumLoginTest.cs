@@ -4,7 +4,7 @@ using OpenQA.Selenium;
 namespace RecipeOrganizerTest
 {
     [TestFixture]
-    public class SeleniumLoginTest : BaseTest
+    public class SeleniumLoginTest : SeleniumTestBase
     {
         [Test, Category("SeleniumLoginTest")]
         public void LoginSucessfulTest_ShouldReturnWelcomeUsername()
