@@ -28,7 +28,7 @@ namespace RecipeOrganizerTest
         public void LastLoginNowTest_ShouldReturnMessageNow()
         {
             //Arrange
-            const string expected = "Just now";
+            const string expected = "Just now"; 
             
             //Act
             var result = MyToys.getLastTime(DateTime.Now);
