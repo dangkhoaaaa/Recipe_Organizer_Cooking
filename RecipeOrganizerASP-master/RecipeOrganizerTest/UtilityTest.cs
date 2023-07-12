@@ -8,33 +8,11 @@ using Services.Utilities;
 
 namespace RecipeOrganizerTest
 {
-	public static class TestDataGenerator
-	{
-		public static IEnumerable<TestCaseData> GetLastLoginTestData()
-		{
-			DateTime currentDateTime = DateTime.Now;
-
-			yield return new TestCaseData(currentDateTime.AddMinutes(-5), "5 minutes ago");
-			yield return new TestCaseData(currentDateTime.AddHours(-6), "6 hours ago");
-			yield return new TestCaseData(currentDateTime.AddDays(-7), "7 days ago");
-		}
-	}
+    //cần làm thêm nuget test coverage
 
 	[TestFixture] // attribute denotes a class that contains unit tests
     public class UtilityTest
     {
-		[TestCaseSource(typeof(TestDataGenerator), nameof(TestDataGenerator.GetLastLoginTestData))]
-		public void MultiplyLastLoginTime_ShouldReturnCorrectMessage(DateTime lastTime, string expectedMessage)
-		{
-			// Arrange
-
-			// Act
-			var result = MyToys.getLastTime(lastTime);
-
-			// Assert
-			Assert.AreEqual(expectedMessage, result);
-		}
-
 		//Test Last Login calculate function
 		//Test case #1: Check user last login to Recipe Organizer app
 		//Procedure: 
@@ -45,7 +23,7 @@ namespace RecipeOrganizerTest
 		//Expected value
 		//      Given DateTime.Now must be return message 'Just now'
 		//      Expected value = 'Just now'
-		[Test]
+		[Test, Category("LastLoginTest")]
         // attribute indicates a method is a test method.
         public void LastLoginNowTest_ShouldReturnMessageNow()
         {
@@ -69,8 +47,7 @@ namespace RecipeOrganizerTest
         //Expected value
         //      Given the last 4 seconds last login must be return message '4 seconds ago'
         //      Expected value = '4 seconds ago'
-        [Test]
-
+        [Test, Category("LastLoginTest")]
         public void LastLogin4Seconds_ShouldReturnMessageLast4Seconds()
         {
 			//Arrange
@@ -95,14 +72,14 @@ namespace RecipeOrganizerTest
         //Expected value
         //      Given the last 5 minute last login must be return message '5 minutes ago'
         //      Expected value = '5 minutes ago'
-        [Test]
+        [Test, Category("LastLoginTest")]
         // attribute indicates a method is a test method.
         public void LastLogin5Minutes_ShouldReturnMessageLast5Minutes()
         {
 			//Arrange
 			DateTime currentDateTime = DateTime.Now;
             DateTime fiveMinutesAgo = currentDateTime.AddMinutes(-5);
-            const string expected = "5.5 minutes ago";
+            const string expected = "5 minutes ago";
 
 			//Act
 			var result = MyToys.getLastTime(fiveMinutesAgo);
@@ -121,7 +98,7 @@ namespace RecipeOrganizerTest
         //Expected value
         //      Given the last 6 hours last login must be return message '6 hours ago'
         //      Expected value = '6 hours ago'
-        [Test]
+        [Test, Category("LastLoginTest")]
         // attribute indicates a method is a test method.
         public void LastLogin6Hours_ShouldReturnMessageLast6Hours()
         {
@@ -147,7 +124,7 @@ namespace RecipeOrganizerTest
         //Expected value
         //      Given the last 7 days last login must be return message '7 days ago'
         //      Expected value = '7 days ago'
-        [Test]
+        [Test, Category("LastLoginTest")]
         // attribute indicates a method is a test method.
         public void LastLogin7Days_ShouldReturnMessageLast7Days()
         {
@@ -162,30 +139,44 @@ namespace RecipeOrganizerTest
 			//Assert
 			Assert.AreEqual(expected, result);
         }
-	}
+
+        [Test, Category("LastLoginMultipleTest")]
+        [TestCaseSource(typeof(TestDataGenerator), nameof(TestDataGenerator.GetLastLoginTestData))]
+        public void MultiplyLastLoginTime_ShouldReturnCorrectMessage(DateTime lastTime, string expectedMessage)
+        {
+            // Arrange
+
+            // Act
+            var result = MyToys.getLastTime(lastTime);
+
+            // Assert
+            Assert.AreEqual(expectedMessage, result);
+        }
+    }
+    
 
 
 
-	//[TestFixture] 
-	////[Parallelizable(ParallelScope.All)] // Apply Parallelizable attribute at the fixture level
-	//public class TestParallel1
-	//{
-	//	[Test]
-	//	public void TestSleep1()
-	//	{
-	//		Thread.Sleep(3000);
-	//	}
-	//}
+    //[TestFixture] 
+    ////[Parallelizable(ParallelScope.All)] // Apply Parallelizable attribute at the fixture level
+    //public class TestParallel1
+    //{
+    //	[Test]
+    //	public void TestSleep1()
+    //	{
+    //		Thread.Sleep(3000);
+    //	}
+    //}
 
-	//[TestFixture] 
-	////[Parallelizable(ParallelScope.All)] // Apply Parallelizable attribute at the fixture level
-	//public class TestParallel2
-	//{
-	//	[Test]
-	//	public void TestSleep2()
-	//	{
-	//		Thread.Sleep(3000);
-	//	}
-	//}
+    //[TestFixture] 
+    ////[Parallelizable(ParallelScope.All)] // Apply Parallelizable attribute at the fixture level
+    //public class TestParallel2
+    //{
+    //	[Test]
+    //	public void TestSleep2()
+    //	{
+    //		Thread.Sleep(3000);
+    //	}
+    //}
 
 }

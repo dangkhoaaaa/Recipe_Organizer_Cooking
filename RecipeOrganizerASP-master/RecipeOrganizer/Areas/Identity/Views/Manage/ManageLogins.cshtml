@@ -13,6 +13,12 @@
         @ViewData["ExternalLoginMessage"]
     </div>
 }
+@if (ViewData["StatusMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @ViewData["StatusMessage"]
+    </div>
+}
 
 
 <div class="row">

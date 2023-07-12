@@ -78,17 +78,17 @@
         <div id="log-in" class="site-form log-in-form box-shadow border-radius-10">
             <div class="form-output">
                 <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger" id="invalidMessage"></div>
                     <label asp-for="UserNameOrEmail" class="form-label"></label>
                     <div class="mb-3">
-                        <input asp-for="UserNameOrEmail" class="form-control" autocomplete="username" aria-required="true" />
+                    <input asp-for="UserNameOrEmail" id="txtUserNameOrEmail" class="form-control" autocomplete="username" aria-required="true" />
                         <span asp-validation-for="UserNameOrEmail" class="text-danger"></span>
                     </div>
                     <label asp-for="Password" class="form-label"></label>
                     <div class="mb-3">
                         <!--
                             input asp-for="Password" class="form-control" autocomplete="current-password" aria-required="true" />
-                        --><
+                        -->
                         <div class="password-toggle-container">
                             <input asp-for="Password" id="txtPassword" class="form-control password-input" autocomplete="current-password" aria-required="true" />
                             <span class="password-toggle-icon">
@@ -108,7 +108,7 @@
                         <a class="forgot" asp-action="ForgotPassword">Forgot your password?</a>
                     </div>
 
-                    <button type="submit" class="login-button btn btn-md btn-primary full-width" style="margin-top: 12px;padding: 10px;">Login</button>
+                    <button id="btnLogin" type="submit" class="login-button btn btn-md btn-primary full-width" style="margin-top: 12px;padding: 10px;">Login</button>
                     <a href="/account-not-confirm/">Resend email confirmation</a>
                 </form>
                 <div class="or text-center" style="margin-top:0px; margin-bottom:0px;">or</div>

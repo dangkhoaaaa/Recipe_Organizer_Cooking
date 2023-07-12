@@ -433,17 +433,23 @@
                 if (@UserManager.GetUserName(User).Contains("@"))
                 {
                     string username = @UserManager.GetUserName(User).Split("@")[0];
-                    <span>@username</span>
+                    <span id="welcomeName">@username</span>
                 }
                 else
                 {
 
-                    <span>@UserManager.GetUserName(User)</span>
+                    <span id="welcomeName">@UserManager.GetUserName(User)</span>
                 }
             }
             else
             {
-                <span>@ManageNav.FirstName</span>
+                if (@UserManager.GetUserName(User).Contains("@")){
+                    string firstName = @ManageNav.FirstName.Split("@")[0];
+                    <span id="welcomeName">@firstName</span>
+                } else
+                {
+                    <span id="welcomeName">@ManageNav.FirstName</span>
+                }
             }
             @* @if (@UserManager.GetUserName(User).Contains("@"))
         {
