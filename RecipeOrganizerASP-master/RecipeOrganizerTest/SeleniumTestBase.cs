@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RecipeOrganizerTest
 {
-    public class BaseTest
+    public class SeleniumTestBase
     {
         protected IWebDriver driver;
 
