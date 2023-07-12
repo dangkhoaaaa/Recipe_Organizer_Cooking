@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using RecipeOrganizer.Areas.Admin.Models.Manage;
 using System.Security.Claims;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Services.Services;
+using Services.Data;
 
 namespace RecipeOrganizer.Areas.Admin.Controllers
 {
@@ -251,10 +253,16 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 ViewBag.UserError = "Can not find user";
                 return View("Index");
             }
-            var listUserRecipe = _recipeRepository.GetByAuthor(userID);
+            List<Recipe> listUserRecipe = _recipeRepository.GetByAuthor(userID);
+            List<RecipeData> listUserRecipeData = new List<RecipeData>();
+            foreach (var recipe in listUserRecipe)
+            {
+                var recipeData = RecipeServices.ConvertToRecipeData(recipe);
+                listUserRecipeData.Add(recipeData);
+            }
             var model = new UserRecipeViewModel {
                 User = user,
-                UserRecipe = listUserRecipe,
+                UserRecipe = listUserRecipeData,
                 TotalRecipe = listUserRecipe.Count(),
             };
             if (listUserRecipe == null)

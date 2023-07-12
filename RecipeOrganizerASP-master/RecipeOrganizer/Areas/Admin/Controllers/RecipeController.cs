@@ -177,7 +177,6 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 			var model = _recipeRepository.GetRecipesWithID(recipeID);
 			if (model == null)
 				return RedirectToAction("Index");
-			model.Recipe.AvgRate = 76;
 			model.Ingredients = _ingredientRepository.GetByRecipeId(recipeID);
 			model.Directions = _directionRepository.GetByRecipeId(recipeID);
 			model.Tags = _recipeHasTagRepository.GetTagsByRecipeId(recipeID);
@@ -191,7 +190,6 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 			_recipeRepository.UpdateApprovalStatus(recipeID, status);
 			sendNotification(recipeID, status);
 			var model = _recipeRepository.GetRecipesWithID(recipeID);
-			model.Recipe.AvgRate = 76;
 			model.Medias = _mediaRepository.GetImgsByRecipeId(recipeID);
 			model.Ingredients = _ingredientRepository.GetByRecipeId(recipeID);
 			model.Directions = _directionRepository.GetByRecipeId(recipeID);
