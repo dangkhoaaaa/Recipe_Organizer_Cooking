@@ -25,6 +25,7 @@ namespace RecipeOrganizer.Controllers
 		private readonly UserManager<AppUser> _userManager;
 		private readonly FireBaseService _fireBaseService;
 		private readonly NotificationRepository _notificationRepository;
+		private readonly FeedbackRepository _feedbackRepository;
 
 		public RecipeController(UserManager<AppUser> userManager)
 		{
@@ -41,6 +42,7 @@ namespace RecipeOrganizer.Controllers
 			_userManager = userManager;
 			_fireBaseService = new FireBaseService();
 			_notificationRepository = new NotificationRepository();
+			_feedbackRepository = new FeedbackRepository();
 		}
 
 		public IActionResult Index()
@@ -218,6 +220,9 @@ namespace RecipeOrganizer.Controllers
 				data.NumberShare = recipe.NumberShare;
 				var categories = _recipeHasCategoryRepository.GetCategoryByRecipeId(recipe.RecipeId);
 				data.Categories = categories;
+				//var AvgRating = _feedbackRepository.CalculateAverageRating(recipe.RecipeId);
+				//data.AvgRate = AvgRating;
+				data.AvgRate = recipe.AvgRate;
 
 				var user = await _userManager.GetUserAsync(User);
 				if (user != null)
@@ -319,6 +324,9 @@ namespace RecipeOrganizer.Controllers
 			data.Img = recipe.Image;
 			data.NumberShare = recipe.NumberShare;
 			data.Imgs = GetImgs(recipe.RecipeId);
+			//var AvgRating = _feedbackRepository.CalculateAverageRating(recipe.RecipeId);
+			//data.AvgRate = AvgRating;
+			data.AvgRate = recipe.AvgRate;
 
 			if (recipe.AvgRate == null)
 			{

@@ -227,6 +227,26 @@ namespace RecipeOrganizer.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
+        public async Task<IActionResult> Recommend(string week)
+        {
+            ViewBag.week = week;
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+
+                Slot = Slot = HttpContext.Session.GetJson<Slot>("cart");
+                if (week != null)
+                {
+                    Slot = new Slot();
+
+                    Slot = _slot.SuggestRecipes(week, user.Id);
+
+                    HttpContext.Session.SetJson("cart", Slot);
+                }
+                return View("ViewPlan", Slot);
+            }
+            return RedirectToAction("Index", "Home");
+        }
         public async Task<IActionResult> NewWeek(string week)
         {
             var user = await _userManager.GetUserAsync(User);

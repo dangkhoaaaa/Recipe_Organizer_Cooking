@@ -460,9 +460,9 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             return RedirectToAction(nameof(Index), "Manage");
         }
 
-		//
-		// GET: /Manage/AllNotification
-		public IActionResult AllNotification()
+        //
+        // GET: /Member/AllNotification
+        public IActionResult AllNotification()
 		{
             var user = GetCurrentUserAsync();
             var userID = user.Result.Id;

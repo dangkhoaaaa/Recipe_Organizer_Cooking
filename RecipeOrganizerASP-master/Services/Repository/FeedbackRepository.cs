@@ -12,65 +12,92 @@ using System.Threading.Tasks;
 
 namespace Services.Repository
 {
-    public class FeedbackRepository : RepositoryBase<Feedback>
-    {
-        Recipe_OrganizerContext _context;
+	public class FeedbackRepository : RepositoryBase<Feedback>
+	{
+		Recipe_OrganizerContext _context;
 
-        protected DbSet<Feedback> _dbSet;
-        public object feedbackId;
+		protected DbSet<Feedback> _dbSet;
+		public object feedbackId;
 
-        protected DbSet<Feedback> _dbSetFeedBack;
-        protected DbSet<Metadata> _dbSetMetadata;
+		protected DbSet<Feedback> _dbSetFeedBack;
+		protected DbSet<Metadata> _dbSetMetadata;
 		protected DbSet<Media> _dbSetMedia;
 		protected DbSet<Feedback> _dbSet1;
-        protected DbSet<AppUser> _dbSetAppUser;
-        public FeedbackRepository()
-        {
-            _context = new Recipe_OrganizerContext();
+		protected DbSet<AppUser> _dbSetAppUser;
+		private RecipeRepository _recipeRepository;
 
-            _dbSet = _context.Set<Feedback>();
+		public FeedbackRepository()
+		{
+			_context = new Recipe_OrganizerContext();
 
-            _dbSetFeedBack = _context.Set<Feedback>();
-            _dbSetMetadata = _context.Set<Metadata>();
-            _dbSet1 = _context.Set<Feedback>();
-            _dbSetMedia = _context.Set<Media>();
-            _dbSetAppUser = _context.Set<AppUser>(); 
-        }
+			_dbSet = _context.Set<Feedback>();
 
-        public ICollection<Feedback> Products { get; set; } = new List<Feedback>();
-        
-        public double valueAvgRateRecipe(int recipeId)
-        {
-            List<Feedback> listmapCategory = new List<Feedback>();
-            var query = from fb in _dbSetFeedBack
-                        join md in _dbSetMetadata on fb.FeedbackId equals md.FeedbackId
-                        where md.RecipeId == recipeId
-                        select fb;
+			_dbSetFeedBack = _context.Set<Feedback>();
+			_dbSetMetadata = _context.Set<Metadata>();
+			_dbSet1 = _context.Set<Feedback>();
+			_dbSetMedia = _context.Set<Media>();
+			_dbSetAppUser = _context.Set<AppUser>();
+			_recipeRepository = new RecipeRepository();
+		}
 
-            listmapCategory = query.DistinctBy( r => r.FeedbackId).ToList();
-            double result = 0;
-            if (listmapCategory.Count > 0 )
-            {
+		public ICollection<Feedback> Products { get; set; } = new List<Feedback>();
 
-                double totalRate = 0;
-                foreach (var item in listmapCategory)
-                {
-                    totalRate += item.Rating;
-                }
-                 result = totalRate / listmapCategory.Count;
-            }
-            return result;
-        }
+		public double valueAvgRateRecipe(int recipeId)
+		{
+			List<Feedback> listmapCategory = new List<Feedback>();
+			var query = from fb in _dbSetFeedBack
+						join md in _dbSetMetadata on fb.FeedbackId equals md.FeedbackId
+						where md.RecipeId == recipeId
+						select fb;
+
+			//listmapCategory = query.DistinctBy(r => r.FeedbackId).ToList();
+			listmapCategory = query.AsEnumerable().DistinctBy(r => r.FeedbackId).ToList();
+			double result = 0;
+			if (listmapCategory.Count > 0)
+			{
+
+				double totalRate = 0;
+				foreach (var item in listmapCategory)
+				{
+					totalRate += item.Rating;
+				}
+				result = totalRate / listmapCategory.Count;
+			}
+			return result;
+		}
 
 		public List<Feedback> GetByFeedbackByUser(string userId)
 		{
-			List<Feedback> feebackList = _dbSet.Where(r => r.MetaData.Any(md => md.UserId == userId && 
-                                                                                md.RecipeId != null && 
-                                                                                md.FeedbackId != null)).ToList();
+			List<Feedback> feebackList = _dbSet.Where(r => r.MetaData.Any(md => md.UserId == userId &&
+																				md.RecipeId != null &&
+																				md.FeedbackId != null)).ToList();
 			return feebackList;
 		}
 
+		public double CalculateAverageRating(int recipeId)
+		{
+			var query = from fb in _dbSetFeedBack
+						join md in _dbSetMetadata on fb.FeedbackId equals md.FeedbackId
+						where md.RecipeId == recipeId
+						select fb;
 
+			List<Feedback> distinctFeedbacks = query.ToList().DistinctBy(r => r.FeedbackId).ToList();
+
+			double averageRating = 0;
+			if (distinctFeedbacks.Count > 0)
+			{
+				double totalRating = distinctFeedbacks.Sum(f => f.Rating);
+				averageRating = totalRating / distinctFeedbacks.Count;
+			}
+			var recipe = _recipeRepository.GetById(recipeId);
+			if (recipe != null)
+			{
+				recipe.AvgRate = averageRating;
+				_recipeRepository.Update(recipe);
+			}
+
+			return averageRating;
+		}
 
 		//public List<Feedback> getAllFeedBackByRecipe(int recipeId)
 		//{
@@ -79,17 +106,54 @@ namespace Services.Repository
 		//				join md in _dbSetMetadata on fb.FeedbackId equals md.FeedbackId
 		//				where md.RecipeId == recipeId
 		//				select fb;
-  //          if(query.Count() > 0 )
-  //          {
+		//          if(query.Count() > 0 )
+		//          {
 		//		listmapCategory = query.GroupBy(fb => fb.FeedbackId)
 		//			   .Select(group => group.First())
 		//			   .ToList();
 		//	}
-			
-			
+
+
 		//	return listmapCategory;
 		//}
 
+		public List<FeedBackOnOnceRecipeModel> GetAllFeedBackByRecipe(int recipeId)
+		{
+			var query = from fb in _dbSetFeedBack
+						join md in _dbSetMetadata on fb.FeedbackId equals md.FeedbackId
+						join us in _dbSetAppUser on md.UserId equals us.Id into userJoin
+						from usr in userJoin.DefaultIfEmpty()
+						join me in _dbSetMedia on md.MediaId equals me.MediaId into mediaJoin
+						from med in mediaJoin.DefaultIfEmpty()
+						where md.RecipeId == recipeId
+						select new
+						{
+							fb.FeedbackId,
+							fb.Title,
+							fb.Date,
+							fb.Status,
+							fb.Description,
+							fb.Rating,
+							med.Filelocation,
+							UserName = usr.FirstName,
+							UserImage = usr.Image
+						};
+
+			var listresult = query.ToList().Select(x => new FeedBackOnOnceRecipeModel
+			{
+				FeedbackId = x.FeedbackId,
+				Title = x.Title,
+				Date = x.Date,
+				Status = x.Status,
+				Description = x.Description,
+				Rating = x.Rating,
+				Images = x.Filelocation ?? string.Empty,
+				name = x.UserName ?? "Admin",
+				Avatar = x.UserImage ?? "https://firebasestorage.googleapis.com/v0/b/recipeorganizer-58fca.appspot.com/o/vector-users-icon.webp?alt=media&token=694d5c2a-4498-4a83-9a4a-d780d138d847"
+			}).ToList();
+
+			return listresult;
+		}
 
 		public List<FeedBackOnOnceRecipeModel> getAllFeedBackByRecipe(int recipeId)
 		{
@@ -103,40 +167,40 @@ namespace Services.Repository
 			if (listmapCategory.Count() > 0)
 			{
 				FeedBackOnOnceRecipeModel feedBackOnOnceRecipeModel;
-                foreach(var x in listmapCategory)
-                {
+				foreach (var x in listmapCategory)
+				{
 					feedBackOnOnceRecipeModel = new FeedBackOnOnceRecipeModel();
 					feedBackOnOnceRecipeModel.FeedbackId = x.FeedbackId;
-                    feedBackOnOnceRecipeModel.Title = x.Title;
-                    feedBackOnOnceRecipeModel.Date = x.Date;
-                    feedBackOnOnceRecipeModel.Status = x.Status;
-                    feedBackOnOnceRecipeModel.Description = x.Description;
-                    feedBackOnOnceRecipeModel.Rating = x.Rating;
+					feedBackOnOnceRecipeModel.Title = x.Title;
+					feedBackOnOnceRecipeModel.Date = x.Date;
+					feedBackOnOnceRecipeModel.Status = x.Status;
+					feedBackOnOnceRecipeModel.Description = x.Description;
+					feedBackOnOnceRecipeModel.Rating = x.Rating;
 
 					var query1 = from fb1 in _dbSetFeedBack
-								join md in _dbSetMetadata on fb1.FeedbackId equals md.FeedbackId
-                                join us in _dbSetAppUser on md.UserId equals us.Id
-								join me in _dbSetMedia on md.MediaId equals me.MediaId
-								where md.RecipeId == recipeId && fb1.FeedbackId ==  x.FeedbackId
-								select me.Filelocation;
-				
+								 join md in _dbSetMetadata on fb1.FeedbackId equals md.FeedbackId
+								 join us in _dbSetAppUser on md.UserId equals us.Id
+								 join me in _dbSetMedia on md.MediaId equals me.MediaId
+								 where md.RecipeId == recipeId && fb1.FeedbackId == x.FeedbackId
+								 select me.Filelocation;
 
-					if(query1.Count() > 0 )
+
+					if (query1.Count() > 0)
 					{
 						string url1 = query1.FirstOrDefault().ToString();
 						feedBackOnOnceRecipeModel.Images = url1;
 					}
-                    
+
 
 					var query2 = from fb1 in _dbSetFeedBack
 								 join md in _dbSetMetadata on fb1.FeedbackId equals md.FeedbackId
 								 join us in _dbSetAppUser on md.UserId equals us.Id
 								 where md.RecipeId == recipeId && fb1.FeedbackId == x.FeedbackId
 								 select us.FirstName;
-					string url2 = query2.FirstOrDefault();
-					if (query2 != null && query2.Count() > 0 && query2.Any()&& url2!=null && url2!="")
+					string? url2 = query2.FirstOrDefault();
+					if (query2 != null && query2.Count() > 0 && query2.Any() && url2 != null && url2 != "")
 					{
-						 url2 = url2.ToString();
+						url2 = url2.ToString();
 						feedBackOnOnceRecipeModel.name = url2;
 					}
 					else
@@ -149,7 +213,7 @@ namespace Services.Repository
 								 join us in _dbSetAppUser on md.UserId equals us.Id
 								 where md.RecipeId == recipeId && fb1.FeedbackId == x.FeedbackId
 								 select us.Image;
-					string url3 = query3.FirstOrDefault();
+					string? url3 = query3.FirstOrDefault();
 					if (query3 != null && query3.Count() > 0 && query3.Any() && url3 != null && url3 != "")
 					{
 						url3 = url3.ToString();
@@ -168,14 +232,28 @@ namespace Services.Repository
 					//}
 					listresult.Add(feedBackOnOnceRecipeModel);
 				}
-			
+
 			}
 
 
 			return listresult;
 		}
 
-
+		public List<UserFeedback> GetAllFeedbackUserWithMetadata(string userID)
+		{
+			var query = from m in _context.MetaData
+						join r in _context.Recipes on m.RecipeId equals r.RecipeId
+						join u in _context.Users on m.UserId equals u.Id
+						join f in _context.Feedbacks on m.FeedbackId equals f.FeedbackId
+						where u.Id == userID
+						select new UserFeedback
+						{
+							User = u,
+							Recipe = r,
+							Feedback = f
+						};
+			return query.ToList();
+		}
 
 	}
 }

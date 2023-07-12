@@ -9,7 +9,7 @@
     <div id="page-title" class="padding-tb-30px gradient-white">
         <div class="container text-left">
             <ol class="breadcrumb opacity-5">
-                <li><a href="#">Home</a></li>
+                <li><a href="@Url.Action("Index", "Home")">Home</a></li>
                 <li class="active">Meal Planning</li>
             </ol>
             <h1 class="font-weight-300">Meal Planning</h1>
@@ -116,7 +116,7 @@
                     </div>
 
                     <div class="col-lg-7">
-                        <a href="#" class="btn box-shadow border-2 border-radius-30 text-red width-140px">Recommend</a>
+                        <a href="/Plan/Recommend/?week=@ViewBag.week" class="btn box-shadow border-2 border-radius-30 text-red width-140px">Recommend</a>
                         <a href="/Plan/SavePlan/?week=@ViewBag.week"
                            class="btn box-shadow border-2 border-radius-30 background-main-color text-white width-140px">Save</a>
                         <a href="/Plan/PrintPlan" target="_blank" class="btn box-shadow border-2 border-radius-30 text-red width-140px">Print</a>
@@ -200,7 +200,7 @@
                                             @switch (i)
                                             {
                                                 case 1:
-                                                    session = "Breakfar";
+                                                    session = "Breakfast";
                                                     break;
                                                 case 2:
                                                     session = "Lunch";
@@ -233,7 +233,7 @@
                                                         foreach (var recipe in item.Recipes)
                                                         {
                                                             
-                                                            <a href="/Recipe/RecipeDetail/?id=@recipe.RecipeId">
+                                                            <a href="/Recipe/RecipeDetail/?id=@recipe.RecipeId" target="_blank">
                                                                 <img class="my-1 p-1 rounded-6" style=" max-width: 100px; height: 95px" src="@recipe.Image" alt="@recipe.Title" title="@recipe.Title">
                                                             </a>
                                                             <button type="button" style="color : #bc5836;float: initial;" class="close btn btn-light " aria-label="Close" onclick="window.location.href='/Plan/RemoveFromCart/?slotNow=@(3*j+i)&recipeID=@recipe.RecipeId&week=@ViewBag.week'">

@@ -9,7 +9,7 @@ namespace Services.Data
 {
 	public class FeedBackOnOnceRecipeModel
 	{
-		
+
 
 		public int FeedbackId { get; set; }
 		public string Title { get; set; } = null!;
@@ -17,6 +17,7 @@ namespace Services.Data
 		public DateTime Date { get; set; }
 		public int Rating { get; set; }
 		public string? Images { get; set; }
+		public List<string>? ImageList { get; set; }
 		public bool Status { get; set; }
 		public string name { get; set; }
 

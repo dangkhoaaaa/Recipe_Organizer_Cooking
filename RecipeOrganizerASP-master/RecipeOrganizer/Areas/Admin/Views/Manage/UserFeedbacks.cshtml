@@ -53,9 +53,9 @@
     <div class="card">
         <div class="row">
             <div class="col s12">
-                <ul class="tabs">
-                    <li class="tab col s3"><a class="active" href="#timeline">Personal recipe</a></li>
-                    <li class="tab col s3"><a href="#profile">Feedback</a></li>
+                <ul class="">
+                    <li class="tab col s3"><a href="/Admin/UserRecipe/?userID=@Model.User.Id">Personal recipe</a></li>
+                    <li class="tab col s3"><a href="/Admin/UserFeedbacks/?userID=@Model.User.Id">Feedback</a></li>
                     @*<li class="tab col s3"><a href="#settings1">Settings</a></li>*@
                 </ul>
             </div>
@@ -64,11 +64,11 @@
                     <div class="profiletimeline">
                         @if (Model.UserFeedback.Count == 0)
                         {
-                            <h2 style="color:red; font-weight:bold;">No Feedbacj!!</h2>
+                            <h2 style="color:red; font-weight:bold;">No Feedback!!</h2>
                         }
                         else
                         {
-                            <h2 style="color:blue; font-weight:bold;">Number of recipe: @Model.TotalFeedback</h2>
+                            <h2 style="color:blue; font-weight:bold;">Number of feedbacks: @Model.UserFeedback.Count</h2>
                             @foreach (var feedback in Model.UserFeedback)
                             {
                                 <div class="sl-item">
@@ -77,12 +77,12 @@
                                         <div>
                                             <div>
                                                 <h4 style="display:inline-block;">
-                                                    <a href="/Recipe/RecipeDetails/?recipeID=@feedback.feedbackId" style="margin-right:20px;">@feedback.Title</a>
-                                                    </h4>
+                                                    <a href="/Recipe/RecipeDetail/?id=@feedback.Recipe.RecipeId" style="margin-right:20px;">@feedback.Feedback.Title</a>
+                                                </h4>
                                             </div>
-                                            <p style="margin: 20px; font-size: 16px;">@feedback.Description</p>
-                                            <div> <h5><i class="material-icons">date_range</i>Date create: @feedback.Rating</h5></div>
-                                            <div> <h5><i class="material-icons">date_range</i>Date create: @MyToys.getLastTime(feedback.Date)</h5></div>
+                                            <p style="margin: 20px; font-size: 16px;">@feedback.Feedback.Description</p>
+                                            <div> <h5><i class="material-icons">star</i>Rating: @feedback.Feedback.Rating</h5></div>
+                                            <div> <h5><i class="material-icons">date_range</i>Date create: @MyToys.getLastTime(feedback.Feedback.Date)</h5></div>
                                         </div>
                                     </div>
                                 </div>

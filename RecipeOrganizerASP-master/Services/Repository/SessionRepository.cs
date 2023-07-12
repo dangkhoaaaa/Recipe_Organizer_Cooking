@@ -11,7 +11,7 @@ namespace Services.Repository
 {
     public class SessionRepository : RepositoryBase<Session>
     {
-        Recipe_OrganizerContext _context;
+        private new readonly Recipe_OrganizerContext _context;
 
         DbSet<Session> _dbSet;
 

@@ -9,7 +9,7 @@ namespace RecipeOrganizer.Components
 {
 	public class LoadFeedback : ViewComponent
 	{
-		
+
 		private readonly FeedbackRepository _feedbackRepository;
 
 		public LoadFeedback()
@@ -17,10 +17,10 @@ namespace RecipeOrganizer.Components
 			_feedbackRepository = new FeedbackRepository();
 
 		}
-		public IViewComponentResult Invoke( int RecipeId)
+		public IViewComponentResult Invoke(int RecipeId)
 		{
 			List<FeedBackOnOnceRecipeModel> feedbacks = new List<FeedBackOnOnceRecipeModel>();
-			feedbacks = _feedbackRepository.getAllFeedBackByRecipe(RecipeId);
+			feedbacks = _feedbackRepository.GetAllFeedBackByRecipe(RecipeId);
 			return View(feedbacks);
 		}
 	}

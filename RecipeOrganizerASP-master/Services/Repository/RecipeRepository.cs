@@ -19,7 +19,7 @@ namespace Services.Repository
 {
 	public class RecipeRepository : RepositoryBase<Recipe>
 	{
-		Recipe_OrganizerContext _context;
+        private new readonly Recipe_OrganizerContext _context;
 
 		protected DbSet<Recipe> _dbSet;
 		protected DbSet<RecipeHasCategory> _dbSet1;
@@ -131,9 +131,11 @@ namespace Services.Repository
 			}
 			return pendingRecipes;
 		}
-		public Recipe GetRecipe(int recipeId) { 
+
+		public Recipe? GetRecipe(int recipeId) { 
 			return GetAll().Where(p => p.RecipeId == recipeId).FirstOrDefault();
 		}
+
 		public bool ChangeStatusRecipe(int recipeId, string newStatus)
 		{
 			bool result = false;
@@ -269,6 +271,31 @@ namespace Services.Repository
 			return listRecipe;
 		}
 
+		public List<Recipe> GetRecipesByTags(List<string> tags)
+		{
+			// Convert tags to lowercase for case-insensitive matching
+			var lowercaseTags = tags.Select(tag => tag.ToLower()).ToList();
+
+			var query = _context.Recipes
+				.Join(
+					_context.RecipeHasTags,
+					recipe => recipe.RecipeId,
+					recipeTag => recipeTag.RecipeId,
+					(recipe, recipeTag) => new { Recipe = recipe, RecipeTag = recipeTag }
+				)
+				.Join(
+					_context.Tags,
+					recipeTag => recipeTag.RecipeTag.TagId,
+					tag => tag.TagId,
+					(recipeTag, tag) => new { Recipe = recipeTag.Recipe, Tag = tag }
+				)
+				.Where(rt => lowercaseTags.Contains(rt.Tag.TagName.ToLower()))
+				.Select(rt => rt.Recipe)
+				.Distinct()
+				.ToList();
+
+			return query;
+		}
 
 		public List<Recipe> getAllRecipe()
 		{
