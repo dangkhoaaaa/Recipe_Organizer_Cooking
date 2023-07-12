@@ -62,11 +62,11 @@ namespace RecipeOrganizerTest
                 driver.FindElement(By.Id("txtUserNameOrEmail")).SendKeys(UserName);
                 driver.FindElement(By.Id("txtPassword")).SendKeys(Password);
 
-                Thread.Sleep(5000);
+                Thread.Sleep(3000);
 
                 //submit form
                 driver.FindElement(By.Id("btnLogin")).Click();
-                Thread.Sleep(5000);
+                Thread.Sleep(3000);
 
                 var errorMessage = driver.FindElement(By.Id("invalidMessage"));
 

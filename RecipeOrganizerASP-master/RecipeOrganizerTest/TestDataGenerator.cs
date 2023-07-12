@@ -11,11 +11,11 @@ namespace RecipeOrganizerTest
     {
         public static IEnumerable<TestCaseData> GetLastLoginTestData()
         {
-            DateTime currentDateTime = DateTime.Now;
-
-            yield return new TestCaseData(currentDateTime.AddMinutes(-5), "5 minutes ago");
-            yield return new TestCaseData(currentDateTime.AddHours(-6), "6 hours ago");
-            yield return new TestCaseData(currentDateTime.AddDays(-7), "7 days ago");
+            yield return new TestCaseData(DateTime.Now, "Just now");
+            yield return new TestCaseData(DateTime.Now.AddSeconds(-4), "4 seconds ago");
+            yield return new TestCaseData(DateTime.Now.AddMinutes(-5), "5 minutes ago");
+            yield return new TestCaseData(DateTime.Now.AddHours(-6), "6 hours ago");
+            yield return new TestCaseData(DateTime.Now.AddDays(-7), "7 days ago");
         }
     }
 }
