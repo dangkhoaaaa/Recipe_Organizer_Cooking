@@ -278,6 +278,13 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 			return View(model);
 		}
 
+		//GET: Admin/UserFeedbacks/?userID={id}
+		public async Task<IActionResult> Contact()
+		{
+			
+			return View(model);
+		}
+
 		[AllowAnonymous]
         public async Task<IActionResult> CreateAdminAsync()
         {
