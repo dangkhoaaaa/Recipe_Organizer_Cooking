@@ -185,7 +185,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             ViewData["StatusMessage"] =
                 message == ManageMessageId.RemoveLoginSuccess ? "Removed account link"
                 : message == ManageMessageId.AddLoginSuccess ? "Added account link"
-                : message == ManageMessageId.Error ? "Error!"
+                : message == ManageMessageId.Error ? "It seems that this facebook account is already being used by another account!"
                 : "";
             var user = await GetCurrentUserAsync();
             if (user == null)
