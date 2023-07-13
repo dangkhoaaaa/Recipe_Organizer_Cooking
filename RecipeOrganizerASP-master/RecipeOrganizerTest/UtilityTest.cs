@@ -153,30 +153,27 @@ namespace RecipeOrganizerTest
             Assert.AreEqual(expectedMessage, result);
         }
     }
-    
 
-
-
-    //[TestFixture] 
+    //[TestFixture]
     ////[Parallelizable(ParallelScope.All)] // Apply Parallelizable attribute at the fixture level
     //public class TestParallel1
     //{
-    //	[Test]
-    //	public void TestSleep1()
-    //	{
-    //		Thread.Sleep(3000);
-    //	}
+    //    [Test, Category("ParallelTest")]
+    //    public void TestSleep1()
+    //    {
+    //        Thread.Sleep(3000);
+    //    }
     //}
 
-    //[TestFixture] 
+    //[TestFixture]
     ////[Parallelizable(ParallelScope.All)] // Apply Parallelizable attribute at the fixture level
     //public class TestParallel2
     //{
-    //	[Test]
-    //	public void TestSleep2()
-    //	{
-    //		Thread.Sleep(3000);
-    //	}
+    //    [Test, Category("ParallelTest")]
+    //    public void TestSleep2()
+    //    {
+    //        Thread.Sleep(3000);
+    //    }
     //}
 
 }
