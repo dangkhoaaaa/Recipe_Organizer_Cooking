@@ -251,11 +251,11 @@
                                                             // <a href="/Recipe/RecipeDetail/?id=@recipe.RecipeId" target="_blank" title="@recipe.Title" >
                                                             //     <img class="my-1 p-1 rounded-6" style=" max-width: 100px; height: 95px" src="@recipe.Image" alt="@recipe.Title" data-toggle="tooltip" data-placement="top" data-html="true" data-animation="true" title="<img src='@recipe.Image' alt='Recipe Image' style='max-width: 100px; height: 95px'><h6>@recipe.Title</h6><p>@recipe.AvgRate</p>">
                                                             // </a>
-                                                            
-                                                                
-                                                           
+
+
+                                                            RecipeRepository recipeRepository = new RecipeRepository();
                                                             <a href="/Recipe/RecipeDetail/?id=@recipe.RecipeId" target="_blank">
-                                                                <img class="my-1 p-1 rounded-6" style="max-width: 100px; height: 95px" src="@recipe.Image" alt="@recipe.Title" data-toggle="tooltip" data-placement="top" data-html="true" title="Name: @recipe.Title. Ingredients: @recipe.Ingredients">
+                                                                <img class="my-1 p-1 rounded-6" style="max-width: 100px; height: 95px" src="@recipe.Image" alt="@recipe.Title" data-toggle="tooltip" data-placement="top" data-html="true" title="Name: @recipe.Title. Category: @recipeRepository.ToStringCategory(recipe)">
                                                             </a>
 
                                                             <button type="button" style="color: #EE3233; float: initial;" class="close btn btn-light " aria-label="Close" onclick="window.location.href='/Plan/RemoveFromCart/?slotNow=@(3*j+i)&recipeID=@recipe.RecipeId&week=@ViewBag.week'">
