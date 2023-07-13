@@ -440,7 +440,45 @@ namespace Services.Repository
 			return recipeViewModel;
 		}
 
-        
+        public string ToStringCategory (Recipe recipe)
+		{
+			RecipeHasCategoryRepository recipeHasCategoryRepository = new RecipeHasCategoryRepository();
+			CategoryRepository categoryRepository = new CategoryRepository();
+			string categoryName = string.Empty;
+			if (recipe != null)
+			{
+				List<string> categoryNames = new List<string>();
+				var categorys = recipeHasCategoryRepository.GetCategoryByRecipeId(recipe.RecipeId);
+				if ( categorys.Count > 0) {
+					foreach ( var category in categorys ) {
+						if ( categoryNames.Count() != 0)
+						{
+							var flag = true;
+							foreach (var ca in categoryNames )
+							{
+								if (ca.Equals(categoryRepository.getInfCategory(category.CategoryId).Title))
+								{
+                                    flag = false;
+                                    break;
+                                }
+								
+							}
+							if(flag)
+							{
+                                categoryNames.Add(categoryRepository.getInfCategory(category.CategoryId).Title);
+                            }
+						} else
+						{
+                            categoryNames.Add(categoryRepository.getInfCategory(category.CategoryId).Title);
+                        }
+						
+					}
+
+				}
+				categoryName = string.Join(", ", categoryNames);
+			}
+			return categoryName;
+		}
 
     }
 }

@@ -106,16 +106,31 @@
             <div class="col-lg-12">
 
                 <div class="row">
-                    <div class="col-lg-5">
-                        <form method="get" action="/Plan/NewWeek/">
+                    <div class="col-lg-7">
+                       @*  <form method="get" action="/Plan/NewWeek/">
                             <label for="week">Select a week:</label>
                             <input type="week" id="week" name="week" value=@ViewBag.week>
-                            <input type="submit" value="Submit">
+                            <input class="btn box-shadow border-2 border-radius-30 background-main-color text-white width-140px" type="submit" value="Submit">
+                        </form> *@
+                        <form method="get" action="/Plan/NewWeek/">
+                            <div class="form-row align-items-center">
+                                <div class="col-auto">
+                                    <label for="week">Select a week:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="input-group">
+                                        <input type="week" id="week" name="week" class="form-control" value="@ViewBag.week">
+                                        <div class="input-group-append">
+                                            <input class="btn btn-primary background-main-color text-white" type="submit" value="Submit">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
 
                     </div>
 
-                    <div class="col-lg-7">
+                    <div class="col-lg-5">
                         <a href="/Plan/Recommend/?week=@ViewBag.week" class="btn box-shadow border-2 border-radius-30 text-red width-140px">Recommend</a>
                         <a href="/Plan/SavePlan/?week=@ViewBag.week"
                            class="btn box-shadow border-2 border-radius-30 background-main-color text-white width-140px">Save</a>
@@ -125,17 +140,17 @@
                 </div>
                 <hr>
                 <div class="text-center">
-                    <table class="text-center " style="width:100%">
+                    <table class="text-center table border-radius-30" style="width:100%; background-color:  #f44336; border-style: hidden">
                         <tr>
-                            <th>Session/Day</th>
+                            <th style="color: #CEEBFB">Session/Day</th>
 
-                            <th>Monday</th>
-                            <th>Tuesday</th>
-                            <th>Wednesday</th>
-                            <th>Thursday</th>
-                            <th>Friday</th>
-                            <th>Saturday</th>
-                            <th>Sunday</th>
+                            <th style="color:  #CEEBFB">Monday</th>
+                            <th style="color:  #CEEBFB">Tuesday</th>
+                            <th style="color:  #CEEBFB">Wednesday</th>
+                            <th style="color:  #CEEBFB">Thursday</th>
+                            <th style="color:  #CEEBFB">Friday</th>
+                            <th style="color:  #CEEBFB">Saturday</th>
+                            <th style="color:  #CEEBFB">Sunday</th>
                         </tr>
 
 
@@ -193,8 +208,8 @@
                             int count = 0;
                             for (int i = 1; i <= 3; i++)
                             {
-                                <tr class="border-top-3">
-                                    <td class="text-center font-weight-bold" width="140px">
+                                <tr class="border-top-3" style="@((i % 2 == 0) ? "background:   #66A7C5" : "background:    #CEEBFB")">
+                                    <td class="text-center font-weight-bold" width="140px" style="color:   #6C7476">
                                         @{
                                             string session = "";
                                             @switch (i)
@@ -232,11 +247,18 @@
                                                     {
                                                         foreach (var recipe in item.Recipes)
                                                         {
-                                                            
+
+                                                            // <a href="/Recipe/RecipeDetail/?id=@recipe.RecipeId" target="_blank" title="@recipe.Title" >
+                                                            //     <img class="my-1 p-1 rounded-6" style=" max-width: 100px; height: 95px" src="@recipe.Image" alt="@recipe.Title" data-toggle="tooltip" data-placement="top" data-html="true" data-animation="true" title="<img src='@recipe.Image' alt='Recipe Image' style='max-width: 100px; height: 95px'><h6>@recipe.Title</h6><p>@recipe.AvgRate</p>">
+                                                            // </a>
+
+
+                                                            RecipeRepository recipeRepository = new RecipeRepository();
                                                             <a href="/Recipe/RecipeDetail/?id=@recipe.RecipeId" target="_blank">
-                                                                <img class="my-1 p-1 rounded-6" style=" max-width: 100px; height: 95px" src="@recipe.Image" alt="@recipe.Title" title="@recipe.Title">
+                                                                <img class="my-1 p-1 rounded-6" style="max-width: 100px; height: 95px" src="@recipe.Image" alt="@recipe.Title" data-toggle="tooltip" data-placement="top" data-html="true" title="Name: @recipe.Title. Category: @recipeRepository.ToStringCategory(recipe)">
                                                             </a>
-                                                            <button type="button" style="color : #bc5836;float: initial;" class="close btn btn-light " aria-label="Close" onclick="window.location.href='/Plan/RemoveFromCart/?slotNow=@(3*j+i)&recipeID=@recipe.RecipeId&week=@ViewBag.week'">
+
+                                                            <button type="button" style="color: #EE3233; float: initial;" class="close btn btn-light " aria-label="Close" onclick="window.location.href='/Plan/RemoveFromCart/?slotNow=@(3*j+i)&recipeID=@recipe.RecipeId&week=@ViewBag.week'">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                             //<a href="/Plan/RemoveFromCart/?slotNow=@(3 * j + i)&recipeID=@recipe.RecipeId&week=@ViewBag.week">X</a>
@@ -258,7 +280,7 @@
                                             }
                                             @if (count < 5)
                                             {
-                                                <a href="/Plan/ListRecipe/?slotNow=@(3*j+i)&week=@ViewBag.week"><i class="fas fa-plus"></i></a>
+                                                <a href="/Plan/ListRecipe/?slotNow=@(3*j+i)&week=@ViewBag.week"><i class="fas fa-plus" style="color: #EE3233; float: initial;"></i></a>
 
                                                 
                                             }
@@ -271,6 +293,18 @@
                             }
                         }
                     </table>
+                    @* <script>
+                        $(document).ready(function () {
+                            $('[data-toggle="tooltip"]').tooltip();
+                        });
+                    </script> *@
+                    <script>
+                        $(document).ready(function () {
+                            $('[data-toggle="tooltip"]').tooltip({
+                                container: 'body'
+                            });
+                        });
+                    </script>
                 </div>
                 
             </div>
