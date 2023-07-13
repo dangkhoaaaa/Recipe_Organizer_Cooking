@@ -79,7 +79,6 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             returnUrl ??= Url.Content("~/");
             ViewData["ReturnUrl"] = returnUrl;
 
-
             var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, lockoutOnFailure: true);
             // Tìm UserName theo Email, đăng nhập lại
             if ((!result.Succeeded) && AppUtilities.IsValidEmail(model.UserNameOrEmail))
@@ -125,29 +124,11 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
-        public enum ManageMessageId
-        {
-            AddPhoneSuccess,
-            AddLoginSuccess,
-            ChangePasswordSuccess,
-            SetTwoFactorSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            RemovePhoneSuccess,
-            Error
-        }
+        
 
         [HttpGet("/Admin/")]
-        public async Task<IActionResult> Index(ManageMessageId? message = null)
+        public async Task<IActionResult> Index(int pg = 1)
         {
-            ViewData["StatusMessage"] =
-                message == ManageMessageId.ChangePasswordSuccess ? "Password has change"
-                : message == ManageMessageId.SetPasswordSuccess ? "Password has reset"
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "Error"
-                : message == ManageMessageId.AddPhoneSuccess ? "Phone number has added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Phone number has removed."
-                : "";
 
             var listUser = _userRepository.GetAll();
             List<IndexViewModel> list = new List<IndexViewModel>();
@@ -168,7 +149,15 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 };
                 list.Add(model);
             }
-            return View(list);
+            const int pageSize = 10;
+            if (pg < 1)
+                pg = 1;
+            int recsCount = list.Count();
+            var pager = new Pager(recsCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = list.Skip(recSkip).Take(pager.PageSize).ToList();
+            this.ViewBag.Pager = pager;
+            return View(data);
         }
 
         private Task<AppUser> GetCurrentUserAsync()
@@ -286,6 +275,13 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             };
 			if (model == null)
 				ViewBag.NoRecipe = "No feedback";
+			return View(model);
+		}
+
+		//GET: Admin/UserFeedbacks/?userID={id}
+		public async Task<IActionResult> Contact()
+		{
+			
 			return View(model);
 		}
 
@@ -530,7 +526,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 TempData["ChangeError"] = "Incorrect password";
                 return View(model);
             }
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+            return RedirectToAction(nameof(Index), new { pg = 1 });
         }
 
 

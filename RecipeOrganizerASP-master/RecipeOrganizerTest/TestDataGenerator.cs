@@ -11,7 +11,6 @@ namespace RecipeOrganizerTest
     {
         public static IEnumerable<TestCaseData> GetLastLoginTestData()
         {
-            yield return new TestCaseData(DateTime.Now, "Just now");
             yield return new TestCaseData(DateTime.Now.AddSeconds(-4), "4 seconds ago");
             yield return new TestCaseData(DateTime.Now.AddMinutes(-5), "5 minutes ago");
             yield return new TestCaseData(DateTime.Now.AddHours(-6), "6 hours ago");

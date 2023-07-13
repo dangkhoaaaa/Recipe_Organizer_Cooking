@@ -5,6 +5,13 @@
 @{
     ViewData["Title"] = "Admin";
     Layout = "_AdminLayout";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage; 
+    }
 }
 
 <style>
@@ -49,19 +56,19 @@
                 <p style="margin-top: 15px;">@ViewBag.NotFind</p>
             @if (Model != null)
             {
-                    <table id="demo-foo-addrow" class="table m-t-10 highlight contact-list no-wrap" data-sorting="true" data-paging="true" data-paging-size="6">
+                    <table  class="table datatable">
                         <thead>
                             <tr style="font-weight:bold;">
-                                <th>No</th>
-                                <th>User name</th>
-                                <th>Email</th>
-                                <th>Birthday</th>
-                                <th>Role</th>
-                                <th>No.Recipe</th>
-                                <th>Extenal login</th>
-                                <th>Register date</th>
-                                <th>Last login</th>
-                                <th>Status</th>
+                                <th scope="col">#</th>
+                                <th scope="col">User name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Birthday</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">No.Recipe</th>
+                                <th scope="col">Extenal login</th>
+                                <th scope="col">Register date</th>
+                                <th scope="col">Last login</th>
+                                <th scope="col">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -135,6 +142,7 @@
                             }
                         </tbody>
                     </table>
+                    @Html.Partial("_Paging", @pager)
                 }
             </div>
             <!-- render body here -->
