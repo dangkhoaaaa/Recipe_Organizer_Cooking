@@ -5,8 +5,9 @@ namespace RecipeOrganizer.Areas.Identity.Models.ManageViewModels
 {
   public class EditExtraProfileModel
   {
+        public string Id { get; set; }
 
-		[Display(Name = "Username")]
+        [Display(Name = "Username")]
 		[StringLength(100)]
 		public string Username { get; set; }
 

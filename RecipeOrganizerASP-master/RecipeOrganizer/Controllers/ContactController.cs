@@ -7,7 +7,7 @@ namespace RecipeOrganizer.Controllers
 {
 	public class ContactController : Controller
 	{
-		public ContactFormModel _contactFormModel = new ContactFormModel(); 
+		public ContactRepository _contactFormModel = new ContactRepository(); 
 
 		public IActionResult SendContact()
 		{

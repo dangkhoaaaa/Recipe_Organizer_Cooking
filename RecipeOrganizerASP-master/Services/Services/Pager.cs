@@ -15,6 +15,8 @@ namespace Services.Services
         public int TotalPages { get; set; }
         public int StartPage { get; set; }
         public int EndPage { get; set; }
+        public string AspController { get; set; }
+        public string AspAction { get; set; }
 
         public Pager() 
         { 

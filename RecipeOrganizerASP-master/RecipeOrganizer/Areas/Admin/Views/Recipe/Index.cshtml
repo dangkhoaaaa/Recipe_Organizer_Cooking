@@ -5,6 +5,14 @@
 @{
     ViewData["Title"] = "Recipe manage";
     Layout = "_AdminLayout";
+
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
 }
 
 <!-- render body here -->
@@ -46,7 +54,7 @@
                                 {
                                     counter += 1;
                                     <tr>
-                                        <td>@counter</td>
+                                        <td>@recipe.RecipeId</td>
                                         <td>
                                             <div class="chip">
                                                 <img src="@recipe.Recipe.Image" alt="username">
@@ -60,7 +68,43 @@
                                             </div>
                                         </td>
                                         <td>@recipe.Recipe.NumberShare</td>
-                                        <td class="dateElement">@recipe.Recipe.Date</td>
+
+                                        @if (MyToys.checkTimeIsToday(@recipe.Recipe.Date))
+                                        {
+                                            <td >
+                                                @if (MyToys.checkTimeIsToday(@recipe.Recipe.Date))
+                                                {
+                                                    <p class="timeElement" style="display:inline-block">
+                                                        @recipe.Recipe.Date
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="dateElement" style="display:inline-block">
+                                                        @recipe.Recipe.Date
+                                                    </p>
+                                                }
+                                                <span> (@MyToys.getLastTime(@recipe.Recipe.Date))</span>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @if (MyToys.checkTimeIsToday(@recipe.Recipe.Date))
+                                                {
+                                                    <p class="timeElement" style="display:inline-block">
+                                                        @recipe.Recipe.Date
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="dateElement" style="display:inline-block">
+                                                        @recipe.Recipe.Date
+                                                    </p>
+                                                }
+                                                <span> (@MyToys.getLastTime(@recipe.Recipe.Date))</span>
+                                            </td>
+                                        }
                                         <td>
                                         <!--Hiển thị màu sắc label-->
                                             @if (recipe.Recipe.Status.Contains("rejected"))
@@ -146,6 +190,8 @@
                             }
                         </tbody>
                     </table>
+                    @Html.Partial("_Paging", @pager)
+                    ;
                 }
             </div>
             <!-- render body here -->

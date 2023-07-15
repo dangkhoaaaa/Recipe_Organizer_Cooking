@@ -20,6 +20,33 @@
 @import url(icons/flag-icon-css/flag-icon.min.css);
 @import url("https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800");
 
+.tab-bar {
+    padding: 20px 54px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0px;
+}
+
+.tab-bar a {
+    color: black
+}
+
+.tab-bar-item {
+    font-size: 1.2rem;
+    padding: 10px 60px;
+}
+
+.tab-bar-item:hover {
+    background-color: #f44336;
+
+}
+
+.tab-bar-item:hover a {
+    color: white;
+
+}
+
 .materialize-red {
     background-color: #e51c23 !important;
 }

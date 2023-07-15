@@ -136,6 +136,15 @@
             if (tdElements[i].innerHTML.trim() != "")
             tdElements[i].textContent = formattedDate; // Update the content of each <td> with the formatted date
         }
+
+        var time = new Date(); // Get the current date and time
+        var formattedTime = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Format the time
+
+        var tdElements = document.getElementsByClassName("timeElement"); // Display the formatted time
+        for (var i = 0; i < tdElements.length; i++) {
+            if (tdElements[i].innerHTML.trim() != "")
+                tdElements[i].textContent = formattedTime; // Update the content of each <td> with the formatted time
+        }
     </script>
 
     <!-- ============================================================== -->
@@ -178,5 +187,6 @@
     <script src="~/admin/dist/js/pages/c3-chart/bar-pie/c3-stacked-bar.js"></script>
     <script src="~/admin/dist/js/pages/c3-chart/bar-pie/c3-stacked-column.js"></script>
     <script src="~/admin/dist/js/pages/simple-datatables/simple-datatables.js"></script>
+    <script src="~/admin/dist/js/pages/inbox/email.js"></script>
 </body>
 </html>

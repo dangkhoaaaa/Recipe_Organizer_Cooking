@@ -382,7 +382,23 @@ namespace Services.Repository
             return query3.ToList();
 		}
 
-		public List<RecipeViewModel> GetRecipesByStatusWithMetadata(string status)
+        public List<RecipeViewModel> GetRecipesWithMetadataOrderByDate()
+        {
+            var query3 = from u in _context.Users
+                         join m in _context.MetaData on u.Id equals m.UserId
+                         join r in _context.Recipes on m.RecipeId equals r.RecipeId
+                         group new { User = u, Recipe = r } by new { u.Id, r.RecipeId } into g
+                         select new RecipeViewModel
+                         {
+                             UserId = g.Key.Id,
+                             RecipeId = g.Key.RecipeId,
+                             User = g.Select(x => x.User).FirstOrDefault(),
+                             Recipe = g.Select(x => x.Recipe).FirstOrDefault()
+                         };
+            return query3.ToList().OrderByDescending(x => x.Recipe.Date).ToList();
+        }
+
+        public List<RecipeViewModel> GetRecipesByStatusWithMetadata(string status)
 		{
 			//var query = from m in _context.MetaData
 			//			join r in _context.Recipes on m.RecipeId equals r.RecipeId
