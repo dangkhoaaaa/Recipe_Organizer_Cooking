@@ -62,25 +62,6 @@ namespace RecipeOrganizer.Controllers
 			return View();
 		}
 
-		[AllowAnonymous]
-		[Route("/active")]
-		public async Task<IActionResult> Active()
-		{
-			// Create Roles
-			var rolenames = typeof(RoleName).GetFields().ToList();
-			foreach (var r in rolenames)
-			{
-				var rolename = (string)r.GetRawConstantValue();
-				var rfound = await _roleManager.FindByNameAsync(rolename);
-				if (rfound == null)
-				{
-					await _roleManager.CreateAsync(new IdentityRole(rolename));
-				}
-			}
-			return RedirectToAction("Index");
-		}
-
-
 		// Add new Recipe
 		[HttpGet]
 		public ActionResult AddNewRecipe()

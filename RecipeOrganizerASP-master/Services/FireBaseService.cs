@@ -60,7 +60,6 @@ namespace Services
                 }
             }
             return imageLink;
-
         }
         public async Task<string> UploadImage(List<IFormFile> files)
 		{

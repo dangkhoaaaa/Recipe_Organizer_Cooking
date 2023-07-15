@@ -1,4 +1,6 @@
-﻿namespace Services.Utilities
+﻿using System.Runtime.InteropServices.WindowsRuntime;
+
+namespace Services.Utilities
 {
     public static class MyToys
     {
@@ -46,13 +48,12 @@
             return displayText;
         }
 
-        public static bool IsPrime(int candidate)
+        public static bool checkTimeIsToday(DateTime date)
         {
-            if (candidate == 1)
-            {
-                return false;
-            }
-            throw new NotImplementedException("Please create a test first.");
+            DateTime today = DateTime.Today; // Get today's date
+            DateTime timeDate = date.Date; // Get the date component of the input time
+
+            return (today == timeDate); // Compare today's date with the input time's date and return the result
         }
     }
 }

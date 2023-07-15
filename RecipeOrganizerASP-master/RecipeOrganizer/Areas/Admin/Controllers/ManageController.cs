@@ -30,12 +30,14 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ManageController> _logger;
 
-        private UserRepository _userRepository;
-        private RecipeRepository _recipeRepository;
-        private FeedbackRepository _feedbackRepository;
+        private readonly UserRepository _userRepository;
+        private readonly RecipeRepository _recipeRepository;
+        private readonly FeedbackRepository _feedbackRepository;
+        private readonly ContactRepository _contactRepository;
 
 
-        public ManageController(
+
+		public ManageController(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
         RoleManager<IdentityRole> roleManager,
@@ -51,7 +53,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             _recipeRepository = new RecipeRepository();
             _userRepository = new UserRepository();
 			_feedbackRepository = new FeedbackRepository();
-
+			_contactRepository = new ContactRepository();
 		}
 
         // GET: /Admin/Login
@@ -149,13 +151,16 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 };
                 list.Add(model);
             }
-            const int pageSize = 10;
+            const int pageSize = 5;
             if (pg < 1)
                 pg = 1;
             int recsCount = list.Count();
             var pager = new Pager(recsCount, pg, pageSize);
             int recSkip = (pg - 1) * pageSize;
             var data = list.Skip(recSkip).Take(pager.PageSize).ToList();
+
+            pager.AspController = "Manage";
+            pager.AspAction = "Index";
             this.ViewBag.Pager = pager;
             return View(data);
         }
@@ -281,7 +286,20 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 		//GET: Admin/UserFeedbacks/?userID={id}
 		public async Task<IActionResult> Contact()
 		{
-			
+            var listContact = _contactRepository.GetAll();
+            List<ContactViewModel> model = new List<ContactViewModel>();
+            foreach (var contact in listContact)
+            {
+                model.Add(new ContactViewModel { 
+                    ContactId = contact.ContactId,
+                    Address = contact.Address,
+                    Date = contact.Date,
+                    Email = contact.Email,
+                    IsRead = contact.IsRead,
+                    Message = contact.Message,
+                    Name = contact.Name,
+                });
+            }
 			return View(model);
 		}
 
@@ -309,6 +327,23 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             //SeedProductCategory();
 
             //StatusMessage = "Vừa seed Database";
+            return RedirectToAction("Login");
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateRole()
+        {
+            // Create Roles
+            var rolenames = typeof(RoleName).GetFields().ToList();
+            foreach (var r in rolenames)
+            {
+                var rolename = (string)r.GetRawConstantValue();
+                var rfound = await _roleManager.FindByNameAsync(rolename);
+                if (rfound == null)
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(rolename));
+                }
+            }
             return RedirectToAction("Login");
         }
 

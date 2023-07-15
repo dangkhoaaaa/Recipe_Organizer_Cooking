@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Services.Models;
+using Services.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace Services.Repository
 {
-    public class ContactFormModel : RepositoryBase<Contact>
+    public class ContactRepository : RepositoryBase<Contact>
     {
         private new readonly Recipe_OrganizerContext _context;
 
         DbSet<Contact> _dbSet;
 
-        public ContactFormModel()
+        public ContactRepository()
         {
             _context = new Recipe_OrganizerContext();
             _dbSet = _context.Set<Contact>();
@@ -34,7 +36,7 @@ namespace Services.Repository
                 {
                     l.Add(1);
                 }
-                if (contact.Email == null || contact.Email.Length < 1 || contact.Email.Length >= 250)
+                if (contact.Email == null || contact.Email.Length < 1 || contact.Email.Length >= 250 || AppUtilities.IsValidEmail(contact.Email))
                 {
                     l.Add(2);
                 }

@@ -6,9 +6,11 @@
     <li>
         <ul class="collapsible">
             <li class="small-cap"><span class="hide-menu">Manage</span></li>
+
             <li>
                 <a asp-area="Admin" asp-controller="DashBoard" asp-action="Index" class="collapsible-header"><i class="material-icons">show_chart</i><span class="hide-menu"> Dashboard </span></a>
             </li>
+
             <li>
                 <a asp-area="Admin" asp-controller="Manage" asp-action="Index" class="collapsible-header"><i class="material-icons">assignment</i><span class="hide-menu"> User list </span></a>
             </li>
@@ -18,6 +20,7 @@
             </li>
 
             <li class="small-cap"><span class="hide-menu">Recipe</span></li>
+
             <li>
                 <a href="javascript: void(0);" class="collapsible-header has-arrow"><i class="material-icons">restaurant_menu</i><span class="hide-menu">Manage recipe</span></a>
                 <div class="collapsible-body">
@@ -26,16 +29,6 @@
                         <li><a href=@Url.Action("PendingRecipe", "Recipe")><i class="material-icons">adjust</i><span class="hide-menu">Pending recipe</span></a></li>
                         <li><a href=@Url.Action("RejectRecipe", "Recipe")><i class="material-icons">adjust</i><span class="hide-menu">Reject recipe</span></a></li>
                         <li><a href="index3.html"><i class="material-icons">adjust</i><span class="hide-menu">...</span></a></li>
-                    </ul>
-                </div>
-            </li>
-
-            <li class="small-cap"><span class="hide-menu">Feedback</span></li>
-            <li>
-                <a href="javascript: void(0);" class="collapsible-header has-arrow"><i class="material-icons">feedback</i><span class="hide-menu"> User feedback</span></a>
-                <div class="collapsible-body">
-                    <ul>
-                        <li><a href="index.html"><i class="material-icons">adjust</i><span class="hide-menu">Dashboard-1</span></a></li>
                     </ul>
                 </div>
             </li>
