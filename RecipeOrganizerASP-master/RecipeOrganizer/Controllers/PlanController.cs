@@ -54,7 +54,16 @@ namespace RecipeOrganizer.Controllers
 					ViewBag.CheckCollectionSave = checkRecipeSave;
 				}
 			}
-			else
+			else if (keyword == null) {
+                recipesSearchAll = _recipeRepository.SearchAllWithFilter(filter);
+                results = _recipeRepository.getPaingRecipe(productPage, PageSize, recipesSearchAll);
+                var user = await _userManager.GetUserAsync(User);
+                if (user != null)
+                {
+                    var checkRecipeSave = _collectionRepository.CollectionList(recipesSearchAll, user.Id);
+                    ViewBag.CheckCollectionSave = checkRecipeSave;
+                }
+            }else
 			{
 				ViewBag.notfound = "Not Found Recipe";
 			}
@@ -227,7 +236,7 @@ namespace RecipeOrganizer.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
-        public async Task<IActionResult> Recommend(string week)
+        public async Task<IActionResult> Recommend(string week, string days)
         {
             ViewBag.week = week;
             var user = await _userManager.GetUserAsync(User);
@@ -238,9 +247,17 @@ namespace RecipeOrganizer.Controllers
                 if (week != null)
                 {
                     Slot = new Slot();
+                    if (days == null)
+                    {
+                        
 
-                    Slot = _slot.SuggestRecipes(week, user.Id);
+                        Slot = _slot.SuggestRecipes(week, user.Id);
 
+                        
+                    } else
+                    {
+                        Slot = _slot.SuggestRecipesHasVegetarianDay(week, user.Id, days);
+                    }
                     HttpContext.Session.SetJson("cart", Slot);
                 }
                 return View("ViewPlan", Slot);
@@ -293,7 +310,9 @@ namespace RecipeOrganizer.Controllers
 			{
 				results = _recipeRepository.getRecipeByKeywordWitPaging(keyword, productPage, PageSize, recipesSearchAll);
 			}
-			else
+			else if (keyword == "") {
+                results = _recipeRepository.getPaingRecipe(productPage, PageSize, _recipeRepository.getAllRecipe());
+            }else
 			{
 				ViewBag.notfound = "Not Found Recipe";
 			}

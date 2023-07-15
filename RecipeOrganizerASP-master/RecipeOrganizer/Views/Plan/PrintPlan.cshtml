@@ -48,17 +48,17 @@
         </a>
     </div>
     <div class="text-center" >
-        <table class="text-center " style="width:100%">
+        <table class="text-center table border-radius-30" style="width:100%; background-color:  #f44336; border-style: hidden">
             <tr>
-                <th>Session/Day</th>
+                <th style="color: #CEEBFB">Session/Day</th>
 
-                <th>Monday</th>
-                <th>Tuesday</th>
-                <th>Wednesday</th>
-                <th>Thursday</th>
-                <th>Friday</th>
-                <th>Saturday</th>
-                <th>Sunday</th>
+                <th style="color:  #CEEBFB">Monday</th>
+                <th style="color:  #CEEBFB">Tuesday</th>
+                <th style="color:  #CEEBFB">Wednesday</th>
+                <th style="color:  #CEEBFB">Thursday</th>
+                <th style="color:  #CEEBFB">Friday</th>
+                <th style="color:  #CEEBFB">Saturday</th>
+                <th style="color:  #CEEBFB">Sunday</th>
             </tr>
 
 
@@ -67,8 +67,8 @@
                 int count = 0;
                 for (int i = 1; i <= 3; i++)
                 {
-                    <tr class="border-top-3">
-                        <td class="text-center font-weight-bold" width="140px">
+                    <tr class="border-top-3" style="@((i % 2 == 0) ? "background:   #66A7C5" : "background:    #CEEBFB")">
+                        <td class="text-center font-weight-bold" width="140px" style="color:   #6C7476">
                             @{
                                 string session = "";
                                 @switch (i)
@@ -112,7 +112,7 @@
                                                 </a>
                                                 
                                                 <br />
-                                                <span>@recipe.Title</span>
+                                                <span style="color: #EE3233; float: initial;">@recipe.Title</span>
                                             }
                                            
                                         }
