@@ -213,7 +213,27 @@ namespace Services.Repository
 
 		}
 
-		public List<Recipe> SearchAllTitleWithFilterandCategory(string filter, string title, int categoryID)
+        //Support for meal plan
+        public List<Recipe> SearchAllWithFilter(string filter)
+        {
+            switch (filter)
+            {
+                case "1":
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderByDescending(r => r.NumberShare).ToList();
+                case "2":
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderBy(r => r.Date).ToList();
+                case "3":
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderBy(r => r.Title).ToList();
+                case "4":
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderBy(r => r.RecipeId).ToList();
+                default:
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderBy(r => r.Title).ToList();
+
+            }
+
+        }
+
+        public List<Recipe> SearchAllTitleWithFilterandCategory(string filter, string title, int categoryID)
 		{
 			List<Recipe> listmapCategory = new List<Recipe>();
 			var query = from rc in _dbSet1

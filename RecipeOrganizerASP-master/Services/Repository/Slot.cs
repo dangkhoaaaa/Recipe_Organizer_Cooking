@@ -168,7 +168,7 @@ namespace Services.Repository
                 foreach (int id in listAfterRandom)
                 {
                     List<int> listIDRecipeOfCate = new List<int>();
-                    var listRecipes = _recipeHasCategoryRepository.GetAll();
+                    var listRecipes = _recipeHasCategoryRepository.getRecipeByCategoryID(id);
                     foreach (var recipe in listRecipes)
                     {
                         if (_repository.GetById(recipe.RecipeId, "public") != null)
@@ -178,6 +178,14 @@ namespace Services.Repository
                         
                     }
                     foreach (var recipe in GetRandomIds(listIDRecipeOfCate, 7))
+                    {
+                        listIdRecipe.Add(recipe);
+                    }
+                }
+                if(listIdRecipe.Count < 21)
+                {
+                    
+                    foreach (var recipe in AddMoreRecipesToList(21 - listIdRecipe.Count()))
                     {
                         listIdRecipe.Add(recipe);
                     }
@@ -198,6 +206,140 @@ namespace Services.Repository
                 }
             }
             
+            return slot;
+        }
+
+        //add more if list not enough to 21 recipes
+
+        public List<int> AddMoreRecipesToList (int num)
+        {
+            List<int> list = new List<int>();   
+            RecipeRepository _repository = new RecipeRepository();
+            CategoryRepository _categoryRepository = new CategoryRepository();
+            RecipeHasCategoryRepository _recipeHasCategoryRepository = new RecipeHasCategoryRepository();
+            var listRecipes = _recipeHasCategoryRepository.GetAll().Where(l => _repository.GetById(l.RecipeId, "public") != null).ToList();
+            List<int> listIDRecipeOfCate = new List<int>();
+            foreach (var recipe in listRecipes)
+            {
+                listIDRecipeOfCate.Add(recipe.RecipeId);
+            }
+            foreach (var recipe in GetRandomIds(listIDRecipeOfCate, num))
+            {
+                list.Add(recipe);
+            }
+            return list;
+        }
+        public Slot SuggestRecipesHasVegetarianDay (string week, string userId, string day)
+        {
+            RecipeRepository _repository = new RecipeRepository();
+            CategoryRepository _categoryRepository = new CategoryRepository();
+            RecipeHasCategoryRepository _recipeHasCategoryRepository = new RecipeHasCategoryRepository();
+            Slot slot = new Slot();
+            List<int> listVegatarian = new List<int>();
+            List<int> selectedDays = new List<int>();
+            if (day.Equals("all"))
+            {
+                
+                var listRecipes = _recipeHasCategoryRepository.GetAll().Where(l => _repository.GetById(l.RecipeId, "public" ) != null && l.CategoryId.Equals(5)).ToList();
+                foreach (var recipe in listRecipes)
+                {
+                    listVegatarian.Add((int)recipe.RecipeId);
+                }
+                GetRandomIds(listVegatarian, 21);
+            }
+            else
+            {
+                selectedDays = day.Split(',').Select(days => int.Parse(days)).ToList();
+                var listRecipes = _recipeHasCategoryRepository.GetAll().Where(l => _repository.GetById(l.RecipeId, "public") != null && l.CategoryId.Equals(5)).ToList();
+                foreach (var recipe in listRecipes)
+                {
+                    listVegatarian.Add((int)recipe.RecipeId);
+                }
+                GetRandomIds(listVegatarian, 3 * selectedDays.Count());
+            }
+            List<int> addMoreRecipes = new List<int>();
+
+            if (listVegatarian.Count < 21)
+            {
+               addMoreRecipes = AddMoreRecipesToList(21 -  listVegatarian.Count);
+                GetRandomIds(addMoreRecipes, 21 - listVegatarian.Count());
+            }
+             
+            slot.Lines = new List<CartLine>();
+            int j = 0; 
+            int z = 0;
+            int w = 0;
+            for (int i = 0; i < 21; i++)
+            {
+                if (day.Equals("all"))
+                {
+                    if (z < listVegatarian.Count())
+                    {
+                        if (i % 3 == 2)
+                        {
+                            z = i + 1;
+                        }
+                        if  (i < listVegatarian.Count())
+                        {
+                            slot.Lines.Add(new CartLine
+                            {
+                                SlotID = i + 1,
+                                Recipes = new List<Recipe>() { _repository.GetById(listVegatarian[i], "public") },
+                                Week = week,
+                                UserID = userId
+                            });
+                        }
+                        
+                    } else
+                    {
+                        slot.Lines.Add(new CartLine
+                        {
+                            SlotID = i + 1,
+                            Recipes = new List<Recipe>() { _repository.GetById(addMoreRecipes[i - listVegatarian.Count()], "public") },
+                            Week = week,
+                            UserID = userId
+                        });
+                    }
+                    
+                }
+                else
+                {
+                    if (selectedDays.Count() > j && selectedDays[j].Equals(i + 1))
+                    {
+                        if (listVegatarian.Count() > z)
+                        {
+                            slot.Lines.Add(new CartLine
+                            {
+                                SlotID = i + 1,
+                                Recipes = new List<Recipe>() { _repository.GetById(listVegatarian[z], "public") },
+                                Week = week,
+                                UserID = userId
+                            });
+                            
+                        }
+                        selectedDays[j]++;
+                        z++;
+                        if (selectedDays[j] % 3 == 1)
+                        {
+                            j++;
+                        }
+                    }
+                    else
+                    {
+                        slot.Lines.Add(new CartLine
+                        {
+                            SlotID = i + 1,
+                            Recipes = new List<Recipe>() { _repository.GetById(addMoreRecipes[w], "public") },
+                            Week = week,
+                            UserID = userId
+                        });
+                        w++;
+                    }
+                }
+                
+
+            }
+
             return slot;
         }
     }
