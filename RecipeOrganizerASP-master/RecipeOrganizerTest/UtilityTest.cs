@@ -8,7 +8,6 @@ using Services.Utilities;
 
 namespace RecipeOrganizerTest
 {
-    //cần làm thêm nuget test coverage
 
 	[TestFixture] // attribute denotes a class that contains unit tests
     public class UtilityTest
