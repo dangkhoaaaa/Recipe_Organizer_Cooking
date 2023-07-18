@@ -19,6 +19,17 @@
         margin: 7px 3px -11px 3px;
     }
 </style>
+
+<div id="chat">
+    <div id="messages"></div>
+
+    <form method="post" action="/message/sendmessage">
+        <input type="hidden" name="userId" value="@Model.profile.Id" />
+        <input type="text" name="message" />
+        <button type="submit">Send</button>
+    </form>
+</div>
+
     <div class="row">
         <div class="col-lg-10 margin-bottom-40px">
             <div class="box-shadow border-radius-10 overflow-hidden">

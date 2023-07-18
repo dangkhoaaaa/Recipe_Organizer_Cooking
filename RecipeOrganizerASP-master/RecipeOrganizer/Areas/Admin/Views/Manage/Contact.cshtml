@@ -1,0 +1,96 @@
+﻿@model List<ContactViewModel>
+@{
+    ViewData["Title"] = "Contact";
+    Layout = "_AdminLayout";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+<link href="~/admin/dist/css/pages/email.css" rel="stylesheet">
+<div class="grey lighten-5 p-15 d-flex no-block">
+    <a class='m-l-5 tooltipped' href='#' data-tooltip="Reply" data-position="top"><i class="material-icons font-20">reply</i></a>
+    <a class='m-l-10 tooltipped' href='#' data-tooltip="Report Spam" data-position="top"><i class="material-icons font-20">sim_card_alert</i></a>
+    <div class="ml-auto">
+        <a class='dropdown-trigger font-20' href='#' data-target='dme'><i class="material-icons">folder</i><i class="material-icons op-5">expand_more</i></a>
+        <!-- Dropdown Structure -->
+        <a class='font-20 m-l-5' href='#'><i class="material-icons">delete</i></a>
+    </div>
+</div>
+<div class="p-15 b-t">
+    <h5 class="m-b-0">Cook contact</h5>
+</div>
+<div class="divider"></div>
+@foreach (var contact in Model)
+{
+    <div class="">
+        <!-- Action part -->
+        <!-- Mail list-->
+        <div class="email-body">
+            <ul class="collapsible expandable b-0 m-t-0">
+                <li class="active">
+                    <div class="collapsible-header">
+                        <div class="d-flex no-block align-items-center" style="width: 100%; justify-content: space-between;">
+                            <div style="display:flex;">
+                                <div class="m-r-10"><img src="~/assets/img/chef-avt-default.png" alt="user" class="circle" width="45"></div>
+                                <div class="">
+                                    <h5 class="m-b-0 font-16 font-medium">
+                                        @contact.Name<small> @contact.Email</small>
+                                    </h5>
+                                    <span>to Suniljoshi19@gmail.com</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                @if (MyToys.checkTimeIsToday(contact.Date))
+                                {
+                                    <p class="timeElement" style="display:inline-block">
+                                        @contact.Date
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="dateElement" style="display:inline-block">
+                                        @contact.Date
+                                    </p>
+                                }
+                                <span>(@MyToys.getLastTime(contact.Date))</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-body">
+                        <a class='dropdown-trigger font-20 right' href='#' data-target='ddme'><i class="material-icons">more_vert</i></a>
+                        <!-- Dropdown Structure -->
+                        <ul id='ddme' class='dropdown-content'>
+                            <li><a href="#!"><i class="material-icons">view_module</i>Delete</a></li>
+                        </ul>
+                        <p>
+                            @contact.Address
+                        </p>
+                        <p>
+                            @contact.Message
+                        </p>
+                        <h6 class="m-t-30 font-medium">Attachment (3)</h6>
+                        <div class="row row-minus m-t-20">
+                            <div class="col s12 l3">
+                                <img src="../../assets/images/big/img1.jpg" class="responsive-img" alt="att-img">
+                                <a href="#" class="m-r-10">View</a><a href="#">Download</a>
+                            </div>
+                            <div class="col s12 l3">
+                                <img src="../../assets/images/big/img2.jpg" class="responsive-img" alt="att-img">
+                                <a href="#" class="m-r-10">View</a><a href="#">Download</a>
+                            </div>
+                            <div class="col s12 l3">
+                                <img src="../../assets/images/big/img3.jpg" class="responsive-img" alt="att-img">
+                                <a href="#" class="m-r-10">View</a><a href="#">Download</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+}

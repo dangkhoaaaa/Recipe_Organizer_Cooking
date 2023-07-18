@@ -30,12 +30,14 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ManageController> _logger;
 
-        private UserRepository _userRepository;
-        private RecipeRepository _recipeRepository;
-        private FeedbackRepository _feedbackRepository;
+        private readonly UserRepository _userRepository;
+        private readonly RecipeRepository _recipeRepository;
+        private readonly FeedbackRepository _feedbackRepository;
+        private readonly ContactRepository _contactRepository;
 
 
-        public ManageController(
+
+		public ManageController(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
         RoleManager<IdentityRole> roleManager,
@@ -51,7 +53,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             _recipeRepository = new RecipeRepository();
             _userRepository = new UserRepository();
 			_feedbackRepository = new FeedbackRepository();
-
+			_contactRepository = new ContactRepository();
 		}
 
         // GET: /Admin/Login
@@ -78,7 +80,6 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         {
             returnUrl ??= Url.Content("~/");
             ViewData["ReturnUrl"] = returnUrl;
-
 
             var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, lockoutOnFailure: true);
             // Tìm UserName theo Email, đăng nhập lại
@@ -125,29 +126,11 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
-        public enum ManageMessageId
-        {
-            AddPhoneSuccess,
-            AddLoginSuccess,
-            ChangePasswordSuccess,
-            SetTwoFactorSuccess,
-            SetPasswordSuccess,
-            RemoveLoginSuccess,
-            RemovePhoneSuccess,
-            Error
-        }
+        
 
         [HttpGet("/Admin/")]
-        public async Task<IActionResult> Index(ManageMessageId? message = null)
+        public async Task<IActionResult> Index(int pg = 1)
         {
-            ViewData["StatusMessage"] =
-                message == ManageMessageId.ChangePasswordSuccess ? "Password has change"
-                : message == ManageMessageId.SetPasswordSuccess ? "Password has reset"
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "Error"
-                : message == ManageMessageId.AddPhoneSuccess ? "Phone number has added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Phone number has removed."
-                : "";
 
             var listUser = _userRepository.GetAll();
             List<IndexViewModel> list = new List<IndexViewModel>();
@@ -168,7 +151,18 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 };
                 list.Add(model);
             }
-            return View(list);
+            const int pageSize = 5;
+            if (pg < 1)
+                pg = 1;
+            int recsCount = list.Count();
+            var pager = new Pager(recsCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = list.Skip(recSkip).Take(pager.PageSize).ToList();
+
+            pager.AspController = "Manage";
+            pager.AspAction = "Index";
+            this.ViewBag.Pager = pager;
+            return View(data);
         }
 
         private Task<AppUser> GetCurrentUserAsync()
@@ -289,6 +283,26 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 			return View(model);
 		}
 
+		//GET: Admin/UserFeedbacks/?userID={id}
+		public async Task<IActionResult> Contact()
+		{
+            var listContact = _contactRepository.GetAll();
+            List<ContactViewModel> model = new List<ContactViewModel>();
+            foreach (var contact in listContact)
+            {
+                model.Add(new ContactViewModel { 
+                    ContactId = contact.ContactId,
+                    Address = contact.Address,
+                    Date = contact.Date,
+                    Email = contact.Email,
+                    IsRead = contact.IsRead,
+                    Message = contact.Message,
+                    Name = contact.Name,
+                });
+            }
+			return View(model);
+		}
+
 		[AllowAnonymous]
         public async Task<IActionResult> CreateAdminAsync()
         {
@@ -313,6 +327,23 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             //SeedProductCategory();
 
             //StatusMessage = "Vừa seed Database";
+            return RedirectToAction("Login");
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateRole()
+        {
+            // Create Roles
+            var rolenames = typeof(RoleName).GetFields().ToList();
+            foreach (var r in rolenames)
+            {
+                var rolename = (string)r.GetRawConstantValue();
+                var rfound = await _roleManager.FindByNameAsync(rolename);
+                if (rfound == null)
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(rolename));
+                }
+            }
             return RedirectToAction("Login");
         }
 
@@ -530,7 +561,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 TempData["ChangeError"] = "Incorrect password";
                 return View(model);
             }
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+            return RedirectToAction(nameof(Index), new { pg = 1 });
         }
 
 

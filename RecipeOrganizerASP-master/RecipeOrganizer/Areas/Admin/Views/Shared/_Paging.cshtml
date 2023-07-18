@@ -1,0 +1,62 @@
+﻿@model Pager
+<style>
+	.pagination li {
+		display: inline-block;
+		border-radius: -13%;
+		text-align: center;
+		vertical-align: top;
+		height: 73px;
+	}
+	
+	.pagination li a {
+		color: #000;
+		display: inline-block;
+		font-size: 1.2rem;
+		padding: 0px 14px;
+		background-color: #e4e4e4;
+		line-height: 30px;
+		margin-top: 25px;
+	}
+
+	.pagination li a:hover {
+		background-color: #2300ff3b;
+	}
+
+	.active-cus {
+		background-color: #2300ff !important;
+		color: white !important;
+	}
+</style>
+
+<div class="center">
+	@if (Model.TotalPages > 0)
+	{
+		<ul class="pagination">
+			@if (Model.CurrentPage > 1)
+			{
+				<li class="waves-effect page-item">
+					<a class="waves-effect page-link" asp-controller="@Model.AspController" asp-action="@Model.AspAction" asp-route-pg="1">First</a>
+				</li>
+				<li class="waves-effect page-item">
+					<a class="page-link" asp-controller="@Model.AspController" asp-action="@Model.AspAction" asp-route-pg="@(Model.CurrentPage - 1)">Previous</a>
+				</li>
+			}
+			@for (var pge = Model.StartPage; pge <= Model.EndPage; pge++)
+			{
+				<li class="waves-effect page-item")>
+					<a class="page-link @(pge == Model.CurrentPage ? "active-cus" : "")" asp-controller="@Model.AspController" asp-action="@Model.AspAction" asp-route-pg="@pge">@pge</a>
+				</li>
+			}
+
+			@if (Model.CurrentPage < Model.TotalPages)
+			{
+				<li class="waves-effect page-item">
+					<a class="page-link" asp-controller="@Model.AspController" asp-action="@Model.AspAction" asp-route-pg="@(Model.CurrentPage + 1)">Next</a>
+				</li>
+				<li class="waves-effect page-item">
+					<a class="page-link" asp-controller="@Model.AspController" asp-action="@Model.AspAction" asp-route-pg="@(Model.TotalPages)">Last</a>
+				</li>
+			}
+		</ul>
+	}
+</div>

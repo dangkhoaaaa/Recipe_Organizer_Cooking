@@ -102,7 +102,9 @@ namespace Services.Models
                 entity.Property(e => e.Date)
                     .HasColumnType("datetime")
                     .HasColumnName("contact_date");
-            });
+
+				entity.Property(e => e.IsRead).HasColumnName("is_read");
+			});
 
             modelBuilder.Entity<Category>(entity =>
             {

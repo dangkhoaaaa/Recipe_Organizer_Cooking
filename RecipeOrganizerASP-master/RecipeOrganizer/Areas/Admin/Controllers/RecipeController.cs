@@ -10,7 +10,9 @@ using Services.Data;
 using Services.Models;
 using Services.Models.Authentication;
 using Services.Repository;
+using Services.Services;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Text.RegularExpressions;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
@@ -63,10 +65,22 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         }
 
 		[HttpGet("/manage/recipe")]
-		public ActionResult Index()
+		public ActionResult Index(int pg = 1)
 		{
-			var model = _recipeRepository.GetRecipesWithMetadata();
-			return View(model);
+			var model = _recipeRepository.GetRecipesWithMetadataOrderByDate();
+			const int pageSize = 10;
+			if (pg < 1)
+				pg = 1;
+			int recsCount = model.Count();
+			var pager = new Pager(recsCount, pg, pageSize);
+			int recSkip = (pg - 1) * pageSize;
+			var data = model.Skip(recSkip).Take(pager.PageSize).ToList();
+			data = data.OrderByDescending(x => x.Recipe.Date).ToList();
+            pager.AspController = "manage";
+            pager.AspAction = "recipe";
+
+            this.ViewBag.Pager = pager;
+			return View(data);
 		}
 
 		[HttpPost]
@@ -81,7 +95,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         public ActionResult SearchRecipe(string keyword)
 		{
 			ViewBag.RecipeKeyword = keyword;
-			var model = _recipeRepository.GetRecipesWithMetadata();
+			var model = _recipeRepository.GetRecipesWithMetadataOrderByDate();
 			if (keyword == null)
 			{
                     ViewBag.NotFind = "";

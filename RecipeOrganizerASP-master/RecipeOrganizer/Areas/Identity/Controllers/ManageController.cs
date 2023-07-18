@@ -47,7 +47,6 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
             _emailSender = emailSender;
             _logger = logger;
             _notificationRepository = new NotificationRepository();
-           
         }
 
         //
@@ -79,6 +78,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
                 //AuthenticatorKey = await _userManager.GetAuthenticatorKeyAsync(user),
                 profile = new EditExtraProfileModel()
                 {
+                    Id = user.Id,
                     Img = user.Image,
                     Username = user.UserName,
                     Birthday = user.Birthday,

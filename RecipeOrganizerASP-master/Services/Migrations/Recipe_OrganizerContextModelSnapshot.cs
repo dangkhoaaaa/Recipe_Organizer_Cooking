@@ -334,6 +334,10 @@ namespace Services.Migrations
                         .HasColumnType("varchar(250)")
                         .HasColumnName("contact_email");
 
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit")
+                        .HasColumnName("is_read");
+
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasMaxLength(1000)

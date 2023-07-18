@@ -213,7 +213,27 @@ namespace Services.Repository
 
 		}
 
-		public List<Recipe> SearchAllTitleWithFilterandCategory(string filter, string title, int categoryID)
+        //Support for meal plan
+        public List<Recipe> SearchAllWithFilter(string filter)
+        {
+            switch (filter)
+            {
+                case "1":
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderByDescending(r => r.NumberShare).ToList();
+                case "2":
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderBy(r => r.Date).ToList();
+                case "3":
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderBy(r => r.Title).ToList();
+                case "4":
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderBy(r => r.RecipeId).ToList();
+                default:
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderBy(r => r.Title).ToList();
+
+            }
+
+        }
+
+        public List<Recipe> SearchAllTitleWithFilterandCategory(string filter, string title, int categoryID)
 		{
 			List<Recipe> listmapCategory = new List<Recipe>();
 			var query = from rc in _dbSet1
@@ -382,7 +402,23 @@ namespace Services.Repository
             return query3.ToList();
 		}
 
-		public List<RecipeViewModel> GetRecipesByStatusWithMetadata(string status)
+        public List<RecipeViewModel> GetRecipesWithMetadataOrderByDate()
+        {
+            var query3 = from u in _context.Users
+                         join m in _context.MetaData on u.Id equals m.UserId
+                         join r in _context.Recipes on m.RecipeId equals r.RecipeId
+                         group new { User = u, Recipe = r } by new { u.Id, r.RecipeId } into g
+                         select new RecipeViewModel
+                         {
+                             UserId = g.Key.Id,
+                             RecipeId = g.Key.RecipeId,
+                             User = g.Select(x => x.User).FirstOrDefault(),
+                             Recipe = g.Select(x => x.Recipe).FirstOrDefault()
+                         };
+            return query3.ToList().OrderByDescending(x => x.Recipe.Date).ToList();
+        }
+
+        public List<RecipeViewModel> GetRecipesByStatusWithMetadata(string status)
 		{
 			//var query = from m in _context.MetaData
 			//			join r in _context.Recipes on m.RecipeId equals r.RecipeId
@@ -440,7 +476,45 @@ namespace Services.Repository
 			return recipeViewModel;
 		}
 
-        
+        public string ToStringCategory (Recipe recipe)
+		{
+			RecipeHasCategoryRepository recipeHasCategoryRepository = new RecipeHasCategoryRepository();
+			CategoryRepository categoryRepository = new CategoryRepository();
+			string categoryName = string.Empty;
+			if (recipe != null)
+			{
+				List<string> categoryNames = new List<string>();
+				var categorys = recipeHasCategoryRepository.GetCategoryByRecipeId(recipe.RecipeId);
+				if ( categorys.Count > 0) {
+					foreach ( var category in categorys ) {
+						if ( categoryNames.Count() != 0)
+						{
+							var flag = true;
+							foreach (var ca in categoryNames )
+							{
+								if (ca.Equals(categoryRepository.getInfCategory(category.CategoryId).Title))
+								{
+                                    flag = false;
+                                    break;
+                                }
+								
+							}
+							if(flag)
+							{
+                                categoryNames.Add(categoryRepository.getInfCategory(category.CategoryId).Title);
+                            }
+						} else
+						{
+                            categoryNames.Add(categoryRepository.getInfCategory(category.CategoryId).Title);
+                        }
+						
+					}
+
+				}
+				categoryName = string.Join(", ", categoryNames);
+			}
+			return categoryName;
+		}
 
     }
 }

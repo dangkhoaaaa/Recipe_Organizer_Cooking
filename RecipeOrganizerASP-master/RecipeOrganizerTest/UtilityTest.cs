@@ -151,31 +151,76 @@ namespace RecipeOrganizerTest
             // Assert
             Assert.AreEqual(expectedMessage, result);
         }
+
+        //Test check time is today calculate function
+        //Test case #1: Check user last login to Recipe Organizer app
+        //Procedure: 
+        //  1. User send a contact
+        //  2. Given the time to MyToys.checkTimeIsToday
+        //  3. Execute MyToys.checkTimeIsToday
+        //  4. Return true/false
+        //Expected value
+        //      Given DateTime.Now must be return true
+        //      Expected value = true
+        [Test, Category("TimeIsTodayTest")]
+        // attribute indicates a method is a test method.
+        public void TimeIsTodayNowTest_ShouldReturnTrue()
+        {
+            //Arrange
+            const bool expected = true;
+
+            //Act
+            var result = MyToys.checkTimeIsToday(DateTime.Now);
+
+            //Assert
+            Assert.AreEqual(expected, result);
+        }
+
+        //Test check time is today calculate function
+        //Test case #2: Check user last login to Recipe Organizer app
+        //Procedure: 
+        //  1. User send a contact
+        //  2. Given the time to MyToys.checkTimeIsToday
+        //  3. Execute MyToys.checkTimeIsToday
+        //  4. Return true/false
+        //Expected value
+        //      Given the last 7 days must be return false
+        //      Expected value = false
+        [Test, Category("TimeIsTodayTest")]
+        // attribute indicates a method is a test method.
+        public void TimeIsTodayLast7DaysTest_ShouldReturnFalse()
+        {
+            //Arrange
+            const bool expected = false;
+
+            //Act
+            var result = MyToys.checkTimeIsToday(DateTime.Now.AddDays(-7));
+
+            //Assert
+            Assert.AreEqual(expected, result);
+        }
     }
-    
 
-
-
-    //[TestFixture] 
+    //[TestFixture]
     ////[Parallelizable(ParallelScope.All)] // Apply Parallelizable attribute at the fixture level
     //public class TestParallel1
     //{
-    //	[Test]
-    //	public void TestSleep1()
-    //	{
-    //		Thread.Sleep(3000);
-    //	}
+    //    [Test, Category("ParallelTest")]
+    //    public void TestSleep1()
+    //    {
+    //        Thread.Sleep(3000);
+    //    }
     //}
 
-    //[TestFixture] 
+    //[TestFixture]
     ////[Parallelizable(ParallelScope.All)] // Apply Parallelizable attribute at the fixture level
     //public class TestParallel2
     //{
-    //	[Test]
-    //	public void TestSleep2()
-    //	{
-    //		Thread.Sleep(3000);
-    //	}
+    //    [Test, Category("ParallelTest")]
+    //    public void TestSleep2()
+    //    {
+    //        Thread.Sleep(3000);
+    //    }
     //}
 
 }

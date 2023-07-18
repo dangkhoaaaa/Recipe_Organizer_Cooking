@@ -12,14 +12,7 @@
     <title>@ViewData["Title"] - RecipeOrganizer</title>
     <link href="~/admin/dist/css/style.css" rel="stylesheet">
     <!-- This page CSS -->
-    <link href="~/admin/assets/extra-libs/footable/css/footable.bootstrap.min.css" rel="stylesheet">
-    <link href="~/admin/dist/css/pages/footable-page.css" rel="stylesheet">
-    
-    <style>
-        input-field > label {
-            color:black;
-        }
-    </style>
+    <link href="~/admin/dist/js/pages/simple-datatables/style.css" rel="stylesheet">
 </head>
 <body style="color: rgba(0, 0, 0, 0.87);">
     <div class="main-wrapper" id="main-wrapper">
@@ -143,7 +136,17 @@
             if (tdElements[i].innerHTML.trim() != "")
             tdElements[i].textContent = formattedDate; // Update the content of each <td> with the formatted date
         }
+
+        var time = new Date(); // Get the current date and time
+        var formattedTime = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Format the time
+
+        var tdElements = document.getElementsByClassName("timeElement"); // Display the formatted time
+        for (var i = 0; i < tdElements.length; i++) {
+            if (tdElements[i].innerHTML.trim() != "")
+                tdElements[i].textContent = formattedTime; // Update the content of each <td> with the formatted time
+        }
     </script>
+
     <!-- ============================================================== -->
     <!-- All Required js -->
     <!-- ============================================================== -->
@@ -183,5 +186,7 @@
     <script src="~/admin/dist/js/pages/c3-chart/bar-pie/c3-pie.js"></script>
     <script src="~/admin/dist/js/pages/c3-chart/bar-pie/c3-stacked-bar.js"></script>
     <script src="~/admin/dist/js/pages/c3-chart/bar-pie/c3-stacked-column.js"></script>
+    <script src="~/admin/dist/js/pages/simple-datatables/simple-datatables.js"></script>
+    <script src="~/admin/dist/js/pages/inbox/email.js"></script>
 </body>
 </html>

@@ -53,8 +53,91 @@
 <!-- ============================================================== -->
 <!-- Container fluid scss in scafholding.scss -->
 <!-- ============================================================== -->
+    <div class="row">
 
+        <div class="col s12 m12 l6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Table with Top Recipe</h5>
 
+                    <!-- Table with stripped rows -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Desciption</th>
+                                <th scope="col">Number Share</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{int i = 0; }
+                            @foreach(var item in Model.Recipes)
+                            {
+                                
+                                i++;
+                                <tr>
+                                    <th scope="row">@i</th>
+                                    <td>@item.Title</td>
+                                    <td>@item.Description.Substring(0,30)...</td>
+                                    <td>@item.NumberShare</td>
+                                    <td>@item.Date</td>
+                                </tr>
+                            }
+                           
+                           
+                            
+                        </tbody>
+                    </table>
+                    <!-- End Table with stripped rows -->
+
+                </div>
+            </div>
+        </div>
+        <!-- column -->
+        <div class="col s12 m12 l6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Status Recipe</h5>
+
+                    <!-- Polar Area Chart -->
+                    <canvas id="polarAreaChart" style="max-height: 400px;"></canvas>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            new Chart(document.querySelector('#polarAreaChart'), {
+                                type: 'polarArea',
+                                data: {
+                                    labels: [
+                                        'Reject',
+                                        'Public',
+                                        'Pendding',
+                                        'Draft',
+                                        'Trash'
+                                    ],
+                                    datasets: [{
+                                        label: 'My First Dataset',
+                                        data: [@Model.recipeReject, @Model.recipePublic, @Model.recipePending, @Model.recipeDrash, @Model.recipeTrash],
+                                        backgroundColor: [
+                                            'rgb(255, 99, 132)',
+                                            'rgb(75, 192, 192)',
+                                            'rgb(255, 205, 86)',
+                                            'rgb(201, 203, 207)',
+                                            'rgb(54, 162, 235)'
+                                        ]
+                                    }]
+                                }
+                            });
+                        });
+                    </script>
+                    <!-- End Polar Area Chart -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- End Website Traffic -->
             
                 <!-- ============================================================== -->
                 <!-- info box -->
@@ -168,166 +251,103 @@
             </div>
 
             <div class="row">
-                <!-- column -->
-                <div class="col s12 m12 l4">
+           
+                <div class="col s12 m12 l6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Olds User</h5>
 
-                    <div class="row">
-                        <div class="col s12">
-                            <div class="card order-widget">
-                                <div class="card-content">
-                                    <div class="row">
-                                        <!-- column -->
-                                        <div class="col s12 m8">
-                                            <h5 class="card-title">Recipe Status</h5>
-                                            <h6 class="card-subtitle m-b-0">Total Earnings of the Month</h6>
-                                            <ul class="order list-inline m-t-20">
-                                                <li class="b-r order-category">
-                                                    <i class="fa fa-circle m-r-5 light-blue-text font-10"></i>
-                                                    <h4 class="font-bold font-20 m-b-0 m-t-5">@Model.recipePublic</h4>
-                                                    <h6 class="font-14 font-light">Success</h6>
-                                                </li>
-                                                <li class="b-r order-category">
-                                                    <i class="fa fa-circle m-r-5 blue-text font-10"></i>
-                                                    <h4 class="font-bold font-20 m-b-0 m-t-5">@Model.recipePending</h4>
-                                                    <h6 class="font-14 font-light">Pending</h6>
-                                                </li>
-                                                <li class="order-category">
-                                                    <i class="fa fa-circle m-r-5 orange-text text-darken-2 font-10"></i>
-                                                    <h4 class="font-bold font-20 m-b-0 m-t-5">@Model.recipeReject</h4>
-                                                    <h6 class="font-14 font-light">Failed</h6>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <!-- column -->
-                                        <div class="col s12 m4">
-                                            <div id="visitor" class="m-t-20 chart-align" style="height:150px; width: 120px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- column -->
-                        <div class="col m12 s12 l6">
-                            <div class="card light-blue">
-                                <div class="card-content">
-                                    <h5 class="card-title white-text">Avage Access</h5>
-                                    <h4 class="font-medium white-text m-b-0"><i class="ti-arrow-up"></i>2 <span class="font-12 white-text op-5">2022  - 2023</span></h4>
-                                    <div class="m-t-20 center-align">
-                                        <div id="revenue"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- column -->
-                        <div class="col m12 s12 l6">
-                            <div class="card blue accent-4">
-                                <div class="card-content">
-                                    <h5 class="card-title white-text">Page Views</h5>
-                                    <div class="d-flex no-block align-items-center">
-                                        <div>
-                                            <h4 class="white-text m-b-0"><i class="ti-arrow-up"></i> @Model.totalView</h4>
-                                        </div>
-                                        <div class="ml-auto">
-                                            <ul class="m-b-0">
-                                                <li class="white-text font-12"><i class="fa fa-circle m-r-5 white-text font-12 op-3"></i> Visit </li>
-                                                <li class="white-text font-12"><i class="fa fa-circle m-r-5 white-text text-accent-4 font-12"></i> Page Views </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="m-t-20" id="views"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Bar Chart -->
+                    <canvas id="barChart" style="max-height: 400px;"></canvas>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            new Chart(document.querySelector('#barChart'), {
+                                type: 'bar',
+                                data: {
+                                    labels: ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '60+'],
+                                    datasets: [{
+                                        label: 'Bar Chart',
+                                        data: [@Model.OldUser1_10, @Model.OldUser10_20
+                                                                , @Model.OldUser20_30, @Model.OldUser30_40,
+                        @Model.OldUser40_50, @Model.OldUser50_60,
+                        @Model.OldUser60_200],
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132, 0.2)',
+                                            'rgba(255, 159, 64, 0.2)',
+                                            'rgba(255, 205, 86, 0.2)',
+                                            'rgba(75, 192, 192, 0.2)',
+                                            'rgba(54, 162, 235, 0.2)',
+                                            'rgba(153, 102, 255, 0.2)',
+                                            'rgba(201, 203, 207, 0.2)'
+                                        ],
+                                        borderColor: [
+                                            'rgb(255, 99, 132)',
+                                            'rgb(255, 159, 64)',
+                                            'rgb(255, 205, 86)',
+                                            'rgb(75, 192, 192)',
+                                            'rgb(54, 162, 235)',
+                                            'rgb(153, 102, 255)',
+                                            'rgb(201, 203, 207)'
+                                        ],
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        });
+                    </script>
+                    <!-- End Bar CHart -->
 
-
-
-                </div>
-                <!-- column -->
-                <div class="col s12 m12 l4">
-                    <div class="card sticky-action">
-                        <div class="card-content">
-                            <h5 class="card-title activator">Device Visit<i class="material-icons right">more_vert</i></h5>
-                            <div id="visitor" style="height:267px; width:100%;" class="m-t-20"></div>
-                            <!-- row -->-
-                            <div class="row m-t-30 m-b-20">
-                                <!-- column -->
-                                <div class="col s4 b-r left-align">
-                                    <h5 class="m-b-0 font-medium">60%<small><i class="ti-arrow-up green-text"></i></small></h5>Facebook
-                                </div>
-                                <!-- column -->
-                                <div class="col s4 b-r center-align">
-                                    <h5 class="m-b-0 font-medium">28%<small><i class="ti-arrow-down red-text"></i></small></h5>Google
-                                </div>
-                                <!-- column -->
-                                <div class="col s4 right-align">
-                                    <h5 class="m-b-0 font-medium">12%<small><i class="ti-arrow-up green-text"></i></small></h5>Account
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title grey-text text-darken-4">Top Visits Pages<i class="material-icons right">close</i></span>
-                            <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                            <div class="collection collection2 m-t-10 ">
-                                <a href="#!" class="collection-item "><span class="badge">100</span>/templates/matrix-admin/</a>
-                                <a href="#!" class="collection-item"><span class="new badge">400</span>/panel/home.asp</a>
-                                <a href="#!" class="collection-item">/demos/admin-t...e/index2.html</a>
-                                <a href="#!" class="collection-item"><span class="badge">104</span>/templates/adminwrap-lite/</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- column -->
-                <div class="col s12 m12 l4">
-                    <div class="card">
-                        <div class="card-content">
-                            <h5 class="card-title">Top Recipe Liked</h5>
-                            <div id="visitfromworld" style="width:100%; height:232px"></div>
-                            <!-- row -->
-                            <div class="row m-b-10">
-                                <div class="col s5 right-align" name="india" >@Model.Recipes[0].Title</div>
-                                <div class="col s5 left-align">
-                                    <div class="progress white">
-                                        <div class="determinate blue accent-4" style="width: 90%"></div>
-                                    </div>
-                                </div>
-                        <div class="col s2 right-align">@Model.Recipes[0].NumberShare</div>
-                            </div>
-                            <!-- row -->
-                            <div class="row m-b-10">
-                        <div class="col s5 right-align">@Model.Recipes[1].Title</div>
-                                <div class="col s5 left-align">
-                                    <div class="progress white">
-                                        <div class="determinate light-blue" style="width: 70%"></div>
-                                    </div>
-                                </div>
-                        <div class="col s2 right-align">@Model.Recipes[1].NumberShare</div>
-                            </div>
-                            <!-- row -->
-                            <div class="row m-b-10">
-                        <div class="col s5 right-align">@Model.Recipes[2].Title</div>
-                                <div class="col s5 left-align">
-                                    <div class="progress white">
-                                        <div class="determinate purple lighten-2 accent-4" style="width: 50%"></div>
-                                    </div>
-                                </div>
-                        <div class="col s2 right-align">@Model.Recipes[2].NumberShare</div>
-                            </div>
-                            <!-- row -->
-                            <div class="row">
-                        <div class="col s5 right-align">@Model.Recipes[3].Title</div>
-                                <div class="col s5 left-align">
-                                    <div class="progress white">
-                                        <div class="determinate orange accent-4" style="width:30%"></div>
-                                    </div>
-                                </div>
-                        <div class="col s2 right-align">@Model.Recipes[3].NumberShare</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
+                </div>
+                <!-- column -->
+                <div class="col s12 m12 l6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Recipe on Month</h5>
 
+                    <!-- Line Chart -->
+                    <canvas id="lineChart" style="max-height: 400px;"></canvas>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            new Chart(document.querySelector('#lineChart'), {
+                                type: 'line',
+                                data: {
+                                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                                    datasets: [{
+                                        label: 'Line Chart',
+                                        data: [@Model.NumberRecipeofMonth1, @Model.NumberRecipeofMonth2
+                                                                                        , @Model.NumberRecipeofMonth3, @Model.NumberRecipeofMonth4,
+                        @Model.NumberRecipeofMonth5, @Model.NumberRecipeofMonth6,
+                        @Model.NumberRecipeofMonth7],
+                                        fill: false,
+                                        borderColor: 'rgb(75, 192, 192)',
+                                        tension: 0.1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        });
+                    </script>
+                    <!-- End Line CHart -->
+
+                </div>
+            </div>
+            </div>
+            </div>
 
 <!-- ============================================================== -->
 <!-- All Required js -->
@@ -357,6 +377,8 @@
     <script src="../Areas/Admin/Views/DashBoard/assets/libs/chart.js/dist/Chart.min.js"></script>
     <script src="../Areas/Admin/Views/DashBoard/dist/js/pages/dashboards/dashboard2.js"></script>
     <script src="../Areas/Admin/Views/DashBoard/assets/extra-libs/sparkline/sparkline.js"></script>
+    <script src="~/admin/dist/js/pages/chart.js/chart.umd.js"></script>
+    <script src="~/admin/dist/js/pages/echartss/echarts.min.js"></script>
     <script >
         $(function () {
             "use strict";
@@ -499,6 +521,18 @@
         });
 
     </script>
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/chart.js/chart.umd.js"></script>
+    <script src="assets/vendor/echarts/echarts.min.js"></script>
+    <script src="assets/vendor/quill/quill.min.js"></script>
+    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
       <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://unpkg.com/c3/c3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>

@@ -108,15 +108,104 @@
                 <div class="row">
                     <div class="col-lg-5">
                         <form method="get" action="/Plan/NewWeek/">
-                            <label for="week" class="title">Select a week:</label>
-                            <input type="week" id="week" name="week" value=@ViewBag.week class="">
-                            <input type="submit" value="Submit" class="btn border-2 border-radius-10 text-red">
+                            <label for="week">Select a week:</label>
+                            <input type="week" id="week" name="week" value=@ViewBag.week>
+                            <input type="submit" value="Submit">
                         </form>
 
                     </div>
 
-                    <div class="col-lg-7">
-                        <a href="/Plan/Recommend/?week=@ViewBag.week" class="btn box-shadow border-2 border-radius-30 text-red width-140px">Recommend</a>
+                    <div class="col-lg-5">
+                        @* <a href="/Plan/Recommend/?week=@ViewBag.week" class="btn box-shadow border-2 border-radius-30 text-red width-140px">Recommend</a> *@
+                        <button id="recommendBtn" class="btn box-shadow border-2 border-radius-30 text-red width-140px ">Recommend</button>
+
+                        @* <div id="popup" class="modal fade" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form id="popupForm" method="get" action="/Plan/Recommend/">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Select Vegetarian Days</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>You can choose or not.</p> <br />
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="days[]" value="1"> Mon
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="days[]" value="4"> Tue
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="days[]" value="7"> Wed
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="days[]" value="10"> Thu
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="days[]" value="13"> Fri
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="days[]" value="16"> Sat
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="days[]" value="19"> Sun
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="checkboxAll"> All
+                                            </label>
+                                            <input type="hidden" name="week" value="@ViewBag.week">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> *@
+                        <div id="popup" class="modal fade" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form id="popupForm" method="get" action="/Plan/Recommend/">
+                                        <div class="modal-header text-center background-main-color text-white">
+                                            <h4 class="modal-title">Select Vegetarian Days</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h5 style="color: #EE3233">You can choose or not.</h5> <br />
+                                            <div class="checkbox-container text-center font-weight-bold form-row align-items-center">
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" name="days[]" value="1"> Mon
+                                                </label>
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" name="days[]" value="4"> Tue
+                                                </label>
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" name="days[]" value="7"> Wed
+                                                </label>
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" name="days[]" value="10"> Thu
+                                                </label>
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" name="days[]" value="13"> Fri
+                                                </label>
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" name="days[]" value="16"> Sat
+                                                </label>
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" name="days[]" value="19"> Sun
+                                                </label>
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" id="checkboxAll"> All
+                                                </label>
+                                            </div>
+                                            <input type="hidden" name="week" value="@ViewBag.week">
+                                        </div>
+                                        <div class="modal-footer text-center">
+                                            <button type="submit" class="btn btn-primary background-main-color text-white">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                                    
                         <a href="/Plan/SavePlan/?week=@ViewBag.week"
                            class="btn box-shadow border-radius-30 background-main-color text-white width-140px">Save</a>
                         <a href="/Plan/PrintPlan" target="_blank" class="btn box-shadow border-2 border-radius-30 text-red width-140px">Print</a>
@@ -125,17 +214,17 @@
                 </div>
                 <hr>
                 <div class="text-center">
-                    <table class="text-center " style="width:100%">
+                    <table class="text-center table border-radius-30" style="width:100%; background-color:  #f44336; border-style: hidden">
                         <tr>
-                            <th>Session/Day</th>
+                            <th style="color: #CEEBFB">Session/Day</th>
 
-                            <th>Monday</th>
-                            <th>Tuesday</th>
-                            <th>Wednesday</th>
-                            <th>Thursday</th>
-                            <th>Friday</th>
-                            <th>Saturday</th>
-                            <th>Sunday</th>
+                            <th style="color:  #CEEBFB">Monday</th>
+                            <th style="color:  #CEEBFB">Tuesday</th>
+                            <th style="color:  #CEEBFB">Wednesday</th>
+                            <th style="color:  #CEEBFB">Thursday</th>
+                            <th style="color:  #CEEBFB">Friday</th>
+                            <th style="color:  #CEEBFB">Saturday</th>
+                            <th style="color:  #CEEBFB">Sunday</th>
                         </tr>
 
 
@@ -193,8 +282,8 @@
                             int count = 0;
                             for (int i = 1; i <= 3; i++)
                             {
-                                <tr class="border-top-3">
-                                    <td class="text-center font-weight-bold" width="140px">
+                                <tr class="border-top-3" style="@((i % 2 == 0) ? "background:   #66A7C5" : "background:    #CEEBFB")">
+                                    <td class="text-center font-weight-bold" width="140px" style="color:   #6C7476">
                                         @{
                                             string session = "";
                                             @switch (i)
@@ -232,11 +321,18 @@
                                                     {
                                                         foreach (var recipe in item.Recipes)
                                                         {
-                                                            
+
+                                                            // <a href="/Recipe/RecipeDetail/?id=@recipe.RecipeId" target="_blank" title="@recipe.Title" >
+                                                            //     <img class="my-1 p-1 rounded-6" style=" max-width: 100px; height: 95px" src="@recipe.Image" alt="@recipe.Title" data-toggle="tooltip" data-placement="top" data-html="true" data-animation="true" title="<img src='@recipe.Image' alt='Recipe Image' style='max-width: 100px; height: 95px'><h6>@recipe.Title</h6><p>@recipe.AvgRate</p>">
+                                                            // </a>
+
+
+                                                            RecipeRepository recipeRepository = new RecipeRepository();
                                                             <a href="/Recipe/RecipeDetail/?id=@recipe.RecipeId" target="_blank">
-                                                                <img class="my-1 p-1 rounded-6" style=" max-width: 100px; height: 95px" src="@recipe.Image" alt="@recipe.Title" title="@recipe.Title">
+                                                                <img class="my-1 p-1 rounded-6" style="max-width: 100px; height: 95px" src="@recipe.Image" alt="@recipe.Title" data-toggle="tooltip" data-placement="top" data-html="true" title="Name: @recipe.Title. Category: @recipeRepository.ToStringCategory(recipe)">
                                                             </a>
-                                                            <button type="button" style="color : #bc5836;float: initial;" class="close btn btn-light " aria-label="Close" onclick="window.location.href='/Plan/RemoveFromCart/?slotNow=@(3*j+i)&recipeID=@recipe.RecipeId&week=@ViewBag.week'">
+
+                                                            <button type="button" style="color: #EE3233; float: initial;" class="close btn btn-light " aria-label="Close" onclick="window.location.href='/Plan/RemoveFromCart/?slotNow=@(3*j+i)&recipeID=@recipe.RecipeId&week=@ViewBag.week'">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                             //<a href="/Plan/RemoveFromCart/?slotNow=@(3 * j + i)&recipeID=@recipe.RecipeId&week=@ViewBag.week">X</a>
@@ -258,7 +354,7 @@
                                             }
                                             @if (count < 5)
                                             {
-                                                <a href="/Plan/ListRecipe/?slotNow=@(3*j+i)&week=@ViewBag.week"><i class="fas fa-plus"></i></a>
+                                                <a href="/Plan/ListRecipe/?slotNow=@(3*j+i)&week=@ViewBag.week"><i class="fas fa-plus" style="color: #EE3233; float: initial;"></i></a>
 
                                                 
                                             }
@@ -271,6 +367,18 @@
                             }
                         }
                     </table>
+                    @* <script>
+                        $(document).ready(function () {
+                            $('[data-toggle="tooltip"]').tooltip();
+                        });
+                    </script> *@
+                    <script>
+                        $(document).ready(function () {
+                            $('[data-toggle="tooltip"]').tooltip({
+                                container: 'body'
+                            });
+                        });
+                    </script>
                 </div>
                 
             </div>
@@ -366,7 +474,43 @@
                 <div class="margin-bottom-30px">
                 </div>
             </div>
+            <!--Js popup recommemnd  -->
+            <script>
+                $(document).ready(function () {
+                    $("#recommendBtn").click(function () {
+                        $("#popup").modal("show");
+                    });
 
+                    $("#checkboxAll").change(function () {
+                        var isCheckedAll = $(this).is(":checked");
+
+                        $("input[name='days[]']").prop("checked", isCheckedAll);
+                    });
+
+                    $("#popupForm").submit(function (e) {
+                        e.preventDefault(); // Prevent form submission
+
+                        var isCheckedAll = $("#checkboxAll").is(":checked");
+                        var checkedDays = [];
+
+                        if (isCheckedAll) {
+                            checkedDays.push("all");
+                        } else {
+                            $("input[name='days[]']:checked").each(function () {
+                                checkedDays.push($(this).val());
+                            });
+                        }
+
+                        var week = "@ViewBag.week"; // Replace with the appropriate week value from Razor
+
+                        var redirectUrl = "/Plan/Recommend/?week=" + encodeURIComponent(week) + "&days=" + checkedDays.join(",");
+
+                        window.location.href = redirectUrl;
+                    });
+                });
+
+            </script>
+            
         </div>
 
     </div>
