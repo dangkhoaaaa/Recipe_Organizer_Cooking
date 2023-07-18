@@ -17,8 +17,8 @@ namespace RecipeOrganizerTest
                 driver.Url = "https://localhost:7186/login";
 
                 //Input username and password
-                string UserName = "creep2404";
-                string Password = "Cong123";
+                string UserName = "trammm";
+                string Password = "Ab12345";
 
                 driver.FindElement(By.Id("txtUserNameOrEmail")).SendKeys(UserName);
                 driver.FindElement(By.Id("txtPassword")).SendKeys(Password);
@@ -56,7 +56,7 @@ namespace RecipeOrganizerTest
                 driver.Url = "https://localhost:7186/login";
 
                 //Input username and password
-                string UserName = "creep2404";
+                string UserName = "trammm";
                 string Password = "eeeeeeeeee";
 
                 driver.FindElement(By.Id("txtUserNameOrEmail")).SendKeys(UserName);
