@@ -194,6 +194,31 @@ namespace Services.Repository
 			}
 		}
 
+		public void DeleteRecipe(int recipeId)
+		{
+			var recipe = _dbSet.FirstOrDefault(r => r.RecipeId == recipeId);
+			if (recipe != null)
+			{
+				var metadata = _context.MetaData.Where(md => md.RecipeId == recipeId);
+				_context.MetaData.RemoveRange(metadata);
+
+				var ingredients = _context.Ingredients.Where(i => i.RecipeId == recipeId);
+				_context.Ingredients.RemoveRange(ingredients);
+
+				var directions = _context.Directions.Where(d => d.RecipeId == recipeId);
+				_context.Directions.RemoveRange(directions);
+
+				var recipeHasTags = _context.RecipeHasTags.Where(rht => rht.RecipeId == recipeId);
+				_context.RecipeHasTags.RemoveRange(recipeHasTags);
+
+				var recipeHasCategories = _context.RecipeHasCategories.Where(rhc => rhc.RecipeId == recipeId);
+				_context.RecipeHasCategories.RemoveRange(recipeHasCategories);
+
+				_dbSet.Remove(recipe);
+				_context.SaveChanges();
+			}
+		}
+
 		public List<Recipe> SearchAllTitleWithFilter(string filter, string title)
 		{
 			switch (filter)
