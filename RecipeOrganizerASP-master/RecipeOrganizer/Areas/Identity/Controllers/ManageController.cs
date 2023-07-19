@@ -470,7 +470,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         {
             if (files == null || files.Count == 0)
             {
-                return BadRequest("No files selected.");
+                return RedirectToAction(nameof(Index), "Manage");
             }
             
             var imageLinkTask = _fireBaseService.UploadImageSingle(files);

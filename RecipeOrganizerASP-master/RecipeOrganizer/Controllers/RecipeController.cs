@@ -327,6 +327,21 @@ namespace RecipeOrganizer.Controllers
 			return RedirectToAction("AccessDenied", "Recipe");
 		}
 
+		public async Task<IActionResult> DeleteRecipe(int id)
+		{
+			var user = await _userManager.GetUserAsync(User);
+			if (user != null)
+			{
+				Recipe? recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
+				if (recipe != null)
+				{
+					_recipeRepository.DeleteRecipe(id);
+					return RedirectToAction("UserRecipeList", "User");
+				}
+			}
+			return RedirectToAction("AccessDenied", "Recipe");
+		}
+		
 		private RecipeData ConvertToRecipeData(Recipe recipe)
 		{
 			RecipeData data = new RecipeData();

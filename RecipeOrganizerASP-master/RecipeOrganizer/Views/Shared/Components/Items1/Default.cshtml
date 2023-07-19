@@ -82,7 +82,7 @@
 							</div>
 							<hr>
 							<div class="row no-gutters">
-								<div class="col-4 text-left">
+								<div class="col-6 text-left">
 									<form method="get" action="/Recipe/ToggleCollection?recipeId=@item.RecipeId">
 										<input type="hidden" name="recipeId" value="@item.RecipeId" />
 										@if (SignInManager.IsSignedIn(User) && ViewBag.CheckCollectionSave != null && ViewBag.CheckCollectionSave[Model.Recipes.IndexOf(item)])
@@ -99,7 +99,7 @@
 										}
 									</form>
 								</div>
-								<div class="col-8 text-right"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="text-orange"><i class="fas fa-share"></i> @item.NumberShare</a></div>
+								<div class="col-6 text-right"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="text-orange"><i class="fas fa-share"></i> @item.NumberShare</a></div>
 							</div>
 						</div>
 						<div class="background-light-black  padding-lr-30px ">
@@ -155,7 +155,7 @@
 							</div>
 							<hr>
 							<div class="row no-gutters">
-								<div class="col-4 text-left">
+								<div class="col-6 text-left">
 									<form method="get" action="/Recipe/ToggleCollection?recipeId=@item.RecipeId">
 										<input type="hidden" name="recipeId" value="@item.RecipeId" />
 										@if (SignInManager.IsSignedIn(User) && ViewBag.CheckCollectionSave != null && ViewBag.CheckCollectionSave[Model.Recipes.IndexOf(item)])
@@ -172,7 +172,7 @@
 										}
 									</form>
 								</div>
-								<div class="col-8 text-right"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="text-orange"><i class="fas fa-share"></i> @item.NumberShare</a></div>
+								<div class="col-6 text-right"><a href="/Recipe/RecipeDetail/?id=@item.RecipeId" class="text-orange"><i class="fas fa-share"></i> @item.NumberShare</a></div>
 							</div>
 						</div>
 						<div class="background-light-black  padding-lr-30px ">

@@ -194,6 +194,31 @@ namespace Services.Repository
 			}
 		}
 
+		public void DeleteRecipe(int recipeId)
+		{
+			var recipe = _dbSet.FirstOrDefault(r => r.RecipeId == recipeId);
+			if (recipe != null)
+			{
+				var metadata = _context.MetaData.Where(md => md.RecipeId == recipeId);
+				_context.MetaData.RemoveRange(metadata);
+
+				var ingredients = _context.Ingredients.Where(i => i.RecipeId == recipeId);
+				_context.Ingredients.RemoveRange(ingredients);
+
+				var directions = _context.Directions.Where(d => d.RecipeId == recipeId);
+				_context.Directions.RemoveRange(directions);
+
+				var recipeHasTags = _context.RecipeHasTags.Where(rht => rht.RecipeId == recipeId);
+				_context.RecipeHasTags.RemoveRange(recipeHasTags);
+
+				var recipeHasCategories = _context.RecipeHasCategories.Where(rhc => rhc.RecipeId == recipeId);
+				_context.RecipeHasCategories.RemoveRange(recipeHasCategories);
+
+				_dbSet.Remove(recipe);
+				_context.SaveChanges();
+			}
+		}
+
 		public List<Recipe> SearchAllTitleWithFilter(string filter, string title)
 		{
 			switch (filter)
@@ -213,7 +238,27 @@ namespace Services.Repository
 
 		}
 
-		public List<Recipe> SearchAllTitleWithFilterandCategory(string filter, string title, int categoryID)
+        //Support for meal plan
+        public List<Recipe> SearchAllWithFilter(string filter)
+        {
+            switch (filter)
+            {
+                case "1":
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderByDescending(r => r.NumberShare).ToList();
+                case "2":
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderBy(r => r.Date).ToList();
+                case "3":
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderBy(r => r.Title).ToList();
+                case "4":
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderBy(r => r.RecipeId).ToList();
+                default:
+                    return _dbSet.Where(r => r.Status.Equals("public")).OrderBy(r => r.Title).ToList();
+
+            }
+
+        }
+
+        public List<Recipe> SearchAllTitleWithFilterandCategory(string filter, string title, int categoryID)
 		{
 			List<Recipe> listmapCategory = new List<Recipe>();
 			var query = from rc in _dbSet1
