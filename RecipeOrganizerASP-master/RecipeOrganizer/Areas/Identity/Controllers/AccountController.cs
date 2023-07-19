@@ -905,7 +905,7 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         {
             //if (!ModelState.IsValid)
             //{
-            //	return Page();
+            //    return View("AccountNotConfirm");
             //}
 
             var user = await _userManager.FindByEmailAsync(model.Email);

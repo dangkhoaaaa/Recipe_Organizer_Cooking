@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Services.Repository
 {
-    public class DashBroadRepository : RepositoryBase<Recipe>
+    public class DashboardRepository : RepositoryBase<Recipe>
     {
 
         Recipe_OrganizerContext _context;
@@ -20,7 +20,7 @@ namespace Services.Repository
         public DbSet<Recipe> _dbSet;
         protected DbSet<AppUser> _dbSetUser;
 
-        public DashBroadRepository()
+        public DashboardRepository()
         {
             _context = new Recipe_OrganizerContext();
             _dbSet = _context.Set<Recipe>();
@@ -39,7 +39,7 @@ namespace Services.Repository
             {
                 foreach (var item in listRecipe)
                 {
-                   
+
                     if (item.Status.Equals("pending"))
                     {
                         count++;
@@ -126,7 +126,7 @@ namespace Services.Repository
         public int TotalAccount()
         {
             int count = 0;
-           count =  _userRepository.GetAll().Count();
+            count = _userRepository.GetAll().Count();
             return count;
         }
         public int TotalRecipe()
@@ -158,7 +158,7 @@ namespace Services.Repository
             {
                 foreach (var item in listRecipe)
                 {
-                   count+= item.NumberShare;
+                    count += item.NumberShare;
                 }
             }
             return count;
@@ -166,7 +166,7 @@ namespace Services.Repository
 
         public int Top1Category()
         {
-            int count =0;
+            int count = 0;
             List<Recipe> listRecipe = _recipeRepository.GetAll();
             List<Recipe> pendingRecipes = new List<Recipe>();
             if (listRecipe != null)
@@ -184,15 +184,15 @@ namespace Services.Repository
             int count = 0;
             List<Recipe> listRecipe = _recipeRepository.GetAll();
             listRecipe = listRecipe.OrderByDescending(r => r.NumberShare).Take(5).ToList();
-          
+
             return listRecipe;
         }
 
-        public int NumberRecipeTime(int month , int year)
+        public int NumberRecipeTime(int month, int year)
         {
             List<Recipe> listRecipe = _recipeRepository.GetAll();
             listRecipe = listRecipe.Where(r => r.Date.Year == year && r.Date.Month == month).ToList();
-          
+
             int num = listRecipe.Count();
             return num;
         }
@@ -210,5 +210,6 @@ namespace Services.Repository
             int num = listUser.Count();
             return num;
         }
+
     }
 }

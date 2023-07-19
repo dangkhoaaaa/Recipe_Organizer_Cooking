@@ -12,21 +12,21 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
     [Authorize(Roles = RoleName.Administrator)]
     [Area("Admin")]
     [Route("/DashBoard/[action]")]
-    public class DashBoardController : Controller
+    public class DashboardController : Controller
     {
 
         private readonly CategoryRepository _categoryRepository;
         private readonly Parent_CategoryRepository _parentCategoryRepository;
         private readonly RecipeHasCategoryRepository _recipeHasCategory;
-        private readonly DashBroadRepository _dashBroadRepository;
+        private readonly DashboardRepository _dashBroadRepository;
 
-        public DashBoardController(UserManager<AppUser> userManager)
+        public DashboardController(UserManager<AppUser> userManager)
         {
 
             _parentCategoryRepository = new Parent_CategoryRepository();
             _categoryRepository = new CategoryRepository();
             _recipeHasCategory = new RecipeHasCategoryRepository();
-            _dashBroadRepository = new DashBroadRepository();
+            _dashBroadRepository = new DashboardRepository();
             
 
         }

@@ -76,6 +76,7 @@ namespace RecipeOrganizer.Controllers
 			}
 			catch (Exception ex)
 			{
+				Console.Write(ex.ToString());
 				// Handle any exceptions that occur during the API call
 				return View();
 			}

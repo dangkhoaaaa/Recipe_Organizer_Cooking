@@ -284,7 +284,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 		}
 
 		//GET: Admin/UserFeedbacks/?userID={id}
-		public async Task<IActionResult> Contact()
+		public IActionResult Contact()
 		{
             var listContact = _contactRepository.GetAll();
             List<ContactViewModel> model = new List<ContactViewModel>();

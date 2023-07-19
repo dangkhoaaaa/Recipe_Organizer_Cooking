@@ -9,6 +9,7 @@ using RecipeOrganizer.Areas.Data;
 using Services.Models;
 using Services.Models.Authentication;
 using Services.Repository;
+using Services.Services;
 using System.Data;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
@@ -35,7 +36,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         }
 
 
-        public IActionResult Index()
+        public IActionResult Index(int pg = 1)
         {
             var listCategory = _categoryRepository.GetAll();
             var listParentCategory = _parentCategoryRepository.GetAll();
@@ -60,7 +61,20 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 };
                 list.Add(model);
             }
-            return View(list);
+
+			const int pageSize = 10;
+			if (pg < 1)
+				pg = 1;
+			int recsCount = list.Count();
+			var pager = new Pager(recsCount, pg, pageSize);
+			int recSkip = (pg - 1) * pageSize;
+			var data = list.Skip(recSkip).Take(pager.PageSize).ToList();
+
+			pager.AspController = "Category";
+			pager.AspAction = "Index";
+			this.ViewBag.Pager = pager;
+
+			return View(data);
         }
 
         public IActionResult AddCategory()

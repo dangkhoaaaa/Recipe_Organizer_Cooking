@@ -4,6 +4,14 @@
 @{
     ViewData["Title"] = "Admin";
     Layout = "_AdminLayout";
+
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
 }
 
 <div class="col s12">
@@ -44,26 +52,23 @@
             </thead>
             <tbody>
                 @{
-                    int counter = 0;
-                    foreach (var user in Model)
+                    foreach (var category in Model)
                     {
-                        counter += 1;
                         <tr>
-                            <td>@counter</td>
-
-                            <td>@user.title</td>
-                            <td>@user.parent_name</td>
-                            <td>@user.description</td>
+                            <td>@category.category_id</td>
+                            <td>@category.title</td>
+                            <td>@category.parent_name</td>
+                            <td>@category.description</td>
 
                             <td>
                                 <a asp-area="Admin" asp-controller="Category" asp-action="UpdateCategory"
-                                asp-route-id="@user.category_id" asp-route-name="@user.title">
-                                    <i class="material-icons">assignment</i>
-                                    <span > Update</span></a>
+                                   asp-route-id="@category.category_id" asp-route-name="@category.title">
+                                 <i class="material-icons">assignment</i>
+                                 <span > Update</span></a>
                             </td>
                             <td>
                                 <a asp-area="Admin" asp-controller="Category" asp-action="DeleteCategory"
-                                   asp-route-id="@user.category_id">
+                                   asp-route-id="@category.category_id">
                                     <i class="material-icons">assignment</i>
                                     <span> Delete</span>
                                 </a>
@@ -75,6 +80,7 @@
                 }
             </tbody>
     </table>
+    @Html.Partial("_Paging", @pager)
     }
     @*<a href="#add-contact" class="waves-effect waves-light btn modal-trigger m-t-20">Add New Contact</a>
     <div id="add-contact" class="modal">

@@ -1,0 +1,419 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+    ManageNavViewModel ManageNav = new ManageNavViewModel();
+}
+
+
+<style>
+    .notification-dropdown {
+        position: relative;
+        display: inline-block;
+        top: 2px;
+    }
+
+    .notification-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .notification-icon {
+        display: block;
+        width: 24px;
+        height: 24px;
+        background-image: url('notification-icon.png'); /* Replace with your own icon */
+        background-size: cover;
+    }
+
+    .notification-content {
+        position: absolute;
+        top: 160%;
+        right: -255px;
+        width: 300px;
+        max-height: 400px;
+        overflow-y: auto;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        display: none;
+    }
+
+    .notification-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .notification-item {
+        padding: 12px;
+        border-bottom: 1px solid #ccc;
+    }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+    .fa-bell:before {
+        font-size: 22px;
+        color: white;
+    }
+
+    .notification-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+        .notification-info img {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 25%;
+            margin-bottom: 50px;
+        }
+
+    .notification-text {
+        flex: 1;
+    }
+
+    .notification-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: bold;
+        display: inline-block;
+    }
+
+    .notification-status {
+        margin-left: 8px;
+        padding: 2px 6px;
+        font-size: 12px;
+        border-radius: 2px;
+        float: right;
+    }
+
+    .status-pending {
+        background-color: yellow;
+        color: black;
+    }
+
+    .status-public {
+        background-color: green;
+        color: white;
+    }
+
+    .status-rejected {
+        background-color: red;
+        color: white;
+    }
+
+    .notification-message {
+        margin: 8px 0;
+        font-size: 14px;
+    }
+
+    .notification-author,
+    .notification-date {
+        margin: 0;
+        font-size: 12px;
+        color: #777;
+    }
+
+    .notification-author {
+        font-weight: bold;
+    }
+
+    .notification-date {
+        float: right;
+    }
+
+    .readNofitication {
+        background-color: #ffebeb;
+    }
+
+    .unReadNofitication {
+        background-color: white;
+    }
+</style>
+
+@{
+    List<RecipeNotification> listNotification = new List<RecipeNotification>();
+    List<RecipeNotification> readListNotification = new List<RecipeNotification>();
+    ManageNav.FirstName = user.FirstName;
+    NotificationRepository _notificationRepository = new NotificationRepository();
+    listNotification = _notificationRepository.GetNofiticationWithIsReadWithMetada(false).Where(p => p.User.Id == user.Id).ToList();
+    readListNotification = _notificationRepository.GetNofiticationWithIsReadWithMetada(true).Where(p => p.User.Id == user.Id).ToList();
+}
+
+<div class="btn-add-recipe ba-2 box-shadow float-right padding-lr-27px padding-tb-24px" style="">
+    <div class="notification-dropdown">
+        <button class="notification-button">
+            <i class="notification-icon fa fa-bell"></i>
+        </button>
+        <div class="notification-content">
+            <ul class="notification-list">
+                <!-- List of notification items -->
+                @*Notification not more than 5*@
+                @if (listNotification.Count <= 0 || listNotification == null)
+                {
+                    <li class="notification-item" style="color:red;"><strong>No new notification!!</strong></li>
+                }
+                else if (listNotification.Count < 5)
+                {
+                    listNotification = listNotification.OrderBy(p => p.Recipe.Date.Date).ThenBy(p => p.Recipe.Date.TimeOfDay).ToList();
+                    foreach (RecipeNotification notify in listNotification)
+                    {
+                        <li class="notification-item unReadNofitication">
+                            <a href="/Recipe/UsrPendingRecipeNoti/?id=@notify.Recipe.RecipeId&noti=@notify.Notification.Id" class="notification-link">
+                                <div class="notification-info">
+                                    <img src="@notify.Recipe.Image" alt="Notification Image">
+                                    <div class="notification-text">
+                                        @*<div>
+                                <h4 class="notification-title">@notify.recipe.Title</h4>
+                                <span class="notification-status">@notify.recipe.Status</span>
+                                </div>*@
+                                        <h4 class="notification-title">@notify.Recipe.Title</h4>
+                                        <p class="notification-message">@notify.Notification.Message</p>
+                                        <div>
+                                            <span class="notification-author">
+                                                @if (string.IsNullOrEmpty(notify.User.FirstName))
+                                                {
+                                                    if (@notify.User.UserName.Contains("@"))
+                                                    {
+                                                        string username = @notify.User.UserName.Split("@")[0];
+                                                        <span>@username</span>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <span>@notify.User.UserName</span>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (@notify.User.LastName != null)
+                                                    {
+                                                        string fullName = @notify.User.FirstName + " " + @notify.User.LastName;
+                                                        <span>@fullName</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@notify.User.FirstName</span>
+                                                    }
+                                                }
+                                            </span>
+                                            <span class="notification-date">@MyToys.getLastTime(@notify.Notification.Date)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                }
+                //lớn hơn thì chỉ hiện 5 recipe thôi
+                else
+                {
+                    listNotification = listNotification.OrderBy(p => p.Recipe.Date.Date).ThenBy(p => p.Recipe.Date.TimeOfDay).ToList();
+                    @for (int i = 0; i < 5; i++)
+                    {
+                        RecipeNotification notify = listNotification[i];
+                        <li class="notification-item unReadNofitication">
+                            <a href="/Recipe/UsrPendingRecipeNoti/?id=@notify.Recipe.RecipeId&noti=@notify.Notification.Id" class="notification-link">
+                                <div class="notification-info">
+                                    <img src="@notify.Recipe.Image" alt="Notification Image">
+                                    <div class="notification-text">
+                                        @*<div>
+                                <h4 class="notification-title">@notify.recipe.Title</h4>
+                                <span class="notification-status">@notify.recipe.Status</span>
+                                </div>*@
+                                        <h4 class="notification-title">@notify.Recipe.Title</h4>
+                                        <p class="notification-message">@notify.Notification.Message</p>
+                                        <div>
+                                            <span class="notification-author">
+                                                @if (string.IsNullOrEmpty(notify.User.FirstName))
+                                                {
+                                                    if (@notify.User.UserName.Contains("@"))
+                                                    {
+                                                        string username = @notify.User.UserName.Split("@")[0];
+                                                        <span>@username</span>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <span>@notify.User.UserName</span>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (@notify.User.LastName != null)
+                                                    {
+                                                        string fullName = @notify.User.FirstName + " " + @notify.User.LastName;
+                                                        <span>@fullName</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@notify.User.FirstName</span>
+                                                    }
+                                                }
+                                            </span>
+                                            <span class="notification-date">@MyToys.getLastTime(@notify.Notification.Date)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                }
+                <!-- List of Read notification items -->
+                @if (readListNotification.Count == 0)
+                {
+                }
+                else if (readListNotification.Count < 5)
+                {
+                    <li class="notification-item">
+                        <p>Read notification</p>
+                    </li>
+                    readListNotification = readListNotification.OrderBy(p => p.Recipe.Date.Date).ThenBy(p => p.Recipe.Date.TimeOfDay).ToList();
+                    foreach (RecipeNotification notify in readListNotification)
+                    {
+                        <li class="notification-item readNofitication">
+                            <a href="/Recipe/UsrPendingRecipeNoti/?id=@notify.Recipe.RecipeId&noti=@notify.Notification.Id" class="notification-link">
+                                <div class="notification-info">
+                                    <img src="@notify.Recipe.Image" alt="Notification Image">
+                                    <div class="notification-text">
+                                        @*<div>
+                                <h4 class="notification-title">@notify.recipe.Title</h4>
+                                <span class="notification-status">@notify.recipe.Status</span>
+                                </div>*@
+                                        <h4 class="notification-title">@notify.Recipe.Title</h4>
+                                        <p class="notification-message">@notify.Notification.Message</p>
+                                        <div>
+                                            <span class="notification-author">
+                                                @if (string.IsNullOrEmpty(notify.User.FirstName))
+                                                {
+                                                    if (@notify.User.UserName.Contains("@"))
+                                                    {
+                                                        string username = @notify.User.UserName.Split("@")[0];
+                                                        <span>@username</span>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <span>@notify.User.UserName</span>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (@notify.User.LastName != null)
+                                                    {
+                                                        string fullName = @notify.User.FirstName + " " + @notify.User.LastName;
+                                                        <span>@fullName</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@notify.User.FirstName</span>
+                                                    }
+                                                }
+                                            </span>
+                                            <span class="notification-date">@MyToys.getLastTime(@notify.Notification.Date)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                }
+                //lớn hơn thì chỉ hiện 5 recipe thôi
+                else
+                {
+                    <li class="notification-item">
+                        <p>Read notification</p>
+                    </li>
+                    readListNotification = readListNotification.OrderBy(p => p.Recipe.Date.Date).ThenBy(p => p.Recipe.Date.TimeOfDay).ToList();
+                    @for (int i = 0; i < 5; i++)
+                    {
+                        RecipeNotification notify = readListNotification[i];
+                        <li class="notification-item readNofitication">
+                            <a href="/Recipe/UsrPendingRecipeNoti/?id=@notify.Recipe.RecipeId&noti=@notify.Notification.Id" class="notification-link">
+                                <div class="notification-info">
+                                    <img src="@notify.Recipe.Image" alt="Notification Image">
+                                    <div class="notification-text">
+                                        @*<div>
+                                <h4 class="notification-title">@notify.recipe.Title</h4>
+                                <span class="notification-status">@notify.recipe.Status</span>
+                                </div>*@
+                                        <h4 class="notification-title">@notify.Recipe.Title</h4>
+                                        <p class="notification-message">@notify.Notification.Message</p>
+                                        <div>
+                                            <span class="notification-author">
+                                                @if (string.IsNullOrEmpty(notify.User.FirstName))
+                                                {
+                                                    if (@notify.User.UserName.Contains("@"))
+                                                    {
+                                                        string username = @notify.User.UserName.Split("@")[0];
+                                                        <span>@username</span>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <span>@notify.User.UserName</span>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (@notify.User.LastName != null)
+                                                    {
+                                                        string fullName = @notify.User.FirstName + " " + @notify.User.LastName;
+                                                        <span>@fullName</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@notify.User.FirstName</span>
+                                                    }
+                                                }
+                                            </span>
+                                            <span class="notification-date">@MyToys.getLastTime(@notify.Notification.Date)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                }
+                <li class="notification-item">
+                    <a class="center-align" asp-area="Identity" asp-controller="Manage" asp-action="AllNotification"> <strong>Check all notifications</strong></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    const dropdownButton = document.querySelector('.notification-button');
+    const dropdownContent = document.querySelector('.notification-content');
+
+    // Function to check if the clicked target is inside the notification dropdown
+    const isInsideDropdown = (target) => {
+        return dropdownButton.contains(target) || dropdownContent.contains(target);
+    };
+
+    // Event listener for the document click
+    document.addEventListener('click', function (event) {
+        if (!isInsideDropdown(event.target)) {
+            dropdownContent.style.display = 'none';
+        }
+    });
+
+    // Event listener for the dropdown button click
+    dropdownButton.addEventListener('click', function (event) {
+        event.stopPropagation();
+        dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+    });
+
+    
+</script>
+ 

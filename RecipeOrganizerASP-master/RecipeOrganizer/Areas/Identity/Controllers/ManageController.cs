@@ -425,19 +425,45 @@ namespace RecipeOrganizer.Areas.Identity.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProfileAsync(IndexViewModel model)
         {
-            var user = await GetCurrentUserAsync();
+            if (ModelState.IsValid)
+            {
+				var user = await GetCurrentUserAsync();
 
-            
-            user.Birthday = model.profile.Birthday;
-            user.FirstName = model.profile.FirstName;
-            user.LastName = model.profile.LastName;
-            await _userManager.UpdateAsync(user);
 
-            await _signInManager.RefreshSignInAsync(user);
-            TempData["EditSuccess"] = "Update " + user.UserName + " successful";
-            return RedirectToAction(nameof(Index), "Manage");
+				user.Birthday = model.profile.Birthday;
+				user.FirstName = model.profile.FirstName;
+				user.LastName = model.profile.LastName;
+				await _userManager.UpdateAsync(user);
 
-        }
+				await _signInManager.RefreshSignInAsync(user);
+				TempData["EditSuccess"] = "Update " + user.UserName + " successful";
+				return RedirectToAction(nameof(Index), "Manage");
+			}
+            var userd = await GetCurrentUserAsync();
+
+            var data = new IndexViewModel
+            {
+                HasPassword = await _userManager.HasPasswordAsync(userd),
+                //PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
+                //TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
+                Logins = await _userManager.GetLoginsAsync(userd),
+                //BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
+                //AuthenticatorKey = await _userManager.GetAuthenticatorKeyAsync(user),
+                profile = new EditExtraProfileModel()
+                {
+                    Id = userd.Id,
+                    Img = userd.Image,
+                    Username = userd.UserName,
+                    Birthday = userd.Birthday,
+                    FirstName = userd.FirstName,
+                    LastName = userd.LastName,
+                    PhoneNumber = userd.PhoneNumber,
+                }
+            };
+
+            return View(nameof(Index), data);
+
+		}
 
         [HttpPost]
         public async Task<IActionResult> UploadImgAvatar(List<IFormFile> files)

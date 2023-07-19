@@ -6,6 +6,7 @@ using Services.Repository;
 using Services.Data;
 using Microsoft.AspNetCore.Authorization;
 using Services;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace RecipeOrganizer.Controllers
 {
@@ -184,13 +185,14 @@ namespace RecipeOrganizer.Controllers
 			var user = await _userManager.GetUserAsync(User);
 			if (user != null)
 			{
-				Recipe? recipe = _recipeRepository.GetRecipeByAuthor(id, user.Id);
+				Recipe? recipe = _recipeRepository.GetRecipe(id);
 				var notification = _notificationRepository.GetNotification(noti);
 
 				if (recipe != null && notification != null)
 				{
 					_notificationRepository.updateIsRead(notification);
 					RecipeData data = ConvertToRecipeData(recipe);
+					data.RecipeNotiMessage = notification.Message;
 					return View("UsrPendingRecipe", data);
 				}
 			}
@@ -267,6 +269,17 @@ namespace RecipeOrganizer.Controllers
 			}
 
 			return RedirectToAction("RecipeDetail", "Recipe", new { id = recipeId });
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> AddToCollection(int recipeId)
+		{
+			var user = await _userManager.GetUserAsync(User);
+			if (user != null)
+			{
+				_collectionRepository.ToggleCollection(recipeId, user.Id);
+			}
+			return Json(user);
 		}
 
 		public async Task<IActionResult> EditRecipe(int id)
