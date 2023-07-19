@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipeOrganizer", "RecipeOr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{48C427C4-AADB-4DD6-AAFD-27F7AD3A3489}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeOrganizerTest", "RecipeOrganizerTest\RecipeOrganizerTest.csproj", "{3ADB14D3-43A5-44A0-AC51-5E8D8D2B21AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipeOrganizerTest", "RecipeOrganizerTest\RecipeOrganizerTest.csproj", "{3ADB14D3-43A5-44A0-AC51-5E8D8D2B21AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

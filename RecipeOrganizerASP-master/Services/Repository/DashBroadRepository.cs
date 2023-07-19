@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Services.Models;
+using Services.Models.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Services.Repository
 {
-    public class DashBroadRepository : RepositoryBase<Recipe>
+    public class DashboardRepository : RepositoryBase<Recipe>
     {
 
         Recipe_OrganizerContext _context;
@@ -17,7 +18,9 @@ namespace Services.Repository
         FeedbackRepository _feedbackRepository;
         CategoryRepository _categoryRepository;
         public DbSet<Recipe> _dbSet;
-        public DashBroadRepository()
+        protected DbSet<AppUser> _dbSetUser;
+
+        public DashboardRepository()
         {
             _context = new Recipe_OrganizerContext();
             _dbSet = _context.Set<Recipe>();
@@ -25,6 +28,7 @@ namespace Services.Repository
             _userRepository = new UserRepository();
             _feedbackRepository = new FeedbackRepository();
             _categoryRepository = new CategoryRepository();
+            _dbSetUser = _context.Set<AppUser>();
         }
         public int GetRecipebyPending()
         {
@@ -75,6 +79,42 @@ namespace Services.Repository
                 foreach (var item in listRecipe)
                 {
                     if (item.Status.Equals("public"))
+                    {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+
+        public int GetRecipebyDraft()
+        {
+            int count = 0;
+            List<Recipe> listRecipe = _recipeRepository.GetAll();
+            List<Recipe> pendingRecipes = new List<Recipe>();
+            if (listRecipe != null)
+            {
+                foreach (var item in listRecipe)
+                {
+                    if (item.Status.Equals("draft"))
+                    {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+
+        public int GetRecipebyTrash()
+        {
+            int count = 0;
+            List<Recipe> listRecipe = _recipeRepository.GetAll();
+            List<Recipe> pendingRecipes = new List<Recipe>();
+            if (listRecipe != null)
+            {
+                foreach (var item in listRecipe)
+                {
+                    if (item.Status.Equals("trash"))
                     {
                         count++;
                     }
@@ -139,12 +179,35 @@ namespace Services.Repository
             return count;
         }
 
-        public List<Recipe> Top4Recipe()
+        public List<Recipe> Top5Recipe()
         {
             List<Recipe> listRecipe = _recipeRepository.GetAll();
-            listRecipe = listRecipe.OrderByDescending(r => r.NumberShare).ToList();
+            listRecipe = listRecipe.OrderByDescending(r => r.NumberShare).Take(5).ToList();
           
             return listRecipe;
+        }
+
+        public int NumberRecipeTime(int month , int year)
+        {
+            List<Recipe> listRecipe = _recipeRepository.GetAll();
+            listRecipe = listRecipe.Where(r => r.Date.Year == year && r.Date.Month == month).ToList();
+          
+            int num = listRecipe.Count();
+            return num;
+        }
+
+        public int NumberOldUser(int start, int end)
+        {
+            DateTime endDate = DateTime.Today.AddYears(-start);
+            DateTime startDate = DateTime.Today.AddYears(-(end + 1));
+
+            List<AppUser> listUser = _dbSetUser.Where(u => u.Birthday.HasValue &&
+                                                           u.Birthday.Value >= startDate &&
+                                                           u.Birthday.Value <= endDate)
+                                               .ToList();
+
+            int num = listUser.Count();
+            return num;
         }
     }
 }

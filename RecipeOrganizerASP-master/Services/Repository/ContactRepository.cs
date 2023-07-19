@@ -36,7 +36,7 @@ namespace Services.Repository
                 {
                     l.Add(1);
                 }
-                if (contact.Email == null || contact.Email.Length < 1 || contact.Email.Length >= 250 || AppUtilities.IsValidEmail(contact.Email))
+                if (contact.Email == null || contact.Email.Length < 1 || contact.Email.Length >= 250 || !AppUtilities.IsValidEmail(contact.Email))
                 {
                     l.Add(2);
                 }

@@ -106,34 +106,108 @@
             <div class="col-lg-12">
 
                 <div class="row">
-                    <div class="col-lg-7">
-                       @*  <form method="get" action="/Plan/NewWeek/">
+                    <div class="col-lg-5">
+                        <form method="get" action="/Plan/NewWeek/">
                             <label for="week">Select a week:</label>
                             <input type="week" id="week" name="week" value=@ViewBag.week>
-                            <input class="btn box-shadow border-2 border-radius-30 background-main-color text-white width-140px" type="submit" value="Submit">
-                        </form> *@
-                        <form method="get" action="/Plan/NewWeek/">
-                            <div class="form-row align-items-center">
-                                <div class="col-auto">
-                                    <label for="week">Select a week:</label>
-                                </div>
-                                <div class="col-auto">
-                                    <div class="input-group">
-                                        <input type="week" id="week" name="week" class="form-control" value="@ViewBag.week">
-                                        <div class="input-group-append">
-                                            <input class="btn btn-primary background-main-color text-white" type="submit" value="Submit">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <input type="submit" value="Submit">
                         </form>
 
                     </div>
 
                     <div class="col-lg-5">
-                        <a href="/Plan/Recommend/?week=@ViewBag.week" class="btn box-shadow border-2 border-radius-30 text-red width-140px">Recommend</a>
+                        @* <a href="/Plan/Recommend/?week=@ViewBag.week" class="btn box-shadow border-2 border-radius-30 text-red width-140px">Recommend</a> *@
+                        <button id="recommendBtn" class="btn box-shadow border-2 border-radius-30 text-red width-140px ">Recommend</button>
+
+                        @* <div id="popup" class="modal fade" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form id="popupForm" method="get" action="/Plan/Recommend/">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Select Vegetarian Days</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>You can choose or not.</p> <br />
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="days[]" value="1"> Mon
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="days[]" value="4"> Tue
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="days[]" value="7"> Wed
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="days[]" value="10"> Thu
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="days[]" value="13"> Fri
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="days[]" value="16"> Sat
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="days[]" value="19"> Sun
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="checkboxAll"> All
+                                            </label>
+                                            <input type="hidden" name="week" value="@ViewBag.week">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> *@
+                        <div id="popup" class="modal fade" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form id="popupForm" method="get" action="/Plan/Recommend/">
+                                        <div class="modal-header text-center background-main-color text-white">
+                                            <h4 class="modal-title">Select Vegetarian Days</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h5 style="color: #EE3233">You can choose or not.</h5> <br />
+                                            <div class="checkbox-container text-center font-weight-bold form-row align-items-center">
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" name="days[]" value="1"> Mon
+                                                </label>
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" name="days[]" value="4"> Tue
+                                                </label>
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" name="days[]" value="7"> Wed
+                                                </label>
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" name="days[]" value="10"> Thu
+                                                </label>
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" name="days[]" value="13"> Fri
+                                                </label>
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" name="days[]" value="16"> Sat
+                                                </label>
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" name="days[]" value="19"> Sun
+                                                </label>
+                                                <label class="checkbox-inline col-auto">
+                                                    <input type="checkbox" id="checkboxAll"> All
+                                                </label>
+                                            </div>
+                                            <input type="hidden" name="week" value="@ViewBag.week">
+                                        </div>
+                                        <div class="modal-footer text-center">
+                                            <button type="submit" class="btn btn-primary background-main-color text-white">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                                    
                         <a href="/Plan/SavePlan/?week=@ViewBag.week"
-                           class="btn box-shadow border-2 border-radius-30 background-main-color text-white width-140px">Save</a>
+                           class="btn box-shadow border-radius-30 background-main-color text-white width-140px">Save</a>
                         <a href="/Plan/PrintPlan" target="_blank" class="btn box-shadow border-2 border-radius-30 text-red width-140px">Print</a>
 
                     </div>
@@ -400,7 +474,43 @@
                 <div class="margin-bottom-30px">
                 </div>
             </div>
+            <!--Js popup recommemnd  -->
+            <script>
+                $(document).ready(function () {
+                    $("#recommendBtn").click(function () {
+                        $("#popup").modal("show");
+                    });
 
+                    $("#checkboxAll").change(function () {
+                        var isCheckedAll = $(this).is(":checked");
+
+                        $("input[name='days[]']").prop("checked", isCheckedAll);
+                    });
+
+                    $("#popupForm").submit(function (e) {
+                        e.preventDefault(); // Prevent form submission
+
+                        var isCheckedAll = $("#checkboxAll").is(":checked");
+                        var checkedDays = [];
+
+                        if (isCheckedAll) {
+                            checkedDays.push("all");
+                        } else {
+                            $("input[name='days[]']:checked").each(function () {
+                                checkedDays.push($(this).val());
+                            });
+                        }
+
+                        var week = "@ViewBag.week"; // Replace with the appropriate week value from Razor
+
+                        var redirectUrl = "/Plan/Recommend/?week=" + encodeURIComponent(week) + "&days=" + checkedDays.join(",");
+
+                        window.location.href = redirectUrl;
+                    });
+                });
+
+            </script>
+            
         </div>
 
     </div>
