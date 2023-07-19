@@ -164,7 +164,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         }
 
         //HttpGet Recipe/SearchPendingRecipe
-        public async Task<IActionResult> SearchRejectRecipe(string keyword)
+        public IActionResult SearchRejectRecipe(string keyword)
         {
             ViewBag.RecipeKeyword = keyword;
             var model = _recipeRepository.GetRecipesByStatusWithMetadata("rejected");
@@ -172,21 +172,18 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             {
                 ViewBag.NotFind = "";
                 return View("RejectRecipe", model);
-
             }
             var listSearchRecipe = model.Where(p => p.Recipe.Title.Contains(keyword.Trim()) || p.User.UserName.Contains(keyword.Trim())).ToList();
             if (listSearchRecipe.Count == 0)
             {
-
                 ViewBag.NotFind = "No result match the keyword";
                 return View("RejectRecipe", listSearchRecipe);
-
             }
             return View("RejectRecipe", listSearchRecipe);
         }
 
         // GET: /Recipe/RecipeDetails
-        public async Task<IActionResult> RecipeDetails(int recipeID)
+        public IActionResult RecipeDetails(int recipeID)
 		{
 			var model = _recipeRepository.GetRecipesWithID(recipeID);
 			if (model == null)
@@ -199,10 +196,10 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 
 		// GET: /Recipe/RecipeDetails
 		[HttpPost]
-        public async Task<IActionResult> RecipeDetails(int recipeID, string status)
+        public IActionResult RecipeDetails(int recipeID, string status, string message)
 		{
 			_recipeRepository.UpdateApprovalStatus(recipeID, status);
-			sendNotification(recipeID, status);
+			sendNotification(recipeID, status, message);
 			var model = _recipeRepository.GetRecipesWithID(recipeID);
 			model.Medias = _mediaRepository.GetImgsByRecipeId(recipeID);
 			model.Ingredients = _ingredientRepository.GetByRecipeId(recipeID);
@@ -211,10 +208,17 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 			return View(model);
 		}
 
-		public void sendNotification(int recipeID, string status)
+		public void sendNotification(int recipeID, string status, string message)
 		{
-            int notificationId = _notificationRepository.addNotification("Your recipe has been " + status);
-            AppUser user = _userRepository.GetUserByRecipe(recipeID);
+			int notificationId;
+			if (string.IsNullOrEmpty(message))
+			{
+				notificationId = _notificationRepository.addNotification("Your recipe has been " + status);
+			} else
+			{
+				notificationId = _notificationRepository.addNotification(message);
+			}
+			AppUser user = _userRepository.GetUserByRecipe(recipeID);
             Metadata metadata = new Metadata
             {
                 RecipeId = recipeID,
@@ -223,11 +227,6 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             };
             _metadataRepository.Add(metadata);
         }
-
-
-
-
-
 
 		//public List<RecipeViewModel> GetRecipesWithMetadata()
 		//{

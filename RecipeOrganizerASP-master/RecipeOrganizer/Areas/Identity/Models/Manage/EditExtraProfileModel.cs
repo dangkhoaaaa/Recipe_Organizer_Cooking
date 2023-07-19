@@ -1,3 +1,4 @@
+using Services.Utilities;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -25,7 +26,9 @@ namespace RecipeOrganizer.Areas.Identity.Models.ManageViewModels
 
 
         [Display(Name = "Birthday")]
-        public DateTime? Birthday { get; set; }
+		[DataType(DataType.DateTime)]
+		[CustomDateTimeValidation(1900)]
+		public DateTime? Birthday { get; set; }
 
         [Display(Name = "Image")]
         public string? Img { get; set; }

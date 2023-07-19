@@ -30,5 +30,6 @@ namespace Services.Data
 		public bool Collection { get; set; }
 		public string? Author { get; set; }
 		public bool Review { get; set; }
+		public string RecipeNotiMessage { get; set; }
 	}
 }

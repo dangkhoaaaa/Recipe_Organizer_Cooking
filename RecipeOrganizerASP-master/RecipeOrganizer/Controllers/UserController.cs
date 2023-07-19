@@ -68,7 +68,7 @@ namespace RecipeOrganizer.Controllers
 					return View(dataList);
 				}
 			}
-			return View(Index);
+			return View(nameof(Index));
 		}
 
 		public async Task<IActionResult> UserCollectionList()
@@ -101,7 +101,7 @@ namespace RecipeOrganizer.Controllers
 					return View(dataList);
 				}
 			}
-			return View(Index);
+			return View(nameof(Index));
 		}
 
 		[HttpGet]
@@ -147,7 +147,7 @@ namespace RecipeOrganizer.Controllers
                     return View(dataList);
 				}
 			}
-			return View(Index);
+			return View(nameof(Index));
 		}
 	}
 }

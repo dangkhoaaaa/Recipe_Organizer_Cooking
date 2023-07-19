@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Services.Repository
 {
-    public class DashBroadRepository : RepositoryBase<Recipe>
+    public class DashboardRepository : RepositoryBase<Recipe>
     {
 
         Recipe_OrganizerContext _context;
@@ -17,7 +17,7 @@ namespace Services.Repository
         FeedbackRepository _feedbackRepository;
         CategoryRepository _categoryRepository;
         public DbSet<Recipe> _dbSet;
-        public DashBroadRepository()
+        public DashboardRepository()
         {
             _context = new Recipe_OrganizerContext();
             _dbSet = _context.Set<Recipe>();
@@ -146,5 +146,6 @@ namespace Services.Repository
           
             return listRecipe;
         }
+
     }
 }

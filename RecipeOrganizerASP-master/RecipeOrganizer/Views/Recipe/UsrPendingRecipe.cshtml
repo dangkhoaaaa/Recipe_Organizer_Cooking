@@ -14,10 +14,25 @@
 			</ol>
 		</div>
 	</div>
+	
 
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
+				@if (Model.RecipeNotiMessage == null)
+				{
+					
+				} else if (Model.Status == "reject")
+				{
+					<div class="alert alert-danger">
+						<p class="warning-msg"><i class="material-icons"></i>@Model.RecipeNotiMessage </p>
+					</div>
+				} else
+				{
+					<div class="alert alert-success">
+						<p class="warning-msg"><i class="material-icons"></i>@Model.RecipeNotiMessage </p>
+					</div>
+				} 
 				<div class="margin-tb-20px card border-0 box-shadow">
 					<div class="padding-lr-20px padding-tb-20px">
 						<div class="padding-tb-10px text-center">

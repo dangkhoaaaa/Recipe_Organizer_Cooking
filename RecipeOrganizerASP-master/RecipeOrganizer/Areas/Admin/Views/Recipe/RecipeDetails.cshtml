@@ -11,6 +11,13 @@
 @{
 	string avg = Model.Recipe.AvgRate + "%";
 }
+<style>
+	textarea {
+		width: 350px;
+		height: 10rem;
+		background-color: white;
+	}
+</style>
 <div class="rDetail">
 	<div>
 		<h1>@Model.Recipe.Title</h1>
@@ -81,6 +88,10 @@
 				<button type="submit" class="waves-effect waves-light btn red btn-sm">
 					Reject
 				</button>
+					<br/>
+					<label for="message">Message:</label><br>
+					<br/>
+					<textarea id="message" name="message" rows="4" cols="50" required></textarea><br>
 			</form>
 		</div>
 	}
@@ -95,6 +106,10 @@
 				<button type="submit" class="waves-effect waves-light btn  green btn-sm">
 					Approve
 				</button>
+				<br/>
+				<label for="message">Message:</label><br>
+				<br/>
+				<textarea id="message" name="message" rows="4" cols="50" required></textarea><br>
 			</form>
 		</div>
 	}
@@ -106,6 +121,7 @@
 				<input id="status" name="status" type="hidden" value="Public" />
 				<input id="searchValue" name="searchValue" type="hidden" value="@ViewBag.RecipeKeyword" />
 				<input id="recipeID" name="recipeID" type="hidden" value="@Model.Recipe.RecipeId" />
+				<input type="hidden" id="message" name="message">
 				<button type="submit" class="waves-effect waves-light btn green btn-sm">
 					Approve
 				</button>
@@ -117,11 +133,20 @@
 				<input id="status" name="status" type="hidden" value="Rejected" />
 				<input id="searchValue" name="searchValue" type="hidden" value="@ViewBag.RecipeKeyword" />
 				<input id="recipeID" name="recipeID" type="hidden" value="@Model.Recipe.RecipeId" />
+				<input type="hidden" id="message" name="message">
 				<button type="submit" class="waves-effect waves-light btn red btn-sm">
 					Reject
 				</button>
 			</form>
 		</div>
+		<div>
+			<br/>
+			<label for="messageText">Message:</label>
+			<br/>
+			<textarea id="messageText" name="messageText" rows="4" cols="50" required></textarea>
+			<br>
+		</div>
+		
 	} else {
 
 	}
@@ -129,3 +154,16 @@
 	<a href="#" class="reject">Reject</a>*@
 </div>
 
+<script>
+	// Get the textarea element
+	const textarea = document.getElementById("messageText");
+
+	// Get the hidden field element
+	const hiddenField = document.getElementById("message");
+
+	// Add an event listener to the textarea for the "input" event
+	textarea.addEventListener("input", function () {
+		// Update the value of the hidden field with the textarea value
+		hiddenField.value = textarea.value;
+	});
+</script>

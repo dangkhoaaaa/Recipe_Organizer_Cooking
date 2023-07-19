@@ -53,6 +53,7 @@ namespace Services
             }
             catch (Exception ex)
             {
+                Console.Write(ex.ToString());
                 return false;
             }
             return true;
