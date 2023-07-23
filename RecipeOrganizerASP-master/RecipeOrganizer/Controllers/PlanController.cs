@@ -103,7 +103,7 @@ namespace RecipeOrganizer.Controllers
                 {
                     ViewBag.week = week;
                      
-                    Slot = _mealPlaningRepository.showPlan(week, user.Id);
+                   
 
                 }
                 HttpContext.Session.SetJson("cart", Slot);
