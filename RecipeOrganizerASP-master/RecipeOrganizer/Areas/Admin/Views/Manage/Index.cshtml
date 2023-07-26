@@ -23,12 +23,16 @@
         padding: 10px;
    }
 
-   .a-text {
-        color: black;
+    .a-text {
+        color: #f7ff00;
         text-decoration: none;
         font-weight: bold;
         font-size: 15px;
-   }
+    }
+
+    .chip {
+        background-color: #202020;
+    }
 </style>
 @if (TempData["UpdateError"] != null)
 {
@@ -102,7 +106,7 @@
                                             }
                                         </td>
                                         <td>
-                                            <a class="a-text" href="/Admin/UserRecipe/?userID=@user.Member.Id">@user.TotalRecipe</a>
+                                            <a class="a-text" href="/Admin/UserRecipe/?userID=@user.Member.Id"><span>@user.TotalRecipe</span></a>
                                         </td>
                                         <td>
                                             @if (user.ExternalLogin != null){

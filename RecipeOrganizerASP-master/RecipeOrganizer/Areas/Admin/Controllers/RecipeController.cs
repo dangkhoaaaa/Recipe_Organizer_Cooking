@@ -61,7 +61,6 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 			_recipeHasTagRepository = new RecipeHasTagRepository();
             _notificationRepository = new NotificationRepository();
 			_mediaRepository = new MediaRepository();
-
         }
 
 		[HttpGet("/manage/recipe")]
@@ -96,7 +95,8 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 		{
 			ViewBag.RecipeKeyword = keyword;
 			var model = _recipeRepository.GetRecipesWithMetadataOrderByDate();
-			if (keyword == null)
+            model = model.OrderByDescending(p => p.Recipe.Date).ToList();
+            if (keyword == null)
 			{
                     ViewBag.NotFind = "";
 					return View("Index", model);
@@ -105,7 +105,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             var listSearchRecipe = model.Where(p => p.Recipe.Title.Contains(keyword.Trim()) || p.User.UserName.Contains(keyword.Trim())).ToList();
             if (listSearchRecipe.Count == 0)
             {
-
+                listSearchRecipe = listSearchRecipe.OrderByDescending(p => p.Recipe.Date).ToList();
                 ViewBag.NotFind = "No result match the keyword";
                 return View("Index", listSearchRecipe);
 
@@ -117,6 +117,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         public ActionResult PendingRecipe()
         {
             var model = _recipeRepository.GetRecipesByStatusWithMetadata("pending");
+			model = model.OrderByDescending(p => p.Recipe.Date).ToList();
             return View(model);
         }
 
@@ -132,7 +133,9 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 		{
 			ViewBag.RecipeKeyword = keyword;
 			var model = _recipeRepository.GetRecipesByStatusWithMetadata("pending");
-			if (keyword == null)
+            model = model.OrderByDescending(p => p.Recipe.Date).ToList();
+
+            if (keyword == null)
 			{
 				ViewBag.NotFind = "";
 				return View("PendingRecipe", model);
@@ -141,8 +144,8 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 			var listSearchRecipe = model.Where(p => p.Recipe.Title.Contains(keyword.Trim()) || p.User.UserName.Contains(keyword.Trim())).ToList();
 			if (listSearchRecipe.Count == 0)
 			{
-
-				ViewBag.NotFind = "No result match the keyword";
+                listSearchRecipe = listSearchRecipe.OrderByDescending(p => p.Recipe.Date).ToList();
+                ViewBag.NotFind = "No result match the keyword";
 				return View("PendingRecipe", listSearchRecipe);
 
 			}
@@ -153,6 +156,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 		public ActionResult RejectRecipe()
         {
             var model = _recipeRepository.GetRecipesByStatusWithMetadata("rejected");
+            model = model.OrderByDescending(p => p.Recipe.Date).ToList();
             return View(model);
         }
 
@@ -168,15 +172,18 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         {
             ViewBag.RecipeKeyword = keyword;
             var model = _recipeRepository.GetRecipesByStatusWithMetadata("rejected");
+            model = model.OrderByDescending(p => p.Recipe.Date).ToList();
             if (keyword == null)
             {
                 ViewBag.NotFind = "";
                 return View("RejectRecipe", model);
             }
             var listSearchRecipe = model.Where(p => p.Recipe.Title.Contains(keyword.Trim()) || p.User.UserName.Contains(keyword.Trim())).ToList();
+            ViewBag.NotFind = "No result match the keyword";
+
             if (listSearchRecipe.Count == 0)
             {
-                ViewBag.NotFind = "No result match the keyword";
+				listSearchRecipe = listSearchRecipe.OrderByDescending(p => p.Recipe.Date).ToList();
                 return View("RejectRecipe", listSearchRecipe);
             }
             return View("RejectRecipe", listSearchRecipe);
