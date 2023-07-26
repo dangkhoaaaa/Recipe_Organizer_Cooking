@@ -261,7 +261,7 @@ namespace Services.Repository
 
             if (listVegatarian.Count < 21)
             {
-               addMoreRecipes = AddMoreRecipesToList(21 -  listVegatarian.Count);
+               addMoreRecipes = AddMoreRecipesToList(21 -  selectedDays.Count() * 3);
                 GetRandomIds(addMoreRecipes, 21 - listVegatarian.Count());
             }
              
