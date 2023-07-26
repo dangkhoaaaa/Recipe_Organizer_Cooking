@@ -6,6 +6,18 @@
     ViewData["Title"] = "Pending recipe";
     Layout = "_AdminLayout";
 }
+<style>
+    .a-text {
+        color: #f7ff00;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .chip {
+        background-color: #202020;
+    }
+</style>
 <!-- render body here -->
 <div class="col s12">
     <div class="card">
@@ -57,7 +69,43 @@
                                                 <a class="a-text" href="/Admin/UserRecipe/?userID=@recipe.UserId">@recipe.User.UserName</a>
                                             </div>
                                         </td>
-                                        <td class="dateElement">@recipe.Recipe.Date</td>
+                                        <!--Date time display-->
+                                        @if (MyToys.checkTimeIsToday(@recipe.Recipe.Date))
+                                        {
+                                            <td >
+                                                @if (MyToys.checkTimeIsToday(@recipe.Recipe.Date))
+                                                {
+                                                    <p class="timeElement" style="display:inline-block">
+                                                        @recipe.Recipe.Date
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="dateElement" style="display:inline-block">
+                                                        @recipe.Recipe.Date
+                                                    </p>
+                                                }
+                                                <span> (@MyToys.getLastTime(@recipe.Recipe.Date))</span>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @if (MyToys.checkTimeIsToday(@recipe.Recipe.Date))
+                                                {
+                                                    <p class="timeElement" style="display:inline-block">
+                                                        @recipe.Recipe.Date
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <p class="dateElement" style="display:inline-block">
+                                                        @recipe.Recipe.Date
+                                                    </p>
+                                                }
+                                                <span> (@MyToys.getLastTime(@recipe.Recipe.Date))</span>
+                                            </td>
+                                        }
                                         <td>@recipe.Recipe.Status</td>
                                         <td>
                                             <form asp-area="Admin" asp-controller="Recipe" asp-action="PendingRecipe" method="post">

@@ -68,7 +68,14 @@
                         <a class='dropdown-trigger font-20 right' href='#' data-target='ddme'><i class="material-icons">more_vert</i></a>
                         <!-- Dropdown Structure -->
                         <ul id='ddme' class='dropdown-content'>
-                            <li><a href="#!"><i class="material-icons">view_module</i>Delete</a></li>
+                            <li>
+                                <form asp-area="Admin" asp-controller="Contact" asp-action="DeleteContact" method="post">
+                                    <input name="contactID" type="hidden" value="@contact.ContactId" />
+                                    <button type="submit" class="waves-effect waves-light btn red btn-sm">
+                                        Delete
+                                    </button>
+                                </form>
+                            </li>
                         </ul>
                         <p>
                             @contact.Address

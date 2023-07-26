@@ -15,6 +15,19 @@
     }
 }
 
+<style>
+    .a-text {
+        color: #f7ff00;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .chip{
+        background-color: #202020;
+    }
+</style>
+
 <!-- render body here -->
 <div class="col s12">
     <div class="card">
@@ -68,7 +81,7 @@
                                             </div>
                                         </td>
                                         <td>@recipe.Recipe.NumberShare</td>
-
+                                        <!--Date time display-->
                                         @if (MyToys.checkTimeIsToday(@recipe.Recipe.Date))
                                         {
                                             <td >
@@ -117,7 +130,7 @@
                                             }
                                             else
                                             {
-                                                <span class="label label-default" style="color:black; font-size: 15px;">@recipe.Recipe.Status</span>
+                                                <span class="label label-default" style="color:black; font-size: 15px; border: 1px solid;">@recipe.Recipe.Status</span>
                                             }
                                         </td>
                                         @*Recipe đã được duyệt rồi thì chỉ có nút reject*@
@@ -191,7 +204,6 @@
                         </tbody>
                     </table>
                     @Html.Partial("_Paging", @pager)
-                    ;
                 }
             </div>
             <!-- render body here -->

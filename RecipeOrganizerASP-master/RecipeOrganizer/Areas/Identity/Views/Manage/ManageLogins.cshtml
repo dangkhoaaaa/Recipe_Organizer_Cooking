@@ -15,9 +15,19 @@
 }
 @if (ViewData["StatusMessage"] != null)
 {
-    <div class="alert alert-danger">
-        @ViewData["StatusMessage"]
-    </div>
+    @if (!string.IsNullOrEmpty(ViewData["StatusMessage"].ToString()) && !ViewData["StatusMessage"].ToString().Contains("success"))
+    {
+        <div class="alert alert-danger">
+            @ViewData["StatusMessage"]
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(ViewData["StatusMessage"].ToString()))
+    {
+        <div class="alert alert-success">
+            @ViewData["StatusMessage"]
+        </div>
+    }
+
 }
 
 

@@ -24,9 +24,18 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 
 		public IActionResult DeleteContact(int contactID)
 		{
-			var contactDeleted = _contactRepository.GetAll().Where(p => p.Equals(contactID)).FirstOrDefault();
+			try
+			{
+				string.IsNullOrEmpty(contactID + "");
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.ToString());
+				return RedirectToAction("Contact", "Admin");
+			}
+			var contactDeleted = _contactRepository.GetAll().Where(p => p.ContactId.Equals(contactID)).FirstOrDefault();
 			_contactRepository.Delete(contactDeleted);
-			return View();
-		}
+			return RedirectToAction("Contact", "Admin");
+        }
 	}
 }
