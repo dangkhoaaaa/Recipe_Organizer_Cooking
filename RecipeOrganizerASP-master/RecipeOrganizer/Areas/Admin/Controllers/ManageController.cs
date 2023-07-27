@@ -34,7 +34,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         private readonly RecipeRepository _recipeRepository;
         private readonly FeedbackRepository _feedbackRepository;
         private readonly ContactRepository _contactRepository;
-
+		private readonly string DEFAULT_ADMIN_IMG = "/assets/img/admin.png";
 
 
 		public ManageController(
@@ -317,7 +317,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                     EmailConfirmed = true,
                     FirstName = "Admin",
                     RegistrationTime = DateTime.Now,
-                    Image = ""
+                    Image = DEFAULT_ADMIN_IMG,
                 };
                 await _userManager.CreateAsync(useradmin, "Admin123");
                 await _userManager.AddToRoleAsync(useradmin, RoleName.Administrator);
