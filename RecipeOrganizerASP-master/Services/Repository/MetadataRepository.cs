@@ -29,5 +29,11 @@ namespace Services.Repository
 		{
 			return _dbSet.Any(x => x.RecipeId == recipeId && x.UserId == userId && x.FeedbackId != null);
 		}
+
+		public Metadata? GetAuthorRecipe(int recipeId)
+		{
+			return _dbSet.FirstOrDefault(x => x.RecipeId == recipeId && x.UserId != null && x.FeedbackId == null);
+		}
+
 	}
 }

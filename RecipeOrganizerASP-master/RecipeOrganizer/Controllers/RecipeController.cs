@@ -27,6 +27,7 @@ namespace RecipeOrganizer.Controllers
 		private readonly FireBaseService _fireBaseService;
 		private readonly NotificationRepository _notificationRepository;
 		private readonly FeedbackRepository _feedbackRepository;
+		private readonly UserRepository _userRepository;
 
 		public RecipeController(UserManager<AppUser> userManager)
 		{
@@ -44,6 +45,7 @@ namespace RecipeOrganizer.Controllers
 			_fireBaseService = new FireBaseService();
 			_notificationRepository = new NotificationRepository();
 			_feedbackRepository = new FeedbackRepository();
+			_userRepository = new UserRepository();
 		}
 
 		public IActionResult Index()
@@ -225,6 +227,13 @@ namespace RecipeOrganizer.Controllers
 				var AvgRating = _feedbackRepository.CalculateAverageRating(recipe.RecipeId);
 				data.AvgRate = AvgRating;
 				//data.AvgRate = recipe.AvgRate;
+				var getAuthorRecipe = _metadataRepository.GetAuthorRecipe(recipe.RecipeId);
+				if (getAuthorRecipe != null)
+				{
+					var userId = getAuthorRecipe.UserId;
+					var author = _userRepository.GetUserById(userId);
+					data.Author = author.FirstName + " " + author.LastName;
+				}
 
 				var user = await _userManager.GetUserAsync(User);
 				if (user != null)
@@ -341,7 +350,7 @@ namespace RecipeOrganizer.Controllers
 			}
 			return RedirectToAction("AccessDenied", "Recipe");
 		}
-		
+
 		private RecipeData ConvertToRecipeData(Recipe recipe)
 		{
 			RecipeData data = new RecipeData();
@@ -352,6 +361,15 @@ namespace RecipeOrganizer.Controllers
 			data.Img = recipe.Image;
 			data.NumberShare = recipe.NumberShare;
 			data.Imgs = GetImgs(recipe.RecipeId);
+			data.Date = recipe.Date;
+			var getAuthorRecipe = _metadataRepository.GetAuthorRecipe(recipe.RecipeId);
+			if (getAuthorRecipe != null)
+			{
+				var userId = getAuthorRecipe.UserId;
+				var author = _userRepository.GetUserById(userId);
+				data.Author = author.FirstName + " " + author.LastName;
+			}
+
 			//var AvgRating = _feedbackRepository.CalculateAverageRating(recipe.RecipeId);
 			//data.AvgRate = AvgRating;
 			data.AvgRate = recipe.AvgRate;
