@@ -12,7 +12,6 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-pUA-Compatible" content="ie=edge" />
-	<title>Star Rating in HTML CSS & JavaScript</title>
 	<link rel="stylesheet" href="style.css" />
 	<!-- Fontawesome CDN Link -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
@@ -74,7 +73,7 @@
 							<li class="@((Model.AvgRate >= 3) ? "active" : "")"></li>
 							<li class="@((Model.AvgRate >= 4) ? "active" : "")"></li>
 							<li class="@((Model.AvgRate >= 5) ? "active" : "")"></li>
-
+							<span class="margin-lr-5px">|</span>
 							<a href="#" onclick="scrollToSection('#addFeedback')">@((Model.AvgRate != null) ? Model.AvgRate : "0")</a>
 						</ul>
 					</div>
