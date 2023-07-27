@@ -255,7 +255,7 @@ namespace Services.Repository
                 {
                     listVegatarian.Add((int)recipe.RecipeId);
                 }
-                GetRandomIds(listVegatarian, 3 * selectedDays.Count());
+                listVegatarian = GetRandomIds(listVegatarian, 3 * selectedDays.Count());
             }
             List<int> addMoreRecipes = new List<int>();
 
