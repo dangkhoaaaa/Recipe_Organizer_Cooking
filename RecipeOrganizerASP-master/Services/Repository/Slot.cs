@@ -120,14 +120,15 @@ namespace Services.Repository
         public List<int> GetRandomIds(List<int> idList, int num)
         {
             List<int> randomIds = new List<int>();
-
-            if (idList.Count <= num)
+			ShuffleIds(idList);
+			if (idList.Count <= num)
             {
+
                 randomIds.AddRange(idList);
             }
             else
             {
-                ShuffleIds(idList);
+                
 
                 randomIds.AddRange(idList.GetRange(0, num));
             }
@@ -217,7 +218,7 @@ namespace Services.Repository
             RecipeRepository _repository = new RecipeRepository();
             CategoryRepository _categoryRepository = new CategoryRepository();
             RecipeHasCategoryRepository _recipeHasCategoryRepository = new RecipeHasCategoryRepository();
-            var listRecipes = _recipeHasCategoryRepository.GetAll().Where(l => _repository.GetById(l.RecipeId, "public") != null).ToList();
+            var listRecipes = _recipeHasCategoryRepository.GetAll().Where(l => _repository.GetById(l.RecipeId, "public") != null && l.CategoryId != 5).ToList();
             List<int> listIDRecipeOfCate = new List<int>();
             foreach (var recipe in listRecipes)
             {
@@ -245,7 +246,7 @@ namespace Services.Repository
                 {
                     listVegatarian.Add((int)recipe.RecipeId);
                 }
-                GetRandomIds(listVegatarian, 21);
+                listVegatarian = GetRandomIds(listVegatarian, 21);
             }
             else
             {
@@ -273,6 +274,7 @@ namespace Services.Repository
             {
                 if (day.Equals("all"))
                 {
+                    
                     if (z < listVegatarian.Count())
                     {
                         if (i % 3 == 2)
