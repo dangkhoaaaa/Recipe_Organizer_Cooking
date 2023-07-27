@@ -39,11 +39,13 @@
                             </h3>
                             <div class="rating">
                                 <ul>
-                                    <li class="active"></li>
-                                    <li class="active"></li>
-                                    <li class="active"></li>
-                                    <li class="active"></li>
-                                    <li class="active"></li>
+                                    <li class="@((item.Rating >= 1) ? "active" : "")"></li>
+                                    <li class="@((item.Rating >= 2) ? "active" : "")"></li>
+                                    <li class="@((item.Rating >= 3) ? "active" : "")"></li>
+                                    <li class="@((item.Rating >= 4) ? "active" : "")"></li>
+                                    <li class="@((item.Rating >= 5) ? "active" : "")"></li>
+                                    <span class="margin-lr-5px">|</span>
+                                    <span>@item.Rating</span>
                                 </ul>
                             </div>
                             <hr>
