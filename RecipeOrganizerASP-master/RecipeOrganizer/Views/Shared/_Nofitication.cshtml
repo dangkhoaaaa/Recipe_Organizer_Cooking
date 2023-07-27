@@ -164,7 +164,7 @@
                 }
                 else if (listNotification.Count < 5)
                 {
-                    listNotification = listNotification.OrderBy(p => p.Recipe.Date.Date).ThenBy(p => p.Recipe.Date.TimeOfDay).ToList();
+                    listNotification = listNotification.OrderBy(p => Math.Abs((p.Recipe.Date.TimeOfDay - DateTime.Now.TimeOfDay).Ticks)).ToList();
                     foreach (RecipeNotification notify in listNotification)
                     {
                         <li class="notification-item unReadNofitication">
@@ -217,7 +217,7 @@
                 //lớn hơn thì chỉ hiện 5 recipe thôi
                 else
                 {
-                    listNotification = listNotification.OrderBy(p => p.Recipe.Date.Date).ThenBy(p => p.Recipe.Date.TimeOfDay).ToList();
+                    listNotification = listNotification.OrderBy(p => Math.Abs((p.Recipe.Date.TimeOfDay - DateTime.Now.TimeOfDay).Ticks)).ToList();
                     @for (int i = 0; i < 5; i++)
                     {
                         RecipeNotification notify = listNotification[i];
@@ -277,7 +277,7 @@
                     <li class="notification-item">
                         <p>Read notification</p>
                     </li>
-                    readListNotification = readListNotification.OrderBy(p => p.Recipe.Date.Date).ThenBy(p => p.Recipe.Date.TimeOfDay).ToList();
+                    readListNotification = readListNotification.OrderBy(p => Math.Abs((p.Recipe.Date.TimeOfDay - DateTime.Now.TimeOfDay).Ticks)).ToList();
                     foreach (RecipeNotification notify in readListNotification)
                     {
                         <li class="notification-item readNofitication">
@@ -333,7 +333,7 @@
                     <li class="notification-item">
                         <p>Read notification</p>
                     </li>
-                    readListNotification = readListNotification.OrderBy(p => p.Recipe.Date.Date).ThenBy(p => p.Recipe.Date.TimeOfDay).ToList();
+                    readListNotification = readListNotification.OrderBy(p => Math.Abs((p.Recipe.Date.TimeOfDay - DateTime.Now.TimeOfDay).Ticks)).ToList();
                     @for (int i = 0; i < 5; i++)
                     {
                         RecipeNotification notify = readListNotification[i];

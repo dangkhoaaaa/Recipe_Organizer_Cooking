@@ -128,7 +128,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 
         
 
-        [HttpGet("/Admin/")]
+        [HttpGet("/Admin/UserList")]
         public async Task<IActionResult> Index(int pg = 1)
         {
 
@@ -317,6 +317,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                     EmailConfirmed = true,
                     FirstName = "Admin",
                     RegistrationTime = DateTime.Now,
+                    Image = ""
                 };
                 await _userManager.CreateAsync(useradmin, "Admin123");
                 await _userManager.AddToRoleAsync(useradmin, RoleName.Administrator);
