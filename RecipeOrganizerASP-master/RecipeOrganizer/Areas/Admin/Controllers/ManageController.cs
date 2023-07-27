@@ -34,7 +34,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         private readonly RecipeRepository _recipeRepository;
         private readonly FeedbackRepository _feedbackRepository;
         private readonly ContactRepository _contactRepository;
-
+		private readonly string DEFAULT_ADMIN_IMG = "/assets/img/admin.png";
 
 
 		public ManageController(
@@ -128,7 +128,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 
         
 
-        [HttpGet("/Admin/")]
+        [HttpGet("/Admin/UserList")]
         public async Task<IActionResult> Index(int pg = 1)
         {
 
@@ -151,6 +151,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 };
                 list.Add(model);
             }
+            list = list.OrderBy(x => x.Role.FirstOrDefault()).ToList();
             const int pageSize = 5;
             if (pg < 1)
                 pg = 1;
@@ -209,7 +210,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         {
             ViewBag.Keyword = keyword;
             List<AppUser> listAllUsers = new List<AppUser>(_userManager.Users);
-            List<IndexViewModel> index = new List<IndexViewModel>();
+            List<IndexViewModel> indexModel = new List<IndexViewModel>();
             if (keyword == null)
             {
                 ViewBag.NotFind = "";
@@ -225,17 +226,19 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             foreach (var userSearch in listSearchUser)
             {
                 var role = await _userManager.GetRolesAsync(userSearch);
+                var externalLogins = (List<UserLoginInfo>)await _userManager.GetLoginsAsync(userSearch);
                 var isLockout = await _userManager.IsLockedOutAsync(userSearch);
-                index.Add(new IndexViewModel
+                indexModel.Add(new IndexViewModel
                 {
                     Member = userSearch,
                     Role = role.ToList(),
                     TotalRecipe = _recipeRepository.GetByAuthor(userSearch.Id).Count,
                     //TotalRecipe = 2,
-                    Status = !isLockout
+                    Status = !isLockout,
+                    ExternalLogin = externalLogins
                 });
             }
-            return View("Index", index);
+            return View("Index", indexModel);
         }
 
         //GET: Admin/UserRecipe/?userID={id}
@@ -312,11 +315,12 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             {
                 useradmin = new AppUser()
                 {
-                    UserName = "adminabc",
+                    UserName = "adminrecipe",
                     Email = "recipeorganizert3@gmail.com",
                     EmailConfirmed = true,
                     FirstName = "Admin",
                     RegistrationTime = DateTime.Now,
+                    Image = DEFAULT_ADMIN_IMG,
                 };
                 await _userManager.CreateAsync(useradmin, "Admin123");
                 await _userManager.AddToRoleAsync(useradmin, RoleName.Administrator);

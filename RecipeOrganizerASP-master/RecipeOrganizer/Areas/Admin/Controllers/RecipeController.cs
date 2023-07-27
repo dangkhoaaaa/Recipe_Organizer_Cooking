@@ -86,6 +86,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         public ActionResult Index(int recipeID, string status, string searchRecipe)
         {
             _recipeRepository.UpdateApprovalStatus(recipeID, status);
+            sendNotification(recipeID, status, "Your recipe have been " + status + "!");
             return RedirectToAction("SearchRecipe", new { keyword = searchRecipe });
         }
 
@@ -125,6 +126,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         public ActionResult PendingRecipe(int recipeID, string status, string searchRecipe)
         {
             _recipeRepository.UpdateApprovalStatus(recipeID, status);
+            sendNotification(recipeID, status, "Your recipe have been " + status + "!");
             return RedirectToAction("SearchPendingRecipe", new {keyword = searchRecipe });
         }
 
@@ -164,6 +166,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         public ActionResult RejectRecipe(int recipeID, string status, string searchRecipe)
         {
             _recipeRepository.UpdateApprovalStatus(recipeID, status);
+            sendNotification(recipeID, status, "Your recipe have been " + status + "!");
             return RedirectToAction("SearchPendingRecipe", new { keyword = searchRecipe });
         }
 

@@ -31,7 +31,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 
         }
 
-
+        [HttpGet("/Admin")]
         public IActionResult Index()
         {
          

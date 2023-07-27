@@ -31,7 +31,7 @@
     }
 
     .chip {
-        background-color: #202020;
+        background-color: #646464;
     }
 </style>
 @if (TempData["UpdateError"] != null)
@@ -106,7 +106,7 @@
                                             }
                                         </td>
                                         <td>
-                                            <a class="a-text" href="/Admin/UserRecipe/?userID=@user.Member.Id"><span>@user.TotalRecipe</span></a>
+                                            <a class="" href="/Admin/UserRecipe/?userID=@user.Member.Id"><span>@user.TotalRecipe</span></a>
                                         </td>
                                         <td>
                                             @if (user.ExternalLogin != null){
