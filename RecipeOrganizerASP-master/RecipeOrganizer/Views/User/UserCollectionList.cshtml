@@ -34,19 +34,19 @@
 					<div class="background-white thum-hover box-shadow hvr-float full-width">
 						<div class="float-md-left margin-right-30px thum-xs">
 							<a href="/Recipe/RecipeDetail/?id=@item.RecipeId">
-								<img class="width-250px" src="@item.Image" alt="">
+								<img style="height:166px" class="width-250px" src="@item.Image" alt="">
 							</a>
 						</div>
 						<div class="padding-25px">
 							<div class="rating">
 								<ul>
-									<li class="active"></li>
-									<li class="active"></li>
-									<li class="active"></li>
-									<li class="active"></li>
-									<li></li>
-									-
-									<a href="/Recipe/RecipeDetail/?id=@item.RecipeId">@item.AvgRate (0)</a>
+									<li class="@((item.AvgRate >= 1) ? "active" : "")"></li>
+									<li class="@((item.AvgRate >= 2) ? "active" : "")"></li>
+									<li class="@((item.AvgRate >= 3) ? "active" : "")"></li>
+									<li class="@((item.AvgRate >= 4) ? "active" : "")"></li>
+									<li class="@((item.AvgRate >= 5) ? "active" : "")"></li>
+									<span class="margin-lr-5px">|</span>
+									<a href="#">@((item.AvgRate != null) ? item.AvgRate : "0")</a>
 								</ul>
 							</div>
 							<h3>
@@ -61,10 +61,10 @@
 									</a>
 								</div>
 								@*<div class="col-8 text-right">
-									<a href="#" class="text-grey-2">
-										<i class="fas fa-users"></i> 6-8 servings
-									</a>
-								</div>*@
+						<a href="#" class="text-grey-2">
+						<i class="fas fa-users"></i> 6-8 servings
+						</a>
+						</div>*@
 							</div>
 						</div>
 						<div class="clearfix"></div>
