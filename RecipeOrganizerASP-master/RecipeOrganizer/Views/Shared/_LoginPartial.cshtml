@@ -156,6 +156,7 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
+    ManageNav.FirstName = user.FirstName;
     <div class="dropdown" id="userDropdown">
      @*   <a class="btn-add-recipe text-white ba-2 box-shadow float-right padding-lr-29px padding-tb-24px text-extra-large" asp-area="Admin" asp-controller="Manage" asp-action="Index">
            Admin

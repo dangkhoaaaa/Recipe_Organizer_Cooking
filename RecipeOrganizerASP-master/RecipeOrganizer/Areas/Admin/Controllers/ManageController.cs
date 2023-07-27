@@ -34,7 +34,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         private readonly RecipeRepository _recipeRepository;
         private readonly FeedbackRepository _feedbackRepository;
         private readonly ContactRepository _contactRepository;
-
+		private readonly string DEFAULT_ADMIN_IMG = "/assets/img/admin.png";
 
 
 		public ManageController(
@@ -128,7 +128,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
 
         
 
-        [HttpGet("/Admin/")]
+        [HttpGet("/Admin/UserList")]
         public async Task<IActionResult> Index(int pg = 1)
         {
 
@@ -151,6 +151,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 };
                 list.Add(model);
             }
+            list = list.OrderBy(x => x.Role.FirstOrDefault()).ToList();
             const int pageSize = 5;
             if (pg < 1)
                 pg = 1;
@@ -312,11 +313,12 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             {
                 useradmin = new AppUser()
                 {
-                    UserName = "adminabc",
+                    UserName = "adminrecipe",
                     Email = "recipeorganizert3@gmail.com",
                     EmailConfirmed = true,
                     FirstName = "Admin",
                     RegistrationTime = DateTime.Now,
+                    Image = DEFAULT_ADMIN_IMG,
                 };
                 await _userManager.CreateAsync(useradmin, "Admin123");
                 await _userManager.AddToRoleAsync(useradmin, RoleName.Administrator);
