@@ -1,10 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 
-@inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 @{
     var user = await UserManager.GetUserAsync(User);
-    ManageNavViewModel ManageNav = new ManageNavViewModel();
 }
 
 
@@ -143,7 +141,6 @@
 @{
     List<RecipeNotification> listNotification = new List<RecipeNotification>();
     List<RecipeNotification> readListNotification = new List<RecipeNotification>();
-    ManageNav.FirstName = user.FirstName;
     NotificationRepository _notificationRepository = new NotificationRepository();
     listNotification = _notificationRepository.GetNofiticationWithIsReadWithMetada(false).Where(p => p.User.Id == user.Id).ToList();
     readListNotification = _notificationRepository.GetNofiticationWithIsReadWithMetada(true).Where(p => p.User.Id == user.Id).ToList();

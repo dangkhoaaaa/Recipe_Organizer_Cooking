@@ -151,6 +151,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
                 };
                 list.Add(model);
             }
+            list = list.OrderBy(x => x.Role.FirstOrDefault()).ToList();
             const int pageSize = 5;
             if (pg < 1)
                 pg = 1;
@@ -312,7 +313,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             {
                 useradmin = new AppUser()
                 {
-                    UserName = "adminabc",
+                    UserName = "adminrecipe",
                     Email = "recipeorganizert3@gmail.com",
                     EmailConfirmed = true,
                     FirstName = "Admin",
