@@ -11,6 +11,11 @@
     }
 }
 <link href="~/admin/dist/css/pages/email.css" rel="stylesheet">
+<style>
+    .expandable{
+        background-color:white;
+    }
+</style>
 <div class="grey lighten-5 p-15 d-flex no-block">
     <a class='m-l-5 tooltipped' href='#' data-tooltip="Reply" data-position="top"><i class="material-icons font-20">reply</i></a>
     <a class='m-l-10 tooltipped' href='#' data-tooltip="Report Spam" data-position="top"><i class="material-icons font-20">sim_card_alert</i></a>
@@ -67,7 +72,7 @@
                     <div class="collapsible-body">
                         <a class='dropdown-trigger font-20 right' href='#' data-target='ddme'><i class="material-icons">more_vert</i></a>
                         <!-- Dropdown Structure -->
-                        <ul id='ddme' class='dropdown-content'>
+                        <ul id='ddme' class='dropdown-content' >
                             <li>
                                 <form asp-area="Admin" asp-controller="Contact" asp-action="DeleteContact" method="post">
                                     <input name="contactID" type="hidden" value="@contact.ContactId" />

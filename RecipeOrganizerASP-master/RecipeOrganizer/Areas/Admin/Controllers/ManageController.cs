@@ -210,7 +210,7 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
         {
             ViewBag.Keyword = keyword;
             List<AppUser> listAllUsers = new List<AppUser>(_userManager.Users);
-            List<IndexViewModel> index = new List<IndexViewModel>();
+            List<IndexViewModel> indexModel = new List<IndexViewModel>();
             if (keyword == null)
             {
                 ViewBag.NotFind = "";
@@ -226,17 +226,19 @@ namespace RecipeOrganizer.Areas.Admin.Controllers
             foreach (var userSearch in listSearchUser)
             {
                 var role = await _userManager.GetRolesAsync(userSearch);
+                var externalLogins = (List<UserLoginInfo>)await _userManager.GetLoginsAsync(userSearch);
                 var isLockout = await _userManager.IsLockedOutAsync(userSearch);
-                index.Add(new IndexViewModel
+                indexModel.Add(new IndexViewModel
                 {
                     Member = userSearch,
                     Role = role.ToList(),
                     TotalRecipe = _recipeRepository.GetByAuthor(userSearch.Id).Count,
                     //TotalRecipe = 2,
-                    Status = !isLockout
+                    Status = !isLockout,
+                    ExternalLogin = externalLogins
                 });
             }
-            return View("Index", index);
+            return View("Index", indexModel);
         }
 
         //GET: Admin/UserRecipe/?userID={id}
