@@ -234,6 +234,10 @@ namespace RecipeOrganizer.Controllers
 					var author = _userRepository.GetUserById(userId);
 					data.Author = author.FirstName + " " + author.LastName;
 				}
+				else
+				{
+					data.Author = "Cook";
+				}
 
 				var user = await _userManager.GetUserAsync(User);
 				if (user != null)
@@ -368,6 +372,10 @@ namespace RecipeOrganizer.Controllers
 				var userId = getAuthorRecipe.UserId;
 				var author = _userRepository.GetUserById(userId);
 				data.Author = author.FirstName + " " + author.LastName;
+			}
+			else
+			{
+				data.Author = "Cook";
 			}
 
 			//var AvgRating = _feedbackRepository.CalculateAverageRating(recipe.RecipeId);

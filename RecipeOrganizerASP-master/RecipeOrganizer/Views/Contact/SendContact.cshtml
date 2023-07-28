@@ -1,6 +1,6 @@
 ﻿@{
-    ViewData["Title"] = "SendContact";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "SendContact";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model Services.Data.ShowContact
 <!-- Map -->
@@ -89,169 +89,177 @@
 </div> *@
 
 
-<div class="map-distributors-in">
-    <div id="map-distributors">
-        <script>
-            $(function () {
-                $("#map-distributors").goMap({
-                    zoom: 6,
-                    maptype: 'ROADMAP',
-                    markers: [
-                        {
-                            address: '39.605247,-104.615413',
-                            icon: 'assets/img/icon_marker_1.png'
-                        }
-                    ],
-                    hideByClick: true
-                });
 
-                $("#default").click(function () {
-                    $("#dump").html($.dump($.goMap.getMarkers()));
-                });
+<script>
+	$(function () {
+		$("#map-distributors").goMap({
+			zoom: 6,
+			maptype: 'ROADMAP',
+			markers: [
+				{
+					address: '39.605247,-104.615413',
+					icon: 'assets/img/icon_marker_1.png'
+				}
+			],
+			hideByClick: true
+		});
 
-                $("#clearall").click(function () {
-                    $.goMap.clearMarkers();
-                });
+		$("#default").click(function () {
+			$("#dump").html($.dump($.goMap.getMarkers()));
+		});
 
-                $("#json").click(function () {
-                    $("#dump").html($.goMap.getMarkers("json"));
-                });
+		$("#clearall").click(function () {
+			$.goMap.clearMarkers();
+		});
 
-                $("#data").click(function () {
-                    $("#dump").html($.goMap.getMarkers("data"));
-                });
+		$("#json").click(function () {
+			$("#dump").html($.goMap.getMarkers("json"));
+		});
 
-                $('.gm-style-iw').parent().css('width', 'auto');
-            });
-        </script>
-    </div>
-</div>
+		$("#data").click(function () {
+			$("#dump").html($.goMap.getMarkers("data"));
+		});
+
+		$('.gm-style-iw').parent().css('width', 'auto');
+	});
+</script>
+
 
 <!-- Page Output -->
 @if (Model != null)
 {
-    if (Model.ErrorNum.Count == 0)
-    {
-        <h2 class="text-blue text-center">Thank for your feedback </h2>
-    }
+	if (Model.ErrorNum.Count == 0)
+	{
+		<h2 class="text-blue text-center">Thank for your feedback </h2>
+	}
 }
+<div id="page-title" class="padding-tb-10px gradient-white">
+	<div class="container text-left">
+		<ol class="breadcrumb opacity-5">
+			<li><a href="@Url.Action("Index", "Home")">Home</a></li>
+			<li class="active">Contact</li>
+		</ol>
+	</div>
+</div>
 <div class="container">
-    <section class="padding-tb-100px">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    @using (Html.BeginForm("SendEmail", "Contact", FormMethod.Post))
-                    {
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Contact.Name)
-                            @Html.TextBoxFor(m => m.Contact.Name, new { @class = "form-control", placeholder = "Name" })
-                            *
-                            @if (Model != null)
-                            {
-                                if (Model.ErrorNum.Count > 0)
-                                {
-                                    foreach (var item in Model.ErrorNum)
-                                    {
-                                        if (item == 1)
-                                        {
-                                            <p class="text-red">Enter 1 to 100 characters</p>
-                                        }
-                                    }
-                                }
-                            }
-                        </div>
+	<section class="padding-bottom-20px">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<h1 class="font-weight-500 margin-bottom-20px">Contact</h1>
+				</div>
+				<div class="col-lg-6 col-md-6">
+					@using (Html.BeginForm("SendEmail", "Contact", FormMethod.Post))
+					{
+						<div class="form-group">
+							@Html.LabelFor(m => m.Contact.Name)
+							@Html.TextBoxFor(m => m.Contact.Name, new { @class = "form-control", placeholder = "Name" })
 
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Contact.Email)
-                            @Html.TextBoxFor(m => m.Contact.Email, new { @class = "form-control", placeholder = "Email" })
-                            *
-                            @if (Model != null)
-                            {
-                                if (Model.ErrorNum.Count > 0)
-                                {
-                                    foreach (var item in Model.ErrorNum)
-                                    {
-                                        if (item == 2)
-                                        {
-                                            <p class="text-red">Enter 1 to 250 characters</p>
-                                        }
-                                    }
-                                }
-                            }
-                        </div>
+							@if (Model != null)
+							{
+								if (Model.ErrorNum.Count > 0)
+								{
+									foreach (var item in Model.ErrorNum)
+									{
+										if (item == 1)
+										{
+											<p class="text-red">Enter 1 to 100 characters</p>
+										}
+									}
+								}
+							}
+						</div>
 
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Contact.Address)
-                            @Html.TextBoxFor(m => m.Contact.Address, new { @class = "form-control", placeholder = "Address" })
-                            @if (Model != null)
-                            {
-                                if (Model.ErrorNum.Count > 0)
-                                {
-                                    foreach (var item in Model.ErrorNum)
-                                    {
-                                        if (item == 3)
-                                        {
-                                            <p class="text-red">Enter max 300 characters</p>
-                                        }
-                                    }
-                                }
-                            }
-                        </div>
+						<div class="form-group">
+							@Html.LabelFor(m => m.Contact.Email)
+							@Html.TextBoxFor(m => m.Contact.Email, new { @class = "form-control", placeholder = "Email" })
 
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Contact.Message)
-                            @Html.TextAreaFor(m => m.Contact.Message, new { @class = "form-control", rows = "3", placeholder = "Message" })
-                            *
-                            @if (Model != null)
-                            {
-                                if (Model.ErrorNum.Count > 0)
-                                {
-                                    foreach (var item in Model.ErrorNum)
-                                    {
-                                        if (item == 1)
-                                        {
-                                            <p class="text-red">Enter 1 to 1000 characters</p>
-                                        }
-                                    }
-                                }
-                            }
-                        </div>
+							@if (Model != null)
+							{
+								if (Model.ErrorNum.Count > 0)
+								{
+									foreach (var item in Model.ErrorNum)
+									{
+										if (item == 2)
+										{
+											<p class="text-red">Enter 1 to 250 characters</p>
+										}
+									}
+								}
+							}
+						</div>
 
-                        <button type="submit" class="btn btn-primary">Send</button>
-                    }
-                </div>
+						<div class="form-group">
+							@Html.LabelFor(m => m.Contact.Address)
+							@Html.TextBoxFor(m => m.Contact.Address, new { @class = "form-control", placeholder = "Address" })
+							@if (Model != null)
+							{
+								if (Model.ErrorNum.Count > 0)
+								{
+									foreach (var item in Model.ErrorNum)
+									{
+										if (item == 3)
+										{
+											<p class="text-red">Enter max 300 characters</p>
+										}
+									}
+								}
+							}
+						</div>
 
+						<div class="form-group">
+							@Html.LabelFor(m => m.Contact.Message)
+							@Html.TextAreaFor(m => m.Contact.Message, new { @class = "form-control", rows = "3", placeholder = "Message" })
 
-                <script>
-                    function clearFormFields() {
-                        document.getElementById("Contact_Name").value = "";
-                        document.getElementById("Contact_Email").value = "";
-                        document.getElementById("Contact_Address").value = "";
-                        document.getElementById("Contact_Message").value = "";
-                    }
+							@if (Model != null)
+							{
+								if (Model.ErrorNum.Count > 0)
+								{
+									foreach (var item in Model.ErrorNum)
+									{
+										if (item == 1)
+										{
+											<p class="text-red">Enter 1 to 1000 characters</p>
+										}
+									}
+								}
+							}
+						</div>
 
-                    $(function () {
-                        var errorNum = @(Model?.ErrorNum?.Count ?? 0);
-                        if (errorNum === 0) {
-                            clearFormFields();
-                        }
-                    });
-                </script>
+						<button type="submit" class="btn btn-primary">Send</button>
+					}
+				</div>
 
 
-                <div class="col-lg-6 col-md-6">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                    <h6>Phone:</h6>
-                    <span class="d-block"><i class="fa fa-phone text-main-color margin-right-10px" aria-hidden="true"></i> +222 333 019</span>
-                    <span class="d-block"><i class="fa fa-mobile text-main-color margin-right-10px" aria-hidden="true"></i> +222 333 019</span>
-                    <h6 class="margin-top-20px">Address:</h6>
-                    <span class="d-block"><i class="fa fa-map text-main-color margin-right-10px" aria-hidden="true"></i> NewYork 1234 Main St</span>
-                    <h6 class="margin-top-20px">Email:</h6>
-                    <span class="d-block"><i class="fa fa-envelope-open text-main-color margin-right-10px" aria-hidden="true"></i> info@yoursite.com</span>
-                </div>
-            </div>
-        </div>
-    </section>
+				<script>
+					function clearFormFields() {
+						document.getElementById("Contact_Name").value = "";
+						document.getElementById("Contact_Email").value = "";
+						document.getElementById("Contact_Address").value = "";
+						document.getElementById("Contact_Message").value = "";
+					}
+
+					$(function () {
+						var errorNum = @(Model?.ErrorNum?.Count ?? 0);
+						if (errorNum === 0) {
+							clearFormFields();
+						}
+					});
+				</script>
+
+
+				<div class="col-lg-6 col-md-6">
+					<h6>Phone:</h6>
+					<span class="d-block"><i class="fa fa-phone text-main-color margin-right-10px" aria-hidden="true"></i> +84 902 222 204</span>
+					<span class="d-block"><i class="fa fa-mobile text-main-color margin-right-10px" aria-hidden="true"></i> +84 902 222 204</span>
+					<h6 class="margin-top-20px">Address:</h6>
+					<span class="d-block"><i class="fa fa-map text-main-color margin-right-10px" aria-hidden="true"></i> Lot E2a-7, Road D1, D. D1, Long Thanh My, Thu Duc City, Ho Chi Minh City 700000, Vietnam</span>
+					<h6 class="margin-top-20px">Email:</h6>
+					<span class="d-block"><i class="fa fa-envelope-open text-main-color margin-right-10px" aria-hidden="true"></i> recipeorganizert3@gmail.com</span>
+				</div>
+			</div>
+		</div>
+	</section>
 </div>
 
 <!-- // Page Output -->
